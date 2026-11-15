@@ -5,6 +5,20 @@
 0b. **Record the demo video** (J1 + J3 + J4, under 3 minutes) and fill in the project details form.
 0c. **Pitch**: 3 minutes; use `docs/demo/` once WP-DEMO-01 lands.
 
+## Freeze-day blockers from the demo-path run (16:55, wf_77020d51-4e1)
+Ordered by demo impact. Workspace dev = `7b52cbc0-…`, demo (Team Delta) = `6f6d70c8-…`.
+F1. **WhatsApp** (W1–W5 below): connect the WABA in the tenant that runs merc-buddy, assign the number to merc-buddy (dev) and merc-buddy-pro (demo), set global `MERC_WHATSAPP_CONNECTION`, and the merc-ops relay (`MERC_OPS_WHATSAPP_URL` + secret `MERC_OPS_WHATSAPP_HOOK`). Until then the WhatsApp brief and confirm beats record `whatsapp_not_configured`.
+F2. **Service account on the functions that push live events or call the platform API**: debrief-process, briefing-generate, voice-log-upload, buddy-call-start, buddy-call-outcome, visit-card-get (needs Context Hub read), plus merc-live redeploy. Function → Details → Service account. Without it the app gets no live result card and visit-card KB grounding falls back.
+F3. **Deploy crons `postvisit-prompts-due` and `debrief-confirm-due` to dev** (only `previsit-briefs-due` is scheduled there). Needed for the "how did it go" and WhatsApp-summary beats.
+F4. **Chat SDK key** → secret `MERC_CHAT_API_KEY` (in-app voice widget + signed rep identity).
+F5. **Transcription profile** (H3): create Model Profile `merc-transcribe`, set global `MERC_TRANSCRIBE_PROFILE_ID` on dev (falls back to gemini-2.5-flash until then).
+F6. **Smoke as a real Merc user**: open the merc app on dev as a seeded user (e.g. Dimitra) and open Today, a visit card, Record, AI log + Undo. `wful call` always gets 403 from the app gate, so agents could not do this.
+F7. **Inbound phone test**: call +1 845-513-3803; then the real-phone J5 run per `evidence/WP-E2E-05` (README) with your consent.
+F8. **Demo identity bypass**: `MERC_DEMO_CALLER_PHONE` (if set on demo) makes any caller act as one user. Unset it after the pitch.
+F9. **Monitors** notify stefanos.k@wonderful.ai; pick the real recipient. Resolve fire-drill incident 9c91d373.
+F10. Optional (admin): the functions.git main push hook times out (HTTP 524) — builders deployed via merge requests instead; delete merged branches wp-core-03-probe, wp-deb-01*, wp-crd-02, wp-brf-01.
+F11. **Submission repo history**: commit e70ecc9 briefly contained the team lead's real mobile (scrubbed in df7337e). Repo is private; if it goes public, decide whether to squash history.
+
 # From the Wave 0+1 run (2026-11-15)
 
 Agents cannot do these unattended. Each one unblocks a requirement. Platform is the `hackathon` tenant, dev workspace `7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464`.

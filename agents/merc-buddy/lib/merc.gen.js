@@ -4960,7 +4960,8 @@ async function resolvePrincipal(api, source) {
     const teamTerr = (await db.territory_rep.all({ user_id: team_user_ids })).map((r) => r.territory_id);
     team_territory_ids = [.../* @__PURE__ */ new Set([...managed, ...teamTerr])];
   }
-  return { kind: "user", id: user.id, role, org_id: user.org_id, user, org, manager, territory_ids, team_user_ids, team_territory_ids, permissions: await openAccess(db) ? rolePermissions("admin") : rolePermissions(role) };
+  const open = await openAccess(db);
+  return { kind: "user", id: user.id, role, org_id: user.org_id, user, org, manager, territory_ids, team_user_ids, team_territory_ids, ...open ? { open_access: true } : {}, permissions: open ? rolePermissions("admin") : rolePermissions(role) };
 }
 async function systemPrincipal(api, orgId, caller = "scheduler") {
   if (!orgId) throw forbidden("system principal needs an org id");
@@ -4976,7 +4977,7 @@ var principalFromFunction = (api, context) => resolvePrincipal(api, callerFromFu
 var principalFromTool = (api, ctx, key, now) => resolvePrincipal(api, callerFromTool(ctx, key, now));
 
 // shared/core/src/scope.ts
-var isAdmin = (p) => p.role === "admin";
+var isAdmin = (p) => p.role === "admin" || p.open_access === true;
 var isManager = (p) => p.role === "manager";
 function hasPermission(p, key) {
   return isAdmin(p) || p.permissions.includes(key);
@@ -7772,7 +7773,7 @@ function makeImpl12(deps = {}) {
     const call = await db.buddy_call.get(req.buddy_call_id);
     const owner = call ? await db.app_user.get(call.user_id) : null;
     if (!call || !owner) throw notFound("buddy_call not found", { buddy_call_id: req.buddy_call_id });
-    if (me.kind === "user" && me.id !== call.user_id && me.role !== "admin") throw forbidden("this buddy call belongs to another user");
+    if (me.kind === "user" && me.id !== call.user_id && !isAdmin(me)) throw forbidden("this buddy call belongs to another user");
     const fallback = await applyOutcome(db, platform, deps, call, req.outcome, req.conversation_id ?? null);
     return { buddy_call_id: call.id, fallback };
   };

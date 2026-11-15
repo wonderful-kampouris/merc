@@ -14,7 +14,7 @@ acceptance:
   - scripted run twice from reseed passes with a fixed clock; WhatsApp and calls simulated by tool calls when the channel is not live
   - the second Miltos brief after 'Brief did not help' pushes a different product
   - real-phone run (WhatsApp brief, Call me, confirmation) listed as a human step with the exact order
-status: building
+status: done
 ```
 
 ## Rules

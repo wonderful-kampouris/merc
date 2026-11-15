@@ -14,7 +14,7 @@ acceptance:
   - reset-demo reseeds dev in < 1 min and supports --next-visit-in <minutes> (shifts the Miltos visit so the pre-meeting brief fires live)
   - promotion runbook + dry-run plan for demo (no deploy until the human fills environments.json demo)
   - 3-minute demo script for J5 with timings, plus a recorded fallback video plan
-status: building
+status: partial
 ```
 
 ## Rules

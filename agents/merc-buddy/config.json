@@ -5,7 +5,7 @@
     "display_name": "Merc Buddy",
     "description": "Merc field-sales voice buddy for reps (WP-BUD-01): briefing, visit cards, spoken debriefs, approvals, discounts, planning, prospecting. Identity from a signed Chat SDK user token.",
     "mode": "conversational",
-    "locale": "en-US",
+    "locale": "el-GR",
     "timezone": "Europe/Athens",
     "gender": "female"
   },
@@ -13,7 +13,7 @@
     "orchestrator_type": "traditional",
     "tts": {
       "priority": [
-        "bella_english"
+        "athina_greek"
       ],
       "failure_threshold": 2,
       "synthesis_timeout_seconds": 3,
@@ -26,7 +26,7 @@
         "soniox": {
           "provider": "soniox",
           "model": "default",
-          "language": "en-US",
+          "language": "el-GR",
           "smart_format": false,
           "punctuate": false,
           "endpointing": 0,
@@ -61,7 +61,7 @@
       "end_of_turn": {
         "enabled": true,
         "version": "smart-turn",
-        "detection_model": "v3.2-english-v2.2",
+        "detection_model": "v3.2-multilingual",
         "timeout_ms": 300,
         "settings": {},
         "playback_pause": {

@@ -15,7 +15,7 @@ acceptance:
   - rep A cannot read rep B outside shared territory
   - debrief p95 measured
   - CI eval gate script
-status: building
+status: done
 ```
 
 ## Rules

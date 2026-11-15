@@ -14,7 +14,7 @@ acceptance:
   - agent created/updated in dev via wful agents (V2 repo under agents/<name>/), server validation passes, attached to the shared lib on main
   - every tool from spec/contracts/tools/<agent>/ implemented through the shared handler (runAsTool) with injected values from code, never from the model
   - evals in the agent repo run on dev with the listed thresholds; failures reported with transcripts
-status: building
+status: partial
 ```
 
 ## Rules

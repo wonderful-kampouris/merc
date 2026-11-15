@@ -4,8 +4,8 @@ export type ChatToken = FunctionResponseMap["merc-chat-token"];
 /** The token shape the Chat SDK `createChat({ token })` takes. */
 export interface SdkToken {
   token: string;
-  expiresAt: string;
-  refresh: () => Promise<{ token: string; expiresAt: string }>;
+  expiresAt: number;
+  refresh: () => Promise<{ token: string; expiresAt: number }>;
 }
 
 export const TOKEN_FN = "merc-chat-token";
@@ -36,13 +36,16 @@ export const isFresh = (t: ChatToken | null, now: number = Date.now()): t is Cha
   !!t && Date.parse(t.expires_at) - REFRESH_SKEW_MS > now;
 
 /** Adapt fn:merc-chat-token to the SDK token object (expires_at -> expiresAt, refresh re-calls the function). */
+/** The Chat SDK wants expiry as a Unix timestamp in seconds, the function returns ISO 8601. */
+export const toUnixSeconds = (iso: string): number => Math.floor(Date.parse(iso) / 1000);
+
 export function toSdkToken(first: ChatToken, fetch: () => Promise<ChatToken>): SdkToken {
   return {
     token: first.token,
-    expiresAt: first.expires_at,
+    expiresAt: toUnixSeconds(first.expires_at),
     refresh: async () => {
       const t = await fetch();
-      return { token: t.token, expiresAt: t.expires_at };
+      return { token: t.token, expiresAt: toUnixSeconds(t.expires_at) };
     },
   };
 }
