@@ -16,8 +16,8 @@ test("phones overlay: no file leaves the seed unchanged", () => {
 
 test("phones overlay: listed users get the real phone; everyone else is never dialled", () => {
   const r = rows();
-  assert.equal(applyPhones(r, wuid, { nikos: "+306944973302" }), 1);
-  assert.deepEqual(r[0], { wonderful_user_id: "w-nikos", phone: "+306944973302", phone_channel_enabled: true });
+  assert.equal(applyPhones(r, wuid, { nikos: "+306900009999" }), 1);
+  assert.deepEqual(r[0], { wonderful_user_id: "w-nikos", phone: "+306900009999", phone_channel_enabled: true });
   assert.deepEqual(r[1], { wonderful_user_id: "w-eleni", phone: "+306900000002", phone_channel_enabled: false });
 });
 

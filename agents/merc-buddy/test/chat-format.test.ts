@@ -37,7 +37,7 @@ describe("runTool on a chat session with the demo caller", () => {
     const ctx: any = {
       metadata: { communication: { type: "chat", metadata: { chat_adapter: "whatsapp" }, fromNumber: null } },
       secrets: { get: (n: string) => (n === NAME_INTERNAL_KEY ? "k".repeat(40) : null) },
-      globals: { get: (n: string) => (n === NAME_DEMO_CALLER_PHONE ? "+306944973302" : null) },
+      globals: { get: (n: string) => (n === NAME_DEMO_CALLER_PHONE ? "+306900009999" : null) },
       tables: {},
     };
     const impl = async () => ({ result: brief });
