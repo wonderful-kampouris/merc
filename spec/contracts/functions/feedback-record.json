@@ -100,6 +100,6 @@
   "errors": [],
   "llm": [],
   "integrations": [],
-  "notes": "brief_* needs visit_brief_id and sets visit_brief.rating; debrief_* needs debrief_confirmation_id and sets its status. debrief_corrected stores detail verbatim and links correction_voice_log_id when the buddy logged the fix as a new debrief. Only the owner rep.",
+  "notes": "brief_* needs visit_brief_id and sets visit_brief.rating; debrief_* needs debrief_confirmation_id and sets its status. debrief_corrected stores detail verbatim and links correction_voice_log_id when the buddy logged the fix as a new debrief; without a confirmation (fix said in a call or chat) it needs correction_voice_log_id. Only the owner rep.",
   "scope": "owner"
 }

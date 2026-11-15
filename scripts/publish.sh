@@ -14,7 +14,7 @@ mkdir -p "$OUT"
 rsync -a --delete \
   --exclude='/.git/' --exclude='.git' --exclude='node_modules' --exclude='.cache' \
   --exclude='dist' --exclude='.DS_Store' --exclude='*.log' --exclude='.env*' \
-  --exclude='__pycache__' --exclude='spikes/*/raw' \
+  --exclude='__pycache__' --exclude='spikes/*/raw' --exclude='infra/seed/phones.json' --exclude='infra/seed/wuid.json' \
   "$SRC/" "$OUT/"
 
 cd "$OUT"

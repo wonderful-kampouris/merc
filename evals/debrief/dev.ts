@@ -34,12 +34,12 @@ export function callFn(slug: string, body: unknown): { ms: number; out: any } {
   catch (e: any) { raw = String(e?.stdout ?? "") || JSON.stringify({ error: { code: "upstream_failed", message: String(e?.stderr ?? e).slice(0, 400) } }); }
   const ms = Date.now() - t0;
   let j: any; try { j = JSON.parse(raw); } catch { j = { error: { code: "upstream_failed", message: raw.slice(0, 400) } }; }
-  return { ms, out: j && typeof j === "object" && "result" in j ? j.result : j };
+  // fn:debrief-process answers {status, result, candidates, question} at the top level (wful already unwraps {data}).
+  return { ms, out: j };
 }
 export function getFn(slug: string, query: Record<string, string>): any {
   const q = new URLSearchParams(query).toString();
-  const j = JSON.parse(wful(["call", "get", `/api/v1/functions/${slug}?${q}`]));
-  return j && typeof j === "object" && "result" in j ? j.result : j;
+  return JSON.parse(wful(["call", "get", `/api/v1/functions/${slug}?${q}`]));
 }
 
 export const athensDate = (iso: string | number) => new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Athens", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(iso));

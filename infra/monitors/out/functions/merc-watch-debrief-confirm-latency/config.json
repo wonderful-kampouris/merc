@@ -1,0 +1,14 @@
+{
+  "kind": "cron",
+  "name": "merc-watch-debrief-confirm-latency",
+  "description": "Merc monitor watch 'debrief-confirm-latency' (WP-QA-02, REQ-OPS-003): debrief_confirmation sent_at - voice_log processed_at p95 > 60 s over 1 h (REQ-MTG-006). Fails the run on a breach so the merc-debrief-confirm-latency CronFunctionFailure monitor fires. Source: infra/monitors/src/watches.ts",
+  "timeout_ms": 30000,
+  "cron_schedules": [
+    {
+      "cron_expression": "*/15 * * * *",
+      "timezone": "Europe/Athens",
+      "params": {},
+      "enabled": true
+    }
+  ]
+}

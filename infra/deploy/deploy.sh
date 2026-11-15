@@ -118,26 +118,43 @@ d=json.load(sys.stdin); d=d.get("data",d); print(d.get("id",""))' 2>/dev/null ||
 esac
 plan "$REPO_URL"
 
-fn_exists() {  # is <slug>/<method> registered as an HTTP function in this workspace?
-  W functions api list --json 2>/dev/null | python3 -I -c 'import json,sys
+fn_exists() {  # is <slug> registered in this workspace? HTTP: slug + method; cron: slug alone
+  W functions "$FN_GROUP" list --json 2>/dev/null | python3 -I -c 'import json,sys
 d=json.load(sys.stdin); d=d if isinstance(d,list) else (d.get("data") or d.get("items") or [])
-print(any((f.get("path_slug") or f.get("slug"))==sys.argv[1] and f.get("method","").upper()==sys.argv[2].upper() for f in d))' "$NAME" "$FN_METHOD"
+grp,slug,method=sys.argv[1:4]
+print(any((f.get("path_slug") or f.get("slug"))==slug and (grp=="cron" or f.get("method","").upper()==method.upper()) for f in d))' "$FN_GROUP" "$NAME" "$FN_METHOD"
 }
 if [ "$KIND" = function ]; then
   [ -f "$SRC/config.json" ] || die "function source $SRC has no config.json" 3
   FN_METHOD="$(jget "$SRC/config.json" method)"; FN_METHOD="${FN_METHOD:-POST}"
   FN_DESC="$(jget "$SRC/config.json" description)"
+  # config.json kind "cron" is a scheduled function (wful functions cron); anything else is HTTP.
+  FN_GROUP=api; [ "$(jget "$SRC/config.json" kind)" = cron ] && FN_GROUP=cron
   if [ "$(fn_exists)" != True ]; then
-    if [ "$PUSH" != 1 ]; then echo "function $NAME $FN_METHOD does not exist in $ENV_NAME: --push will provision it (wful functions api create)"; exit 0; fi
+    if [ "$PUSH" != 1 ]; then echo "function $NAME ($FN_GROUP $FN_METHOD) does not exist in $ENV_NAME: --push will provision it (wful functions $FN_GROUP create)"; exit 0; fi
     # Provision first: a folder pushed without a function record is not registered and blocks create (409).
     rm -rf "$TARGET"
-    W --no-interactive functions api create --slug "$NAME" --method "$FN_METHOD" --name "$NAME" \
-      ${FN_DESC:+--description "$FN_DESC"} --dir "$TARGET" --skip-install >/dev/null \
-      || die "wful functions api create failed for $NAME" 1
-    echo "provisioned function $NAME $FN_METHOD in $ENV_NAME"
+    if [ "$FN_GROUP" = cron ]; then
+      FN_DATA="$(python3 -I -c 'import json,sys
+c=json.load(open(sys.argv[1])); print(json.dumps({k:c[k] for k in ("cron_schedules","timeout_ms") if k in c}))' "$SRC/config.json")"
+      W --no-interactive functions cron create --slug "$NAME" --name "$NAME" \
+        ${FN_DESC:+--description "$FN_DESC"} --data "$FN_DATA" --dir "$TARGET" --skip-install >/dev/null \
+        || die "wful functions cron create failed for $NAME" 1
+      echo "provisioned cron function $NAME in $ENV_NAME"
+    else
+      W --no-interactive functions api create --slug "$NAME" --method "$FN_METHOD" --name "$NAME" \
+        ${FN_DESC:+--description "$FN_DESC"} --dir "$TARGET" --skip-install >/dev/null \
+        || die "wful functions api create failed for $NAME" 1
+      echo "provisioned function $NAME $FN_METHOD in $ENV_NAME"
+    fi
   elif [ ! -d "$TARGET/.git" ]; then
-    W functions api clone "$NAME" --method "$FN_METHOD" --dir "$TARGET" --skip-install >/dev/null \
-      || die "wful functions api clone failed for $NAME" 1
+    if [ "$FN_GROUP" = cron ]; then
+      W functions cron clone "$NAME" --dir "$TARGET" --skip-install >/dev/null \
+        || die "wful functions cron clone failed for $NAME" 1
+    else
+      W functions api clone "$NAME" --method "$FN_METHOD" --dir "$TARGET" --skip-install >/dev/null \
+        || die "wful functions api clone failed for $NAME" 1
+    fi
   fi
 fi
 if [ ! -d "$TARGET/.git" ]; then

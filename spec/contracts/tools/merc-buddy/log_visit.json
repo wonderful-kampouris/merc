@@ -19,6 +19,17 @@
             "type": "null"
           }
         ]
+      },
+      "corrects_voice_log_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
       }
     },
     "additionalProperties": false,
@@ -34,6 +45,6 @@
   ],
   "priority": "P0",
   "side_effects": [],
-  "say": "Read spoken_summary, then ask each missing_fields question, then offer pending approvals.",
+  "say": "Read spoken_summary, then ask each missing_fields question, then offer pending approvals. For a correction of a debrief already logged, pass only the correction words as utterance and that debrief's voice_log_id as corrects_voice_log_id; code undoes and re-logs it.",
   "returns": "../../functions/debrief-process.json#/response"
 }

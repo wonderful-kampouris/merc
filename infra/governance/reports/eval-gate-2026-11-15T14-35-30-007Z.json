@@ -1,0 +1,17 @@
+{
+ "at": "2026-11-15T14:35:30.007Z",
+ "only": [
+  "merc-buddy"
+ ],
+ "ran": false,
+ "pass": false,
+ "results": [
+  {
+   "suite": "merc-buddy",
+   "kind": "agent",
+   "required": true,
+   "status": "missing",
+   "detail": "no eval batches at agents/merc-buddy/evals/batches"
+  }
+ ]
+}

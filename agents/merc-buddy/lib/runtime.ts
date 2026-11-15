@@ -3,10 +3,19 @@
 //   secret MERC_INTERNAL_CALL_KEY by @merc/core runAsTool. The model never fills `caller`.
 // - injected values (conversation_id, language, device location, constants) come from the session, never the model.
 // - customer memory: attach the resolved account so the platform preloads its memories.
-import { callerFromTool, runAsTool, secretString, type AnyImpl } from "./merc.gen.js";
+import { forTextChannel, isTextChannel } from "./chat-format";
+import { compactResult } from "./compact";
+import { buddyDepsFrom, callerFromTool, runAsTool, secretString, TOOL_FACTORIES, type AnyImpl } from "./merc.gen.js";
 
 /** Name of the Wonderful secret holding the HMAC key (identifier kept free of secret-like words for the scan). */
 export const NAME_INTERNAL_KEY = "MERC_INTERNAL_CALL_KEY";
+/**
+ * DEMO ONLY, added at the team lead's request for the pitch ("remove the number verification"): global holding one
+ * app_user phone (E.164). When set, a session with no signed claim (console chat, or a phone/WhatsApp number) runs as
+ * the Merc user with that phone, and every call logs caller_source "demo_global". A present but invalid or expired claim
+ * stays forbidden. Unset or empty = normal verification (REQ-BUD-002/013); it is unset on dev. Remove after the demo.
+ */
+export const NAME_DEMO_CALLER_PHONE = "MERC_DEMO_CALLER_PHONE";
 
 export interface ToolSpec {
   /** Tool name (contracts/tools/merc-buddy/<name>.json). */
@@ -75,6 +84,37 @@ export function attachId(kind: ToolSpec["attach"], res: any): string | null {
   return null;
 }
 
+/** Message @merc/core throws when a session has neither a signed claim nor a channel number. */
+const NO_IDENTITY = "no signed Merc identity in this session";
+
+/** The session with the demo caller's number as its channel number, when MERC_DEMO_CALLER_PHONE is set (see above). */
+export function withDemoCaller(ctx: Ctx, key: string, now: number): { ctx: Ctx; demo: boolean } {
+  let v: unknown = null;
+  try { v = ctx?.globals?.get?.(NAME_DEMO_CALLER_PHONE); } catch { v = null; }
+  const phone = str(v);
+  if (!phone) return { ctx, demo: false };
+  try { if (callerFromTool(ctx, key, now).kind !== "channel_number") return { ctx, demo: false }; } // signed claim kept
+  catch (e) { if ((e as Error)?.message !== NO_IDENTITY) return { ctx, demo: false }; } // bad/expired claim stays forbidden
+  const c = ctx?.metadata?.communication ?? {};
+  const type = String(c.type ?? "").toLowerCase().includes("whatsapp") ? "whatsapp" : "voice";
+  return { ctx: { ...ctx, metadata: { ...(ctx?.metadata ?? {}), communication: { ...c, type, direction: "inbound", fromNumber: phone } } }, demo: true };
+}
+
+/** Caller as logged (REQ-BUD-002): the app_user id from the claim, or the masked channel number on phone/WhatsApp. */
+function callerLabel(src: { kind: string; appUserId?: string; number?: string }): string {
+  if (src.appUserId) return src.appUserId;
+  const n = String(src.number ?? "");
+  return n ? `phone:${"*".repeat(Math.max(0, n.length - 4))}${n.slice(-4)}` : src.kind;
+}
+
+/** Error code of a tool result, top level or inside {result}. */
+const errorCode = (res: unknown): string | null => {
+  const r = res as any;
+  if (r && typeof r === "object" && r.error) return String(r.error.code ?? "error");
+  if (r?.result && typeof r.result === "object" && r.result.error) return String(r.result.error.code ?? "error");
+  return null;
+};
+
 const fail = (code: string, message: string, details?: Record<string, unknown>): ApiErrorOut => ({ error: details ? { code, message, details } : { code, message } });
 
 /** Run one buddy tool through its shared handler. Always returns the contract response or {error}. */
@@ -89,25 +129,44 @@ export async function runTool(ctx: Ctx, spec: ToolSpec, impl: AnyImpl | null, pa
     log(JSON.stringify({ merc_tool: spec.tool, fn: spec.slug, outcome: "blocked", missing: NAME_INTERNAL_KEY }));
     return fail("blocked_by_policy", `merc-buddy is blocked: secret ${NAME_INTERNAL_KEY} is not set in this workspace`, { missing: NAME_INTERNAL_KEY, kind: "secret" });
   }
-  let caller: string;
+  // Channel tools (call_me_back, send_debrief_confirmation, report_buddy_call_outcome) need this runtime's
+  // context.api (outbound call, service account on the agent) and context.outbound (WhatsApp). Read them from the
+  // original ctx before it is copied below.
+  const make = (TOOL_FACTORIES as Record<string, ((d: unknown) => AnyImpl) | undefined> | undefined)?.[spec.slug];
+  if (make && buddyDepsFrom) impl = make(buddyDepsFrom(ctx));
+  const textChannel = isTextChannel(ctx); // before withDemoCaller, which rewrites communication.type
+  const now = deps.now?.() ?? Date.now();
+  const demo = withDemoCaller(ctx, key, now);
+  ctx = demo.ctx;
+  let caller: string, callerSource: string;
   try {
-    caller = callerFromTool(ctx, key, deps.now?.() ?? Date.now()).appUserId;
+    const src = callerFromTool(ctx, key, now) as { kind: string; appUserId?: string; number?: string };
+    caller = callerLabel(src);
+    callerSource = demo.demo ? "demo_global" : src.kind === "app_user" ? "signed_session_claim" : src.kind;
   } catch (e) {
     const msg = (e as Error)?.message ?? String(e);
-    log(JSON.stringify({ merc_tool: spec.tool, fn: spec.slug, outcome: "forbidden", reason: msg }));
+    log(JSON.stringify({ merc_tool: spec.tool, fn: spec.slug, caller: null, caller_source: "none", outcome: "forbidden", reason: msg }));
     return fail("forbidden", msg);
   }
   const req = { ...modelParams(params), ...injectedFields(ctx, spec.inject) };
   const t0 = Date.now();
-  const tctx = { metadata: ctx?.metadata, tables: ctx?.tables, secrets: ctx?.secrets ?? null, globals: ctx?.globals ?? null };
-  const res = await runAsTool(spec.slug, impl, tctx, req, key);
-  const code = res && typeof res === "object" && "error" in res ? (res as ApiErrorOut).error?.code : "ok";
-  // REQ-BUD-002 evidence: caller is set by code from the verified claim, never by the model.
-  log(JSON.stringify({ merc_tool: spec.tool, fn: spec.slug, caller, caller_source: "signed_session_claim", injected: Object.keys(req).filter((k) => !(k in modelParams(params))), outcome: code, ms: Date.now() - t0 }));
+  const tctx = { metadata: ctx?.metadata, tables: ctx?.tables, secrets: ctx?.secrets ?? null, globals: ctx?.globals ?? null, api: ctx?.api ?? null };
+  // Tool logs land in the model's context. Hold handler logs back and print them only when the call failed.
+  const held: unknown[][] = [];
+  const realLog = console.log;
+  if (!deps.log) console.log = (...a: unknown[]) => { held.push(a); };
+  let res: unknown;
+  try { res = await runAsTool(spec.slug, impl, tctx, req, key); } finally { console.log = realLog; }
+  const code = errorCode(res) ?? "ok";
+  if (code !== "ok") for (const a of held) realLog(...a);
+  // REQ-BUD-002 evidence on EVERY call: caller is set by code from the verified session, never by the model. Kept to one
+  // short line (no handler logs on success) so the model's context stays small.
+  log(JSON.stringify({ merc_tool: spec.tool, caller, caller_source: callerSource, outcome: code, ms: Date.now() - t0, ...(deps.log || code !== "ok" ? { fn: spec.slug, injected: Object.keys(req).filter((k) => !(k in modelParams(params))) } : {}) }));
   const acct = attachId(spec.attach, res);
   if (acct && ctx?.customers?.attach) {
-    try { await ctx.customers.attach(acct); log(JSON.stringify({ merc_tool: spec.tool, memory_attached: acct })); }
+    try { await ctx.customers.attach(acct); if (deps.log) log(JSON.stringify({ merc_tool: spec.tool, memory_attached: acct })); }
     catch (e) { log(JSON.stringify({ merc_tool: spec.tool, memory_attach_failed: (e as Error)?.message ?? String(e) })); }
   }
-  return res;
+  const shown = textChannel ? forTextChannel(spec.tool, res, sessionLanguage(ctx)) : res;
+  return compactResult(spec.tool, shown, { text: textChannel });
 }

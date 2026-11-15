@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { TABLES, createDb, isMercError, principalFromFunction, type Db, type TableName, type UserPrincipal } from "../../core/src/index";
 import { FakeTables, seeded, IDS, DEMO_DAY } from "../../core/testing/fake-tables";
-import { applySuggested, businessColumns, propose, resolveMode, undo, type Proposal, type Writer } from "../src/index";
+import { applySuggested, businessColumns, canonicalRow, propose, resolveMode, undo, type Proposal, type Writer } from "../src/index";
 
 const NOW = Date.parse(`${DEMO_DAY}T08:00:00Z`);
 const AT = new Date(NOW).toISOString();
@@ -21,6 +21,18 @@ async function dump(tables: FakeTables): Promise<string> {
     if (t === "ai_action") continue;
     const rows = (await (all as any)[t].all({}, { cap: 100000 })) as Record<string, unknown>[];
     out[t] = Object.fromEntries(rows.map((r) => [String(r[TABLES[t].pk]), businessColumns(r)]).sort(([a], [b]) => String(a).localeCompare(String(b))));
+  }
+  return JSON.stringify(out);
+}
+
+/** Strict form: every contract column (null for no value) plus created_at, as the platform stores it; only updated_at is excluded. */
+async function strictDump(tables: FakeTables): Promise<string> {
+  const all = createDb(tables);
+  const out: Record<string, unknown> = {};
+  for (const t of Object.keys(TABLES) as TableName[]) {
+    if (t === "ai_action") continue;
+    const rows = (await (all as any)[t].all({}, { cap: 100000 })) as Record<string, unknown>[];
+    out[t] = rows.map((r) => [String(r[TABLES[t].pk]), canonicalRow(t, r)] as const).sort(([a], [b]) => a.localeCompare(b));
   }
   return JSON.stringify(out);
 }
@@ -175,12 +187,15 @@ describe("undo (REQ-CORE-006): round-trip for every internal action type", () =>
     it(`${code}: apply then undo leaves every touched row identical`, async () => {
       const { tables, db, me } = await setup();
       const before = await dump(tables);
+      const strictBefore = await strictDump(tables);
       const out = await propose(db, me, proposal(code, db, me), { now: NOW });
       expect(out.applied).toBe(true);
       expect(await dump(tables)).not.toBe(before);
       const r = await undo(db, me, out.ai_action.id, { now: NOW + 1000 });
       expect(r).toEqual({ ai_action_id: out.ai_action.id, status: "undone", restored: out.target });
       expect(await dump(tables)).toBe(before);
+      // byte-identical: every column incl. created_at and explicit nulls; only the platform-stamped updated_at differs
+      expect(await strictDump(tables)).toBe(strictBefore);
       expect(await db.ai_action.get(out.ai_action.id)).toMatchObject({ status: "undone", undone_by: me.id, undone_at: new Date(NOW + 1000).toISOString() });
     });
   }

@@ -2,7 +2,10 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { runFunction, validateRequest, validateResponse } from "../../core/src/index";
-import { handle, makeImpl, decodeBase64, audioMime, storageKey, runtimeTranscriber, depsFromContext, type UploadDeps, type LlmRuntime } from "../src/voice-log-upload";
+import { handle, makeImpl, decodeBase64, audioMime, storageKey, runtimeTranscriber, depsFromContext, inProcessDebrief, type UploadDeps, type LlmRuntime } from "../src/voice-log-upload";
+import { makeImpl as makeDebrief } from "../src/debrief-process";
+import type { DebriefOutput } from "../../llm/src/index";
+import { J1, j1Output } from "../../../evals/debrief/j1";
 import { kit, ok, errCode, IDS } from "../src/_lib/testkit";
 import { bundleText, FUNCTIONS } from "../src/_lib/bundle";
 
@@ -173,14 +176,47 @@ describe("voice-log-upload helpers", () => {
     expect(content[0].text).toContain("Μίλτος");
     expect(runtimeTranscriber({}, null)).toBeNull();
   });
-  it("depsFromContext reads the profile global and wires context.functions.run to debrief-process", async () => {
+  it("depsFromContext reads the profile global and wires the in-process debrief-process runner", () => {
     const t = kit({ globals: { MERC_TRANSCRIBE_PROFILE_ID: "pid-x" } });
-    const runs: unknown[] = [];
-    const ctx = Object.assign(t.fnCtx("nikos"), { functions: { run: (o: unknown) => { runs.push(o); return { result: {} }; } } });
-    const d = depsFromContext(ctx as any, {});
+    const d = depsFromContext(t.fnCtx("nikos") as any, {});
     expect(d.transcribe).toBeNull();
-    await d.runDebrief!("vid");
-    expect(runs).toEqual([{ slug: "debrief-process", params: { voice_log_id: "vid" } }]);
+    expect(d.runDebrief).toBe(inProcessDebrief);
+    expect(depsFromContext(t.fnCtx("nikos") as any, { ModelProfiles: { ChatModel: class {} as any } }).transcribe).not.toBeNull();
+  });
+});
+
+describe("REQ-DEB-001: one recording -> one voice_log -> one result card (debrief-process in-process)", () => {
+  const NOW = Date.parse("2026-11-16T10:00:00Z");
+  const debriefDeps = (out: DebriefOutput | null) => ({
+    now: () => NOW,
+    extract: async () => (out ? { ok: true as const, value: out, attempts: 1, profile: "fake", logs: [] } : { ok: false as const, error: { code: "upstream_failed", message: "model down" }, attempts: 2, profile: "fake", logs: [] }),
+    draftModel: () => ({ withStructuredOutput: () => ({ invoke: async () => ({ subject: "Ευχαριστώ", body: "Καλησπέρα Μίλτο, ευχαριστώ. Νίκος" }) }) }),
+  }) as any;
+  const runner = (out: DebriefOutput | null): UploadDeps["runDebrief"] => (id, inv) => makeDebrief(debriefDeps(out))({ req: { voice_log_id: id } as any, ...inv });
+
+  it("the J1 recording transcribes and completes with a result card pushed to the rep", async () => {
+    const t = kit(); const pushes: any[] = [];
+    const f = fakes({ transcribe: async () => ({ text: J1, model: "fake" }), runDebrief: runner(j1Output()), live: { api: { post: async (_p: string, o: any) => { pushes.push(o?.body); return {}; } } } });
+    const ctxApi = { post: async (_p: string, o: any) => { pushes.push(o?.body); return {}; } };
+    const r = ok(await runFunction("voice-log-upload", makeImpl(f.deps), { tables: t.tables, data: BODY(), principal: () => t.principal("nikos"), platform: { api: ctxApi } as any }));
+    expect(r).toEqual({ voice_log_id: expect.any(String), status: "completed", duplicate: false });
+    expect(await t.db.voice_log.count({})).toBe(1);
+    const vl = (await t.db.voice_log.get(r.voice_log_id))!;
+    expect(vl).toMatchObject({ status: "completed", transcript: J1, account_id: IDS.miltos });
+    expect((await t.db.ai_action.all({ voice_log_id: r.voice_log_id })).length).toBeGreaterThan(3);
+    expect(pushes.filter((p) => p?.data?.type === "result_card.ready" && p.channel === `rep:${IDS.nikos}`)).toHaveLength(1);
+    // the resend of the same key after completion is a pure duplicate (no second card, no second extraction)
+    const again = ok(await runFunction("voice-log-upload", makeImpl(f.deps), { tables: t.tables, data: BODY(), principal: () => t.principal("nikos") }));
+    expect(again).toEqual({ voice_log_id: r.voice_log_id, status: "completed", duplicate: true });
+    expect(await t.db.voice_log.count({})).toBe(1);
+  });
+
+  it("a debrief model failure leaves the transcript and status failed (retryable through debrief-process)", async () => {
+    const t = kit();
+    const f = fakes({ transcribe: async () => ({ text: J1, model: "fake" }), runDebrief: runner(null) });
+    const r = ok(await run(t, f.deps, "nikos", BODY()));
+    expect(r.status).toBe("failed");
+    expect((await t.db.voice_log.get(r.voice_log_id))!).toMatchObject({ transcript: J1, error: expect.stringContaining("upstream_failed") });
   });
 });
 

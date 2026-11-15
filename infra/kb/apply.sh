@@ -4,7 +4,7 @@
 # Idempotent: finds each KB by name (creates it with pipeline.json if missing), uploads the files of
 # content/kb/<kb>/ that are not there yet (same name = already uploaded; re-upload by deleting the file in the UI or
 # with `wful kb file-delete`), commits the evals, publishes, runs the pipeline with --wait and smoke-asks it.
-# Only touches knowledge bases named merc-catalog / merc-playbook. Never deletes anything.
+# Only touches knowledge bases named merc-catalog / merc-playbook / merc-company. Never deletes anything.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 ENV_NAME=dev; PLAN=0
@@ -18,8 +18,8 @@ kb_id(){ W kb list --json | python3 -I -c 'import json,sys
 d=json.load(sys.stdin); d=d.get("data",d) if isinstance(d,dict) else d
 print(next((k.get("id") for k in d if k.get("name")==sys.argv[1]),""))' "$1"; }
 
-question(){ case "$1" in merc-catalog) echo "Why does Espresso Nuovo fit a specialty café?";; *) echo "The owner is happy with BlueBean Roasters. How do I answer?";; esac; }
-for KB in merc-catalog merc-playbook; do
+question(){ case "$1" in merc-catalog) echo "Why does Espresso Nuovo fit a specialty café?";; merc-company) echo "What do we never do when we sell?";; *) echo "The owner is happy with BlueBean Roasters. How do I answer?";; esac; }
+for KB in merc-catalog merc-playbook merc-company; do
   SRC="$ROOT/content/kb/$KB"; [ -d "$SRC" ] || die "no content folder $SRC"
   ID="$(kb_id "$KB")"
   if [ -z "$ID" ]; then

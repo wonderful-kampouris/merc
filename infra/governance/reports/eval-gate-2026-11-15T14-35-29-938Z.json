@@ -1,0 +1,121 @@
+{
+ "at": "2026-11-15T14:35:29.938Z",
+ "only": null,
+ "ran": false,
+ "pass": false,
+ "results": [
+  {
+   "suite": "merc-approver",
+   "kind": "agent",
+   "required": false,
+   "status": "fail",
+   "detail": "1 batches present; not run (pass --run --env dev)"
+  },
+  {
+   "suite": "merc-buddy",
+   "kind": "agent",
+   "required": true,
+   "status": "missing",
+   "detail": "no eval batches at agents/merc-buddy/evals/batches"
+  },
+  {
+   "suite": "merc-insights",
+   "kind": "agent",
+   "required": false,
+   "status": "missing",
+   "detail": "no eval batches at agents/merc-insights/evals/batches"
+  },
+  {
+   "suite": "merc-ops",
+   "kind": "agent",
+   "required": true,
+   "status": "missing",
+   "detail": "no eval batches at agents/merc-ops/evals/batches"
+  },
+  {
+   "suite": "merc-research",
+   "kind": "agent",
+   "required": false,
+   "status": "fail",
+   "detail": "1 batches present; not run (pass --run --env dev)"
+  },
+  {
+   "suite": "ask_crm_route",
+   "kind": "llm",
+   "required": true,
+   "status": "missing",
+   "detail": "eval set exists but has no reports/ (never run)"
+  },
+  {
+   "suite": "briefing_script",
+   "kind": "llm",
+   "required": true,
+   "status": "missing",
+   "detail": "no eval set at evals/briefing/"
+  },
+  {
+   "suite": "campaign_from_text",
+   "kind": "llm",
+   "required": false,
+   "status": "missing",
+   "detail": "no eval set at evals/campaign-text/"
+  },
+  {
+   "suite": "candidate_score",
+   "kind": "llm",
+   "required": false,
+   "status": "missing",
+   "detail": "no eval set at evals/scoring/"
+  },
+  {
+   "suite": "debrief_extraction",
+   "kind": "llm",
+   "required": true,
+   "status": "fail",
+   "detail": "dev-2026-11-15T13-05-28-687Z.json: 87.5% (bar 90%)",
+   "pct": 87.5
+  },
+  {
+   "suite": "draft_message",
+   "kind": "llm",
+   "required": true,
+   "status": "missing",
+   "detail": "no eval set at evals/draft-message/"
+  },
+  {
+   "suite": "eod_summary",
+   "kind": "llm",
+   "required": true,
+   "status": "missing",
+   "detail": "no eval set at evals/eod/"
+  },
+  {
+   "suite": "import_mapping",
+   "kind": "llm",
+   "required": false,
+   "status": "missing",
+   "detail": "no eval set at evals/import/"
+  },
+  {
+   "suite": "research_dossier",
+   "kind": "llm",
+   "required": false,
+   "status": "missing",
+   "detail": "no eval set at evals/merc-research/"
+  },
+  {
+   "suite": "visit_brief_bullets",
+   "kind": "llm",
+   "required": true,
+   "status": "missing",
+   "detail": "eval set exists but has no reports/ (never run)"
+  },
+  {
+   "suite": "visit_card_pitch",
+   "kind": "llm",
+   "required": true,
+   "status": "missing",
+   "detail": "no eval set at evals/visit-card/"
+  }
+ ]
+}

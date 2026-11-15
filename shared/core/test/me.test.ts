@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { callerFromTool, createDb, defineFunction, me, meResponse, principalFromFunction, principalFromTool, runAsTool, signIdentity, validateResponse, IDENTITY_KEYS } from "../src/index";
+import { callerFromTool, createDb, defineFunction, isAdmin, me, meResponse, principalFromFunction, principalFromTool, resolvePrincipal, runAsTool, signIdentity, validateResponse, IDENTITY_KEYS } from "../src/index";
 import { validateResponse as contractValidateResponse } from "../../../packages/contracts/src/index";
 import { seeded, IDS, fnCtx } from "./fake-tables";
 
@@ -36,6 +36,16 @@ describe("me(): platform caller -> app_user (REQ-CORE-002)", () => {
     expect((await rej(me(f, fnCtx("wuid-stranger")))).code).toBe("forbidden");
     await createDb(f, IDS.org).app_user.update(IDS.dimitra, { status: "left" });
     expect((await rej(me(f, fnCtx("wuid-dimitra")))).code).toBe("forbidden");
+  });
+
+  it("open demo mode: an active \"open-access\" guest row removes roles and admits unknown platform users", async () => {
+    const f = seeded();
+    await createDb(f, IDS.org).app_user.insert({ org_id: IDS.org, wonderful_user_id: "open-access", role_code: "admin", full_name: "Demo guest", email: "guest@merc-demo.example", voice_enabled: false, status: "active" } as any);
+    const guest = await me(f, fnCtx("wuid-stranger"));
+    expect(guest.user.full_name).toBe("Demo guest");
+    expect((await me(f, fnCtx("wuid-nikos"))).permissions).toContain("team.read");
+    expect(isAdmin(await resolvePrincipal(f, { kind: "wonderful_user", wonderfulUserId: "wuid-nikos" }))).toBe(true);
+    expect((await rej(me(f, fnCtx(null)))).code).toBe("forbidden");
   });
 
   it("ignores a spoofed caller in the body", async () => {

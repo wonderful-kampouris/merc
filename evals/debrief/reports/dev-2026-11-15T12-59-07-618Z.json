@@ -1,0 +1,117 @@
+{
+ "at": "2026-11-15T12:59:07.618Z",
+ "today": "2026-11-15",
+ "rep": "ec8028ce-b145-4156-91cf-93d6c7914505",
+ "summary": {
+  "cases": 1,
+  "checks": 8,
+  "passed": 0,
+  "field_level_pct": 0,
+  "greek_field_level_pct": 0,
+  "invented_numbers": 0,
+  "cases_with_invented_numbers": 0,
+  "p95_ms": null,
+  "latencies_ms": [],
+  "wall_p95_ms": 9641
+ },
+ "cases": [
+  {
+   "id": "el-j1",
+   "lang": "el",
+   "passed": 0,
+   "total": 8,
+   "failed": [
+    {
+     "check": {
+      "f": "status",
+      "op": "eq",
+      "v": "completed"
+     },
+     "pass": false
+    },
+    {
+     "check": {
+      "f": "problems",
+      "op": "has",
+      "v": {
+       "id": "problem_grinder"
+      }
+     },
+     "pass": false,
+     "got": []
+    },
+    {
+     "check": {
+      "f": "tasks",
+      "op": "has",
+      "v": {
+       "is_customer_promise": true,
+       "weekday": 4
+      }
+     },
+     "pass": false,
+     "got": []
+    },
+    {
+     "check": {
+      "f": "deal.amount_minor",
+      "op": "eq",
+      "v": 400000
+     },
+     "pass": false,
+     "got": null
+    },
+    {
+     "check": {
+      "f": "signals",
+      "op": "has",
+      "v": {
+       "competitor": "aroma",
+       "delta": -15
+      }
+     },
+     "pass": false,
+     "got": []
+    },
+    {
+     "check": {
+      "f": "pitched",
+      "op": "has",
+      "v": "campaign_nuovo"
+     },
+     "pass": false,
+     "got": []
+    },
+    {
+     "check": {
+      "f": "order_lines",
+      "op": "has",
+      "v": {
+       "product": "nuovo",
+       "quantity": 12
+      }
+     },
+     "pass": false,
+     "got": []
+    },
+    {
+     "check": {
+      "f": "approvals",
+      "op": "has",
+      "v": {
+       "channel": "email"
+      }
+     },
+     "pass": false,
+     "got": []
+    }
+   ],
+   "invented": [],
+   "ms": null,
+   "wall_ms": 9641,
+   "voice_log_id": null,
+   "missing": [],
+   "polled": null
+  }
+ ]
+}

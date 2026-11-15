@@ -6,6 +6,7 @@ import { seedRows } from "../../../contracts";
 import type { MercClient } from "../../../lib/client";
 import { screenTitleKey, useScreenI18n, type Lang } from "../../../lib/i18n";
 import type { ScreenProps } from "../../../lib/screenRegistry";
+import RepAvatar, { personOption } from "../../../shell/RepAvatar";
 import messages from "./i18n";
 import {
   baselineDelta,
@@ -114,6 +115,7 @@ export default function Dashboard({ screen, client, lang }: ScreenProps) {
               value={repId ?? ""}
               onChange={(v) => setRepId(v || null)}
               options={[{ value: "", label: `${t("filter.rep")}: ${t("filter.all")}` }, ...uniqueReps(reps, repId, dir).map((r) => ({ value: r.id, label: r.name }))]}
+              renderOption={personOption} renderValue={personOption}
             />
           </Layout.Row>
         </Page.Toolbar>
@@ -253,6 +255,7 @@ function RepsCard(props: { data: DashboardKpisResponse; lang: Lang; t: T; onRep:
           {data.by_rep.map((r) => (
             <Card.Meta
               key={r.rep.id}
+              avatar={<RepAvatar name={r.rep.full_name} />}
               title={r.rep.full_name}
               description={REP_COLUMNS.map((c) => `${t(kpiKey(c.key))} ${repCell(r.kpis, c, lang)}`).join(" · ")}
               actions={

@@ -8,9 +8,9 @@
   },
   "demo": {
     "profile": "hackathon",
-    "workspace": "",
+    "workspace": "6f6d70c8-6864-40f6-8b70-19ddf8b8923c",
     "vcs": "https://vcs.greece-hackathon.sb.wonderful.ai/git",
     "branch": "main",
-    "_todo": "Fill workspace with the demo workspace id once it exists (WP-DEMO-01). deploy.sh refuses demo while it is empty or equal to dev."
+    "_doc": "Team Delta workspace (decided 2026-11-15: the demo runs in Team Delta)."
   }
 }

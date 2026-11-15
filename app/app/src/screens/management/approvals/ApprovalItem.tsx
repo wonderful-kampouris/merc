@@ -2,6 +2,7 @@ import { Badge, Button, Card, InputNumber, InputText, Layout, Notice, Text } fro
 import { useState } from "react";
 import type { ApprovalCard } from "../../../contracts";
 import type { Lang } from "../../../lib/i18n";
+import RepAvatar from "../../../shell/RepAvatar";
 import { canCounter, dueState, isOpen, minutesLeft, pct, suggestedCounter, validateCounter, type Decision } from "./logic";
 
 type T = (key: string, vars?: Record<string, string | number>) => string;
@@ -45,6 +46,7 @@ export default function ApprovalItem({ card, lang, t, busy, result, error, now, 
   return (
     <Card withFooterDivider={open}>
       <Card.Header
+        icon={<RepAvatar name={card.requested_by.full_name} />}
         title={title}
         description={t("from", { name: card.requested_by.full_name })}
         actions={<Badge text={t(`status_${card.status}`)} color={STATUS_COLOR[card.status]} size="small" />}

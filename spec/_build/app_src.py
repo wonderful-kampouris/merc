@@ -17,10 +17,10 @@ PERMISSIONS = {
     "tasks.create": ("tasks", "create", []),
     "team.read": ("team", "read", ["team_manager"]),
     "team.assign": ("team", "assign", ["team_manager"]),
-    "voicelog.create": ("voicelogs", "create", []),
-    "voicelog.read": ("voicelogs", "read", ["owner"]),
-    "aiaction.read": ("aiactions", "read", ["owner", "team_manager"]),
-    "aiaction.undo": ("aiactions", "undo", ["owner"]),
+    "voicelog.create": ("voicelog", "create", []),
+    "voicelog.read": ("voicelog", "read", ["owner"]),
+    "aiaction.read": ("aiaction", "read", ["owner", "team_manager"]),
+    "aiaction.undo": ("aiaction", "undo", ["owner"]),
     "approvals.read": ("approvals", "read", ["requester", "approver"]),
     "approvals.decide": ("approvals", "decide", ["approver"]),
     "discounts.request": ("discounts", "request", []),
@@ -41,7 +41,7 @@ PERMISSIONS = {
     "settings.read": ("settings", "read", []),
     "settings.manage": ("settings", "manage", []),
     "users.manage": ("users", "manage", []),
-    "import.manage": ("imports", "manage", []),
+    "import.manage": ("import", "manage", []),
     "gdpr.manage": ("gdpr", "manage", []),
 }
 
@@ -72,8 +72,9 @@ WORKSPACE_ADMIN_ROLE = "admin"
 
 SCREENS = {
     "rep": {
-        "today": {"route": "/rep/today", "functions": ["today-get", "briefing-get", "visit-plan-get", "my-performance"],
-                  "events": ["briefing.ready", "plan.proposed"], "offline": True},
+        "today": {"route": "/rep/today", "functions": ["today-get", "briefing-get", "visit-plan-get", "my-performance",
+                                                  "tasks-list", "task-update"],
+                  "events": ["briefing.ready", "plan.proposed", "result_card.ready"], "offline": True},
         "customers": {"route": "/rep/customers", "functions": ["accounts-list", "visit-card-get", "account-get",
                                                               "contact-upsert", "problem-update", "order-upsert"]},
         "record": {"route": "/rep/record", "functions": ["voice-log-upload", "debrief-result-get", "ai-action-undo", "merc-chat-token"],

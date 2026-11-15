@@ -1,0 +1,16 @@
+{
+  "name": "@merc/e2e-j5",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "WP-E2E-05: J5 meeting loop end to end (brief 30 min before, Call me, post-visit prompt, debrief, WhatsApp confirm, Fix stored as feedback). Runs the real shared handlers on the seeded in-memory tables with a fixed clock; WhatsApp and calls are injected fakes.",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

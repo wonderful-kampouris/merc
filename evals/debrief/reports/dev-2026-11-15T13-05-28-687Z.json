@@ -1,0 +1,350 @@
+{
+ "at": "2026-11-15T13:05:28.687Z",
+ "today": "2026-11-15",
+ "rep": "ec8028ce-b145-4156-91cf-93d6c7914505",
+ "summary": {
+  "cases": 10,
+  "checks": 80,
+  "passed": 70,
+  "field_level_pct": 87.5,
+  "greek_field_level_pct": 87.5,
+  "invented_numbers": 0,
+  "cases_with_invented_numbers": 0,
+  "p95_ms": 9714,
+  "latencies_ms": [
+   8575,
+   8528,
+   8410,
+   7802,
+   9714,
+   7949,
+   8238,
+   8889,
+   8008,
+   8646
+  ],
+  "wall_p95_ms": 10117
+ },
+ "cases": [
+  {
+   "id": "el-j1",
+   "lang": "el",
+   "status": "completed",
+   "passed": 7,
+   "total": 8,
+   "failed": [
+    {
+     "check": {
+      "f": "problems",
+      "op": "has",
+      "v": {
+       "id": "problem_grinder"
+      }
+     },
+     "pass": false,
+     "got": [
+      {
+       "id": null,
+       "status": "open"
+      }
+     ]
+    }
+   ],
+   "invented": [],
+   "ms": 8575,
+   "wall_ms": 9106,
+   "voice_log_id": "67a9ea60-2c7a-484b-8fda-9178bb3d3979",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 8 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Νέο πρόβλημα: Ο μύλος κάνει ακόμα θόρυβο. Ενημέρωσα τη συμφωνία «Espresso 20kg monthly». Εργασία: Φέρω δείγματα Espresso Nuovo (έως 19/11). Ανταγωνισμός: Aroma Delta: Η Aroma του προσφέρει 15% φθηνότερα. Παρουσίαση καμπάνιας: Espresso Nuovo to cafés. Πρόχειρη παραγγελία με 1 γραμμή(ές). 1 μήνυμα περιμένει την έγκρισή σου.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=67a9ea60-2c7a-484b-8fda-9178bb3d3979\nerror: "
+  },
+  {
+   "id": "el-j1",
+   "lang": "el",
+   "status": "completed",
+   "passed": 7,
+   "total": 8,
+   "failed": [
+    {
+     "check": {
+      "f": "problems",
+      "op": "has",
+      "v": {
+       "id": "problem_grinder"
+      }
+     },
+     "pass": false,
+     "got": [
+      {
+       "id": "8b6addb4-32e9-40df-a92e-3f3ac87155a3",
+       "status": "in_progress"
+      }
+     ]
+    }
+   ],
+   "invented": [],
+   "ms": 8528,
+   "wall_ms": 8974,
+   "voice_log_id": "ea19ed56-08ef-4747-bb44-641fb1a2634f",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 8 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Το πρόβλημα «Ο μύλος κάνει ακόμα θόρυβο» είναι τώρα σε εξέλιξη. Ενημέρωσα τη συμφωνία «Espresso 20kg monthly». Εργασία: Φέρω δείγματα Espresso Nuovo (έως 19/11). Ανταγωνισμός: Aroma Delta: Η Aroma του προσφέρει 15% φθηνότερα. Παρουσίαση καμπάνιας: Espresso Nuovo to cafés. Πρόχειρη παραγγελία με 1 γραμμή(ές). 1 μήνυμα περιμένει την έγκρισή σου.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=ea19ed56-08ef-4747-bb44-641fb1a2634f\nerror: "
+  },
+  {
+   "id": "el-j1",
+   "lang": "el",
+   "status": "completed",
+   "passed": 7,
+   "total": 8,
+   "failed": [
+    {
+     "check": {
+      "f": "problems",
+      "op": "has",
+      "v": {
+       "id": "problem_grinder"
+      }
+     },
+     "pass": false,
+     "got": [
+      {
+       "id": "8b6addb4-32e9-40df-a92e-3f3ac87155a3",
+       "status": "in_progress"
+      }
+     ]
+    }
+   ],
+   "invented": [],
+   "ms": 8410,
+   "wall_ms": 8840,
+   "voice_log_id": "d68f3b68-7f6b-41bb-985d-02e6601198f7",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 8 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Το πρόβλημα «Ο μύλος κάνει ακόμα θόρυβο» είναι τώρα σε εξέλιξη. Ενημέρωσα τη συμφωνία «Espresso 20kg monthly». Εργασία: Φέρω δείγματα Espresso Nuovo (έως 19/11). Ανταγωνισμός: Aroma Delta: Η Aroma του προσφέρει 15% φθηνότερα. Παρουσίαση καμπάνιας: Espresso Nuovo to cafés. Πρόχειρη παραγγελία με 1 γραμμή(ές). 1 μήνυμα περιμένει την έγκρισή σου.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=d68f3b68-7f6b-41bb-985d-02e6601198f7\nerror: "
+  },
+  {
+   "id": "el-j1",
+   "lang": "el",
+   "status": "completed",
+   "passed": 7,
+   "total": 8,
+   "failed": [
+    {
+     "check": {
+      "f": "problems",
+      "op": "has",
+      "v": {
+       "id": "problem_grinder"
+      }
+     },
+     "pass": false,
+     "got": [
+      {
+       "id": "8b6addb4-32e9-40df-a92e-3f3ac87155a3",
+       "status": "in_progress"
+      }
+     ]
+    }
+   ],
+   "invented": [],
+   "ms": 7802,
+   "wall_ms": 8201,
+   "voice_log_id": "74fe3f8a-4d0c-4d5b-b925-4f72d6f935d4",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 8 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Το πρόβλημα «Ο μύλος κάνει ακόμα θόρυβο» είναι τώρα σε εξέλιξη. Ενημέρωσα τη συμφωνία «Espresso 20kg monthly». Εργασία: Φέρω δείγματα Espresso Nuovo (έως 19/11). Ανταγωνισμός: Aroma Delta: Η Aroma του προσφέρει 15% φθηνότερα. Παρουσίαση καμπάνιας: Espresso Nuovo to cafés. Πρόχειρη παραγγελία με 1 γραμμή(ές). 1 μήνυμα περιμένει την έγκρισή σου.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=74fe3f8a-4d0c-4d5b-b925-4f72d6f935d4\nerror: "
+  },
+  {
+   "id": "el-j1",
+   "lang": "el",
+   "status": "completed",
+   "passed": 7,
+   "total": 8,
+   "failed": [
+    {
+     "check": {
+      "f": "problems",
+      "op": "has",
+      "v": {
+       "id": "problem_grinder"
+      }
+     },
+     "pass": false,
+     "got": [
+      {
+       "id": "8b6addb4-32e9-40df-a92e-3f3ac87155a3",
+       "status": "open"
+      }
+     ]
+    }
+   ],
+   "invented": [],
+   "ms": 9714,
+   "wall_ms": 10117,
+   "voice_log_id": "7fd4369d-2b0c-41bf-9a88-9edf72b9fe73",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 8 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Το πρόβλημα «Ο μύλος κάνει ακόμα θόρυβο» είναι τώρα ανοιχτό. Ενημέρωσα τη συμφωνία «Espresso 20kg monthly». Εργασία: Φέρω δείγματα Espresso Nuovo (έως 19/11). Ανταγωνισμός: Aroma Delta: Η Aroma του προσφέρει 15% φθηνότερα. Παρουσίαση καμπάνιας: Espresso Nuovo to cafés. Πρόχειρη παραγγελία με 1 γραμμή(ές). 1 μήνυμα περιμένει την έγκρισή σου.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=7fd4369d-2b0c-41bf-9a88-9edf72b9fe73\nerror: "
+  },
+  {
+   "id": "el-j1",
+   "lang": "el",
+   "status": "completed",
+   "passed": 7,
+   "total": 8,
+   "failed": [
+    {
+     "check": {
+      "f": "problems",
+      "op": "has",
+      "v": {
+       "id": "problem_grinder"
+      }
+     },
+     "pass": false,
+     "got": [
+      {
+       "id": "8b6addb4-32e9-40df-a92e-3f3ac87155a3",
+       "status": "open"
+      }
+     ]
+    }
+   ],
+   "invented": [],
+   "ms": 7949,
+   "wall_ms": 8431,
+   "voice_log_id": "658a01ed-a978-4f42-9884-b3cafca44ad1",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 8 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Το πρόβλημα «Ο μύλος κάνει ακόμα θόρυβο» είναι τώρα ανοιχτό. Ενημέρωσα τη συμφωνία «Espresso 20kg monthly». Εργασία: Φέρω δείγματα Espresso Nuovo (έως 19/11). Ανταγωνισμός: Aroma Delta: Η Aroma του προσφέρει 15% φθηνότερα. Παρουσίαση καμπάνιας: Espresso Nuovo to cafés. Πρόχειρη παραγγελία με 1 γραμμή(ές). 1 μήνυμα περιμένει την έγκρισή σου.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=658a01ed-a978-4f42-9884-b3cafca44ad1\nerror: "
+  },
+  {
+   "id": "el-j1",
+   "lang": "el",
+   "status": "completed",
+   "passed": 7,
+   "total": 8,
+   "failed": [
+    {
+     "check": {
+      "f": "problems",
+      "op": "has",
+      "v": {
+       "id": "problem_grinder"
+      }
+     },
+     "pass": false,
+     "got": [
+      {
+       "id": "8b6addb4-32e9-40df-a92e-3f3ac87155a3",
+       "status": "open"
+      }
+     ]
+    }
+   ],
+   "invented": [],
+   "ms": 8238,
+   "wall_ms": 8656,
+   "voice_log_id": "d2754270-edb5-480d-a4d6-82d17956b71b",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 8 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Το πρόβλημα «Ο μύλος κάνει ακόμα θόρυβο» είναι τώρα ανοιχτό. Ενημέρωσα τη συμφωνία «Espresso 20kg monthly». Εργασία: Φέρω δείγματα Espresso Nuovo (έως 19/11). Ανταγωνισμός: Aroma Delta: Η Aroma του προσφέρει 15% φθηνότερα. Παρουσίαση καμπάνιας: Espresso Nuovo to cafés. Πρόχειρη παραγγελία με 1 γραμμή(ές). 1 μήνυμα περιμένει την έγκρισή σου.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=d2754270-edb5-480d-a4d6-82d17956b71b\nerror: "
+  },
+  {
+   "id": "el-j1",
+   "lang": "el",
+   "status": "completed",
+   "passed": 7,
+   "total": 8,
+   "failed": [
+    {
+     "check": {
+      "f": "problems",
+      "op": "has",
+      "v": {
+       "id": "problem_grinder"
+      }
+     },
+     "pass": false,
+     "got": [
+      {
+       "id": "8b6addb4-32e9-40df-a92e-3f3ac87155a3",
+       "status": "open"
+      }
+     ]
+    }
+   ],
+   "invented": [],
+   "ms": 8889,
+   "wall_ms": 9378,
+   "voice_log_id": "403672d7-f405-4fc9-97ae-f6d628e7461c",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 8 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Το πρόβλημα «Ο μύλος κάνει ακόμα θόρυβο» είναι τώρα ανοιχτό. Ενημέρωσα τη συμφωνία «Espresso 20kg monthly». Εργασία: Φέρω δείγματα Espresso Nuovo (έως 19/11). Ανταγωνισμός: Aroma Delta: Η Aroma του προσφέρει 15% φθηνότερα. Παρουσίαση καμπάνιας: Espresso Nuovo to cafés. Πρόχειρη παραγγελία με 1 γραμμή(ές). 1 μήνυμα περιμένει την έγκρισή σου.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=403672d7-f405-4fc9-97ae-f6d628e7461c\nerror: "
+  },
+  {
+   "id": "el-j1",
+   "lang": "el",
+   "status": "completed",
+   "passed": 7,
+   "total": 8,
+   "failed": [
+    {
+     "check": {
+      "f": "problems",
+      "op": "has",
+      "v": {
+       "id": "problem_grinder"
+      }
+     },
+     "pass": false,
+     "got": [
+      {
+       "id": "8b6addb4-32e9-40df-a92e-3f3ac87155a3",
+       "status": "in_progress"
+      }
+     ]
+    }
+   ],
+   "invented": [],
+   "ms": 8008,
+   "wall_ms": 8520,
+   "voice_log_id": "965786f0-9aaa-44ab-ae96-9972e85157f8",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 8 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Το πρόβλημα «Ο μύλος κάνει ακόμα θόρυβο» είναι τώρα σε εξέλιξη. Ενημέρωσα τη συμφωνία «Espresso 20kg monthly». Εργασία: Φέρω δείγματα Espresso Nuovo (έως 19/11). Ανταγωνισμός: Aroma Delta: Η Aroma του προσφέρει 15% φθηνότερα. Παρουσίαση καμπάνιας: Espresso Nuovo to cafés. Πρόχειρη παραγγελία με 1 γραμμή(ές). 1 μήνυμα περιμένει την έγκρισή σου.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=965786f0-9aaa-44ab-ae96-9972e85157f8\nerror: "
+  },
+  {
+   "id": "el-j1",
+   "lang": "el",
+   "status": "completed",
+   "passed": 7,
+   "total": 8,
+   "failed": [
+    {
+     "check": {
+      "f": "problems",
+      "op": "has",
+      "v": {
+       "id": "problem_grinder"
+      }
+     },
+     "pass": false,
+     "got": [
+      {
+       "id": "8b6addb4-32e9-40df-a92e-3f3ac87155a3",
+       "status": "open"
+      }
+     ]
+    }
+   ],
+   "invented": [],
+   "ms": 8646,
+   "wall_ms": 9086,
+   "voice_log_id": "86759644-a1ed-435e-9fa8-f00487d87108",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 8 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Το πρόβλημα «Ο μύλος κάνει ακόμα θόρυβο» είναι τώρα ανοιχτό. Ενημέρωσα τη συμφωνία «Espresso 20kg monthly». Εργασία: Φέρω δείγματα Espresso Nuovo (έως 19/11). Ανταγωνισμός: Aroma Delta: Η Aroma του προσφέρει 15% φθηνότερα. Παρουσίαση καμπάνιας: Espresso Nuovo to cafés. Πρόχειρη παραγγελία με 1 γραμμή(ές). 1 μήνυμα περιμένει την έγκρισή σου.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=86759644-a1ed-435e-9fa8-f00487d87108\nerror: "
+  }
+ ]
+}

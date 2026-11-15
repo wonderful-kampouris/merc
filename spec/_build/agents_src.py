@@ -55,8 +55,9 @@ tool("resolve_account", B, "account-resolve", "Find which customer the rep means
      {"hint": "str?"}, inject=["caller", "device_location?"], side_effects=["customers.attach(account.id) when resolved"])
 tool("log_visit", B, "debrief-process",
      "Log what happened in a visit from the rep's own words. Pass the words verbatim, never paraphrase.",
-     {"utterance": "str", "account_id": "uuid?"}, inject=["caller", "conversation_id", "device_location?", "language"],
-     say="Read spoken_summary, then ask each missing_fields question, then offer pending approvals.")
+     {"utterance": "str", "account_id": "uuid?", "corrects_voice_log_id": "uuid?"}, inject=["caller", "conversation_id", "device_location?", "language"],
+     say="Read spoken_summary, then ask each missing_fields question, then offer pending approvals. "
+         "For a correction of a debrief already logged, pass only the correction words as utterance and that debrief's voice_log_id as corrects_voice_log_id; code undoes and re-logs it.")
 tool("get_debrief_result", B, "debrief-result-get", "Re-read the result of a logged visit.", {"voice_log_id": "uuid"})
 tool("undo_action", B, "ai-action-undo", "Undo one thing the AI did.", {"ai_action_id": "uuid"})
 tool("list_approvals", B, "approvals-list", "Pending 'Shall I send it?' items and discount requests.",
@@ -141,6 +142,8 @@ tool("get_summary_data", O, "summary-data", "Facts for the weekly/monthly summar
      {"kind": "e:weekly|monthly", "scope_user_id": "uuid", "from": "date", "to": "date"}, inject=[], priority="P1")
 tool("send_internal_email", O, "builtin:context.email", "Email the summary to the manager/CEO (internal, no approval needed).",
      {"to": "str", "subject": "str", "body": "str"}, inject=[], priority="P1")
+tool("deliver_whatsapp", O, "builtin:context.outbound.whatsapp", "Send the waiting relayed WhatsApp buddy_calls (brief, post-visit prompt, debrief confirmation) through the buddy's WhatsApp connection. Functions have no context.outbound, so they mark the row relayed and fire the whatsapp_send webhook; the webhook body does not reach the task, so the tool sends every waiting relayed row.",
+     {"buddy_call_id": "uuid?"}, inject=[], priority="P0")
 
 TOOLS = T
 
@@ -171,7 +174,7 @@ AGENTS = {
                                     "use": "Use memories for tone and context only; numbers always come from tools."}},
         "skills": [
             {"name": "briefing", "trigger": "morning / 'what's my day'", "tools": ["get_briefing", "get_today"]},
-            {"name": "debrief", "trigger": "rep describes a visit", "tools": ["resolve_account", "log_visit", "get_debrief_result", "undo_action", "resolve_approval"]},
+            {"name": "debrief", "trigger": "rep describes a visit", "tools": ["resolve_account", "log_visit", "get_debrief_result", "undo_action", "resolve_approval", "record_feedback"]},
             {"name": "prepare_visit", "trigger": "'tell me about X' / arriving", "tools": ["resolve_account", "get_visit_card"]},
             {"name": "approvals", "trigger": "'yes send it' / 'what's pending'", "tools": ["list_approvals", "resolve_approval"]},
             {"name": "discount", "trigger": "customer asks for a discount", "tools": ["check_discount_limit", "request_manager_approval", "get_approval_status"]},
@@ -220,9 +223,10 @@ AGENTS = {
     },
     "merc-ops": {
         "type": "backoffice", "agents_version": "v2", "priority": "P1", "wave": 3,
-        "triggers": [{"type": "webhook", "task_type": "weekly_summary"}, {"type": "webhook", "task_type": "monthly_report"}],
+        "triggers": [{"type": "webhook", "task_type": "weekly_summary"}, {"type": "webhook", "task_type": "monthly_report"}, {"type": "webhook", "task_type": "whatsapp_send"}],
         "skills": [{"name": "weekly_summary", "tools": ["get_summary_data", "send_internal_email"]},
-                   {"name": "monthly_report", "tools": ["get_summary_data", "send_internal_email"]}],
+                   {"name": "monthly_report", "tools": ["get_summary_data", "send_internal_email"]},
+                   {"name": "whatsapp_send", "tools": ["deliver_whatsapp"]}],
         "behavior": ["Numbers only from get_summary_data facts.", "Weekly: what closed, what got stuck, what's coming.",
                      "Monthly: before/after baseline, completeness, new customers, customers saved."],
     },

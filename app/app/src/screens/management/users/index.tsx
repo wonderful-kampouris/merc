@@ -5,6 +5,7 @@ import { useScreenI18n } from "../../../lib/i18n";
 import type { ScreenProps } from "../../../lib/screenRegistry";
 import { Empty, LoadView, RichRow } from "../settings/KitView";
 import { errorText, objArr, useLoad, withMockSeed } from "../settings/kit";
+import { personOption } from "../../../shell/RepAvatar";
 import messages from "./i18n";
 import {
   emptyUserForm, formFromUser, managerOptions, nameOf, parseUsers, ROLES, seedTerritories, toUpsert, validateUser,
@@ -139,6 +140,7 @@ function UserEditor(p: { form: UserForm; users: User[]; onChange: (f: UserForm) 
               <Text variant="sm" color="secondary">{t("manager")}</Text>
               <Select<string>
                 options={[{ value: "", label: t("none") }, ...managers.map((m) => ({ value: m.id, label: m.full_name }))]}
+                renderOption={personOption} renderValue={personOption}
                 value={f.manager_id ?? ""}
                 status={show("manager") ? "error" : undefined}
                 onChange={(v) => set({ manager_id: v || null })}

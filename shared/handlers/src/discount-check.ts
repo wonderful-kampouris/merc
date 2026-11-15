@@ -113,7 +113,7 @@ export const CALL_BLOCK_TEXT: Record<CallBlock, string> = {
   outside_call_hours: `outside call hours ${CALL_HOURS.start}-${CALL_HOURS.end} org time`,
   no_caller_id: `no caller id for merc-approver (global variable ${GLOBAL_APPROVER_CALLER_ID} is not set)`,
   no_service_account: "no service account on this function (context.api unavailable)",
-  approver_has_no_phone: "the approver has no valid phone number",
+  approver_has_no_phone: "the approver has no valid phone number, or phone_channel_enabled is false",
 };
 export const E164 = /^\+[1-9]\d{6,14}$/;
 /** Why a live call cannot start now, or null when it can. */
@@ -123,7 +123,7 @@ export function callBlock(org: Row<"organization">, approver: Row<"app_user">, p
   const from = globalString(platform, GLOBAL_APPROVER_CALLER_ID);
   if (!from || !E164.test(from)) return "no_caller_id";
   if (!deps.api) return "no_service_account";
-  if (!approver.phone || !E164.test(approver.phone)) return "approver_has_no_phone";
+  if (approver.phone_channel_enabled === false || !approver.phone || !E164.test(approver.phone)) return "approver_has_no_phone";
   return null;
 }
 

@@ -1,0 +1,349 @@
+{
+ "at": "2026-11-15T13:00:55.227Z",
+ "today": "2026-11-15",
+ "rep": "ec8028ce-b145-4156-91cf-93d6c7914505",
+ "summary": {
+  "cases": 17,
+  "checks": 52,
+  "passed": 50,
+  "field_level_pct": 96.2,
+  "greek_field_level_pct": 97.2,
+  "invented_numbers": 0,
+  "cases_with_invented_numbers": 0,
+  "p95_ms": 8309,
+  "latencies_ms": [
+   8309,
+   6670,
+   6637,
+   3702,
+   3517,
+   4016,
+   3588,
+   4888,
+   4209,
+   3430,
+   4432,
+   3450,
+   4022,
+   3718,
+   3596
+  ],
+  "wall_p95_ms": 8802
+ },
+ "cases": [
+  {
+   "id": "el-j1",
+   "lang": "el",
+   "status": "completed",
+   "passed": 7,
+   "total": 8,
+   "failed": [
+    {
+     "check": {
+      "f": "problems",
+      "op": "has",
+      "v": {
+       "id": "problem_grinder"
+      }
+     },
+     "pass": false,
+     "got": [
+      {
+       "id": null,
+       "status": "open"
+      }
+     ]
+    }
+   ],
+   "invented": [],
+   "ms": 8309,
+   "wall_ms": 8802,
+   "voice_log_id": "65d68ec1-7414-4331-973f-c454d0adb439",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 8 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Νέο πρόβλημα: Ο μύλος κάνει ακόμα θόρυβο. Ενημέρωσα τη συμφωνία «Espresso 20kg monthly». Εργασία: Να φέρω δείγματα Espresso Nuovo (έως 19/11). Ανταγωνισμός: Aroma Delta: Η Aroma του προσφέρει 15% φθηνότερα. Παρουσίαση καμπάνιας: Espresso Nuovo to cafés. Πρόχειρη παραγγελία με 1 γραμμή(ές). 1 μήνυμα περιμένει την έγκρισή σου.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=65d68ec1-7414-4331-973f-c454d0adb439\nerror: "
+  },
+  {
+   "id": "en-basic",
+   "lang": "en",
+   "status": "completed",
+   "passed": 3,
+   "total": 4,
+   "failed": [
+    {
+     "check": {
+      "f": "problems",
+      "op": "has",
+      "v": {
+       "id": "problem_grinder",
+       "status": "resolved"
+      }
+     },
+     "pass": false,
+     "got": [
+      {
+       "id": "7269478c-e894-4747-9fd8-071a3f5c73d6",
+       "status": "resolved"
+      }
+     ]
+    }
+   ],
+   "invented": [],
+   "ms": 6670,
+   "wall_ms": 7079,
+   "voice_log_id": "b9df937d-919b-4712-97f6-c284e55416c8",
+   "missing": [],
+   "summary": "Done: 4 updates saved. Visit note saved. Visit marked done. Problem \"Ο μύλος κάνει ακόμα θόρυβο\" is now resolved. Task: Bring decaf samples (due 2026-11-16). 1 message waiting for your approval.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=b9df937d-919b-4712-97f6-c284e55416c8\nerror: "
+  },
+  {
+   "id": "mixed-stage-viber",
+   "lang": "mixed",
+   "status": "completed",
+   "passed": 4,
+   "total": 4,
+   "failed": [],
+   "invented": [],
+   "ms": 6637,
+   "wall_ms": 7065,
+   "voice_log_id": "0d1136ea-eb51-4fc1-9b14-17862b48893a",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 3 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Ενημέρωσα τη συμφωνία «Espresso 20kg monthly». 1 μήνυμα περιμένει την έγκρισή σου.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=0d1136ea-eb51-4fc1-9b14-17862b48893a\nerror: "
+  },
+  {
+   "id": "el-noise",
+   "lang": "el",
+   "status": "completed",
+   "passed": 6,
+   "total": 6,
+   "failed": [],
+   "invented": [],
+   "ms": 3702,
+   "wall_ms": 4109,
+   "voice_log_id": "729943d8-e16a-41d8-8121-e9b2162879b2",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 2 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=729943d8-e16a-41d8-8121-e9b2162879b2\nerror: "
+  },
+  {
+   "id": "el-half-sentence",
+   "lang": "el",
+   "status": "completed",
+   "passed": 4,
+   "total": 4,
+   "failed": [],
+   "invented": [],
+   "ms": 3517,
+   "wall_ms": 3976,
+   "voice_log_id": "fb376b78-702f-48aa-a253-2acbe01fb4e2",
+   "missing": [
+    {
+     "field": "tasks",
+     "question": "Ποια προϊόντα ή πράγματα είπατε ότι θα του φέρετε;"
+    }
+   ],
+   "summary": "Έγινε: αποθήκευσα 2 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Μια ερώτηση: Ποια προϊόντα ή πράγματα είπατε ότι θα του φέρετε;",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=fb376b78-702f-48aa-a253-2acbe01fb4e2\nerror: "
+  },
+  {
+   "id": "el-unknown-customer",
+   "lang": "el",
+   "status": "needs_confirmation",
+   "passed": 2,
+   "total": 2,
+   "failed": [],
+   "invented": [],
+   "ms": null,
+   "wall_ms": 497,
+   "voice_log_id": null,
+   "missing": [],
+   "summary": "Για ποιον πελάτη ήταν αυτή η επίσκεψη;",
+   "polled": null
+  },
+  {
+   "id": "en-unknown-customer",
+   "lang": "en",
+   "status": "needs_confirmation",
+   "passed": 1,
+   "total": 1,
+   "failed": [],
+   "invented": [],
+   "ms": null,
+   "wall_ms": 505,
+   "voice_log_id": null,
+   "missing": [],
+   "summary": "Which customer was this visit for?",
+   "polled": null
+  },
+  {
+   "id": "el-tempt-quantity",
+   "lang": "el",
+   "status": "completed",
+   "passed": 3,
+   "total": 3,
+   "failed": [],
+   "invented": [],
+   "ms": 4016,
+   "wall_ms": 4448,
+   "voice_log_id": "e1f30238-9a12-4bd9-8073-455626c1ec31",
+   "missing": [
+    {
+     "field": "order_intent.lines[0].quantity",
+     "question": "Ποια είναι η ποσότητα για το Espresso Classico που επιθυμεί ο πελάτης;"
+    },
+    {
+     "field": "/order_intent/lines/0/quantity",
+     "question": "Πόση ποσότητα Espresso Classico;"
+    }
+   ],
+   "summary": "Έγινε: αποθήκευσα 2 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Μια ερώτηση: Ποια είναι η ποσότητα για το Espresso Classico που επιθυμεί ο πελάτης;",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=e1f30238-9a12-4bd9-8073-455626c1ec31\nerror: "
+  },
+  {
+   "id": "el-tempt-price-delta",
+   "lang": "el",
+   "status": "completed",
+   "passed": 2,
+   "total": 2,
+   "failed": [],
+   "invented": [],
+   "ms": 3588,
+   "wall_ms": 4095,
+   "voice_log_id": "a4bf5f8c-6349-4347-be38-b49e8e35a1f2",
+   "missing": [
+    {
+     "field": "competitor_signals[0].price_delta_pct",
+     "question": "Γνωρίζετε πόσο τοις εκατό φθηνότερη ήταν η προσφορά της BlueBean;"
+    }
+   ],
+   "summary": "Έγινε: αποθήκευσα 3 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Ανταγωνισμός: BlueBean Roasters: η BlueBean του έκανε καλύτερη προσφορά, δεν ξέρω πόσο φθηνότερα.. Μια ερώτηση: Γνωρίζετε πόσο τοις εκατό φθηνότερη ήταν η προσφορά της BlueBean;",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=a4bf5f8c-6349-4347-be38-b49e8e35a1f2\nerror: "
+  },
+  {
+   "id": "en-competitor",
+   "lang": "en",
+   "status": "completed",
+   "passed": 2,
+   "total": 2,
+   "failed": [],
+   "invented": [],
+   "ms": 4888,
+   "wall_ms": 5300,
+   "voice_log_id": "fec7beb1-9818-4704-9831-d0c07eb55fb2",
+   "missing": [],
+   "summary": "Done: 3 updates saved. Visit note saved. Visit marked done. Competitor signal: Kafea Plus: Kafea Plus offered them 10% off on espresso.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=fec7beb1-9818-4704-9831-d0c07eb55fb2\nerror: "
+  },
+  {
+   "id": "el-order",
+   "lang": "el",
+   "status": "completed",
+   "passed": 3,
+   "total": 3,
+   "failed": [],
+   "invented": [],
+   "ms": 4209,
+   "wall_ms": 4610,
+   "voice_log_id": "24456901-43ec-423f-b7ab-0a1f1f618738",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 3 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Πρόχειρη παραγγελία με 2 γραμμή(ές).",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=24456901-43ec-423f-b7ab-0a1f1f618738\nerror: "
+  },
+  {
+   "id": "el-promise-friday",
+   "lang": "el",
+   "status": "completed",
+   "passed": 2,
+   "total": 2,
+   "failed": [],
+   "invented": [],
+   "ms": 3430,
+   "wall_ms": 3842,
+   "voice_log_id": "d40b389b-d454-458d-acc8-fe72868e1f54",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 3 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Εργασία: Να περάσω να δούμε μαζί τον μύλο (έως 20/11).",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=d40b389b-d454-458d-acc8-fe72868e1f54\nerror: "
+  },
+  {
+   "id": "en-no-channel",
+   "lang": "en",
+   "status": "completed",
+   "passed": 2,
+   "total": 2,
+   "failed": [],
+   "invented": [],
+   "ms": 4432,
+   "wall_ms": 4889,
+   "voice_log_id": "be5a50dd-d16d-440c-a279-89ded5b2884b",
+   "missing": [],
+   "summary": "Done: 3 updates saved. Visit note saved. Visit marked done. Task: Let Miltos know that the new price list is coming.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=be5a50dd-d16d-440c-a279-89ded5b2884b\nerror: "
+  },
+  {
+   "id": "el-new-contact",
+   "lang": "el",
+   "status": "completed",
+   "passed": 2,
+   "total": 2,
+   "failed": [],
+   "invented": [],
+   "ms": 3450,
+   "wall_ms": 3859,
+   "voice_log_id": "c9a337d2-de5c-40d8-b6b4-6f762c7a4f00",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 3 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Νέα επαφή: Κατερίνα Δήμου.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=c9a337d2-de5c-40d8-b6b4-6f762c7a4f00\nerror: "
+  },
+  {
+   "id": "el-campaign",
+   "lang": "el",
+   "status": "completed",
+   "passed": 2,
+   "total": 2,
+   "failed": [],
+   "invented": [],
+   "ms": 4022,
+   "wall_ms": 4468,
+   "voice_log_id": "66065f31-9681-4115-809e-d4d9963a03bb",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 3 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Παρουσίαση καμπάνιας: Espresso Nuovo to cafés.",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=66065f31-9681-4115-809e-d4d9963a03bb\nerror: "
+  },
+  {
+   "id": "el-deal-amount",
+   "lang": "el",
+   "status": "completed",
+   "passed": 2,
+   "total": 2,
+   "failed": [],
+   "invented": [],
+   "ms": 3718,
+   "wall_ms": 4195,
+   "voice_log_id": "459aa37d-96e7-483b-9f76-d8b21f102b7d",
+   "missing": [],
+   "summary": "Έγινε: αποθήκευσα 3 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Ενημέρωσα τη συμφωνία «Espresso 20kg monthly».",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=459aa37d-96e7-483b-9f76-d8b21f102b7d\nerror: "
+  },
+  {
+   "id": "mixed-discount",
+   "lang": "mixed",
+   "status": "completed",
+   "passed": 3,
+   "total": 3,
+   "failed": [],
+   "invented": [],
+   "ms": 3596,
+   "wall_ms": 4006,
+   "voice_log_id": "bd2612e9-f570-4f70-bab2-c137485124d4",
+   "missing": [
+    {
+     "field": "order_intent.requested_discount_pct",
+     "question": "Πόσο discount θέλει ο πελάτης;"
+    }
+   ],
+   "summary": "Έγινε: αποθήκευσα 2 ενημερώσεις. Καταχώρησα τη σημείωση της επίσκεψης. Η επίσκεψη σημειώθηκε ως ολοκληρωμένη. Μια ερώτηση: Πόσο discount θέλει ο πελάτης;",
+   "polled": "Error: Command failed: wful --profile hackathon --workspace 7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464 call get /api/v1/functions/debrief-result-get?voice_log_id=bd2612e9-f570-4f70-bab2-c137485124d4\nerror: "
+  }
+ ]
+}

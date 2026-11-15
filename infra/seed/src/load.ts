@@ -6,7 +6,7 @@ import { chunks, loadSeed, plan } from "./seed.ts";
 import { todayIn } from "./tokens.ts";
 
 export interface Opts { workspace: string; profile: string; demoDay: string; reset: boolean; dryRun: boolean;
-  wuidFile: string; contracts: string; out: string; schema: string }
+  wuidFile: string; phonesFile: string; contracts: string; out: string; schema: string }
 
 function orgTz(contracts: string): string {
   const org = JSON.parse(readFileSync(resolve(contracts, "seed/organization.json"), "utf8")) as { timezone?: string }[];
@@ -22,6 +22,24 @@ function wuidMap(file: string, keys: string[], say: (s: string) => void): Record
   return m;
 }
 
+/**
+ * Dev-only phone overlay (gitignored phones.json, `{ "<user key>": "+30…" }`). Listed users get that real phone and
+ * phone_channel_enabled=true; every other seed user gets phone_channel_enabled=false so Merc never dials a seed number.
+ * Without the file the seed is loaded unchanged.
+ */
+export function applyPhones(rows: Row[], wuid: Record<string, string>, phones: Record<string, string> | null): number {
+  if (!phones) return 0;
+  const keyOf = Object.fromEntries(Object.entries(wuid).map(([k, v]) => [v, k]));
+  let n = 0;
+  for (const r of rows) {
+    const key = keyOf[String(r.wonderful_user_id)];
+    const phone = key ? phones[key] : undefined;
+    if (phone && /^\+[1-9]\d{6,14}$/.test(phone)) { r.phone = phone; r.phone_channel_enabled = true; n++; }
+    else r.phone_channel_enabled = false;
+  }
+  return n;
+}
+
 export async function main(o: Opts): Promise<number> {
   const log: string[] = [];
   const say = (s: string) => { log.push(s); console.log(s); };
@@ -30,6 +48,9 @@ export async function main(o: Opts): Promise<number> {
   const tz = orgTz(o.contracts);
   const ctx = { demoDay: o.demoDay, tz, wuid: wuidMap(o.wuidFile, keys, say) };
   const seed = loadSeed(o.contracts, ctx);
+  const phones = existsSync(o.phonesFile) ? JSON.parse(readFileSync(o.phonesFile, "utf8")) as Record<string, string> : null;
+  const users = seed.find((t) => t.name === "app_user");
+  if (users && phones) say(`phones   ${applyPhones(users.rows, ctx.wuid, phones)} real team phone(s) from ${o.phonesFile}; all other users phone_channel_enabled=false`);
   say(`seed     demo day ${o.demoDay} (${tz}), ${seed.length} tables, ${seed.reduce((n, t) => n + t.rows.length, 0)} rows`);
   const w = new Wful(o.workspace, o.profile);
   const q = (t: string) => `${o.schema}.${t}`;
@@ -82,7 +103,7 @@ function parseArgs(argv: string[]): Opts {
   const here = resolve(import.meta.dirname, "..");
   const contracts = resolve(here, "../../spec/contracts");
   const o: Opts = { workspace: "", profile: "hackathon", demoDay: "", reset: false, dryRun: false,
-    wuidFile: resolve(here, "wuid.json"), contracts, out: resolve(here, "out"), schema: "merc" };
+    wuidFile: resolve(here, "wuid.json"), phonesFile: resolve(here, "phones.json"), contracts, out: resolve(here, "out"), schema: "merc" };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const v = () => { const x = argv[++i]; if (!x) throw new Error(`${a} needs a value`); return x; };
@@ -92,6 +113,7 @@ function parseArgs(argv: string[]): Opts {
     else if (a === "--reset") o.reset = true;
     else if (a === "--dry-run") o.dryRun = true;
     else if (a === "--wuid-file") o.wuidFile = resolve(v());
+    else if (a === "--phones-file") o.phonesFile = resolve(v());
     else if (a === "--contracts") o.contracts = resolve(v());
     else throw new Error(`unknown argument ${a}`);
   }

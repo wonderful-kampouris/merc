@@ -1,0 +1,28 @@
+{
+  "name": "deliver_whatsapp",
+  "agent": "merc-ops",
+  "function": "builtin:context.outbound.whatsapp",
+  "description": "Send the waiting relayed WhatsApp buddy_calls (brief, post-visit prompt, debrief confirmation) through the buddy's WhatsApp connection. Functions have no context.outbound, so they mark the row relayed and fire the whatsapp_send webhook; the webhook body does not reach the task, so the tool sends every waiting relayed row.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "buddy_call_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "inject": [],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": null
+}

@@ -6,12 +6,46 @@ export type BriefingResult = FunctionResponseMap["briefing-get"];
 export type PlanResult = FunctionResponseMap["visit-plan-get"];
 export type PerformanceResult = FunctionResponseMap["my-performance"];
 
+/** One open task as tasks-list returns it (tbl:task columns plus account name and an overdue flag). */
+export interface TaskItem {
+  task_id: string;
+  title: string;
+  status: string;
+  due_at: string | null;
+  overdue: boolean;
+  is_customer_promise?: boolean;
+  account_id: string | null;
+  account_name: string | null;
+}
+
+/** Keep only well-formed task rows (tasks-list items are untyped objects in the contract). */
+export function parseTasks(v: unknown): TaskItem[] | null {
+  if (!v || typeof v !== "object") return null;
+  const items = Array.isArray(v) ? v : (v as { items?: unknown }).items;
+  if (!Array.isArray(items)) return null;
+  return items
+    .filter((x): x is Record<string, unknown> => !!x && typeof x === "object" && typeof (x as { title?: unknown }).title === "string")
+    .map((x) => ({
+      task_id: String(x.task_id ?? x.id ?? ""),
+      title: String(x.title),
+      status: String(x.status ?? "open"),
+      due_at: typeof x.due_at === "string" ? x.due_at : null,
+      overdue: x.overdue === true,
+      is_customer_promise: x.is_customer_promise === true,
+      account_id: typeof x.account_id === "string" ? x.account_id : null,
+      account_name: typeof x.account_name === "string" ? x.account_name : null,
+    }))
+    .filter((x) => x.task_id);
+}
+
 /** Everything the Today screen shows; `today` is the only required part. */
 export interface TodayData {
   today: TodayResult;
   briefing: BriefingResult | null;
   plan: PlanResult | null;
   performance: PerformanceResult | null;
+  /** Open tasks, soonest due first. */
+  tasks?: TaskItem[] | null;
 }
 
 /** What is stored on the device (REQ-BRF-004: the Today screen works offline from the last cached data). */
@@ -59,6 +93,7 @@ export function parseTodayCache(raw: string | null): CachedToday | null {
       briefing: optional("briefing-get", e.data.briefing),
       plan: optional("visit-plan-get", e.data.plan),
       performance: optional("my-performance", e.data.performance),
+      tasks: parseTasks(e.data.tasks),
     },
   };
 }

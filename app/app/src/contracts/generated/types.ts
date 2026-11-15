@@ -190,6 +190,30 @@ export interface VisitCard {
   spoken_summary: string;
 }
 
+export interface VisitBrief {
+  visit_brief_id: string;
+  visit: VisitSummary;
+  planned_start_at?: string | null;
+  bullets: Array<{
+    text: string;
+    ref_table?: string | null;
+    ref_id?: string | null;
+  }>;
+  push: {
+    product_id: string;
+    name: string;
+    reason: string;
+  };
+  avoid: {
+    product_id: string;
+    name: string;
+    reason: string;
+  };
+  spoken_script: string;
+  status: "generated" | "sent" | "called" | "failed" | "skipped";
+  channel?: "whatsapp" | "call" | "app" | null;
+}
+
 export interface AlertCard {
   alert_id: string;
   type: string;
@@ -537,6 +561,46 @@ export interface BriefingGetRequest {
 
 export type BriefingGetResponse = Briefing;
 
+/** POST buddy-call-outcome (gate: -; callers: internal, merc-buddy) */
+export interface BuddyCallOutcomeRequest {
+  buddy_call_id: string;
+  outcome: "answered" | "no_answer" | "busy" | "voicemail" | "failed";
+  conversation_id?: string | null;
+}
+
+export interface BuddyCallOutcomeResponse {
+  buddy_call_id: string;
+  fallback: "none" | "whatsapp" | "app";
+}
+
+/** POST buddy-call-start (gate: voicelog.create; callers: buddy, app, internal) */
+export interface BuddyCallStartRequest {
+  channel?: "call" | "whatsapp" | null;
+  purpose: "callback" | "briefing" | "approval_decided" | "alert" | "eod" | "pre_visit" | "post_visit" | "debrief_confirm";
+  reason?: string | null;
+  at?: string | null;
+  ref_table?: string | null;
+  ref_id?: string | null;
+}
+
+export interface BuddyCallStartResponse {
+  buddy_call_id: string;
+  status: "scheduled" | "started" | "sent" | "failed";
+  due_at: string;
+  channel: "call" | "whatsapp";
+}
+
+/** CRON buddy-callbacks-due (gate: -; callers: scheduler) */
+export interface BuddyCallbacksDueRequest {
+  dry_run?: boolean | null;
+}
+
+export interface BuddyCallbacksDueResponse {
+  processed: number;
+  created: number;
+  details?: Record<string, unknown> | null;
+}
+
 /** POST campaign-draft-from-text (gate: campaigns.manage; callers: mgmt) */
 export interface CampaignDraftFromTextRequest {
   text: string;
@@ -750,6 +814,29 @@ export interface DealsListResponse {
   page: Page;
 }
 
+/** CRON debrief-confirm-due (gate: -; callers: scheduler) */
+export interface DebriefConfirmDueRequest {
+  dry_run?: boolean | null;
+}
+
+export interface DebriefConfirmDueResponse {
+  processed: number;
+  created: number;
+  details?: Record<string, unknown> | null;
+}
+
+/** POST debrief-confirm-send (gate: voicelog.create; callers: buddy, internal) */
+export interface DebriefConfirmSendRequest {
+  voice_log_id: string;
+  channel?: "whatsapp" | "app" | null;
+}
+
+export interface DebriefConfirmSendResponse {
+  debrief_confirmation_id: string;
+  status: "pending" | "sent" | "confirmed" | "corrected" | "no_reply" | "failed";
+  summary_text: string;
+}
+
 /** POST debrief-process (gate: voicelog.create; callers: buddy, internal) */
 export interface DebriefProcessRequest {
   voice_log_id?: string | null;
@@ -759,6 +846,7 @@ export interface DebriefProcessRequest {
   lat?: number | null;
   lng?: number | null;
   language?: string | null;
+  corrects_voice_log_id?: string | null;
 }
 
 export interface DebriefProcessResponse {
@@ -887,6 +975,20 @@ export interface EscalateRequest {
 export interface EscalateResponse {
   task_id: string;
   alert_id: string;
+}
+
+/** POST feedback-record (gate: voicelog.create; callers: buddy, app) */
+export interface FeedbackRecordRequest {
+  kind: "brief_useful" | "brief_not_useful" | "debrief_confirmed" | "debrief_corrected";
+  visit_brief_id?: string | null;
+  debrief_confirmation_id?: string | null;
+  detail?: string | null;
+  correction_voice_log_id?: string | null;
+}
+
+export interface FeedbackRecordResponse {
+  feedback_id: string;
+  status: string;
 }
 
 /** POST import-analyze (gate: -; callers: procedure) */
@@ -1110,6 +1212,28 @@ export interface OrdersListRequest {
 export interface OrdersListResponse {
   items: OrderSummary[];
   page: Page;
+}
+
+/** CRON postvisit-prompts-due (gate: -; callers: scheduler) */
+export interface PostvisitPromptsDueRequest {
+  dry_run?: boolean | null;
+}
+
+export interface PostvisitPromptsDueResponse {
+  processed: number;
+  created: number;
+  details?: Record<string, unknown> | null;
+}
+
+/** CRON previsit-briefs-due (gate: -; callers: scheduler) */
+export interface PrevisitBriefsDueRequest {
+  dry_run?: boolean | null;
+}
+
+export interface PrevisitBriefsDueResponse {
+  processed: number;
+  created: number;
+  details?: Record<string, unknown> | null;
 }
 
 /** POST problem-update (gate: accounts.write; callers: app) */
@@ -1400,6 +1524,15 @@ export interface VisitAssignResponse {
   visit: VisitSummary;
 }
 
+/** GET visit-brief-get (gate: plan.read; callers: app, buddy, internal) */
+export interface VisitBriefGetRequest {
+  visit_id?: string | null;
+  account_id?: string | null;
+  regenerate?: boolean | null;
+}
+
+export type VisitBriefGetResponse = VisitBrief;
+
 /** GET visit-card-get (gate: accounts.read; callers: app, buddy) */
 export interface VisitCardGetRequest {
   account_id: string;
@@ -1512,6 +1645,9 @@ export type FunctionSlug =
   | "assignments-transfer"
   | "briefing-generate"
   | "briefing-get"
+  | "buddy-call-outcome"
+  | "buddy-call-start"
+  | "buddy-callbacks-due"
   | "campaign-draft-from-text"
   | "campaign-funnel"
   | "campaign-upsert"
@@ -1529,6 +1665,8 @@ export type FunctionSlug =
   | "dashboard-kpis"
   | "deal-upsert"
   | "deals-list"
+  | "debrief-confirm-due"
+  | "debrief-confirm-send"
   | "debrief-process"
   | "debrief-result-get"
   | "directory-search"
@@ -1538,6 +1676,7 @@ export type FunctionSlug =
   | "draft-message"
   | "eod-summary"
   | "escalate"
+  | "feedback-record"
   | "import-analyze"
   | "import-apply"
   | "import-confirm"
@@ -1556,6 +1695,8 @@ export type FunctionSlug =
   | "my-performance"
   | "order-upsert"
   | "orders-list"
+  | "postvisit-prompts-due"
+  | "previsit-briefs-due"
   | "problem-update"
   | "product-lookup"
   | "prospect-search"
@@ -1579,6 +1720,7 @@ export type FunctionSlug =
   | "user-upsert"
   | "users-list"
   | "visit-assign"
+  | "visit-brief-get"
   | "visit-card-get"
   | "visit-plan-accept"
   | "visit-plan-get"
@@ -1610,6 +1752,9 @@ export interface FunctionRequestMap {
   "assignments-transfer": AssignmentsTransferRequest;
   "briefing-generate": BriefingGenerateRequest;
   "briefing-get": BriefingGetRequest;
+  "buddy-call-outcome": BuddyCallOutcomeRequest;
+  "buddy-call-start": BuddyCallStartRequest;
+  "buddy-callbacks-due": BuddyCallbacksDueRequest;
   "campaign-draft-from-text": CampaignDraftFromTextRequest;
   "campaign-funnel": CampaignFunnelRequest;
   "campaign-upsert": CampaignUpsertRequest;
@@ -1627,6 +1772,8 @@ export interface FunctionRequestMap {
   "dashboard-kpis": DashboardKpisRequest;
   "deal-upsert": DealUpsertRequest;
   "deals-list": DealsListRequest;
+  "debrief-confirm-due": DebriefConfirmDueRequest;
+  "debrief-confirm-send": DebriefConfirmSendRequest;
   "debrief-process": DebriefProcessRequest;
   "debrief-result-get": DebriefResultGetRequest;
   "directory-search": DirectorySearchRequest;
@@ -1636,6 +1783,7 @@ export interface FunctionRequestMap {
   "draft-message": DraftMessageRequest;
   "eod-summary": EodSummaryRequest;
   "escalate": EscalateRequest;
+  "feedback-record": FeedbackRecordRequest;
   "import-analyze": ImportAnalyzeRequest;
   "import-apply": ImportApplyRequest;
   "import-confirm": ImportConfirmRequest;
@@ -1654,6 +1802,8 @@ export interface FunctionRequestMap {
   "my-performance": MyPerformanceRequest;
   "order-upsert": OrderUpsertRequest;
   "orders-list": OrdersListRequest;
+  "postvisit-prompts-due": PostvisitPromptsDueRequest;
+  "previsit-briefs-due": PrevisitBriefsDueRequest;
   "problem-update": ProblemUpdateRequest;
   "product-lookup": ProductLookupRequest;
   "prospect-search": ProspectSearchRequest;
@@ -1677,6 +1827,7 @@ export interface FunctionRequestMap {
   "user-upsert": UserUpsertRequest;
   "users-list": UsersListRequest;
   "visit-assign": VisitAssignRequest;
+  "visit-brief-get": VisitBriefGetRequest;
   "visit-card-get": VisitCardGetRequest;
   "visit-plan-accept": VisitPlanAcceptRequest;
   "visit-plan-get": VisitPlanGetRequest;
@@ -1709,6 +1860,9 @@ export interface FunctionResponseMap {
   "assignments-transfer": AssignmentsTransferResponse;
   "briefing-generate": BriefingGenerateResponse;
   "briefing-get": BriefingGetResponse;
+  "buddy-call-outcome": BuddyCallOutcomeResponse;
+  "buddy-call-start": BuddyCallStartResponse;
+  "buddy-callbacks-due": BuddyCallbacksDueResponse;
   "campaign-draft-from-text": CampaignDraftFromTextResponse;
   "campaign-funnel": CampaignFunnelResponse;
   "campaign-upsert": CampaignUpsertResponse;
@@ -1726,6 +1880,8 @@ export interface FunctionResponseMap {
   "dashboard-kpis": DashboardKpisResponse;
   "deal-upsert": DealUpsertResponse;
   "deals-list": DealsListResponse;
+  "debrief-confirm-due": DebriefConfirmDueResponse;
+  "debrief-confirm-send": DebriefConfirmSendResponse;
   "debrief-process": DebriefProcessResponse;
   "debrief-result-get": DebriefResultGetResponse;
   "directory-search": DirectorySearchResponse;
@@ -1735,6 +1891,7 @@ export interface FunctionResponseMap {
   "draft-message": DraftMessageResponse;
   "eod-summary": EodSummaryResponse;
   "escalate": EscalateResponse;
+  "feedback-record": FeedbackRecordResponse;
   "import-analyze": ImportAnalyzeResponse;
   "import-apply": ImportApplyResponse;
   "import-confirm": ImportConfirmResponse;
@@ -1753,6 +1910,8 @@ export interface FunctionResponseMap {
   "my-performance": MyPerformanceResponse;
   "order-upsert": OrderUpsertResponse;
   "orders-list": OrdersListResponse;
+  "postvisit-prompts-due": PostvisitPromptsDueResponse;
+  "previsit-briefs-due": PrevisitBriefsDueResponse;
   "problem-update": ProblemUpdateResponse;
   "product-lookup": ProductLookupResponse;
   "prospect-search": ProspectSearchResponse;
@@ -1776,6 +1935,7 @@ export interface FunctionResponseMap {
   "user-upsert": UserUpsertResponse;
   "users-list": UsersListResponse;
   "visit-assign": VisitAssignResponse;
+  "visit-brief-get": VisitBriefGetResponse;
   "visit-card-get": VisitCardGetResponse;
   "visit-plan-accept": VisitPlanAcceptResponse;
   "visit-plan-get": VisitPlanGetResponse;
@@ -1808,6 +1968,9 @@ export const FUNCTION_METHODS = {
   "assignments-transfer": "POST",
   "briefing-generate": "CRON",
   "briefing-get": "GET",
+  "buddy-call-outcome": "POST",
+  "buddy-call-start": "POST",
+  "buddy-callbacks-due": "CRON",
   "campaign-draft-from-text": "POST",
   "campaign-funnel": "GET",
   "campaign-upsert": "POST",
@@ -1825,6 +1988,8 @@ export const FUNCTION_METHODS = {
   "dashboard-kpis": "GET",
   "deal-upsert": "POST",
   "deals-list": "GET",
+  "debrief-confirm-due": "CRON",
+  "debrief-confirm-send": "POST",
   "debrief-process": "POST",
   "debrief-result-get": "GET",
   "directory-search": "POST",
@@ -1834,6 +1999,7 @@ export const FUNCTION_METHODS = {
   "draft-message": "POST",
   "eod-summary": "GET",
   "escalate": "POST",
+  "feedback-record": "POST",
   "import-analyze": "POST",
   "import-apply": "POST",
   "import-confirm": "POST",
@@ -1852,6 +2018,8 @@ export const FUNCTION_METHODS = {
   "my-performance": "GET",
   "order-upsert": "POST",
   "orders-list": "GET",
+  "postvisit-prompts-due": "CRON",
+  "previsit-briefs-due": "CRON",
   "problem-update": "POST",
   "product-lookup": "GET",
   "prospect-search": "POST",
@@ -1875,6 +2043,7 @@ export const FUNCTION_METHODS = {
   "user-upsert": "POST",
   "users-list": "GET",
   "visit-assign": "POST",
+  "visit-brief-get": "GET",
   "visit-card-get": "GET",
   "visit-plan-accept": "POST",
   "visit-plan-get": "GET",
@@ -1902,11 +2071,23 @@ export interface BriefingReadyPayload {
   date: string;
 }
 
+export interface BuddyCallStatusPayload {
+  buddy_call_id: string;
+  channel: "call" | "whatsapp";
+  status: string;
+}
+
 export interface CandidatesReadyPayload {
   search_id: string;
   found: number;
   duplicates: number;
   scored: number;
+}
+
+export interface DebriefConfirmationStatusPayload {
+  debrief_confirmation_id: string;
+  voice_log_id: string;
+  status: string;
 }
 
 export interface ManagerCallStatusPayload {
@@ -1924,6 +2105,12 @@ export interface ResultCardReadyPayload {
   result: ResultCard;
 }
 
+export interface VisitBriefReadyPayload {
+  visit_brief_id: string;
+  visit_id: string;
+  account: AccountRef;
+}
+
 export interface VoiceLogStatusPayload {
   voice_log_id: string;
   status: string;
@@ -1935,10 +2122,13 @@ export type EventType =
   | "approval.created"
   | "approval.decided"
   | "briefing.ready"
+  | "buddy_call.status"
   | "candidates.ready"
+  | "debrief_confirmation.status"
   | "manager_call.status"
   | "plan.proposed"
   | "result_card.ready"
+  | "visit_brief.ready"
   | "voice_log.status";
 
 export interface EventPayloadMap {
@@ -1946,10 +2136,13 @@ export interface EventPayloadMap {
   "approval.created": ApprovalCreatedPayload;
   "approval.decided": ApprovalDecidedPayload;
   "briefing.ready": BriefingReadyPayload;
+  "buddy_call.status": BuddyCallStatusPayload;
   "candidates.ready": CandidatesReadyPayload;
+  "debrief_confirmation.status": DebriefConfirmationStatusPayload;
   "manager_call.status": ManagerCallStatusPayload;
   "plan.proposed": PlanProposedPayload;
   "result_card.ready": ResultCardReadyPayload;
+  "visit_brief.ready": VisitBriefReadyPayload;
   "voice_log.status": VoiceLogStatusPayload;
 }
 
@@ -2203,6 +2396,41 @@ export interface ResearchDossierLlmOutput {
   }>;
 }
 
+export interface VisitBriefBulletsLlmInput {
+  language: string;
+  rep_first_name: string;
+  account: AccountRef;
+  visit_reason?: string | null;
+  facts: Array<{
+    label: string;
+    value: string;
+    ref_table?: string | null;
+    ref_id?: string | null;
+  }>;
+  push: {
+    product_id: string;
+    name: string;
+    reason: string;
+  };
+  avoid: {
+    product_id: string;
+    name: string;
+    reason: string;
+  };
+  company_values: string[];
+  how_to_talk_snippets: string[];
+  max_bullets: number;
+  max_seconds: number;
+}
+
+export interface VisitBriefBulletsLlmOutput {
+  bullets: {
+    text: string;
+    fact_labels: string[];
+  }[];
+  spoken_script: string;
+}
+
 export interface VisitCardPitchLlmInput {
   account: AccountRef;
   kind: "customer" | "prospect";
@@ -2239,6 +2467,7 @@ export type LlmSchemaName =
   | "eod_summary"
   | "import_mapping"
   | "research_dossier"
+  | "visit_brief_bullets"
   | "visit_card_pitch";
 
 export interface LlmInputMap {
@@ -2251,6 +2480,7 @@ export interface LlmInputMap {
   "eod_summary": EodSummaryLlmInput;
   "import_mapping": ImportMappingLlmInput;
   "research_dossier": ResearchDossierLlmInput;
+  "visit_brief_bullets": VisitBriefBulletsLlmInput;
   "visit_card_pitch": VisitCardPitchLlmInput;
 }
 
@@ -2264,6 +2494,7 @@ export interface LlmOutputMap {
   "eod_summary": EodSummaryLlmOutput;
   "import_mapping": ImportMappingLlmOutput;
   "research_dossier": ResearchDossierLlmOutput;
+  "visit_brief_bullets": VisitBriefBulletsLlmOutput;
   "visit_card_pitch": VisitCardPitchLlmOutput;
 }
 
@@ -2287,6 +2518,7 @@ export const LLM_META: { readonly [N in LlmSchemaName]: LlmContractMeta } = {
   "eod_summary": {"name":"eod_summary","profile":"merc-write","used_by":["eod-summary"],"purpose":"Speak the end-of-day facts briefly.","rules":["Numbers only from facts.","<= 45 s."],"eval_set":"evals/eod/"},
   "import_mapping": {"name":"import_mapping","profile":"merc-extract","used_by":["import-analyze"],"purpose":"Map arbitrary spreadsheet columns to Merc fields.","rules":["target_field null when unsure (confidence < 0.6 is shown for confirmation)."],"eval_set":"evals/import/"},
   "research_dossier": {"name":"research_dossier","profile":"merc-extract","used_by":["merc-research"],"purpose":"Extract dossier facts from scraped pages.","rules":["source_url must be one of the input page urls.","No facts from outside the pages."],"eval_set":"evals/merc-research/"},
+  "visit_brief_bullets": {"name":"visit_brief_bullets","profile":"merc-write","used_by":["visit-brief-get","previsit-briefs-due"],"purpose":"Word the pre-meeting brief: at most 6 bullets for WhatsApp and a short spoken script for a call.","rules":["Order: why this visit, open problem or promise, orders vs usual, push with its reason, avoid with its reason, how to talk to them.","Name only the push and avoid products given; never swap or add a product.","Every number in a bullet or the script appears in a fact value. Code checks it and drops the bullet otherwise.","Company values shape tone and the framing of the push, never add facts.","At most max_bullets bullets of at most 15 words; script <= 2.3 words/s x max_seconds."],"eval_set":"evals/visit-brief/"},
   "visit_card_pitch": {"name":"visit_card_pitch","profile":"merc-write","used_by":["visit-card-get"],"purpose":"Pitch, objections and 'how to talk to them' for a visit card.","rules":["Exactly 3 arguments.","Products only from the input list.","Objections grounded in dossier/playbook."],"eval_set":"evals/visit-card/"},
 };
 
@@ -2305,6 +2537,7 @@ export type DefName =
   | "Pitch"
   | "DossierView"
   | "VisitCard"
+  | "VisitBrief"
   | "AlertCard"
   | "CandidateCard"
   | "TargetProgress"

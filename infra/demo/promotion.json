@@ -1,0 +1,24 @@
+{
+  "_doc": "WP-DEMO-01: what the J5 demo needs in the demo workspace, in promotion order. promote-plan.ts turns this into an offline dry-run plan (deploy.sh --print-plan, no network). Nothing here deploys.",
+  "functions": [
+    "me", "merc-chat-token", "settings-get", "today-get", "visit-plan-get", "visit-update", "visit-brief-get", "visit-card-get",
+    "product-lookup", "voice-log-upload", "debrief-process", "debrief-result-get", "ai-action-undo", "ai-actions-list",
+    "order-upsert", "task-create", "task-update", "problem-update", "feedback-record",
+    "buddy-call-start", "buddy-call-outcome", "debrief-confirm-send", "merc-live"
+  ],
+  "crons": ["previsit-briefs-due", "postvisit-prompts-due", "debrief-confirm-due", "buddy-callbacks-due"],
+  "agents": ["merc-buddy"],
+  "app": true,
+  "globals": {
+    "MERC_BUDDY_NUMBER": "E.164 customer number routed to merc-buddy in the demo workspace (dev uses +18455133803)",
+    "MERC_WHATSAPP_CONNECTION": "WhatsApp connection name assigned to merc-buddy (template merc_buddy_ping approved)",
+    "MERC_CHANNELS_LIVE": "true only once the phone owner consents; false keeps every send recorded as not live"
+  },
+  "secrets": ["MERC_LINK_SIGNING_KEY", "MERC_INTERNAL_CALL_KEY", "MERC_CHAT_API_KEY"],
+  "service_account": {
+    "name": "merc-platform-api",
+    "scopes": ["agents:edit", "communications:edit"],
+    "pin_on": ["buddy-call-start", "buddy-callbacks-due", "previsit-briefs-due", "postvisit-prompts-due", "debrief-confirm-due", "merc-live"]
+  },
+  "knowledge_bases": ["merc-catalog", "merc-playbook", "merc-company"]
+}

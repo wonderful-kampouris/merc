@@ -10,7 +10,7 @@
 //   alerts  open alerts of the scope by type, alerts created in the period
 //   monthly before/after baseline (metrics.md#before-after), CRM completeness, new customers, customers saved
 // Every number is computed here, never by an LLM (REQ-CORE-003). Money is minor units plus a display string.
-import {
+import { isAdmin,
   addDays, dateRange, daysBetween, forbidden, invalid, isDate, localDate, resolvePrincipal,
   type Db, type Impl, type Principal, type Row, type UserPrincipal,
 } from "../../core/src/index";
@@ -202,7 +202,7 @@ export async function summaryFacts(db: Db, me: Principal, scope: UserPrincipal, 
 export async function scopePrincipal(db: Db, me: Principal, scopeUserId: string): Promise<UserPrincipal> {
   const target = await db.app_user.get(scopeUserId);
   if (!target) throw forbidden("scope user is not in your organization", { scope_user_id: scopeUserId });
-  if (me.kind === "user" && me.id !== target.id && me.role !== "admin" && !(me.role === "manager" && me.team_user_ids.includes(target.id))) {
+  if (me.kind === "user" && me.id !== target.id && !isAdmin(me) && !(me.role === "manager" && me.team_user_ids.includes(target.id))) {
     throw forbidden("you can only read summaries for yourself or your team", { scope_user_id: scopeUserId });
   }
   return resolvePrincipal(db.api, { kind: "app_user", appUserId: target.id, orgId: me.org_id });

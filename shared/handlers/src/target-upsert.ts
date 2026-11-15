@@ -3,7 +3,7 @@
 // Exactly one scope (tbl:sales_target): org = both ids null, territory = territory_id only, user = user_id only.
 // An overlapping target for the same scope and metric is rejected (conflict). Every write is audited
 // (tbl:audit_event action target_change).
-import {
+import { isAdmin,
   conflict, defineFunction, forbidden, inTeam, invalid, isDate,
   type Db, type Impl, type Row, type UserPrincipal,
 } from "../../core/src/index";
@@ -34,11 +34,11 @@ async function checkScope(db: Db, me: UserPrincipal, s: { territory_id: string |
   if (s.user_id) {
     const u = await db.app_user.get(s.user_id);
     if (!u || u.status !== "active") throw invalid("user_id is not an active user of this organization", { user_id: s.user_id });
-    if (me.role !== "admin" && !inTeam(me, s.user_id)) throw forbidden("user is outside your team", { user_id: s.user_id });
+    if (!isAdmin(me) && !inTeam(me, s.user_id)) throw forbidden("user is outside your team", { user_id: s.user_id });
   } else if (s.territory_id) {
     const t = await db.territory.get(s.territory_id);
     if (!t) throw invalid("territory_id is not a territory of this organization", { territory_id: s.territory_id });
-    if (me.role !== "admin" && !(me.role === "manager" && me.team_territory_ids.includes(s.territory_id))) {
+    if (!isAdmin(me) && !(me.role === "manager" && me.team_territory_ids.includes(s.territory_id))) {
       throw forbidden("territory is outside your team", { territory_id: s.territory_id });
     }
   }

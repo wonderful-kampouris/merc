@@ -5,7 +5,7 @@ import { toFilters, type Db, type Row, type Where, type Page } from "./tables";
 import type { Principal } from "./me";
 import type { TableName } from "./generated/tables";
 
-export const isAdmin = (p: Principal) => p.role === "admin";
+export const isAdmin = (p: Principal) => p.role === "admin" || p.open_access === true;
 export const isManager = (p: Principal) => p.role === "manager";
 
 export function hasPermission(p: Principal, key: string): boolean {

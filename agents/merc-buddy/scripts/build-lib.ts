@@ -33,8 +33,26 @@ const CUSTOM: Record<string, (path: string) => string> = {
   "visit-card-get": (p) => `import { makeImpl as cardMake, PITCH_INSTRUCTIONS as cardRules } from ${JSON.stringify(p)};
 // Tool path: same impl, merc-write pitch; Context Hub passages are skipped (no context.api in agent tools).
 export const visit_card_get_impl = cardMake({ pitch: (input) => callStructured("visit_card_pitch", input, { instructions: cardRules }), kb: async () => [] });`,
+  // visit-brief-get exports a factory, not an impl: tool path uses merc-write for the bullets; KB passages are skipped (no context.api in agent tools).
+  "visit-brief-get": (p) => `import { makeImpl as briefMake, BRIEF_INSTRUCTIONS as briefRules } from ${JSON.stringify(p)};
+export const visit_brief_get_impl = briefMake({ bullets: (input) => callStructured("visit_brief_bullets", input, { instructions: briefRules }), kb: async () => [] });`,
+  // Channel handlers: the tool path needs the tool runtime's context.api (outbound call) and context.outbound
+  // (WhatsApp send). The entry exports the factory too; lib/runtime.ts builds the impl per call with depsFrom(ctx).
+  "buddy-call-start": (p) => `import { impl as bcsImpl, makeImpl as buddy_call_start_make, depsFrom as buddyDepsFrom } from ${JSON.stringify(p)};
+export { bcsImpl as buddy_call_start_impl, buddyDepsFrom };`,
+  "buddy-call-outcome": (p) => `import { impl as bcoImpl, makeImpl as buddy_call_outcome_make, openCallFromSession, closeCallFromSession } from ${JSON.stringify(p)};
+export { bcoImpl as buddy_call_outcome_impl, openCallFromSession, closeCallFromSession };`,
+  "debrief-confirm-send": (p) => `import { impl as dcsImpl, makeImpl as debrief_confirm_send_make } from ${JSON.stringify(p)};
+export { dcsImpl as debrief_confirm_send_impl };`,
   // visit-update records caller "buddy" on its AI actions when called from the tool.
   "visit-update": (p) => `export { buddyImpl as visit_update_impl } from ${JSON.stringify(p)};`,
+};
+
+/** Handlers whose tool impl is built per call from the tool runtime (context.api / context.outbound). */
+export const FACTORIES: Record<string, string> = {
+  "buddy-call-start": "buddy_call_start_make",
+  "buddy-call-outcome": "buddy_call_outcome_make",
+  "debrief-confirm-send": "debrief_confirm_send_make",
 };
 
 export const exportName = (slug: string) => `${slug.replace(/-/g, "_")}_impl`;
@@ -53,6 +71,9 @@ export function entrySource(): { source: string; present: string[]; missing: str
     lines.push(CUSTOM[slug] ? CUSTOM[slug](p) : `export { impl as ${exportName(slug)} } from ${JSON.stringify(p)};`);
   }
   for (const slug of missing) lines.push(`export const ${exportName(slug)} = null; // TODO: shared/handlers/src/${slug}.ts does not exist yet`);
+  const factories = Object.entries(FACTORIES).filter(([slug]) => present.includes(slug)).map(([slug, name]) => `${JSON.stringify(slug)}: ${name}`);
+  lines.push(`export const TOOL_FACTORIES = { ${factories.join(", ")} };`);
+  if (!present.includes("buddy-call-start")) lines.push("export const buddyDepsFrom = null;");
   lines.push(`export const PRESENT_HANDLERS = ${JSON.stringify(present)};`, `export const MISSING_HANDLERS = ${JSON.stringify(missing)};`);
   return { source: lines.join("\n"), present, missing };
 }
@@ -69,6 +90,10 @@ export function dtsSource(): string {
     "export declare function callerFromTool(ctx: { metadata?: any }, key: string, now?: number): { kind: string; appUserId: string; orgId: string };",
     "export declare class MercError extends Error { code: string; details: Record<string, unknown> | null }",
     ...slugs.map((s) => `export declare const ${exportName(s)}: AnyImpl | null;`),
+    "export declare const TOOL_FACTORIES: Record<string, (deps: any) => AnyImpl>;",
+    "export declare const buddyDepsFrom: ((context: unknown) => any) | null;",
+    "export declare function openCallFromSession(ctx: any, key: string, extra?: any): Promise<{ kind: \"inbound\" } | { kind: \"buddy_call\"; buddy_call_id: string; purpose: string; reason: string | null; first_name: string | null }>;",
+    "export declare function closeCallFromSession(ctx: any, key: string, extra?: any): Promise<Record<string, unknown>>;",
     "export declare const PRESENT_HANDLERS: string[];",
     "export declare const MISSING_HANDLERS: string[];",
     "",

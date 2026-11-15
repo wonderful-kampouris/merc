@@ -1,0 +1,11 @@
+{
+  "name": "@merc/infra-demo",
+  "private": true,
+  "type": "module",
+  "description": "WP-DEMO-01: demo kit. reset-demo (J5 reset + live brief shift) and the offline promotion dry-run plan.",
+  "scripts": {
+    "test": "node --no-warnings --experimental-strip-types --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": { "@types/node": "^22.10.0", "typescript": "^5.7.0" }
+}

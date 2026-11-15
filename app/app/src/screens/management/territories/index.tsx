@@ -5,6 +5,7 @@ import { useScreenI18n } from "../../../lib/i18n";
 import type { ScreenProps } from "../../../lib/screenRegistry";
 import { Empty, LoadView, RichRow } from "../settings/KitView";
 import { errorText, objArr, useLoad } from "../settings/kit";
+import { personOption } from "../../../shell/RepAvatar";
 import messages from "./i18n";
 import {
   emptyTerritoryForm, emptyTransfer, enrichFromSeed, formFromTerritory, parsePostalCodes, parseTerritories, repOptions,
@@ -138,12 +139,13 @@ function TerritoryEditor(p: { form: TerritoryForm; reps: Rep[]; onChange: (f: Te
           <TextArea label={t("postal")} hint={bad.length ? t("postalBad", { codes: bad.join(", ") }) : t("postalHint")} isError={bad.length > 0} value={f.postal_text} rows={2} onChange={(e) => set({ postal_text: e.target.value })} />
           <Layout.Stack gap="xs">
             <Text variant="sm" color="secondary">{t("reps")}</Text>
-            <Select<string> mode="multiple" options={repOpts} values={f.rep_ids} placeholder={t("pick")} onMultiChange={(v) => set({ rep_ids: v })} />
+            <Select<string> mode="multiple" options={repOpts} renderOption={personOption} values={f.rep_ids} placeholder={t("pick")} onMultiChange={(v) => set({ rep_ids: v })} />
           </Layout.Stack>
           <Layout.Stack gap="xs">
             <Text variant="sm" color="secondary">{t("defaultRep")}</Text>
             <Select<string>
               options={[{ value: "", label: t("none") }, ...repOpts.filter((o) => f.rep_ids.includes(o.value))]}
+              renderOption={personOption} renderValue={personOption}
               value={f.default_rep_id ?? ""}
               status={tried && problems.includes("default_rep") ? "error" : undefined}
               onChange={(v) => set({ default_rep_id: v || null })}
@@ -183,11 +185,11 @@ function TransferCard(p: { reps: Rep[]; transfer: (f: TransferForm) => Promise<v
           <Layout.Grid idealColumns={2} gap="sm">
             <Layout.Stack gap="xs">
               <Text variant="sm" color="secondary">{t("from")}</Text>
-              <Select<string> options={opts} value={f.from_rep_id ?? undefined} placeholder={t("pick")} status={tried && problems.includes("from") ? "error" : undefined} onChange={(v) => set({ from_rep_id: v })} />
+              <Select<string> options={opts} renderOption={personOption} renderValue={personOption} value={f.from_rep_id ?? undefined} placeholder={t("pick")} status={tried && problems.includes("from") ? "error" : undefined} onChange={(v) => set({ from_rep_id: v })} />
             </Layout.Stack>
             <Layout.Stack gap="xs">
               <Text variant="sm" color="secondary">{t("to")}</Text>
-              <Select<string> options={opts} value={f.to_rep_id ?? undefined} placeholder={t("pick")} status={tried && (problems.includes("to") || problems.includes("same")) ? "error" : undefined} onChange={(v) => set({ to_rep_id: v })} />
+              <Select<string> options={opts} renderOption={personOption} renderValue={personOption} value={f.to_rep_id ?? undefined} placeholder={t("pick")} status={tried && (problems.includes("to") || problems.includes("same")) ? "error" : undefined} onChange={(v) => set({ to_rep_id: v })} />
             </Layout.Stack>
           </Layout.Grid>
           <Checkbox isChecked={f.all_accounts} onChange={(v) => set({ all_accounts: v })}>{t("all")}</Checkbox>

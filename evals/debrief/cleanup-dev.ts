@@ -26,6 +26,9 @@ for (const a of ais) {
   try { const b = JSON.parse(a.before_snapshot_json ?? "null"); for (const r of b?.rows ?? []) if (r.row === null) created.push([r.table, r.id]); } catch { /* not a snapshot */ }
 }
 const createdSet = new Set(created.map(([t, id]) => `${t}:${id}`));
+// debrief confirmations (fn:debrief-confirm-due may create one per completed voice log) and any buddy_call of the rep
+for (const d of rows("debrief_confirmation").filter((d) => d.rep_id === rep || vlIds.has(d.voice_log_id))) rm("debrief_confirmation", d.id);
+for (const b of rows("buddy_call").filter((b) => b.user_id === rep || b.rep_id === rep)) rm("buddy_call", b.id);
 const approvals = rows("approval").filter((a) => a.requested_by === rep || aiIds.has(a.ai_action_id));
 const apIds = new Set(approvals.map((a) => a.id));
 for (const m of rows("message_approval").filter((m) => apIds.has(m.approval_id))) rm("message_approval", m.id);
@@ -67,6 +70,11 @@ for (const v of rows("visit").filter((v) => v.rep_id === rep)) rm("visit", v.id)
 for (const a of ais) rm("ai_action", a.id);
 for (const v of vls) rm("voice_log", v.id);
 if (!flag("keep-user")) {
+  // fn:briefing-generate (cron) writes a morning briefing for every active rep, the temp rep included
+  const brs = rows("briefing").filter((b) => b.rep_id === rep);
+  const brIds = new Set(brs.map((b) => b.id));
+  for (const i of rows("briefing_item").filter((i) => brIds.has(i.briefing_id))) rm("briefing_item", i.id);
+  for (const b of brs) rm("briefing", b.id);
   for (const tr of rows("territory_rep").filter((r) => r.user_id === rep)) rm("territory_rep", tr.id);
   rm("app_user", rep);
 }

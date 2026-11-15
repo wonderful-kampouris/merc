@@ -1,0 +1,13 @@
+{
+  "kind": "cron",
+  "name": "previsit-briefs-due",
+  "description": "Merc fn:previsit-briefs-due: builds and delivers the pre-meeting brief before each planned visit (contracts/functions/previsit-briefs-due.json, REQ-MTG-001). Source: Merc monorepo shared/handlers/src/previsit-briefs-due.ts.",
+  "timeout_ms": 300000,
+  "cron_schedules": [
+    {
+      "cron_expression": "*/5 * * * *",
+      "timezone": "Europe/Athens",
+      "enabled": true
+    }
+  ]
+}

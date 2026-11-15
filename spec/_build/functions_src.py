@@ -146,14 +146,14 @@ fn("voice-log-upload", "POST", "voicelog.create", ["app"],
    notes="Body <= 1 MB (platform limit). Same idempotency_key returns the existing voice_log (duplicate=true). Triggers transcription (OPEN-04) then debrief-process.")
 fn("debrief-process", "POST", "voicelog.create", ["buddy", "internal"],
    {"voice_log_id": "uuid?", "utterance": "str?", "account_id": "uuid?", "conversation_id": "str?",
-    "lat": "num?", "lng": "num?", "language": "str?"},
+    "lat": "num?", "lng": "num?", "language": "str?", "corrects_voice_log_id": "uuid?"},
    {"status": "e:completed|needs_confirmation|failed", "result": "$ResultCard?", "candidates": ["$AccountRef"],
     "question": "str?"},
    reads=["account", "problem", "deal", "product", "campaign", "contact", "visit", "ai_permission", "action_type"],
    writes=["voice_log", "activity", "task", "problem", "deal", "deal_stage_history", "sales_order", "order_line",
            "competitor_signal", "contact", "campaign_exposure", "visit", "ai_action", "approval", "message_approval"],
    llm=["debrief_extraction", "draft_message"], timeout_ms=60000, wave=2,
-   notes="Exactly one of voice_log_id / utterance. Target p95 < 20 s. Pushes events result_card.ready.")
+   notes="Exactly one of voice_log_id / utterance. corrects_voice_log_id (with utterance = the correction words): code undoes every applied line of that completed debrief, then processes its transcript + ' Correction: ' + utterance for the same account, so a fix never creates a second visit. Target p95 < 20 s. Pushes events result_card.ready.")
 fn("debrief-result-get", "GET", "voicelog.read", ["app", "buddy"], {"voice_log_id": "uuid"}, "$ResultCard",
    reads=["voice_log", "ai_action", "approval"], scope="owner")
 fn("ai-action-undo", "POST", "aiaction.undo", ["app", "buddy"], {"ai_action_id": "uuid"},
@@ -396,7 +396,7 @@ fn("feedback-record", "POST", "voicelog.create", ["buddy", "app"],
    {"feedback_id": "uuid", "status": "str"},
    reads=["visit_brief", "debrief_confirmation"], writes=["rep_feedback", "visit_brief", "debrief_confirmation"], scope="owner", wave=4,
    notes="brief_* needs visit_brief_id and sets visit_brief.rating; debrief_* needs debrief_confirmation_id and sets its status. "
-         "debrief_corrected stores detail verbatim and links correction_voice_log_id when the buddy logged the fix as a new debrief. Only the owner rep.")
+         "debrief_corrected stores detail verbatim and links correction_voice_log_id when the buddy logged the fix as a new debrief; without a confirmation (fix said in a call or chat) it needs correction_voice_log_id. Only the owner rep.")
 
 # ---------------------------------------------------------------- push channel
 fn("merc-live", "WS", None, ["app"], {"connect_query": {"client": "e:rep|mgmt"}},

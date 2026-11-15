@@ -1,4 +1,4 @@
-import { Badge, Button, Layout, Text, ToggleGroup } from "@wonderful/ui-base";
+import { Badge, Layout, Text, ToggleGroup } from "@wonderful/ui-base";
 import { useI18n, type Lang } from "../lib/i18n";
 import type { Role, Shell } from "../lib/routes";
 
@@ -44,9 +44,6 @@ export default function TopBar(p: TopBarProps) {
             <ToggleGroup.Item value="el" text="ΕΛ" aria-label="Ελληνικά" />
             <ToggleGroup.Item value="en" text="EN" aria-label="English" />
           </ToggleGroup>
-          <Button size="small" variant="tertiary" active={p.mock} onClick={() => p.onMock(!p.mock)}>
-            {t("top.mock")}
-          </Button>
         </Layout.Row>
       </Layout.Row>
     </header>

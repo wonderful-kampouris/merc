@@ -21,6 +21,20 @@ export function businessColumns(input: object | null | undefined): Record<string
   return out;
 }
 
+/**
+ * The full stored form of a row for strict equality (REQ-CORE-006 "byte-identical"): every contract column in
+ * contract order, a column without a value as null (the platform returns no key for a null column), and
+ * created_at kept. Only updated_at is dropped: the platform stamps it on every write and no caller can set it.
+ */
+export function canonicalRow(table: TableName, input: object | null | undefined): Record<string, unknown> | null {
+  if (!input) return null;
+  const row = input as Record<string, unknown>;
+  const out: Record<string, unknown> = {};
+  for (const k of Object.keys(TABLES[table].columns)) out[k] = row[k] ?? null;
+  out.created_at = row.created_at ?? null;
+  return out;
+}
+
 export const sameRow = (a: object | null | undefined, b: object | null | undefined) =>
   JSON.stringify(businessColumns(a)) === JSON.stringify(businessColumns(b));
 

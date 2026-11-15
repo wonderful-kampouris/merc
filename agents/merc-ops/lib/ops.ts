@@ -5,7 +5,7 @@
 //                          that appear in the facts fetched in this task (REQ-CORE-003 "numbers only from summary data").
 //                          Global variable MERC_OPS_EMAIL_MODE: "send" sends; anything else (default) only logs a
 //                          preview, so nothing is emailed until a human turns it on.
-import { createDb, runForOps, unknownNumbers } from "./ops.gen.js";
+import { createDb, deliverRelayedWhatsApp, runForOps, unknownNumbers } from "./ops.gen.js";
 
 export const FACTS_KEY = "merc_ops_facts";
 export const MODE_GLOBAL = "MERC_OPS_EMAIL_MODE";
@@ -64,4 +64,26 @@ export async function sendInternalEmail(ctx: OpsCtx, params: { to: string; subje
   if (!ctx.email) return { error: { code: "upstream_failed", message: "context.email is not available in this runtime" } };
   await ctx.email.send(to, subject, { text: body });
   return { sent: true, mode: "send", to, subject };
+}
+
+/**
+ * deliver_whatsapp (contracts/tools/merc-ops/deliver_whatsapp.json): send relayed WhatsApp buddy_calls from this agent
+ * runtime, where context.outbound exists. Functions (previsit brief, post-visit prompt, debrief confirmation) mark the
+ * row relayed (channel whatsapp, status started) and fire the whatsapp_send webhook. The webhook body does not reach
+ * TASK_CONTEXT.json, so without an id the tool sends every relayed row still waiting. The message is rebuilt by the
+ * SAME buddy-call-start code, so the model never writes it. A sent row is never sent again (status guard).
+ */
+export const RELAY_BATCH = 20;
+export async function deliverWhatsApp(ctx: any, params: { buddy_call_id?: string | null }) {
+  const platform = { globals: ctx.globals ?? null, secrets: ctx.secrets ?? null } as any;
+  const deps = { outbound: ctx.outbound ?? null };
+  const id = String(params?.buddy_call_id ?? "").trim();
+  if (id) {
+    if (!UUID.test(id)) return { error: { code: "validation_failed", message: "buddy_call_id must be a uuid, or leave it out" } };
+    return { waiting: 1, delivered: [await deliverRelayedWhatsApp(ctx.tables, platform, deps, id)] };
+  }
+  const waiting = (await createDb(ctx.tables).buddy_call.all({ channel: "whatsapp", status: "started" })).slice(0, RELAY_BATCH);
+  const delivered = [];
+  for (const row of waiting) delivered.push(await deliverRelayedWhatsApp(ctx.tables, platform, deps, row.id));
+  return { waiting: waiting.length, delivered };
 }

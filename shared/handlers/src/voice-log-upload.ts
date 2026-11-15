@@ -5,11 +5,14 @@
 //      (fn:retention-purge clears it after recording_retention_days, REQ-DEB-011);
 //   3. audio is transcribed inline with an audio-input chat model (S4: 39 s Greek in 2.1 s): Model Profile from global
 //      MERC_TRANSCRIBE_PROFILE_ID once H3 creates `merc-transcribe`, else the proven gemini-2.5-flash compatibility alias;
-//   4. the transcript is handed to fn:debrief-process (status "processing"); while that function is not deployed or
-//      refuses the internal run, the voice log stays "uploaded" with its transcript, ready to be processed.
+//   4. the transcript is handed to fn:debrief-process IN-PROCESS (its impl is bundled here and runs as the same caller,
+//      so one upload gives one voice_log and one result card, REQ-DEB-001; the card is also pushed as
+//      result_card.ready). If debrief-process refuses or throws, the voice log stays "uploaded" with its transcript and
+//      the reason in error, ready to be processed again (the app calls debrief-process / debrief-result-get).
 // A failed transcription is not an error response: the voice log is stored with status "failed" and its error.
-import { conflict, defineFunction, globalString, invalid, isMercError, listAccounts, requireAccount, assertOwner, type FunctionContext, type Impl, type PlatformLike, type Row, type UserPrincipal, type Db } from "../../core/src/index";
+import { conflict, globalString, principalFromFunction, runFunction, invalid, isMercError, listAccounts, requireAccount, assertOwner, type FunctionContext, type Impl, type PlatformLike, type Row, type UserPrincipal, type Db } from "../../core/src/index";
 import { push, repChannel, type PushPlatform, type ApiLike } from "../../live/src/index";
+import { impl as debriefImpl } from "./debrief-process";
 
 type Req = Parameters<Impl<"voice-log-upload">>[0]["req"];
 type Res = Awaited<ReturnType<Impl<"voice-log-upload">>>;
@@ -63,7 +66,11 @@ export interface StorageLike {
 }
 export interface TranscribeInput { audio_base64: string; mime: string; language: string | null; vocabulary: string[] }
 export type Transcriber = (input: TranscribeInput) => Promise<{ text: string; model: string }>;
-export type DebriefRunner = (voiceLogId: string) => Promise<unknown>;
+/** Runs fn:debrief-process for a stored voice log as the same caller (same db, me and platform). */
+export type DebriefRunner = (voiceLogId: string, inv: { db: Db; me: UserPrincipal; platform: PlatformLike }) => Promise<unknown>;
+/** The production runner: the debrief-process impl in-process (Rule B: the rule lives once, in its handler). */
+export const inProcessDebrief: DebriefRunner = (voiceLogId, inv) =>
+  debriefImpl({ req: { voice_log_id: voiceLogId } as Parameters<typeof debriefImpl>[0]["req"], db: inv.db, me: inv.me, platform: inv.platform });
 export interface UploadDeps {
   transcribe: Transcriber | null;
   storage?: StorageLike | null;
@@ -135,7 +142,7 @@ async function finish(deps: UploadDeps, db: Db, row: Row<"voice_log">, duplicate
 }
 
 /** Steps 2-4 for a stored voice log (also used to retry a failed transcription on a resend of the same key). */
-async function pipeline(deps: UploadDeps, db: Db, me: UserPrincipal, row: Row<"voice_log">, audio: { b64: string; bytes: Uint8Array; mime: string } | null): Promise<Row<"voice_log">> {
+async function pipeline(deps: UploadDeps, db: Db, me: UserPrincipal, platform: PlatformLike, row: Row<"voice_log">, audio: { b64: string; bytes: Uint8Array; mime: string } | null): Promise<Row<"voice_log">> {
   const log = deps.log ?? defaultLog;
   if (audio && !row.audio_ref) {
     if (!deps.storage) log("warn", "context.storage unavailable: audio not kept (transcript only)", { voice_log_id: row.id });
@@ -163,7 +170,7 @@ async function pipeline(deps: UploadDeps, db: Db, me: UserPrincipal, row: Row<"v
   row = await db.voice_log.update(row.id, { status: "processing", error: null });
   let refusal: string | null = null;
   try {
-    const out = await deps.runDebrief(row.id);
+    const out = await deps.runDebrief(row.id, { db, me, platform });
     const err = (out as { error?: { code?: string; message?: string } } | null)?.error ?? (out as { result?: { error?: { code?: string; message?: string } } } | null)?.result?.error;
     if (err) refusal = `${err.code ?? "error"}: ${err.message ?? ""}`.trim();
   } catch (e) { refusal = msg(e); }
@@ -176,7 +183,7 @@ async function pipeline(deps: UploadDeps, db: Db, me: UserPrincipal, row: Row<"v
 }
 
 export function makeImpl(deps: UploadDeps): Impl<"voice-log-upload"> {
-  return async ({ req, db, me }) => {
+  return async ({ req, db, me, platform }) => {
     const key = req.idempotency_key.trim();
     if (!key || key.length > 200) throw invalid("idempotency_key must be 1-200 characters");
     const transcript = req.transcript?.trim() || null;
@@ -222,13 +229,13 @@ export function makeImpl(deps: UploadDeps): Impl<"voice-log-upload"> {
       }
       throw e;
     }
-    return finish(deps, db, await pipeline(deps, db, me, row, audio), false);
+    return finish(deps, db, await pipeline(deps, db, me, platform, row, audio), false);
 
     async function resend(found: Row<"voice_log">): Promise<Res> {
       if (found.rep_id !== me.id) throw conflict("idempotency_key is already used by another voice log", { field: "idempotency_key" });
       // A resend after a failed transcription retries it on the same voice log (offline sync, REQ-DEB-009).
       if (found.status === "failed" && !found.transcript && audio) {
-        const retried = await pipeline(deps, db, me, found, audio);
+        const retried = await pipeline(deps, db, me, platform, found, audio);
         await push(deps.live, "voice_log.status", { voice_log_id: retried.id, status: retried.status, error: retried.error ?? null }, repChannel(retried.rep_id), { log: deps.log });
         return { voice_log_id: retried.id, status: retried.status, duplicate: true };
       }
@@ -238,19 +245,23 @@ export function makeImpl(deps: UploadDeps): Impl<"voice-log-upload"> {
 }
 
 // ---------- the deployed entry ----------
-type FunctionsLike = { run(o: { slug: string; params?: Record<string, unknown> }): unknown };
-export type UploadContext = FunctionContext & { storage?: StorageLike | null; api?: ApiLike | null; functions?: FunctionsLike | null };
+export type UploadContext = FunctionContext & { storage?: StorageLike | null; api?: ApiLike | null };
 
 /** Deps from the platform context. `rt` is @wonderful/types/langchain (functions/voice-log-upload/index.ts passes it). */
 export function depsFromContext(context: UploadContext, rt: LlmRuntime = globalThis as unknown as LlmRuntime): UploadDeps {
   const platform: PlatformLike = { globals: (context as PlatformLike).globals ?? null };
-  const fns = context.functions;
   return {
     transcribe: runtimeTranscriber(rt, globalString(platform, GLOBAL_TRANSCRIBE_PROFILE)),
     storage: context.storage ?? null,
     live: { api: context.api ?? null },
-    runDebrief: fns && typeof fns.run === "function" ? async (id) => fns.run({ slug: DEBRIEF_SLUG, params: { voice_log_id: id } }) : null,
+    runDebrief: inProcessDebrief,
   };
 }
 
-export const handle = (context: UploadContext, rt?: LlmRuntime) => defineFunction(SLUG, makeImpl(depsFromContext(context, rt)))(context);
+/** Wonderful Function entry: defineFunction semantics (validation, caller from the platform user, gate, response check,
+ *  error envelope), plus context.api in `platform` so the in-process debrief can push result_card.ready. */
+export const handle = (context: UploadContext, rt?: LlmRuntime) => {
+  const ws = (context.metadata as { workspaceId?: unknown } | null | undefined)?.workspaceId;
+  const platform = { secrets: context.secrets ?? null, globals: context.globals ?? null, workspaceId: typeof ws === "string" && ws ? ws : null, api: context.api ?? null } as PlatformLike;
+  return runFunction(SLUG, makeImpl(depsFromContext(context, rt)), { tables: context.tables, data: context.data, principal: () => principalFromFunction(context.tables, context), platform });
+};

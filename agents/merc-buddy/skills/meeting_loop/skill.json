@@ -1,0 +1,218 @@
+{
+  "name": "meeting_loop",
+  "display_name": "Meeting Loop",
+  "description": "Use when: pre-meeting brief, 'call me' from the WhatsApp brief, 'how did it go', confirm or fix the summary.",
+  "prompts": {
+    "skill": "prompt.md"
+  },
+  "tools": {
+    "get_visit_brief": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "visit_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": true
+      }
+    },
+    "call_me_back": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "channel",
+          "type": "enum",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "call",
+            "whatsapp"
+          ]
+        },
+        {
+          "name": "purpose",
+          "type": "enum",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "callback",
+            "briefing",
+            "approval_decided",
+            "alert",
+            "eod",
+            "pre_visit",
+            "post_visit",
+            "debrief_confirm"
+          ]
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true
+        },
+        {
+          "name": "at",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "ISO 8601 date-time"
+        },
+        {
+          "name": "ref_table",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true
+        },
+        {
+          "name": "ref_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": false
+      }
+    },
+    "log_visit": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "utterance",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true
+        },
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "corrects_voice_log_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 30000,
+        "is_interruptible": false
+      }
+    },
+    "send_debrief_confirmation": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "voice_log_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": false
+      }
+    },
+    "record_feedback": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "kind",
+          "type": "enum",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "brief_useful",
+            "brief_not_useful",
+            "debrief_confirmed",
+            "debrief_corrected"
+          ]
+        },
+        {
+          "name": "visit_brief_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "debrief_confirmation_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true
+        },
+        {
+          "name": "correction_voice_log_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": false
+      }
+    },
+    "undo_action": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "ai_action_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": false
+      }
+    },
+    "get_debrief_result": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "voice_log_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": true
+      }
+    }
+  }
+}

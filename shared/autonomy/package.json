@@ -8,7 +8,8 @@
   "types": "src/index.ts",
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "smoke:dev": "bash scripts/dev-smoke.sh"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

@@ -10,11 +10,12 @@ export const SPEC: ToolSpec = {"tool":"log_visit","slug":"debrief-process","inje
 const params = s.object({
   utterance: s.string(),
   account_id: s.optional(s.string().describe("UUID taken from an earlier tool result")),
+  corrects_voice_log_id: s.optional(s.string().describe("UUID taken from an earlier tool result")),
 });
 
 export default w.tool({
   name: "log_visit",
-  description: "Log what happened in a visit from the rep's own words. Pass the words verbatim, never paraphrase. After the call: Read spoken_summary, then ask each missing_fields question, then offer pending approvals.",
+  description: "Log what happened in a visit from the rep's own words. Pass the words verbatim, never paraphrase. After the call: Read spoken_summary, then ask each missing_fields question, then offer pending approvals. For a correction of a debrief already logged, pass only the correction words as utterance and that debrief's voice_log_id as corrects_voice_log_id; code undoes and re-logs it.",
   params,
   handler: async (ctx: any, input: any) => runTool(ctx, SPEC, impl, input),
 });

@@ -11,6 +11,10 @@
     {
       "type": "webhook",
       "task_type": "monthly_report"
+    },
+    {
+      "type": "webhook",
+      "task_type": "whatsapp_send"
     }
   ],
   "skills": [
@@ -27,6 +31,12 @@
         "get_summary_data",
         "send_internal_email"
       ]
+    },
+    {
+      "name": "whatsapp_send",
+      "tools": [
+        "deliver_whatsapp"
+      ]
     }
   ],
   "behavior": [
@@ -36,6 +46,7 @@
   ],
   "name": "merc-ops",
   "tools": [
+    "deliver_whatsapp",
     "get_summary_data",
     "send_internal_email"
   ]

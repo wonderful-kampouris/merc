@@ -24,7 +24,7 @@ The same customer number is also the caller id for merc-approver (the manager ca
 | Wonderful inbound domain | `delta` -> `delta-default.sip.greece-hackathon.sb.wonderful.ai` (TLS, SRTP required) | Done |
 | Wonderful outbound trunk | `delta-hackathon` -> `delta-hackathon.pstn.twilio.com:5061;transport=tls`, caller id +18455133803, SRTP | Done (Twilio termination URI must match) |
 | Global variable | `MERC_BUDDY_NUMBER = "+18455133803"` | Done |
-| Twilio Elastic SIP trunk | origination `sip:delta-default.sip.greece-hackathon.sb.wonderful.ai:5061;transport=tls`, termination `delta-hackathon.pstn.twilio.com`, ACL 3.125.129.30/32, secure trunking, DID attached | **Pending Twilio login** |
+| Twilio Elastic SIP trunk | Subaccount `greek (api.sb.wonderful.ai)`, trunk `team-delta` (TKa6fe0fcc…). Secure Trunking on (TLS 5061 + SRTP); origination `sip:delta-default.sip.greece-hackathon.sb.wonderful.ai:5061;transport=tls` (prio 10, weight 10); DID +18455133803 attached; termination `delta-hackathon.pstn.twilio.com` with IP ACL `delta-wonderful-outbound` = 3.125.129.30/32 | Done. **Outbound verified 2026-11-15 10:46 UTC**: call 9ed4dbc0 from +18455133803 to a Greek mobile (+30 69…) rang, Merc Buddy answered in Greek ("Γεια σου, εδώ Merc. Τι κάνουμε;"), ended by callee after 11 s. Greece is allowed for outbound. Inbound not yet test-called |
 
 Telephony config is tenant-wide and shared with the other teams (alpha, gamma, omega). Only touch `merc-*` / `delta*` entries.
 

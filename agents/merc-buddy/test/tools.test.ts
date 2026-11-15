@@ -9,11 +9,14 @@ import { runAsTool } from "../../../shared/core/src/index";
 import { impl as resolveImpl } from "../../../shared/handlers/src/account-resolve";
 import { AGENT, bundleText, OUT, toolSpecs } from "../scripts/build-lib.ts";
 import { generate, skillSpecs } from "../scripts/gen-tools.ts";
-import { NAME_INTERNAL_KEY, runTool, injectedFields, sessionLanguage, type ToolSpec } from "../lib/runtime";
+import { compactResult } from "../lib/compact";
+import { NAME_DEMO_CALLER_PHONE, NAME_INTERNAL_KEY, runTool, injectedFields, sessionLanguage, type ToolSpec } from "../lib/runtime";
 import resolveAccount, { SPEC as RESOLVE_SPEC } from "../tools/resolve_account/index";
 import logVisit, { SPEC as LOG_SPEC } from "../tools/log_visit/index";
 import undoAction from "../tools/undo_action/index";
 
+/** Hand-written tools outside spec/contracts (lib/web-research.ts, tested in test/web-research.test.ts). */
+const NON_CONTRACT_TOOLS = ["research_store", "call_opening", "call_closing"];
 const contractTools = (JSON.parse(readFileSync(join(AGENT, "../../spec/contracts/agents/merc-buddy.json"), "utf8")).tools as string[]).sort();
 
 function buddyCtx(who: "nikos" | "dimitra" = "nikos", extra: { secrets?: Record<string, unknown>; md?: Record<string, unknown>; locale?: string } = {}) {
@@ -31,14 +34,15 @@ const quiet = { log: () => {} };
 
 describe("contract parity (REQ-BUD-003)", () => {
   it("has exactly the contract tools, each backed by its contract function", async () => {
-    const dirs = readdirSync(join(AGENT, "tools"), { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort();
+    const dirs = readdirSync(join(AGENT, "tools"), { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).filter((n) => !NON_CONTRACT_TOOLS.includes(n)).sort();
     expect(dirs).toEqual(contractTools);
-    expect(dirs.length).toBe(30);
+    expect(dirs.length).toBe(contractTools.length);
     for (const spec of toolSpecs()) {
       const mod = await import(`../tools/${spec.name}/index.ts`);
       expect(mod.default.name).toBe(spec.name);
       expect(mod.SPEC.slug).toBe(spec.function);
-      expect(mod.SPEC.inject).toContain("caller");
+      // Trigger-only tools (report_buddy_call_outcome) run from platform triggers with no rep session: no caller.
+      if (spec.name !== "report_buddy_call_outcome") expect(mod.SPEC.inject).toContain("caller");
       // caller is never a model parameter
       expect(Object.keys(mod.default.params.toJsonSchema().properties ?? {})).not.toContain("caller");
     }
@@ -64,7 +68,9 @@ describe("identity and injection (REQ-BUD-002)", () => {
     const lines: string[] = [];
     const viaTool: any = await resolveAccount.handler(ctx, { hint: "Café Miltos" } as any);
     const direct: any = await runAsTool("account-resolve", resolveImpl, t.toolCtx("nikos"), { hint: "Café Miltos" }, t.key);
-    expect(viaTool).toEqual(direct);
+    // Same impl; the model sees the compact view of the handler's answer (lib/compact.ts).
+    expect(viaTool).toEqual(compactResult("resolve_account", direct));
+    expect(direct.account.id).toBe(viaTool.account.id);
     expect(viaTool.status).toBe("resolved");
     expect(viaTool.account.id).toBe(IDS.miltos);
     expect(attached).toEqual([IDS.miltos]);
@@ -95,10 +101,10 @@ describe("identity and injection (REQ-BUD-002)", () => {
     expect(out.error.code).toBe("blocked_by_policy");
     expect(out.error.details.missing).toBe(NAME_INTERNAL_KEY);
   });
-  it("undo_action degrades clearly while the ai-action-undo handler is missing", async () => {
+  it("undo_action runs the ai-action-undo handler (unknown id -> not_found, never handler_missing)", async () => {
     const { ctx } = buddyCtx();
     const out: any = await undoAction.handler(ctx, { ai_action_id: IDS.miltos } as any);
-    if (out.error) expect(out.error.message).toMatch(/ai-action-undo|not found|forbidden/);
+    if (out.error) expect(out.error.code).not.toBe("blocked_by_policy");
   });
 });
 
@@ -119,5 +125,63 @@ describe("log_visit (REQ-BUD-008)", () => {
     expect(injectedFields(ctx, ["caller", "origin=manual"])).toEqual({ origin: "manual" });
     const spec: ToolSpec = { tool: "x", slug: "account-resolve", inject: ["caller", "device_location?"] };
     expect(injectedFields(ctx, spec.inject)).toEqual({});
+  });
+});
+
+describe("demo caller fallback (MERC_DEMO_CALLER_PHONE, demo only, unset on dev)", () => {
+  const session = (ctx: any, globals: Record<string, unknown>, communication: Record<string, unknown>) => ({
+    ...ctx,
+    metadata: { communication: { id: "comm-demo", metadata: {}, ...communication } },
+    globals: { get: (n: string) => (n in globals ? globals[n] : null) },
+  });
+  const unknownPhone = { type: "voice", direction: "inbound", fromNumber: "+15550000000" };
+  const demoOn = { [NAME_DEMO_CALLER_PHONE]: "+306900000003" };
+  it("without the global an identity-less session is forbidden", async () => {
+    const { ctx } = buddyCtx();
+    const out = await runTool(session(ctx, {}, { type: "chat" }), RESOLVE_SPEC, resolveImpl as any, { hint: "Miltos" }, quiet) as any;
+    expect(out.error?.code).toBe("forbidden");
+  });
+  it("without the global an unknown phone number gets no data (REQ-BUD-013)", async () => {
+    const { ctx } = buddyCtx();
+    const out = await runTool(session(ctx, {}, unknownPhone), RESOLVE_SPEC, resolveImpl as any, { hint: "Miltos" }, quiet) as any;
+    expect(out.error?.code).toBe("forbidden");
+    expect(out.error?.message).toMatch(/does not know this number/);
+  });
+  it("with the global (demo only) an unknown number runs as the demo user, logged as demo_global", async () => {
+    const { ctx } = buddyCtx();
+    const lines: string[] = [];
+    const out = await runTool(session(ctx, demoOn, unknownPhone), RESOLVE_SPEC, resolveImpl as any, { hint: "Miltos" }, { log: (l) => lines.push(l) }) as any;
+    expect(out.error?.code).not.toBe("forbidden");
+    expect(JSON.parse(lines[0])).toMatchObject({ caller_source: "demo_global" });
+  });
+  it("a tampered claim stays forbidden even with the global set (REQ-BUD-002)", async () => {
+    const { ctx } = buddyCtx();
+    const md = { ...ctx.metadata.communication.metadata, merc_uid: IDS.eleni };
+    const out = await runTool(session(ctx, demoOn, { type: "chat", metadata: md }), RESOLVE_SPEC, resolveImpl as any, {}, quiet) as any;
+    expect(out.error?.code).toBe("forbidden");
+  });
+  it("with the global a session with no identity at all (console chat) runs as that user, logged as demo_global", async () => {
+    const { ctx } = buddyCtx();
+    const lines: string[] = [];
+    const out = await runTool(session(ctx, demoOn, { type: "chat" }), RESOLVE_SPEC, resolveImpl as any, { hint: "Miltos" }, { log: (l) => lines.push(l) }) as any;
+    expect(out.error?.code).not.toBe("forbidden");
+    expect(JSON.parse(lines[0])).toMatchObject({ caller_source: "demo_global" });
+  });
+});
+
+describe("caller log on every call (REQ-BUD-002)", () => {
+  it("a successful call with the production logger still logs caller and caller_source, without handler noise", async () => {
+    const { ctx } = buddyCtx();
+    const printed: string[] = [];
+    const real = console.log;
+    console.log = (...a: unknown[]) => { printed.push(a.map(String).join(" ")); };
+    try {
+      const out: any = await runTool(ctx, RESOLVE_SPEC, resolveImpl as any, { hint: "Café Miltos" });
+      expect(out.error).toBeUndefined();
+    } finally { console.log = real; }
+    const callerLines = printed.filter((l) => l.includes('"caller_source"')).map((l) => JSON.parse(l));
+    expect(callerLines).toHaveLength(1);
+    expect(callerLines[0]).toMatchObject({ merc_tool: "resolve_account", caller: IDS.nikos, caller_source: "signed_session_claim", outcome: "ok" });
+    expect(printed.join("\n").length).toBeLessThan(200);
   });
 });

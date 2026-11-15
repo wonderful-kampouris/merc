@@ -16,17 +16,17 @@ WP-CORE-01b	building	wave 1b+2 workflow
 WP-INF-03	building	wave 1b+2 workflow	
 WP-OPS-01b	building	wave 1b+2 workflow	
 WP-APP-01b	building	wave 1b+2 workflow	
-WP-CORE-03	building	wave 1b+2 workflow	
-WP-LIVE-01	building	wave 1b+2 workflow	
+WP-CORE-03	building	demo-path wf_77020d51-4e1	
+WP-LIVE-01	building	demo-path wf_77020d51-4e1	
 WP-CRM-01	building	wave 1b+2 workflow	
 WP-CRM-02	building	wave 1b+2 workflow	
-WP-DEB-01	building	wave 1b+2 workflow	
-WP-DEB-02	building	wave 1b+2 workflow	
+WP-DEB-01	building	demo-path wf_77020d51-4e1	
+WP-DEB-02	building	demo-path wf_77020d51-4e1	
 WP-APR-01	building	wave 1b+2 workflow	
 WP-DSC-01	building	wave 1b+2 workflow	
-WP-CRD-01	building	wave 1b+2 workflow	
-WP-CRD-02	building	wave 1b+2 workflow	
-WP-BRF-01	building	wave 1b+2 workflow	
+WP-CRD-01	building	demo-path wf_77020d51-4e1	
+WP-CRD-02	building	demo-path wf_77020d51-4e1	
+WP-BRF-01	building	demo-path wf_77020d51-4e1	
 WP-ALR-01	building	wave 1b+2 workflow	
 WP-PLN-01	building	wave 1b+2 workflow	
 WP-PRS-01	building	wave 1b+2 workflow	
@@ -36,7 +36,7 @@ WP-APP-04	in_review	screens wf_b984050f-fd0	evidence/WP-APP-04/ · built+tests+s
 WP-APP-05	in_review	screens wf_b984050f-fd0	evidence/WP-APP-05/ · built · team roster via new fn team-list (WP-DSH-01)
 WP-APP-06	in_review	screens wf_b984050f-fd0	evidence/WP-APP-06/ · built · kpi-drilldown enum extended
 WP-APP-07	in_review	screens wf_b984050f-fd0	evidence/WP-APP-07/ · built+tests+shots (mock) · live in WP-APP-08
-WP-BUD-01	building	wave 3 workflow	
+WP-BUD-01	building	demo-path wf_77020d51-4e1	
 WP-APV-01	building	wave 3 workflow	
 WP-PRS-02	building	wave 3 workflow	
 WP-DSH-01	building	wave 3 workflow	
@@ -48,9 +48,9 @@ WP-OPS-02	building	wave 3 workflow
 WP-APP-09	building	wave 3 workflow	
 WP-BUD-02	building	wave 3 workflow	
 WP-APP-08	building	wave 3 workflow	
-WP-BUD-03	building	wave 4 wf_b113d915-c6d	
-WP-DEMO-01	building	wave 4 wf_b113d915-c6d	
-WP-E2E-05	building	wave 4 wf_b113d915-c6d	
-WP-MTG-01	building	wave 4 wf_b113d915-c6d	
-WP-MTG-02	building	wave 4 wf_b113d915-c6d	
-WP-QA-02	building	wave 4 wf_b113d915-c6d	
+WP-BUD-03	building	session AI-Native CRM Sales Meeting Assistant	
+WP-DEMO-01	building	demo-path wf_77020d51-4e1	
+WP-E2E-05	building	demo-path wf_77020d51-4e1	
+WP-MTG-01	building	session AI-Native CRM Sales Meeting Assistant	
+WP-MTG-02	building	session AI-Native CRM Sales Meeting Assistant	
+WP-QA-02	building	demo-path wf_77020d51-4e1	

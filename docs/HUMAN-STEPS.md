@@ -1,7 +1,7 @@
 # Steps that need a person
 
 ## Submission (code freeze today 18:00)
-0a. **Create the submission repo** (GitHub or as the organizers require) and push this folder. The local git repo has no commits yet; agents were told not to commit. Run `git add -A && git commit -m "Merc"` then add the remote and push.
+0a. ✅ **Repo pushed** to https://github.com/wonderful-kampouris/merc (private). Re-publish any time with `scripts/publish.sh` (clean export, no nested .git/node_modules); run it one last time just before 18:00. **You:** make it public or add the organizers, per the submission rules: `gh repo edit wonderful-kampouris/merc --visibility public --accept-visibility-change-consequences`.
 0b. **Record the demo video** (J1 + J3 + J4, under 3 minutes) and fill in the project details form.
 0c. **Pitch**: 3 minutes; use `docs/demo/` once WP-DEMO-01 lands.
 
@@ -18,8 +18,8 @@ Agents cannot do these unattended. Each one unblocks a requirement. Platform is 
 6. **Demo users.** Invite nikos, eleni, thanasis, maria, giorgos and dimitra. Put their Wonderful user ids in `infra/seed/wuid.json` and re-run the seed loader. Grant app roles with `wful apps access-grant --app merc --user <email> --role rep|manager`.
 
 ## Twilio side for +18455133803 (owner of the number: you got it via the Greek sandbox / Wonderful SIP)
-T1. Ask whoever owns the Twilio account behind +18455133803 (Aris/organizers) to set, on that number's Elastic SIP trunk: Secure Trunking on; Origination `sip:delta-default.sip.greece-hackathon.sb.wonderful.ai:5061;transport=tls`; number attached to the trunk; Termination URI `delta-hackathon.pstn.twilio.com` (or tell us their name and we update Wonderful trunk `delta-hackathon`); termination IP ACL 3.125.129.30/32.
-T2. Call +18455133803 from a phone: Merc Buddy should answer. Then set global `MERC_CHANNELS_LIVE` = true in the dev workspace to let Merc place outbound calls.
+T1. ~~Twilio trunk setup~~ DONE 2026-11-15: subaccount greek, trunk team-delta, secure trunking, origination, DID attached, termination delta-hackathon + ACL delta-wonderful-outbound (3.125.129.30/32).
+T2. Outbound to Greece works (test call 2026-11-15). Still to do: call +18455133803 from your phone to test inbound. Before setting global `MERC_CHANNELS_LIVE` = true, make sure every `app_user.phone` in the dev seed is a team member's real phone (P0 below), otherwise the callbacks cron may dial seed numbers.
 
 ## WhatsApp (you set it up in FSM). Please answer, then do the steps
 W1. **Where is it?** Which tenant/workspace holds the WhatsApp connection (WABA), and what is the number? It has to be the `hackathon` tenant that runs merc-buddy; one WABA cannot be connected to two tenants. If it lives in another tenant (e.g. an FSM tenant), tell me and we pick: move it, or add a second number to a WABA connected here.

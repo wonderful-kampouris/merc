@@ -20,8 +20,10 @@ Rebuild after any handler or contract change: `pnpm --dir agents/merc-buddy buil
 ## How a tool call runs
 1. The model fills only the contract `parameters`. `caller` is never a parameter.
 2. `runTool` reads secret `MERC_INTERNAL_CALL_KEY`, verifies the `merc_uid|merc_org|merc_exp` HMAC claim in
-   `communication.metadata` (minted by `fn:merc-chat-token` into the Chat SDK user token), and logs
-   `{merc_tool, fn, caller, caller_source: "signed_session_claim"}`.
+   `communication.metadata` (minted by `fn:merc-chat-token` into the Chat SDK user token), or on phone/WhatsApp the
+   platform channel number (REQ-BUD-013), and logs one short line on EVERY call (REQ-BUD-002):
+   `{merc_tool, caller, caller_source: "signed_session_claim" | "channel_number" | "demo_global", outcome, ms}`.
+   Handler logs and the injected field list are printed only when the call fails, to keep the model's context small.
 3. Injected values come from the session: `conversation_id` = communication id, `language` = session locale (el/en),
    `lat/lng` from `communication.metadata.merc_lat/merc_lng` (or `device_location`), constants such as `origin=manual`.
 4. `runAsTool(slug, impl)` runs the same handler as the Wonderful Function (REQ-CORE-004).
@@ -35,14 +37,21 @@ The handlers also need `shared/llm` and `shared/live`, which are not in the Shar
 `@merc/core` already lags the monorepo contracts (generated schemas differ). One bundle keeps handler, core and contracts
 from the same tree. The Shared Library stays attached on `main` for shared tools later.
 
-## REQ-BUD-012 / OPEN-11 hands-free phone (decision)
-Not in the demo. The phone channel needs a phone number on this agent (human step) and a second identity path: the
-tools accept only the signed Chat SDK claim, so a phone session would need `fn:merc-chat-token`-equivalent claims
-written into communication metadata by an on_start tool that maps the caller id to `app_user.phone` and asks a PIN.
-Until then reps use browser voice in the Rep App (works with the phone screen locked only while the page is open).
+## REQ-BUD-012 / OPEN-11 phone and WhatsApp (status)
+The same agent serves browser voice, the Merc number (`MERC_BUDDY_NUMBER`) and WhatsApp: identity comes from the signed
+claim or, with no claim, from the channel number matched to one active `app_user.phone` with `phone_channel_enabled`
+(`@merc/core` `callerFromTool`, REQ-BUD-013; an unknown number gets `forbidden: Merc does not know this number`).
+Channel tools (`call_me_back`, `send_debrief_confirmation`, `report_buddy_call_outcome`) and the `reach_me` /
+`meeting_loop` skills are WP-BUD-03 / WP-MTG. Assigning the number and the WhatsApp connection to this agent, and the
+live test call, are human steps (no calls are placed from builders).
 
-## TODO / cut
-- `undo_action`: `shared/handlers/src/ai-action-undo.ts` does not exist yet; the tool answers `blocked_by_policy`
-  naming the missing handler. Re-run `pnpm build` once it lands.
-- `get_visit_card` skips Context Hub passages (no `context.api` in tools); the pitch still uses merc-write.
+## MERC_DEMO_CALLER_PHONE (demo only)
+Added at the team lead's request for the pitch. When this global holds an `app_user.phone`, a session without a signed
+claim (console chat, any phone/WhatsApp number) runs as that user and logs `caller_source: "demo_global"`. A present but
+invalid or expired claim stays forbidden. It is unset on dev, so dev meets REQ-BUD-002/013. Remove after the demo.
+
+## Notes / cut
+- `get_visit_card` skips Context Hub passages when the agent has no service account (`context.api`); the pitch still
+  uses merc-write.
 - `find_shops`: contract injects `device_location?` but `fn:prospect-search` has no lat/lng; dropped (change request).
+- Evals live in `evals/` and are owned by WP-BUD-02.

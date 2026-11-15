@@ -13,6 +13,8 @@ export interface PlatformLike {
   globals?: { get(name: string): unknown } | null;
   /** Workspace the call runs in (context.metadata.workspaceId). */
   workspaceId?: string | null;
+  /** context.api: present only when the function/agent has a service account (live push, outbound calls). */
+  api?: { post(path: string, options?: { body?: unknown; query?: Record<string, unknown>; headers?: Record<string, string> }): Promise<unknown> } | null;
 }
 export interface Invocation<S extends FunctionSlug, P extends Principal = UserPrincipal> { req: FunctionRequestMap[S]; db: Db; me: P; platform: PlatformLike }
 /** A handler. App and tool entries give a UserPrincipal; system entries give a Principal (user or system). */
@@ -51,7 +53,7 @@ export async function runFunction<S extends FunctionSlug, P extends Principal>(s
 export interface FunctionContext extends FunctionContextLike, PlatformLike { data?: unknown; tables: TablesApi }
 const platformOf = (c: PlatformLike & { metadata?: unknown }): PlatformLike => {
   const ws = (c.metadata as { workspaceId?: unknown } | null | undefined)?.workspaceId;
-  return { secrets: c.secrets ?? null, globals: c.globals ?? null, workspaceId: typeof ws === "string" && ws ? ws : null };
+  return { secrets: c.secrets ?? null, globals: c.globals ?? null, workspaceId: typeof ws === "string" && ws ? ws : null, api: c.api ?? null };
 };
 /** A secret as a plain string: `Other` secrets are strings, typed ones carry value/token/api_key. Null when unset. */
 export function secretString(platform: PlatformLike, name: string): string | null {

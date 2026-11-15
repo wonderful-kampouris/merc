@@ -5,6 +5,7 @@ export * from "./me";
 export * from "./scope";
 export * from "./handler";
 export * from "./dates";
+export * from "./text";
 export { hmacSha256Hex, safeEqual } from "./hmac";
 export { TABLES, TABLE_ORDER, ROLE_PERMISSIONS, MERC_SCHEMA } from "./generated/tables";
 export type * from "./generated/tables";

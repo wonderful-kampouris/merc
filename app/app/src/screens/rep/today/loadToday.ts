@@ -1,6 +1,6 @@
 import type { ApiError } from "../../../contracts";
 import { MercApiError, type MercClient } from "../../../lib/client";
-import { createCacheEntry, type TodayCacheStore, type TodayData } from "./planCache";
+import { createCacheEntry, parseTasks, type TodayCacheStore, type TodayData } from "./planCache";
 import { dataForDate, localDate } from "./todayModel";
 
 export type TodaySource = "live" | "cache";
@@ -15,7 +15,7 @@ export interface TodayLoad {
   /** Why the live fetch was not used: "offline" or the error code. */
   fallbackReason: "offline" | ApiError["code"] | null;
   /** Secondary sections that failed live (briefing, plan, performance); shown from cache when possible. */
-  failed: Array<"briefing" | "plan" | "performance">;
+  failed: Array<"briefing" | "plan" | "performance" | "tasks">;
 }
 
 export class TodayUnavailableError extends Error {
@@ -59,10 +59,11 @@ export async function loadToday(client: Pick<MercClient, "call">, opts: LoadToda
     return fromCache(opts, codeOf(e), e);
   }
   const prev = opts.cache.read()?.data ?? null;
-  const [briefing, plan, performance] = await Promise.allSettled([
+  const [briefing, plan, performance, tasks] = await Promise.allSettled([
     today.briefing_id ? client.call("briefing-get", { date: today.date }) : Promise.resolve(null),
     client.call("visit-plan-get", {}),
     client.call("my-performance", { period: "week" }),
+    client.call("tasks-list", { status: "open", limit: 20 }).then(parseTasks),
   ]);
   const failed: TodayLoad["failed"] = [];
   const pick = <T>(r: PromiseSettledResult<T>, name: TodayLoad["failed"][number], cached: T | null): T | null => {
@@ -76,6 +77,7 @@ export async function loadToday(client: Pick<MercClient, "call">, opts: LoadToda
     briefing: pick(briefing, "briefing", prev?.briefing?.date === today.date ? prev.briefing : null),
     plan: pick(plan, "plan", prev?.plan ?? null),
     performance: pick(performance, "performance", prev?.performance ?? null),
+    tasks: pick(tasks, "tasks", prev?.tasks ?? null),
   };
   const entry = createCacheEntry(data, opts.now);
   opts.cache.write(entry);

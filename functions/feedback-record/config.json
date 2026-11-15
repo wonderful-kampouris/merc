@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "feedback-record",
+  "description": "Merc fn:feedback-record: records the rep's reaction to a brief or a debrief summary (contracts/functions/feedback-record.json, REQ-MTG-007/008). Source: Merc monorepo shared/handlers/src/feedback-record.ts.",
+  "method": "POST",
+  "path_slug": "feedback-record",
+  "param_mapping": {}
+}

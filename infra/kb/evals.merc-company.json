@@ -1,0 +1,4 @@
+[
+  { "slug": "never-promise", "name": "What we never promise", "question": "Can I promise the owner a delivery date or a discount to close the order?", "expected_answer": "No. Never promise a delivery, a price or a discount we cannot keep; if stock is short, say so.", "gate": false },
+  { "slug": "why-guidance", "name": "Why push and avoid exist", "question": "Where do Merc's push and avoid product hints come from?", "expected_answer": "From the product_guidance rows; the company profile explains why they exist, while prices, stock and quantities always come from the tables.", "gate": false }
+]

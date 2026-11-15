@@ -20,6 +20,7 @@ export async function bundleText() {
     `export { runForOps } from "./handlers/src/summary-data";`,
     `export { createDb } from "./core/src/index";`,
     `export { unknownNumbers } from "./llm/src/evidence";`,
+    `export { deliverRelayedWhatsApp } from "./handlers/src/buddy-call-start";`,
   ].join("\n");
   const r = await build({
     stdin: { contents, resolveDir: join(ROOT, "shared"), sourcefile: "merc-ops-backend.ts", loader: "ts" },

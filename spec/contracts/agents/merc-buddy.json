@@ -64,7 +64,8 @@
         "log_visit",
         "get_debrief_result",
         "undo_action",
-        "resolve_approval"
+        "resolve_approval",
+        "record_feedback"
       ]
     },
     {

@@ -1,0 +1,14 @@
+{
+  "kind": "cron",
+  "name": "merc-watch-previsit-brief-missed",
+  "description": "Merc monitor watch 'previsit-brief-missed' (WP-QA-02, REQ-OPS-003): planned visit started with no visit_brief sent > 0 per day (REQ-MTG-001). Fails the run on a breach so the merc-previsit-brief-missed CronFunctionFailure monitor fires. Source: infra/monitors/src/watches.ts",
+  "timeout_ms": 30000,
+  "cron_schedules": [
+    {
+      "cron_expression": "0 * * * *",
+      "timezone": "Europe/Athens",
+      "params": {},
+      "enabled": true
+    }
+  ]
+}

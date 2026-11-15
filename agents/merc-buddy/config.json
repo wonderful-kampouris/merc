@@ -5,7 +5,7 @@
     "display_name": "Merc Buddy",
     "description": "Merc field-sales voice buddy for reps (WP-BUD-01): briefing, visit cards, spoken debriefs, approvals, discounts, planning, prospecting. Identity from a signed Chat SDK user token.",
     "mode": "conversational",
-    "locale": "el-GR",
+    "locale": "en-US",
     "timezone": "Europe/Athens",
     "gender": "female"
   },
@@ -13,7 +13,7 @@
     "orchestrator_type": "traditional",
     "tts": {
       "priority": [
-        "athina_greek"
+        "bella_english"
       ],
       "failure_threshold": 2,
       "synthesis_timeout_seconds": 3,
@@ -26,7 +26,7 @@
         "soniox": {
           "provider": "soniox",
           "model": "default",
-          "language": "el-GR",
+          "language": "en-US",
           "smart_format": false,
           "punctuate": false,
           "endpointing": 0,
@@ -62,7 +62,7 @@
         "enabled": true,
         "version": "smart-turn",
         "detection_model": "v3.2-english-v2.2",
-        "timeout_ms": 500,
+        "timeout_ms": 300,
         "settings": {},
         "playback_pause": {
           "enabled": true,
@@ -89,14 +89,13 @@
       "fluent_chunking": true
     },
     "language": {
-      "main": "el-GR",
+      "main": "en-US",
       "enabled": [
-        "el-GR",
         "en-US"
       ],
       "switch_mode": "text_detect",
       "auto_detect": {
-        "enabled": true,
+        "enabled": false,
         "min_chars": 12,
         "min_confidence": 0.7,
         "stable_count": 1,
@@ -107,7 +106,7 @@
         "enabled": false
       },
       "auto_translate_tool_notes": false,
-      "multilingual_enabled": true,
+      "multilingual_enabled": false,
       "voice_overrides": {
         "en-US": {
           "voice_library_primary_id": "300509b6-746d-47ca-9aad-74c314c1de4a"
@@ -117,8 +116,8 @@
       "realtime_voice_overrides": {},
       "initial_messages_by_locale": {
         "en-US": {
-          "voice": "Hi, it's Merc. What are we doing?",
-          "chat": "Hi, it's Merc. What are we doing?"
+          "voice": "Hey, Merc here. Next stop, or log a visit?",
+          "chat": "Hey, Merc here. Next stop, or log a visit?"
         }
       }
     }
@@ -131,8 +130,8 @@
     "channels": {
       "voice": {
         "initial_message": {
-          "enabled": true,
-          "text": "Γεια σου, εδώ Merc. Τι κάνουμε;",
+          "enabled": false,
+          "text": "Hey, Merc here. Next stop, or log a visit?",
           "translations": {}
         },
         "timeouts": {
@@ -180,7 +179,7 @@
       "chat": {
         "initial_message": {
           "enabled": true,
-          "text": "Γεια σου, εδώ Merc. Τι κάνουμε;",
+          "text": "Hey, Merc here. Next stop, or log a visit?",
           "translations": {}
         },
         "timeouts": {
@@ -282,7 +281,19 @@
       "disable_json_diacritics": false,
       "disable_hours_and_numbers_diacritics": false
     },
-    "tool_overrides": {}
+    "tool_overrides": {},
+    "global_tools": {
+      "call_opening": {
+        "type": "programmable",
+        "description": "Trigger-only (session start): opening line for voice calls.",
+        "parameters": []
+      },
+      "call_closing": {
+        "type": "programmable",
+        "description": "Trigger-only (session end): closes the buddy_call row of an outbound call.",
+        "parameters": []
+      }
+    }
   },
   "ai": {
     "llm": {

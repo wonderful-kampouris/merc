@@ -1,6 +1,6 @@
 // fn:product-lookup (contracts/functions/product-lookup.json, REQ-CRD-005): catalog answers (price, unit,
 // availability) straight from tbl:product. Values are rows, never model output (REQ-CORE-003).
-import { defineFunction, today, type Db, type Impl, type Row } from "../../core/src/index";
+import { defineFunction, today, type Db, type Impl, type Row, stripAccents } from "../../core/src/index";
 
 export type ProductItem = {
   product_id: string; sku: string; name: string; unit: string; list_price_minor: number;
@@ -9,7 +9,7 @@ export type ProductItem = {
 
 /** Lower case, accents removed, punctuation to spaces (so "Espresso-Nuovo" and "espresso nuovo" match). */
 export const norm = (s: string): string =>
-  s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+  stripAccents(s).toLowerCase().replace(/[^a-z0-9\u00c0-\u024f\u0370-\u03ff\u1f00-\u1fff]+/g, " ").trim();
 
 /** Tokens of 2+ chars, without filler words that carry no product meaning. */
 const FILLER = new Set(["the", "a", "of", "how", "much", "is", "price", "for", "and", "to", "το", "η", "ο", "τι", "πόσο", "ποσο", "κάνει", "κανει", "τιμή", "τιμη"]);

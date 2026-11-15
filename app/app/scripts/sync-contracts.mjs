@@ -35,7 +35,7 @@ const catalog = {
   })),
   default_role: app.default_role,
   workspace_admin_role: app.workspace_admin_role,
-  audience_roles: { anonymous: [], workspace_members: [app.default_role], app_editors: [app.workspace_admin_role] },
+  audience_roles: { anonymous: [], workspace_members: [app.workspace_admin_role] /* demo: every workspace member (judges included) gets the full app */, app_editors: [app.workspace_admin_role] },
 };
 const manifestPath = join(appDir, "../wonderful.json");
 const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));

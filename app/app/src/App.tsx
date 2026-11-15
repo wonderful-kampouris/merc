@@ -1,4 +1,5 @@
 import "./style.css";
+import { openMercLive } from "./lib/liveSocket";
 import { useWonderful } from "@wonderful/app-sdk";
 import { useMemo, useRef, useState } from "react";
 import { createClient } from "./lib/client";
@@ -47,7 +48,7 @@ export default function App() {
   const liveClient = screen.shell === "rep" ? "rep" : "mgmt";
   const openLiveSocket = mock
     ? undefined
-    : () => apiRef.current.openFunctionSocket(`merc/merc-live?client=${liveClient}`) as unknown as SocketLike;
+    : () => openMercLive((slug) => apiRef.current.openFunctionSocket(slug), liveClient) as unknown as SocketLike;
 
   const navigate = (r: string) => {
     setRoute(r);

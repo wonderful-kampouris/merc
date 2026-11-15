@@ -3,16 +3,15 @@
 // (evidence, numbers, ids, dates, channel) -> internal actions applied as ai_action rows with snapshots,
 // the follow-up message drafted as a customer_message approval (never sent here) -> ResultCard.
 //
-// WP-CORE-03 (shared/autonomy propose()) did not land, so the small engine below (modeFor/applyAction) does
-// the same thing locally: mode from ai_permission (role) else action_type.default_mode, destructive never,
-// auto -> write + ai_action(applied, before/after snapshot in shared/autonomy/src/snapshot.ts format, so
-// fn:ai-action-undo restores it), ask/never -> ai_action(suggested) without a write.
+// Every action goes through shared/autonomy propose(): mode from ai_permission (role) else
+// action_type.default_mode, destructive never; auto -> write + ai_action(applied, before/after snapshots that
+// fn:ai-action-undo restores), ask/never -> ai_action(suggested) without a write.
 import {
   addDays, blocked, invalid, listAccounts, localParts, nextWeekday, notFound, principalFromFunction, requireAccount,
-  runFunction, today, zonedInstant, assertOwner, type Db, type FunctionContext, type Impl, type Row, type TableName, type UserPrincipal,
+  runFunction, today, zonedInstant, assertOwner, type Db, type FunctionContext, type Impl, type Row, type UserPrincipal,
 } from "../../core/src/index";
 import { callStructured, enforceDebriefEvidence, extractNumbers, normalizeText, evidenceInUtterance, unknownNumbers, type CallResult, type DebriefOutput, type Dropped, type LlmInputMap, type LlmOutputMap } from "../../llm/src/index";
-import { encode, type SnapRow } from "../../autonomy/src/snapshot";
+import { propose, undo, type ActionClass, type Target, type Writer } from "../../autonomy/src/index";
 import { pushToRepAndTeams, type ApiLike } from "../../live/src/index";
 import { draftMessage } from "./draft-message";
 import type { ModelFactory } from "../../llm/src/index";
@@ -187,65 +186,18 @@ export function spokenSummary(lines: Line[], approvals: ApprovalCard[], missing:
 }
 
 // ---------------------------------------------------------------------------------------------------------
-// Local autonomy engine (see header).
-type Mode = "auto" | "ask" | "never";
-type ActionClass = Line["action_class"];
-export async function modeFor(db: Db, me: UserPrincipal, code: string): Promise<{ mode: Mode; action_class: ActionClass }> {
-  const at = await db.action_type.get(code);
-  if (!at) throw invalid(`unknown action type ${code}`);
-  const perm = await db.ai_permission.findOne({ role_code: me.role, action_type_code: code });
-  const action_class = at.action_class as ActionClass;
-  const mode = action_class === "destructive" ? "never" : ((perm?.mode ?? at.default_mode) as Mode);
-  return { mode, action_class };
-}
-
-interface Ctx { db: Db; me: UserPrincipal; voiceLogId: string; lang: Lang; nowIso: string; lines: Line[]; perms: Map<string, { mode: Mode; action_class: ActionClass }> }
-type Write = { table: TableName; id: string; before: Record<string, unknown> | null; after: Record<string, unknown> };
-const strip = (r: object) => { const o = { ...(r as Record<string, unknown>) }; delete o.created_at; delete o.updated_at; return o; };
-const repo = (db: Db, t: TableName) => (db as unknown as Record<string, { insert(d: unknown): Promise<any>; update(id: string, p: unknown): Promise<any>; get(id: string): Promise<any> }>)[t]!;
-
-/** Insert/update helpers that record before/after rows for the snapshot. */
-class Writer {
-  readonly writes: Write[] = [];
-  constructor(private db: Db) {}
-  async insert<N extends TableName>(t: N, data: Record<string, unknown>): Promise<Row<N>> {
-    const row = await repo(this.db, t).insert(data);
-    this.writes.push({ table: t, id: row.id ?? row.code, before: null, after: strip(row) });
-    return row;
-  }
-  async update<N extends TableName>(t: N, id: string, patch: Record<string, unknown>, before?: object): Promise<Row<N>> {
-    const b = before ?? (await repo(this.db, t).get(id));
-    const row = await repo(this.db, t).update(id, patch);
-    this.writes.push({ table: t, id, before: strip(b), after: strip(row) });
-    return row;
-  }
-}
+// Autonomy: every AI write goes through shared/autonomy propose() (REQ-CORE-005/006).
+interface Ctx { db: Db; me: UserPrincipal; voiceLogId: string; lang: Lang; nowIso: string; lines: Line[] }
 
 /**
- * Run one AI action through the mode check. auto: `apply` writes (via the Writer) and an applied ai_action with
- * snapshots is stored. ask/never: nothing is written except a suggested ai_action. Returns the ai_action and line.
+ * Run one AI action through its mode (propose). auto: `apply` writes through the Writer and an applied ai_action
+ * with before/after snapshots is stored (fn:ai-action-undo restores it). ask/never: nothing is written except a
+ * suggested ai_action (ask also opens the approval). Pushes the card line.
  */
-async function act(c: Ctx, code: string, summary: string, payload: unknown, apply: (w: Writer) => Promise<{ table: string; id: string } | null>): Promise<{ aiId: string; applied: boolean; target: { table: string; id: string } | null }> {
-  const p = c.perms.get(code) ?? (await modeFor(c.db, c.me, code));
-  c.perms.set(code, p);
-  let target: { table: string; id: string } | null = null;
-  let writes: Write[] = [];
-  const applied = p.mode === "auto";
-  if (applied) { const w = new Writer(c.db); target = await apply(w); writes = w.writes; }
-  const before: SnapRow[] = writes.map((x) => ({ table: x.table, id: x.id, row: x.before }));
-  const after: SnapRow[] = writes.map((x) => ({ table: x.table, id: x.id, row: x.after }));
-  const ai = await c.db.ai_action.insert({
-    on_behalf_of: c.me.id, agent: "debrief", action_type_code: code, target_table: target?.table ?? null, target_id: target?.id ?? null,
-    voice_log_id: c.voiceLogId, status: applied ? "applied" : "suggested", reason: summary.slice(0, 500),
-    payload_json: JSON.stringify(payload ?? null), before_snapshot_json: applied ? encode(before) : null, after_snapshot_json: applied ? encode(after) : null,
-    applied_at: applied ? c.nowIso : null,
-  } as never);
-  c.lines.push({
-    ai_action_id: ai.id, action_type: code, action_class: p.action_class, status: applied ? "applied" : "suggested",
-    summary: applied ? summary : T.suggested[c.lang](summary), target_table: target?.table ?? null, target_id: target?.id ?? null,
-    undoable: applied && p.action_class === "internal" || applied && p.action_class === "draft", approval_id: null,
-  });
-  return { aiId: ai.id, applied, target };
+async function act(c: Ctx, code: string, summary: string, payload: unknown, apply: (w: Writer) => Promise<Target>): Promise<{ aiId: string; applied: boolean; target: Target }> {
+  const o = await propose(c.db, c.me, { code, agent: "debrief", summary, payload, voice_log_id: c.voiceLogId, apply }, { now: Date.parse(c.nowIso) });
+  c.lines.push({ ...o.line, summary: o.applied ? summary : T.suggested[c.lang](summary) });
+  return { aiId: o.ai_action.id, applied: o.applied, target: o.target };
 }
 
 // ---------------------------------------------------------------------------------------------------------
@@ -375,7 +327,7 @@ async function applyOutput(c: Ctx, x: ExtractionContext, out: DebriefOutput, acc
     const planned = visitId ? await db.visit.get(visitId) : (await db.visit.all({ account_id: account.id, rep_id: me.id, planned_date: day, status: "planned" }))[0] ?? null;
     if (!planned || planned.status !== "done") {
       const r = await act(c, "mark_visit_done", T.visit[lang], { visit_id: planned?.id ?? null }, async (w) => {
-        if (planned) { await w.update("visit", planned.id, { status: "done", completed_at: nowIso, outcome: out.note.slice(0, 500) }, planned); return { table: "visit", id: planned.id }; }
+        if (planned) { await w.update("visit", planned.id, { status: "done", completed_at: nowIso, outcome: out.note.slice(0, 500) }); return { table: "visit", id: planned.id }; }
         const v = await w.insert("visit", { account_id: account.id, rep_id: me.id, origin: "buddy", planned_date: day, status: "done", started_at: nowIso, completed_at: nowIso, outcome: out.note.slice(0, 500) });
         return { table: "visit", id: v.id };
       });
@@ -389,7 +341,7 @@ async function applyOutput(c: Ctx, x: ExtractionContext, out: DebriefOutput, acc
       const patch: Record<string, unknown> = { status: p.status, voice_log_id: c.voiceLogId };
       if (p.due_date) patch.due_date = p.due_date;
       if (p.status === "resolved") patch.resolved_at = nowIso;
-      await act(c, "update_problem", T.problemUpd[lang](cur.description, T.statusWord[lang](p.status)), { ...p, patch }, async (w) => { await w.update("problem", cur.id, patch, cur); return { table: "problem", id: cur.id }; });
+      await act(c, "update_problem", T.problemUpd[lang](cur.description, T.statusWord[lang](p.status)), { ...p, patch }, async (w) => { await w.update("problem", cur.id, patch); return { table: "problem", id: cur.id }; });
     } else {
       await act(c, "create_problem", T.problemNew[lang](p.description), p, async (w) => {
         const r = await w.insert("problem", { account_id: account.id, description: p.description, status: p.status, due_date: p.due_date ?? null, resolved_at: p.status === "resolved" ? nowIso : null, voice_log_id: c.voiceLogId });
@@ -410,7 +362,7 @@ async function applyOutput(c: Ctx, x: ExtractionContext, out: DebriefOutput, acc
     if (x.stages.find((s) => s.code === patch.stage_code)?.is_closed) patch.closed_at = nowIso;
     if (Object.keys(patch).length > 1) {
       await act(c, "update_deal", T.dealUpd[lang](cur.title), { ...du, patch }, async (w) => {
-        await w.update("deal", cur.id, patch, cur);
+        await w.update("deal", cur.id, patch);
         if (patch.stage_code) await w.insert("deal_stage_history", { deal_id: cur.id, from_stage_code: cur.stage_code, to_stage_code: patch.stage_code, changed_by: me.id, changed_at: nowIso });
         return { table: "deal", id: cur.id };
       });
@@ -448,7 +400,7 @@ async function applyOutput(c: Ctx, x: ExtractionContext, out: DebriefOutput, acc
       const patch: Record<string, unknown> = {};
       for (const f of ["role_title", "phone", "email"] as const) if (k[f] && k[f] !== cur[f]) patch[f] = k[f];
       if (typeof k.is_decision_maker === "boolean" && k.is_decision_maker !== cur.is_decision_maker) patch.is_decision_maker = k.is_decision_maker;
-      if (Object.keys(patch).length) await act(c, "update_contact", T.contactUpd[lang](cur.full_name), { ...k, patch }, async (w) => { await w.update("contact", cur.id, patch, cur); return { table: "contact", id: cur.id }; });
+      if (Object.keys(patch).length) await act(c, "update_contact", T.contactUpd[lang](cur.full_name), { ...k, patch }, async (w) => { await w.update("contact", cur.id, patch); return { table: "contact", id: cur.id }; });
     } else {
       const r = await act(c, "create_contact", T.contactNew[lang](k.full_name), k, async (w) => {
         const row = await w.insert("contact", { account_id: account.id, full_name: k.full_name, role_title: k.role_title ?? null, phone: k.phone ?? null, email: k.email ?? null, is_decision_maker: k.is_decision_maker ?? false });
@@ -635,9 +587,24 @@ export function makeImpl(deps: DebriefDeps): Impl<"debrief-process"> {
       if (!PROCESSABLE.has(vl.status)) throw invalid(`voice log is ${vl.status}`);
       if (!vl.transcript?.trim()) throw blocked("this voice log has no transcript yet (transcription pending)", { voice_log_id: vl.id, status: vl.status });
     } else {
+      let transcript = req.utterance!.trim();
+      if (req.corrects_voice_log_id) {
+        // A fix of a debrief already logged: undo all its applied lines, then re-log the original words plus the fix.
+        const orig = await db.voice_log.require(req.corrects_voice_log_id);
+        assertOwner(me, orig.rep_id, "voice log");
+        if (orig.status !== "completed" || !orig.account_id) throw invalid(`only a completed debrief can be corrected (voice log is ${orig.status})`);
+        if (req.account_id && req.account_id !== orig.account_id) throw invalid("a correction keeps the account of the debrief it corrects");
+        req = { ...req, account_id: orig.account_id };
+        const acts = (await db.ai_action.all({ voice_log_id: orig.id })).filter((a) => a.status === "applied")
+          .sort((a, b) => Number(b.created_at ?? 0) - Number(a.created_at ?? 0));
+        for (const a of acts) {
+          try { await undo(db, me, a.id, { now: t0 }); } catch (e) { deps.log?.(`debrief-process correction: could not undo ${a.id} (${a.action_type_code}): ${(e as Error).message}`); }
+        }
+        transcript = `${orig.transcript?.trim() ?? ""} Correction: ${transcript}`.trim();
+      }
       vl = await db.voice_log.insert({
         rep_id: me.id, account_id: null, capture_mode: req.conversation_id ? "live_buddy" : "typed", wonderful_conversation_id: req.conversation_id ?? null,
-        language: req.language ?? null, transcript: req.utterance!.trim(), status: "processing", idempotency_key: `debrief:${me.id}:${t0}:${rand()}`, recorded_at: nowIso,
+        language: req.language ?? null, transcript, status: "processing", idempotency_key: `debrief:${me.id}:${t0}:${rand()}`, recorded_at: nowIso,
       } as never);
     }
     const utterance = vl.transcript!.trim();
@@ -670,7 +637,7 @@ export function makeImpl(deps: DebriefDeps): Impl<"debrief-process"> {
     if (dropped.length) deps.log?.(`debrief-process dropped ${dropped.length}: ${JSON.stringify(dropped).slice(0, 800)}`);
 
     // 4. actions
-    const c: Ctx = { db, me, voiceLogId: vl.id, lang, nowIso, lines: [], perms: new Map() };
+    const c: Ctx = { db, me, voiceLogId: vl.id, lang, nowIso, lines: [] };
     const api = (platform as { api?: ApiLike | null }).api ?? null;
     const { approvals, visitId } = await applyOutput(c, x, out, account, vl.visit_id ?? null, day, deps, api);
 

@@ -36,6 +36,13 @@
           "required": false,
           "is_exposed_to_llm": true,
           "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "corrects_voice_log_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
         }
       ],
       "config": {
@@ -105,6 +112,54 @@
       ],
       "config": {
         "timeout": 30000,
+        "is_interruptible": false
+      }
+    },
+    "record_feedback": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "kind",
+          "type": "enum",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "brief_useful",
+            "brief_not_useful",
+            "debrief_confirmed",
+            "debrief_corrected"
+          ]
+        },
+        {
+          "name": "visit_brief_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "debrief_confirmation_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true
+        },
+        {
+          "name": "correction_voice_log_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
         "is_interruptible": false
       }
     }

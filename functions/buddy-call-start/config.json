@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "buddy-call-start",
+  "description": "Merc fn:buddy-call-start: merc-buddy calls or WhatsApps the rep on their own number (REQ-BUD-013/014, REQ-MTG-001/005/006) (contracts/functions/buddy-call-start.json). Live sends only when global MERC_CHANNELS_LIVE is true. Source: Merc monorepo shared/handlers/src/buddy-call-start.ts.",
+  "method": "POST",
+  "path_slug": "buddy-call-start",
+  "param_mapping": {}
+}

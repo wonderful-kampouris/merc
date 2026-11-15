@@ -877,6 +877,23 @@ var TABLES = {
           "active",
           "left"
         ]
+      },
+      "phone_channel_enabled": {
+        "type": "boolean",
+        "required": false
+      },
+      "notify_channel": {
+        "type": "string",
+        "required": false,
+        "enum": [
+          "app",
+          "whatsapp",
+          "call"
+        ]
+      },
+      "whatsapp_window_until": {
+        "type": "datetime",
+        "required": false
       }
     },
     "unique": [
@@ -1174,6 +1191,102 @@ var TABLES = {
         "position"
       ]
     ]
+  },
+  "buddy_call": {
+    "name": "buddy_call",
+    "schema": "merc",
+    "pk": "id",
+    "pkAuto": true,
+    "orgScoped": false,
+    "columns": {
+      "id": {
+        "type": "auto_uuid",
+        "required": true
+      },
+      "user_id": {
+        "type": "auto_uuid",
+        "required": true,
+        "ref": {
+          "table": "app_user",
+          "column": "id",
+          "on_delete": "cascade"
+        }
+      },
+      "channel": {
+        "type": "string",
+        "required": true,
+        "enum": [
+          "call",
+          "whatsapp"
+        ]
+      },
+      "purpose": {
+        "type": "string",
+        "required": true,
+        "enum": [
+          "callback",
+          "briefing",
+          "approval_decided",
+          "alert",
+          "eod",
+          "pre_visit",
+          "post_visit",
+          "debrief_confirm"
+        ]
+      },
+      "reason": {
+        "type": "string",
+        "required": false
+      },
+      "due_at": {
+        "type": "datetime",
+        "required": true
+      },
+      "ref_table": {
+        "type": "string",
+        "required": false
+      },
+      "ref_id": {
+        "type": "string",
+        "required": false
+      },
+      "wonderful_conversation_id": {
+        "type": "string",
+        "required": false
+      },
+      "template_name": {
+        "type": "string",
+        "required": false
+      },
+      "status": {
+        "type": "string",
+        "required": true,
+        "enum": [
+          "scheduled",
+          "started",
+          "answered",
+          "no_answer",
+          "busy",
+          "voicemail",
+          "sent",
+          "failed",
+          "cancelled"
+        ]
+      },
+      "failure_reason": {
+        "type": "string",
+        "required": false
+      },
+      "started_at": {
+        "type": "datetime",
+        "required": false
+      },
+      "ended_at": {
+        "type": "datetime",
+        "required": false
+      }
+    },
+    "unique": []
   },
   "campaign": {
     "name": "campaign",
@@ -2060,6 +2173,106 @@ var TABLES = {
     },
     "unique": []
   },
+  "debrief_confirmation": {
+    "name": "debrief_confirmation",
+    "schema": "merc",
+    "pk": "id",
+    "pkAuto": true,
+    "orgScoped": false,
+    "columns": {
+      "id": {
+        "type": "auto_uuid",
+        "required": true
+      },
+      "voice_log_id": {
+        "type": "auto_uuid",
+        "required": true,
+        "ref": {
+          "table": "voice_log",
+          "column": "id",
+          "on_delete": "cascade"
+        }
+      },
+      "rep_id": {
+        "type": "auto_uuid",
+        "required": true,
+        "ref": {
+          "table": "app_user",
+          "column": "id",
+          "on_delete": "restrict"
+        }
+      },
+      "visit_id": {
+        "type": "auto_uuid",
+        "required": false,
+        "ref": {
+          "table": "visit",
+          "column": "id",
+          "on_delete": "set_null"
+        }
+      },
+      "channel": {
+        "type": "string",
+        "required": true,
+        "enum": [
+          "whatsapp",
+          "app",
+          "call"
+        ]
+      },
+      "summary_text": {
+        "type": "string",
+        "required": true
+      },
+      "status": {
+        "type": "string",
+        "required": true,
+        "enum": [
+          "pending",
+          "sent",
+          "confirmed",
+          "corrected",
+          "no_reply",
+          "failed"
+        ]
+      },
+      "buddy_call_id": {
+        "type": "auto_uuid",
+        "required": false,
+        "ref": {
+          "table": "buddy_call",
+          "column": "id",
+          "on_delete": "set_null"
+        }
+      },
+      "reply_text": {
+        "type": "string",
+        "required": false
+      },
+      "sent_at": {
+        "type": "datetime",
+        "required": false
+      },
+      "replied_at": {
+        "type": "datetime",
+        "required": false
+      },
+      "correction_voice_log_id": {
+        "type": "auto_uuid",
+        "required": false,
+        "ref": {
+          "table": "voice_log",
+          "column": "id",
+          "on_delete": "set_null"
+        }
+      }
+    },
+    "unique": [
+      [
+        "voice_log_id"
+      ]
+    ]
+  },
   "discount_policy": {
     "name": "discount_policy",
     "schema": "merc",
@@ -2896,6 +3109,14 @@ var TABLES = {
       "wonderful_workspace_id": {
         "type": "string",
         "required": false
+      },
+      "previsit_lead_minutes": {
+        "type": "number",
+        "required": false
+      },
+      "postvisit_prompt_minutes": {
+        "type": "number",
+        "required": false
       }
     },
     "unique": []
@@ -3083,6 +3304,75 @@ var TABLES = {
       ]
     ]
   },
+  "product_guidance": {
+    "name": "product_guidance",
+    "schema": "merc",
+    "pk": "id",
+    "pkAuto": true,
+    "orgScoped": true,
+    "columns": {
+      "id": {
+        "type": "auto_uuid",
+        "required": true
+      },
+      "org_id": {
+        "type": "auto_uuid",
+        "required": true,
+        "ref": {
+          "table": "organization",
+          "column": "id",
+          "on_delete": "restrict"
+        }
+      },
+      "product_id": {
+        "type": "auto_uuid",
+        "required": true,
+        "ref": {
+          "table": "product",
+          "column": "id",
+          "on_delete": "cascade"
+        }
+      },
+      "category_id": {
+        "type": "auto_uuid",
+        "required": false,
+        "ref": {
+          "table": "account_category",
+          "column": "id",
+          "on_delete": "restrict"
+        }
+      },
+      "stance": {
+        "type": "string",
+        "required": true,
+        "enum": [
+          "push",
+          "avoid"
+        ]
+      },
+      "reason": {
+        "type": "string",
+        "required": true
+      },
+      "priority": {
+        "type": "number",
+        "required": true
+      },
+      "valid_from": {
+        "type": "date",
+        "required": false
+      },
+      "valid_to": {
+        "type": "date",
+        "required": false
+      },
+      "active": {
+        "type": "boolean",
+        "required": true
+      }
+    },
+    "unique": []
+  },
   "prospect_search": {
     "name": "prospect_search",
     "schema": "merc",
@@ -3155,6 +3445,83 @@ var TABLES = {
       "procedure_run_id": {
         "type": "string",
         "required": false
+      }
+    },
+    "unique": []
+  },
+  "rep_feedback": {
+    "name": "rep_feedback",
+    "schema": "merc",
+    "pk": "id",
+    "pkAuto": true,
+    "orgScoped": false,
+    "columns": {
+      "id": {
+        "type": "auto_uuid",
+        "required": true
+      },
+      "rep_id": {
+        "type": "auto_uuid",
+        "required": true,
+        "ref": {
+          "table": "app_user",
+          "column": "id",
+          "on_delete": "cascade"
+        }
+      },
+      "account_id": {
+        "type": "auto_uuid",
+        "required": false,
+        "ref": {
+          "table": "account",
+          "column": "id",
+          "on_delete": "set_null"
+        }
+      },
+      "kind": {
+        "type": "string",
+        "required": true,
+        "enum": [
+          "brief_useful",
+          "brief_not_useful",
+          "debrief_confirmed",
+          "debrief_corrected"
+        ]
+      },
+      "visit_brief_id": {
+        "type": "auto_uuid",
+        "required": false,
+        "ref": {
+          "table": "visit_brief",
+          "column": "id",
+          "on_delete": "set_null"
+        }
+      },
+      "debrief_confirmation_id": {
+        "type": "auto_uuid",
+        "required": false,
+        "ref": {
+          "table": "debrief_confirmation",
+          "column": "id",
+          "on_delete": "set_null"
+        }
+      },
+      "product_id": {
+        "type": "auto_uuid",
+        "required": false,
+        "ref": {
+          "table": "product",
+          "column": "id",
+          "on_delete": "set_null"
+        }
+      },
+      "detail": {
+        "type": "string",
+        "required": false
+      },
+      "exported_to_evals": {
+        "type": "boolean",
+        "required": true
       }
     },
     "unique": []
@@ -3656,6 +4023,14 @@ var TABLES = {
         "type": "string",
         "required": false
       },
+      "planned_start_at": {
+        "type": "datetime",
+        "required": false
+      },
+      "planned_duration_min": {
+        "type": "number",
+        "required": false
+      },
       "skip_reason": {
         "type": "string",
         "required": false
@@ -3670,6 +4045,148 @@ var TABLES = {
       }
     },
     "unique": []
+  },
+  "visit_brief": {
+    "name": "visit_brief",
+    "schema": "merc",
+    "pk": "id",
+    "pkAuto": true,
+    "orgScoped": false,
+    "columns": {
+      "id": {
+        "type": "auto_uuid",
+        "required": true
+      },
+      "visit_id": {
+        "type": "auto_uuid",
+        "required": true,
+        "ref": {
+          "table": "visit",
+          "column": "id",
+          "on_delete": "cascade"
+        }
+      },
+      "rep_id": {
+        "type": "auto_uuid",
+        "required": true,
+        "ref": {
+          "table": "app_user",
+          "column": "id",
+          "on_delete": "restrict"
+        }
+      },
+      "account_id": {
+        "type": "auto_uuid",
+        "required": true,
+        "ref": {
+          "table": "account",
+          "column": "id",
+          "on_delete": "restrict"
+        }
+      },
+      "bullets_text": {
+        "type": "string",
+        "required": true
+      },
+      "spoken_script": {
+        "type": "string",
+        "required": false
+      },
+      "push_product_id": {
+        "type": "auto_uuid",
+        "required": false,
+        "ref": {
+          "table": "product",
+          "column": "id",
+          "on_delete": "set_null"
+        }
+      },
+      "push_reason": {
+        "type": "string",
+        "required": false
+      },
+      "push_guidance_id": {
+        "type": "auto_uuid",
+        "required": false,
+        "ref": {
+          "table": "product_guidance",
+          "column": "id",
+          "on_delete": "set_null"
+        }
+      },
+      "avoid_product_id": {
+        "type": "auto_uuid",
+        "required": false,
+        "ref": {
+          "table": "product",
+          "column": "id",
+          "on_delete": "set_null"
+        }
+      },
+      "avoid_reason": {
+        "type": "string",
+        "required": false
+      },
+      "avoid_guidance_id": {
+        "type": "auto_uuid",
+        "required": false,
+        "ref": {
+          "table": "product_guidance",
+          "column": "id",
+          "on_delete": "set_null"
+        }
+      },
+      "channel": {
+        "type": "string",
+        "required": false,
+        "enum": [
+          "whatsapp",
+          "call",
+          "app"
+        ]
+      },
+      "status": {
+        "type": "string",
+        "required": true,
+        "enum": [
+          "generated",
+          "sent",
+          "called",
+          "failed",
+          "skipped"
+        ]
+      },
+      "buddy_call_id": {
+        "type": "auto_uuid",
+        "required": false,
+        "ref": {
+          "table": "buddy_call",
+          "column": "id",
+          "on_delete": "set_null"
+        }
+      },
+      "generated_at": {
+        "type": "datetime",
+        "required": true
+      },
+      "sent_at": {
+        "type": "datetime",
+        "required": false
+      },
+      "rating": {
+        "type": "string",
+        "required": false,
+        "enum": [
+          "useful",
+          "not_useful"
+        ]
+      }
+    },
+    "unique": [
+      [
+        "visit_id"
+      ]
+    ]
   },
   "visit_change": {
     "name": "visit_change",
@@ -3888,9 +4405,9 @@ var TABLES = {
 var ROLE_PERMISSIONS = { "rep": { "all": ["tasks.create", "voicelog.create", "discounts.request", "products.read", "prospects.search", "territories.read", "campaigns.read"], "relation": { "owner": ["plan.read", "plan.edit", "accounts.read", "accounts.write", "accounts.convert", "deals.read", "deals.write", "orders.read", "orders.write", "tasks.read", "voicelog.read", "aiaction.read", "aiaction.undo", "alerts.read", "alerts.act", "prospects.read", "prospects.act", "dashboard.read", "targets.read"], "territory_member": ["accounts.read", "accounts.write", "prospects.read", "prospects.act"], "requester": ["approvals.read"], "approver": ["approvals.read", "approvals.decide"] } }, "manager": { "all": ["tasks.create", "voicelog.create", "discounts.request", "products.read", "prospects.search", "territories.read", "campaigns.read", "settings.read"], "relation": { "team_manager": ["plan.read", "accounts.read", "accounts.write", "deals.read", "deals.write", "orders.read", "tasks.read", "team.read", "team.assign", "aiaction.read", "discounts.approve", "alerts.read", "prospects.read", "prospects.act", "dashboard.read", "territories.manage", "campaigns.manage", "targets.read", "targets.manage"], "owner": ["plan.read", "plan.edit", "accounts.read", "alerts.read", "alerts.act", "voicelog.read", "aiaction.undo", "orders.write", "accounts.convert"], "approver": ["approvals.read", "approvals.decide", "discounts.approve"], "requester": ["approvals.read"] } }, "admin": { "all": ["accounts.convert", "accounts.read", "accounts.write", "aiaction.read", "aiaction.undo", "alerts.act", "alerts.read", "approvals.decide", "approvals.read", "campaigns.manage", "campaigns.read", "dashboard.read", "deals.read", "deals.write", "discounts.approve", "discounts.request", "gdpr.manage", "import.manage", "orders.read", "orders.write", "plan.edit", "plan.read", "products.read", "prospects.act", "prospects.read", "prospects.search", "settings.manage", "settings.read", "targets.manage", "targets.read", "tasks.create", "tasks.read", "team.assign", "team.read", "territories.manage", "territories.read", "users.manage", "voicelog.create", "voicelog.read"], "relation": {} } };
 
 // shared/core/src/generated/contracts/schemas.ts
-var defs = { "Error": { "type": "object", "properties": { "code": { "type": "string", "enum": ["not_found", "forbidden", "validation_failed", "needs_confirmation", "conflict", "upstream_failed", "timeout", "blocked_by_policy"] }, "message": { "type": "string" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["code", "message"] }, "AccountRef": { "type": "object", "properties": { "id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "account_type": { "type": "string", "enum": ["prospect", "customer", "lost"] }, "postal_code": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "city": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "distance_m": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["id", "name", "account_type"] }, "ActionLine": { "type": "object", "properties": { "ai_action_id": { "type": "string", "format": "uuid" }, "action_type": { "type": "string" }, "action_class": { "type": "string", "enum": ["internal", "draft", "external", "structural", "destructive"] }, "status": { "type": "string", "enum": ["suggested", "applied", "undone", "rejected"] }, "summary": { "type": "string" }, "target_table": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "target_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "undoable": { "type": "boolean" }, "approval_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["ai_action_id", "action_type", "action_class", "status", "summary", "undoable"] }, "MissingField": { "type": "object", "properties": { "field": { "type": "string" }, "question": { "type": "string" } }, "additionalProperties": false, "required": ["field", "question"] }, "ApprovalCard": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "kind": { "type": "string", "enum": ["customer_message", "discount", "terms", "conversion"] }, "status": { "type": "string", "enum": ["pending", "approved", "countered", "sent", "failed", "rejected", "expired", "escalated"] }, "mode": { "type": "string", "enum": ["live", "async"] }, "account": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "requested_by": { "$ref": "../_defs.json#/$defs/UserRef" }, "approver": { "$ref": "../_defs.json#/$defs/UserRef" }, "preview": { "type": "string" }, "channel": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "recipient": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "subject": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "body": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "requested_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "policy_limit_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "approved_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "decision_note": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "expires_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "created_at": { "type": "string", "format": "date-time" } }, "additionalProperties": false, "required": ["approval_id", "kind", "status", "mode", "requested_by", "approver", "preview", "created_at"] }, "UserRef": { "type": "object", "properties": { "id": { "type": "string", "format": "uuid" }, "full_name": { "type": "string" }, "role": { "type": "string", "enum": ["rep", "manager", "admin"] } }, "additionalProperties": false, "required": ["id", "full_name", "role"] }, "ResultCard": { "type": "object", "properties": { "voice_log_id": { "type": "string", "format": "uuid" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "lines": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ActionLine" } }, "missing_fields": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/MissingField" } }, "pending_approvals": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ApprovalCard" } }, "spoken_summary": { "type": "string" }, "processing_ms": { "type": "integer" } }, "additionalProperties": false, "required": ["voice_log_id", "account", "lines", "missing_fields", "pending_approvals", "spoken_summary", "processing_ms"] }, "VisitSummary": { "type": "object", "properties": { "visit_id": { "type": "string", "format": "uuid" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "planned_date": { "type": "string", "format": "date" }, "route_position": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "status": { "type": "string", "enum": ["planned", "done", "skipped"] }, "purpose": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "lat": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "lng": { "anyOf": [{ "type": "number" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["visit_id", "account", "planned_date", "status"] }, "BriefingItem": { "type": "object", "properties": { "position": { "type": "integer" }, "item_type": { "type": "string" }, "display_text": { "type": "string" }, "ref_table": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "ref_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["position", "item_type", "display_text"] }, "Briefing": { "type": "object", "properties": { "briefing_id": { "type": "string", "format": "uuid" }, "date": { "type": "string", "format": "date" }, "status": { "type": "string", "enum": ["generated", "delivered", "read"] }, "script_text": { "type": "string" }, "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/BriefingItem" } } }, "additionalProperties": false, "required": ["briefing_id", "date", "status", "script_text", "items"] }, "OrderSummary": { "type": "object", "properties": { "order_id": { "type": "string", "format": "uuid" }, "order_date": { "type": "string", "format": "date" }, "status": { "type": "string", "enum": ["draft", "confirmed", "cancelled"] }, "total_minor": { "type": "integer" }, "lines": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "quantity": { "type": "number" }, "unit": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "quantity", "unit"] } } }, "additionalProperties": false, "required": ["order_id", "order_date", "status", "total_minor", "lines"] }, "Pitch": { "type": "object", "properties": { "opening_line": { "type": "string" }, "arguments": { "type": "array", "items": { "type": "string" } }, "products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "why": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "why"] } }, "objections": { "type": "array", "items": { "type": "object", "properties": { "objection": { "type": "string" }, "answer": { "type": "string" } }, "additionalProperties": false, "required": ["objection", "answer"] } } }, "additionalProperties": false, "required": ["opening_line", "arguments", "products", "objections"] }, "DossierView": { "type": "object", "properties": { "summary": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "price_level": { "anyOf": [{ "type": "string", "enum": ["low", "mid", "premium"] }, { "type": "null" }] }, "facts": { "type": "array", "items": { "type": "object", "properties": { "fact_type": { "type": "string" }, "value": { "type": "string" }, "source_url": { "type": "string" }, "retrieved_at": { "type": "string", "format": "date-time" } }, "additionalProperties": false, "required": ["fact_type", "value", "source_url", "retrieved_at"] } }, "competitor_brands": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["facts", "competitor_brands"] }, "VisitCard": { "type": "object", "properties": { "kind": { "type": "string", "enum": ["customer", "prospect"] }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "contacts": { "type": "array", "items": { "type": "object", "properties": { "contact_id": { "type": "string", "format": "uuid" }, "full_name": { "type": "string" }, "role_title": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "is_decision_maker": { "type": "boolean" }, "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["contact_id", "full_name", "is_decision_maker"] } }, "open_problems": { "type": "array", "items": { "type": "object", "properties": { "problem_id": { "type": "string", "format": "uuid" }, "description": { "type": "string" }, "status": { "type": "string" }, "due_date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["problem_id", "description", "status"] } }, "open_tasks": { "type": "array", "items": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "is_customer_promise": { "type": "boolean" } }, "additionalProperties": false, "required": ["task_id", "title", "is_customer_promise"] } }, "recent_orders": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/OrderSummary" } }, "metrics": { "type": "object", "properties": { "avg_order_interval_days": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "days_since_last_order": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "risk_score": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "risk_reasons": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["risk_reasons"] }, "alerts": { "type": "array", "items": { "type": "object", "properties": { "alert_id": { "type": "string", "format": "uuid" }, "type": { "type": "string" }, "message": { "type": "string" } }, "additionalProperties": false, "required": ["alert_id", "type", "message"] } }, "suggested_products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "why": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "why"] } }, "campaigns": { "type": "array", "items": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "message": { "type": "string" } }, "additionalProperties": false, "required": ["campaign_id", "title", "message"] } }, "how_to_talk": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "dossier": { "anyOf": [{ "$ref": "../_defs.json#/$defs/DossierView" }, { "type": "null" }] }, "pitch": { "anyOf": [{ "$ref": "../_defs.json#/$defs/Pitch" }, { "type": "null" }] }, "spoken_summary": { "type": "string" } }, "additionalProperties": false, "required": ["kind", "account", "contacts", "open_problems", "open_tasks", "recent_orders", "metrics", "alerts", "suggested_products", "campaigns", "spoken_summary"] }, "AlertCard": { "type": "object", "properties": { "alert_id": { "type": "string", "format": "uuid" }, "type": { "type": "string" }, "severity": { "type": "string", "enum": ["low", "medium", "high"] }, "status": { "type": "string", "enum": ["open", "done", "dismissed"] }, "message": { "type": "string" }, "account": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "suggested_action": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "created_at": { "type": "string", "format": "date-time" } }, "additionalProperties": false, "required": ["alert_id", "type", "severity", "status", "message", "created_at"] }, "CandidateCard": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" }, "business_name": { "type": "string" }, "status": { "type": "string" }, "postal_code": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "score": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "reasons": { "type": "array", "items": { "type": "string" } }, "dossier": { "anyOf": [{ "$ref": "../_defs.json#/$defs/DossierView" }, { "type": "null" }] }, "duplicate_of": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "assigned_rep": { "anyOf": [{ "$ref": "../_defs.json#/$defs/UserRef" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["candidate_id", "business_name", "status", "reasons"] }, "TargetProgress": { "type": "object", "properties": { "target_id": { "type": "string", "format": "uuid" }, "metric": { "type": "string", "enum": ["revenue", "volume", "visits", "new_customers"] }, "period_start": { "type": "string", "format": "date" }, "period_end": { "type": "string", "format": "date" }, "target_value": { "type": "number" }, "actual_value": { "type": "number" }, "pct": { "type": "number" }, "days_left": { "type": "integer" } }, "additionalProperties": false, "required": ["target_id", "metric", "period_start", "period_end", "target_value", "actual_value", "pct", "days_left"] }, "Page": { "type": "object", "properties": { "page": { "type": "integer" }, "limit": { "type": "integer" }, "total": { "type": "integer" } }, "additionalProperties": false, "required": ["page", "limit", "total"] }, "KpiSet": { "type": "object", "properties": { "visits_per_rep_day": { "type": "number" }, "pipeline_by_stage": { "type": "array", "items": { "type": "object", "properties": { "stage_code": { "type": "string" }, "amount_minor": { "type": "integer" }, "count": { "type": "integer" } }, "additionalProperties": false, "required": ["stage_code", "amount_minor", "count"] } }, "weighted_pipeline_minor": { "type": "integer" }, "revenue_minor": { "type": "integer" }, "new_customers": { "type": "integer" }, "at_risk_customers": { "type": "integer" }, "at_risk_value_minor": { "type": "integer" }, "customers_saved": { "type": "integer" }, "lost_customers": { "type": "integer" }, "crm_completeness_pct": { "type": "number" }, "voice_logs_per_rep_day": { "type": "number" }, "voice_logs_within_1h_pct": { "type": "number" }, "ai_actions_applied": { "type": "integer" }, "ai_actions_undone": { "type": "integer" }, "approvals_approved": { "type": "integer" }, "approvals_rejected": { "type": "integer" }, "discount_requests": { "type": "integer" }, "discounts_approved": { "type": "integer" }, "targets": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/TargetProgress" } }, "baseline": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["visits_per_rep_day", "pipeline_by_stage", "weighted_pipeline_minor", "revenue_minor", "new_customers", "at_risk_customers", "at_risk_value_minor", "customers_saved", "lost_customers", "crm_completeness_pct", "voice_logs_per_rep_day", "voice_logs_within_1h_pct", "ai_actions_applied", "ai_actions_undone", "approvals_approved", "approvals_rejected", "discount_requests", "discounts_approved", "targets"] } };
-var functions = { "account-convert": { "slug": "account-convert", "method": "POST", "kind": "http", "gate": "accounts.convert", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["account_id"] }, "response": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["approval_id", "status"] }, "reads": [], "writes": ["ai_action", "approval"], "errors": [], "llm": [], "integrations": [], "notes": "Structural action: always creates an approval unless ai_permission says otherwise.", "scope": "account" }, "account-get": { "slug": "account-get", "method": "GET", "kind": "http", "gate": "accounts.read", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["account_id"] }, "response": { "type": "object", "properties": { "account": { "type": "object" }, "contacts": { "type": "array", "items": { "type": "object" } }, "deals": { "type": "array", "items": { "type": "object" } }, "activities": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["account", "contacts", "deals", "activities"] }, "reads": ["account", "contact", "deal", "activity"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "account-lifecycle": { "slug": "account-lifecycle", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["account_metrics", "organization"], "writes": ["account", "ai_action"], "errors": [], "llm": [], "integrations": [], "notes": "Customers past the lost rule -> lost via ai_action mark_account_lost (internal, undo).", "schedule": "45 2 * * *" }, "account-resolve": { "slug": "account-resolve", "method": "GET", "kind": "http", "gate": "accounts.read", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "hint": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "lat": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "lng": { "anyOf": [{ "type": "number" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "status": { "type": "string", "enum": ["resolved", "ambiguous", "not_found"] }, "account": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "candidates": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/AccountRef" } } }, "additionalProperties": false, "required": ["status", "candidates"] }, "reads": ["account", "visit", "postal_area"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "Order of evidence: exact/fuzzy name in rep scope -> today's scheduled visits -> nearest (lat/lng, never stored).", "scope": "account" }, "account-upsert": { "slug": "account-upsert", "method": "POST", "kind": "http", "gate": "accounts.write", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "fields": { "type": "object" } }, "additionalProperties": false, "required": ["fields"] }, "response": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" }, "audit": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["account_id"] }, "reads": [], "writes": ["account"], "errors": [], "llm": [], "integrations": [], "notes": "Human edit. account_type changes to/from customer go through account-convert.", "scope": "account" }, "accounts-list": { "slug": "accounts-list", "method": "GET", "kind": "http", "gate": "accounts.read", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "q": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "account_type": { "anyOf": [{ "type": "string", "enum": ["prospect", "customer", "lost"] }, { "type": "null" }] }, "territory_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "owner_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "at_risk": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/AccountRef" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["account", "account_metrics", "account_category"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "ai-action-undo": { "slug": "ai-action-undo", "method": "POST", "kind": "http", "gate": "aiaction.undo", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "ai_action_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["ai_action_id"] }, "response": { "type": "object", "properties": { "ai_action_id": { "type": "string", "format": "uuid" }, "status": { "type": "string", "enum": ["undone"] }, "restored": { "type": "object", "properties": { "table": { "type": "string" }, "id": { "type": "string" } }, "additionalProperties": false, "required": ["table", "id"] } }, "additionalProperties": false, "required": ["ai_action_id", "status", "restored"] }, "reads": ["ai_action"], "writes": ["ai_action", "*"], "errors": [], "llm": [], "integrations": [], "notes": "Restores before_snapshot exactly; rows created by the action are deleted by the engine (the only delete path, internal rows only).", "scope": "owner" }, "ai-actions-list": { "slug": "ai-actions-list", "method": "GET", "kind": "http", "gate": "aiaction.read", "callers": ["app", "mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "voice_log_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "user_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "status": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "from": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "to": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ActionLine" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["ai_action"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner_or_team" }, "alert-act": { "slug": "alert-act", "method": "POST", "kind": "http", "gate": "alerts.act", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "alert_id": { "type": "string", "format": "uuid" }, "action": { "type": "string", "enum": ["create_task", "create_draft", "done", "dismiss"] } }, "additionalProperties": false, "required": ["alert_id", "action"] }, "response": { "type": "object", "properties": { "alert": { "$ref": "../_defs.json#/$defs/AlertCard" }, "task_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "approval_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["alert"] }, "reads": [], "writes": ["alert", "task", "approval"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner" }, "alerts-engine": { "slug": "alerts-engine", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["account_metrics", "deal", "task", "competitor_signal", "visit", "voice_log", "alert_rule", "alert_type"], "writes": ["alert"], "errors": [], "llm": [], "integrations": [], "notes": "Evaluate every enabled alert_rule; dedupe by dedupe_key; push alert.created.", "schedule": "0 * * * *" }, "alerts-list": { "slug": "alerts-list", "method": "GET", "kind": "http", "gate": "alerts.read", "callers": ["app", "buddy", "mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "status": { "anyOf": [{ "type": "string", "enum": ["open", "done", "dismissed"] }, { "type": "null" }] }, "scope": { "anyOf": [{ "type": "string", "enum": ["mine", "team"] }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/AlertCard" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["alert", "alert_type"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner_or_team" }, "approval-decide": { "slug": "approval-decide", "method": "POST", "kind": "http", "gate": "discounts.approve", "callers": ["mgmt", "merc-approver", "sms_link"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "decision": { "type": "string", "enum": ["approve", "counter", "reject"] }, "approved_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "note": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "via": { "type": "string", "enum": ["app", "phone_call", "sms_link"] }, "link_token": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["approval_id", "decision", "via"] }, "response": { "type": "object", "properties": { "approval": { "$ref": "../_defs.json#/$defs/ApprovalCard" }, "requester_notified": { "type": "boolean" } }, "additionalProperties": false, "required": ["approval", "requester_notified"] }, "reads": ["approval", "discount_request", "discount_policy"], "writes": ["approval", "discount_request", "ai_action", "task"], "errors": [], "llm": [], "integrations": [], "notes": "counter requires approved_pct < requested_pct. approved_pct must be <= approver's own limit. Pushes approval.decided to the requester (merc-live + SMS).", "scope": "approver" }, "approval-resolve": { "slug": "approval-resolve", "method": "POST", "kind": "http", "gate": "approvals.decide", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "decision": { "type": "string", "enum": ["approve", "edit_approve", "reject"] }, "final_body": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["approval_id", "decision"] }, "response": { "type": "object", "properties": { "approval": { "$ref": "../_defs.json#/$defs/ApprovalCard" } }, "additionalProperties": false, "required": ["approval"] }, "reads": ["approval", "message_approval", "channel"], "writes": ["approval", "message_approval", "ai_action"], "errors": [], "llm": [], "integrations": ["integration:gmail.google_workspace_gmail_message_send"], "notes": "For kind customer_message / conversion. Approve sends synchronously via message-send in the caller's (rep's) identity (S3/OPEN-03). Failed sends keep status failed with failure_reason; the rep can retry by approving again.", "scope": "approver" }, "approval-sla-watch": { "slug": "approval-sla-watch", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["approval", "app_user"], "writes": ["approval", "alert"], "errors": [], "llm": [], "integrations": ["sms"], "notes": "Async discount approvals past due_at -> escalated to approver's manager or admin; SMS both sides.", "schedule": "*/5 * * * *" }, "approval-status": { "slug": "approval-status", "method": "GET", "kind": "http", "gate": "approvals.read", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["approval_id"] }, "response": { "type": "object", "properties": { "approval": { "$ref": "../_defs.json#/$defs/ApprovalCard" } }, "additionalProperties": false, "required": ["approval"] }, "reads": ["approval", "discount_request", "manager_call"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "requester_or_approver" }, "approvals-expire": { "slug": "approvals-expire", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["approval"], "writes": ["approval"], "errors": [], "llm": [], "integrations": [], "notes": "customer_message approvals pending > approval_expiry_hours -> expired.", "schedule": "0 * * * *" }, "approvals-list": { "slug": "approvals-list", "method": "GET", "kind": "http", "gate": "approvals.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "kind": { "anyOf": [{ "type": "string", "enum": ["customer_message", "discount", "terms", "conversion"] }, { "type": "null" }] }, "status": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "role": { "anyOf": [{ "type": "string", "enum": ["requester", "approver"] }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ApprovalCard" } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["approval", "message_approval", "discount_request"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "requester_or_approver" }, "approver-brief": { "slug": "approver-brief", "method": "GET", "kind": "http", "gate": null, "callers": ["merc-approver"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["approval_id"] }, "response": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "callee": { "$ref": "../_defs.json#/$defs/UserRef" }, "requester": { "$ref": "../_defs.json#/$defs/UserRef" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "requested_pct": { "type": "number" }, "policy_limit_pct": { "type": "number" }, "approver_limit_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "lines": { "type": "array", "items": { "type": "object", "properties": { "name": { "type": "string" }, "quantity": { "type": "number" }, "unit": { "type": "string" } }, "additionalProperties": false, "required": ["name", "quantity", "unit"] } }, "context_facts": { "type": "array", "items": { "type": "string" } }, "spoken_brief": { "type": "string" } }, "additionalProperties": false, "required": ["approval_id", "callee", "requester", "account", "requested_pct", "policy_limit_pct", "lines", "context_facts", "spoken_brief"] }, "reads": ["approval", "discount_request", "discount_request_line", "account_metrics", "competitor_signal", "sales_order"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "spoken_brief is one sentence built from rows only (no LLM numbers)." }, "ask-crm": { "slug": "ask-crm", "method": "GET", "kind": "http", "gate": "accounts.read", "callers": ["buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "question": { "type": "string" }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["question"] }, "response": { "type": "object", "properties": { "template": { "type": "string" }, "params": { "type": "object" }, "facts": { "type": "array", "items": { "type": "object", "properties": { "label": { "type": "string" }, "value": { "type": "string" }, "source": { "type": "string" } }, "additionalProperties": false, "required": ["label", "value", "source"] } }, "no_data": { "type": "boolean" } }, "additionalProperties": false, "required": ["template", "params", "facts", "no_data"] }, "reads": ["account", "sales_order", "order_line", "product", "task", "problem", "deal", "visit", "competitor_signal"], "writes": [], "errors": [], "llm": ["ask_crm_route"], "integrations": [], "notes": "LLM only selects a template + params (contracts/llm/ask_crm_route.json). Values come from queries. The buddy phrases the answer.", "scope": "account" }, "assignments-transfer": { "slug": "assignments-transfer", "method": "POST", "kind": "http", "gate": "territories.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "from_rep_id": { "type": "string", "format": "uuid" }, "to_rep_id": { "type": "string", "format": "uuid" }, "account_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "all_accounts": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] }, "reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["from_rep_id", "to_rep_id", "account_ids"] }, "response": { "type": "object", "properties": { "moved": { "type": "integer" } }, "additionalProperties": false, "required": ["moved"] }, "reads": [], "writes": ["account", "account_assignment_history", "visit", "task", "audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "Moves open visits/tasks too. Customer memory follows automatically (keyed by account.id)." }, "briefing-generate": { "slug": "briefing-generate", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["organization", "visit", "task", "account_metrics", "candidate", "campaign", "approval", "sales_target"], "writes": ["briefing", "briefing_item"], "errors": [], "llm": ["briefing_script"], "integrations": [], "notes": "For reps whose local time >= briefing_time and no briefing today. Push briefing.ready.", "schedule": "*/15 * * * *" }, "briefing-get": { "slug": "briefing-get", "method": "GET", "kind": "http", "gate": "plan.read", "callers": ["app", "buddy"], "timeout_ms": 45e3, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "regenerate": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "$ref": "../_defs.json#/$defs/Briefing" }, "reads": ["briefing", "briefing_item"], "writes": ["briefing", "briefing_item"], "errors": [], "llm": ["briefing_script"], "integrations": [], "notes": "" }, "campaign-draft-from-text": { "slug": "campaign-draft-from-text", "method": "POST", "kind": "http", "gate": "campaigns.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "text": { "type": "string" } }, "additionalProperties": false, "required": ["text"] }, "response": { "type": "object", "properties": { "draft": { "type": "object" }, "unresolved": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["draft", "unresolved"] }, "reads": [], "writes": [], "errors": [], "llm": ["campaign_from_text"], "integrations": [], "notes": "" }, "campaign-funnel": { "slug": "campaign-funnel", "method": "GET", "kind": "http", "gate": "campaigns.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["campaign_id"] }, "response": { "type": "object", "properties": { "shown": { "type": "integer" }, "pitched": { "type": "integer" }, "ordered": { "type": "integer" }, "by_rep": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["shown", "pitched", "ordered", "by_rep"] }, "reads": ["campaign_exposure"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "campaign-upsert": { "slug": "campaign-upsert", "method": "POST", "kind": "http", "gate": "campaigns.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "campaign_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "title": { "type": "string" }, "message": { "type": "string" }, "starts_on": { "type": "string", "format": "date" }, "ends_on": { "type": "string", "format": "date" }, "status": { "type": "string", "enum": ["draft", "active", "ended"] }, "product_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "territory_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "category_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "rep_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } } }, "additionalProperties": false, "required": ["title", "message", "starts_on", "ends_on", "status", "product_ids", "territory_ids", "category_ids", "rep_ids"] }, "response": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["campaign_id"] }, "reads": [], "writes": ["campaign", "campaign_product", "campaign_territory", "campaign_category", "campaign_rep"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "campaigns-list": { "slug": "campaigns-list", "method": "GET", "kind": "http", "gate": "campaigns.read", "callers": ["mgmt", "app"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "status": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["campaign"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "candidate-act": { "slug": "candidate-act", "method": "POST", "kind": "http", "gate": "prospects.act", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" }, "action": { "type": "string", "enum": ["add_to_route", "assign", "dismiss"] }, "rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["candidate_id", "action"] }, "response": { "type": "object", "properties": { "candidate": { "$ref": "../_defs.json#/$defs/CandidateCard" }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "visit_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["candidate"] }, "reads": [], "writes": ["candidate", "account", "visit", "dossier"], "errors": [], "llm": [], "integrations": [], "notes": "add_to_route creates account(type=prospect, source=prospecting), moves the dossier to it, creates a visit. assign defaults to territory.default_rep_id." }, "candidate-add": { "slug": "candidate-add", "method": "POST", "kind": "http", "gate": "prospects.search", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "business_name": { "type": "string" }, "location_hint": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["business_name"] }, "response": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" }, "search_id": { "type": "string", "format": "uuid" }, "duplicate_of": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["candidate_id", "search_id"] }, "reads": [], "writes": ["prospect_search", "candidate"], "errors": [], "llm": [], "integrations": ["procedure:prospecting-pipeline"], "notes": "" }, "candidate-dedupe": { "slug": "candidate-dedupe", "method": "POST", "kind": "http", "gate": null, "callers": ["procedure"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["candidate_id"] }, "response": { "type": "object", "properties": { "duplicate": { "type": "boolean" }, "matched_account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "matched_candidate_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "rule": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["duplicate"] }, "reads": ["candidate", "account"], "writes": ["candidate"], "errors": [], "llm": [], "integrations": [], "notes": "Rules in order: VAT exact; website domain; phone E.164; normalized name + postal code (trigram >= 0.85)." }, "candidate-get": { "slug": "candidate-get", "method": "GET", "kind": "http", "gate": null, "callers": ["merc-research", "procedure"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["candidate_id"] }, "response": { "type": "object", "properties": { "candidate": { "$ref": "../_defs.json#/$defs/CandidateCard" }, "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "vat_number": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["candidate"] }, "reads": ["candidate"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "candidate-score": { "slug": "candidate-score", "method": "POST", "kind": "http", "gate": null, "callers": ["procedure"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["candidate_id"] }, "response": { "type": "object", "properties": { "score": { "type": "number" }, "reasons": { "type": "array", "items": { "type": "object", "properties": { "criterion": { "type": "string" }, "reason": { "type": "string" } }, "additionalProperties": false, "required": ["criterion", "reason"] } } }, "additionalProperties": false, "required": ["score", "reasons"] }, "reads": ["candidate", "dossier", "dossier_fact", "icp_criterion", "icp_category", "visit"], "writes": ["candidate_score", "candidate_score_reason", "candidate"], "errors": [], "llm": ["candidate_score"], "integrations": [], "notes": "" }, "candidates-list": { "slug": "candidates-list", "method": "GET", "kind": "http", "gate": "prospects.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "search_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "status": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/CandidateCard" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["candidate", "candidate_score", "candidate_score_reason", "dossier", "dossier_fact"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "competitor-signals-list": { "slug": "competitor-signals-list", "method": "GET", "kind": "http", "gate": "team.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "competitor_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "territory_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "from": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["competitor_signal", "account"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "team" }, "contact-erase": { "slug": "contact-erase", "method": "POST", "kind": "http", "gate": "gdpr.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "contact_id": { "type": "string", "format": "uuid" }, "confirm": { "type": "boolean" } }, "additionalProperties": false, "required": ["contact_id", "confirm"] }, "response": { "type": "object", "properties": { "erased": { "type": "boolean" } }, "additionalProperties": false, "required": ["erased"] }, "reads": [], "writes": ["contact", "audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "Human-only delete. References are set null by FK rules. Never callable by any agent tool." }, "contact-export": { "slug": "contact-export", "method": "POST", "kind": "http", "gate": "gdpr.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "contact_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["contact_id"] }, "response": { "type": "object", "properties": { "export": { "type": "object" } }, "additionalProperties": false, "required": ["export"] }, "reads": ["contact", "activity", "message_approval"], "writes": ["audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "contact-upsert": { "slug": "contact-upsert", "method": "POST", "kind": "http", "gate": "accounts.write", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "contact_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "account_id": { "type": "string", "format": "uuid" }, "fields": { "type": "object" } }, "additionalProperties": false, "required": ["account_id", "fields"] }, "response": { "type": "object", "properties": { "contact_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["contact_id"] }, "reads": [], "writes": ["contact"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "dashboard-kpis": { "slug": "dashboard-kpis", "method": "GET", "kind": "http", "gate": "dashboard.read", "callers": ["mgmt", "app"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "scope": { "type": "string", "enum": ["me", "team", "org"] }, "territory_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "from": { "type": "string", "format": "date" }, "to": { "type": "string", "format": "date" }, "compare_baseline": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["scope", "from", "to"] }, "response": { "type": "object", "properties": { "kpis": { "$ref": "../_defs.json#/$defs/KpiSet" }, "by_rep": { "type": "array", "items": { "type": "object", "properties": { "rep": { "$ref": "../_defs.json#/$defs/UserRef" }, "kpis": { "type": "object" } }, "additionalProperties": false, "required": ["rep", "kpis"] } } }, "additionalProperties": false, "required": ["kpis", "by_rep"] }, "reads": ["kpi_daily", "deal", "account_metrics", "sales_target", "deal_stage"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "dashboard" }, "deal-upsert": { "slug": "deal-upsert", "method": "POST", "kind": "http", "gate": "deals.write", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "deal_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "account_id": { "type": "string", "format": "uuid" }, "fields": { "type": "object" } }, "additionalProperties": false, "required": ["account_id", "fields"] }, "response": { "type": "object", "properties": { "deal_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["deal_id"] }, "reads": ["deal_stage"], "writes": ["deal", "deal_stage_history"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "deals-list": { "slug": "deals-list", "method": "GET", "kind": "http", "gate": "deals.read", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "owner_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "stage_code": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["deal", "deal_stage"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "debrief-process": { "slug": "debrief-process", "method": "POST", "kind": "http", "gate": "voicelog.create", "callers": ["buddy", "internal"], "timeout_ms": 6e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "voice_log_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "utterance": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "conversation_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "lat": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "lng": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "language": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "status": { "type": "string", "enum": ["completed", "needs_confirmation", "failed"] }, "result": { "anyOf": [{ "$ref": "../_defs.json#/$defs/ResultCard" }, { "type": "null" }] }, "candidates": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/AccountRef" } }, "question": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["status", "candidates"] }, "reads": ["account", "problem", "deal", "product", "campaign", "contact", "visit", "ai_permission", "action_type"], "writes": ["voice_log", "activity", "task", "problem", "deal", "deal_stage_history", "sales_order", "order_line", "competitor_signal", "contact", "campaign_exposure", "visit", "ai_action", "approval", "message_approval"], "errors": [], "llm": ["debrief_extraction", "draft_message"], "integrations": [], "notes": "Exactly one of voice_log_id / utterance. Target p95 < 20 s. Pushes events result_card.ready." }, "debrief-result-get": { "slug": "debrief-result-get", "method": "GET", "kind": "http", "gate": "voicelog.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "voice_log_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["voice_log_id"] }, "response": { "$ref": "../_defs.json#/$defs/ResultCard" }, "reads": ["voice_log", "ai_action", "approval"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner" }, "directory-search": { "slug": "directory-search", "method": "POST", "kind": "http", "gate": null, "callers": ["procedure"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "search_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["search_id"] }, "response": { "type": "object", "properties": { "candidates_created": { "type": "integer" } }, "additionalProperties": false, "required": ["candidates_created"] }, "reads": [], "writes": ["candidate"], "errors": [], "llm": [], "integrations": ["integration:business-directory.search"], "notes": "Source decided by spike S5 (OPEN-05). CSV fallback reads contracts/seed/prospect_list_*.json." }, "discount-check": { "slug": "discount-check", "method": "POST", "kind": "http", "gate": "discounts.request", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" }, "discount_pct": { "type": "number" }, "product_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } } }, "additionalProperties": false, "required": ["account_id", "discount_pct", "product_ids"] }, "response": { "type": "object", "properties": { "allowed": { "type": "boolean" }, "limit_pct": { "type": "number" }, "policy_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "approver": { "anyOf": [{ "$ref": "../_defs.json#/$defs/UserRef" }, { "type": "null" }] }, "manager_call_available": { "type": "boolean" }, "ai_action_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["allowed", "limit_pct", "manager_call_available"] }, "reads": ["discount_policy", "account", "product", "app_user", "account_category"], "writes": ["ai_action"], "errors": [], "llm": [], "integrations": [], "notes": "Resolution order in metrics.md#discount-limit. allowed=true writes ai_action discount_within_limit (internal log).", "scope": "account" }, "discount-request": { "slug": "discount-request", "method": "POST", "kind": "http", "gate": "discounts.request", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" }, "deal_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "discount_pct": { "type": "number" }, "lines": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "quantity": { "type": "number" } }, "additionalProperties": false, "required": ["product_id", "quantity"] } }, "justification": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "mode": { "type": "string", "enum": ["live", "async"] }, "voice_log_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "conversation_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["account_id", "discount_pct", "lines", "mode"] }, "response": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" }, "mode": { "type": "string", "enum": ["live", "async"] }, "manager_call_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "approver": { "$ref": "../_defs.json#/$defs/UserRef" }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["approval_id", "status", "mode", "approver"] }, "reads": ["discount_policy", "app_user", "organization"], "writes": ["approval", "discount_request", "discount_request_line", "manager_call", "task"], "errors": [], "llm": [], "integrations": ["outbound_call:merc-approver"], "notes": "live: POST /v1/agents/outbound {from: merc-approver caller id, to: approver phone, call_purpose: 'merc_approval:<approval_id>'} via service account merc-platform-api (S7). Call hours 08:00-20:00 org time are checked here. If outside hours, manager_call_enabled=false, no caller id, or the start fails -> async. async: due_at = now + approval_sla_minutes, push + inbox to approver, task for requester; SMS only when an SMS sender exists. Stores conversation_id on discount_request for relaying the decision (S8)." }, "dossier-save": { "slug": "dossier-save", "method": "POST", "kind": "http", "gate": null, "callers": ["merc-research"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "candidate_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "summary": { "type": "string" }, "price_level": { "anyOf": [{ "type": "string", "enum": ["low", "mid", "premium"] }, { "type": "null" }] }, "facts": { "type": "array", "items": { "type": "object", "properties": { "fact_type": { "type": "string" }, "value": { "type": "string" }, "source_url": { "type": "string" }, "competitor_name": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["fact_type", "value", "source_url"] } }, "research_task_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["summary", "facts"] }, "response": { "type": "object", "properties": { "dossier_id": { "type": "string", "format": "uuid" }, "facts_saved": { "type": "integer" }, "facts_rejected": { "type": "integer" } }, "additionalProperties": false, "required": ["dossier_id", "facts_saved", "facts_rejected"] }, "reads": ["competitor"], "writes": ["dossier", "dossier_fact", "candidate"], "errors": [], "llm": [], "integrations": [], "notes": "Rejects facts without source_url, or whose source host is a maps service (REQ-PRS-005)." }, "draft-message": { "slug": "draft-message", "method": "POST", "kind": "http", "gate": null, "callers": ["internal"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" }, "contact_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "intent": { "type": "string" }, "channel": { "type": "string", "enum": ["email", "whatsapp", "viber"] }, "context": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "on_behalf_of": { "type": "string", "format": "uuid" }, "voice_log_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["account_id", "intent", "channel", "on_behalf_of"] }, "response": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "ai_action_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["approval_id", "ai_action_id"] }, "reads": ["account", "contact", "activity", "channel"], "writes": ["ai_action", "approval", "message_approval"], "errors": [], "llm": ["draft_message"], "integrations": [], "notes": "Internal only (called by debrief-process, alert-act). Never sends." }, "eod-summary": { "slug": "eod-summary", "method": "GET", "kind": "http", "gate": "plan.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "date": { "type": "string", "format": "date" }, "visits_done": { "type": "integer" }, "offers_sent": { "type": "integer" }, "new_customers": { "type": "integer" }, "pending": { "type": "array", "items": { "type": "string" } }, "tomorrow_start_with": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "learned": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "target_progress": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/TargetProgress" } }, "spoken_summary": { "type": "string" } }, "additionalProperties": false, "required": ["date", "visits_done", "offers_sent", "new_customers", "pending", "target_progress", "spoken_summary"] }, "reads": ["visit", "activity", "approval", "task", "sales_target"], "writes": [], "errors": [], "llm": ["eod_summary"], "integrations": [], "notes": "" }, "escalate": { "slug": "escalate", "method": "POST", "kind": "http", "gate": "tasks.create", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" }, "reason": { "type": "string" } }, "additionalProperties": false, "required": ["account_id", "reason"] }, "response": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" }, "alert_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["task_id", "alert_id"] }, "reads": [], "writes": ["task", "alert"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "import-analyze": { "slug": "import-analyze", "method": "POST", "kind": "http", "gate": null, "callers": ["procedure"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "import_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["import_id"] }, "response": { "type": "object", "properties": { "status": { "type": "string" }, "rows_total": { "type": "integer" }, "issues": { "type": "integer" } }, "additionalProperties": false, "required": ["status", "rows_total", "issues"] }, "reads": ["data_import", "account", "contact", "product"], "writes": ["data_import", "import_column_mapping", "import_row_issue"], "errors": [], "llm": ["import_mapping"], "integrations": [], "notes": "Parse, map columns with confidence, clean phones (E.164) / VAT (EL 9 digits) / addresses, find duplicates, build preview." }, "import-apply": { "slug": "import-apply", "method": "POST", "kind": "http", "gate": null, "callers": ["procedure"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "import_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["import_id"] }, "response": { "type": "object", "properties": { "rows_imported": { "type": "integer" }, "rows_with_issues": { "type": "integer" } }, "additionalProperties": false, "required": ["rows_imported", "rows_with_issues"] }, "reads": ["data_import", "import_column_mapping"], "writes": ["account", "contact", "sales_order", "order_line", "product", "visit", "data_import"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "import-confirm": { "slug": "import-confirm", "method": "POST", "kind": "http", "gate": "import.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "import_id": { "type": "string", "format": "uuid" }, "mapping_overrides": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["import_id", "mapping_overrides"] }, "response": { "type": "object", "properties": { "import_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["import_id", "status"] }, "reads": [], "writes": ["data_import", "import_column_mapping"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "import-get": { "slug": "import-get", "method": "GET", "kind": "http", "gate": "import.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "import_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["import_id"] }, "response": { "type": "object", "properties": { "import": { "type": "object" }, "mapping": { "type": "array", "items": { "type": "object" } }, "issues": { "type": "array", "items": { "type": "object" } }, "preview_rows": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["import", "mapping", "issues", "preview_rows"] }, "reads": ["data_import", "import_column_mapping", "import_row_issue"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "import-start": { "slug": "import-start", "method": "POST", "kind": "http", "gate": "import.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "data_type": { "type": "string", "enum": ["accounts", "contacts", "orders", "products", "visits"] }, "filename": { "type": "string" }, "csv_base64": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "file_ref": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "is_baseline": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["data_type", "filename"] }, "response": { "type": "object", "properties": { "import_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["import_id", "status"] }, "reads": [], "writes": ["data_import"], "errors": [], "llm": [], "integrations": ["procedure:import-pipeline"], "notes": "" }, "kpi-drilldown": { "slug": "kpi-drilldown", "method": "GET", "kind": "http", "gate": "dashboard.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "kpi": { "type": "string", "enum": ["at_risk", "new_customers", "pipeline", "stuck_deals", "low_logging", "customers_saved", "lost", "incomplete_accounts", "revenue", "visits", "ai_actions", "approvals", "discounts"] }, "territory_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "from": { "type": "string", "format": "date" }, "to": { "type": "string", "format": "date" }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["kpi", "from", "to"] }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": [], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "dashboard" }, "kpi-rollup": { "slug": "kpi-rollup", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["visit", "voice_log", "account", "ai_action", "approval", "deal", "sales_order", "alert", "discount_request"], "writes": ["kpi_daily"], "errors": [], "llm": [], "integrations": [], "notes": "Yesterday per rep (metrics.md).", "schedule": "5 0 * * *" }, "manager-approvals-list": { "slug": "manager-approvals-list", "method": "GET", "kind": "http", "gate": "discounts.approve", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "status": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ApprovalCard" } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["approval", "discount_request"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "approver" }, "manager-call-outcome": { "slug": "manager-call-outcome", "method": "POST", "kind": "http", "gate": null, "callers": ["internal", "merc-approver"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "manager_call_id": { "type": "string", "format": "uuid" }, "outcome": { "type": "string", "enum": ["answered", "no_answer", "busy", "voicemail", "failed"] }, "conversation_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["manager_call_id", "outcome"] }, "response": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "fallback": { "type": "string", "enum": ["none", "async"] } }, "additionalProperties": false, "required": ["approval_id", "fallback"] }, "reads": [], "writes": ["manager_call", "approval", "task"], "errors": [], "llm": [], "integrations": [], "notes": "Called by merc-approver triggers OnVoicemailDetected / OnEnd (no decision recorded), and lazily by approval-status / approval-sla-watch when a live call has no outcome after 90 s. Non-answered outcome switches the approval to async." }, "me": { "slug": "me", "method": "GET", "kind": "http", "gate": null, "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 1, "request": { "type": "object", "properties": {}, "additionalProperties": false }, "response": { "type": "object", "properties": { "user": { "$ref": "../_defs.json#/$defs/UserRef" }, "org_id": { "type": "string", "format": "uuid" }, "language": { "type": "string" }, "territory_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "manager": { "anyOf": [{ "$ref": "../_defs.json#/$defs/UserRef" }, { "type": "null" }] }, "settings": { "type": "object", "properties": { "briefing_time": { "type": "string" }, "timezone": { "type": "string" }, "currency": { "type": "string" } }, "additionalProperties": false, "required": ["briefing_time", "timezone", "currency"] }, "permissions": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["user", "org_id", "language", "territory_ids", "settings", "permissions"] }, "reads": ["app_user", "territory_rep", "organization", "role"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "merc-chat-token": { "slug": "merc-chat-token", "method": "POST", "kind": "http", "gate": "voicelog.create", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": {}, "additionalProperties": false }, "response": { "type": "object", "properties": { "token": { "type": "string" }, "expires_at": { "type": "string", "format": "date-time" }, "agent_id": { "type": "string" } }, "additionalProperties": false, "required": ["token", "expires_at", "agent_id"] }, "reads": ["app_user", "organization"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "Resolves the caller with me(), then calls POST /api/v1/jwt/sign (secret MERC_CHAT_API_KEY) with user {id, display_name} and metadata {merc_uid, merc_org, merc_exp, merc_sig = HMAC-SHA256(MERC_INTERNAL_CALL_KEY, 'uid|org|exp')}. The Rep app passes the token to createChat. Buddy tools read the claims from communication.metadata and verify merc_sig (shared/core me.ts). TTL 60 min; the app refreshes." }, "merc-live": { "slug": "merc-live", "method": "WS", "kind": "websocket", "gate": null, "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "connect_query": { "type": "object", "properties": { "client": { "type": "string", "enum": ["rep", "mgmt"] } }, "additionalProperties": false, "required": ["client"] } }, "additionalProperties": false, "required": ["connect_query"] }, "response": { "type": "object", "properties": { "channels": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["channels"] }, "reads": [], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "connect: resolve caller -> channels rep:{user_id} and, for managers, team:{user_id}. Messages: contracts/events/*.json." }, "message-send": { "slug": "message-send", "method": "POST", "kind": "http", "gate": null, "callers": ["internal"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["approval_id"] }, "response": { "type": "object", "properties": { "status": { "type": "string", "enum": ["sent", "failed"] }, "external_message_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "failure_reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["status"] }, "reads": ["approval", "message_approval", "app_user"], "writes": ["approval", "message_approval", "ai_action", "activity", "usage_event"], "errors": [], "llm": [], "integrations": ["integration:gmail.google_workspace_gmail_message_send", "integration:outlook.send_mail"], "notes": "Library call made inside approval-resolve, in the caller's identity (S3: per-user Hub connections need a user identity; procedures/crons have none). Idempotent on approval_id." }, "metrics-rollup": { "slug": "metrics-rollup", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["sales_order", "visit", "problem", "competitor_signal"], "writes": ["account_metrics"], "errors": [], "llm": [], "integrations": [], "notes": "Recompute account_metrics for all accounts (metrics.md#usual-frequency, #risk).", "schedule": "15 * * * *" }, "monthly-report": { "slug": "monthly-report", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["kpi_daily", "organization"], "writes": [], "errors": [], "llm": [], "integrations": ["backoffice:merc-ops"], "notes": "Creates merc-ops task monthly_report for admins.", "schedule": "0 7 1 * *" }, "my-performance": { "slug": "my-performance", "method": "GET", "kind": "http", "gate": "plan.read", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "period": { "type": "string", "enum": ["week", "month", "custom"] }, "from": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "to": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["period"] }, "response": { "type": "object", "properties": { "targets": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/TargetProgress" } }, "visits_done": { "type": "integer" }, "revenue_minor": { "type": "integer" }, "new_customers": { "type": "integer" }, "spoken_summary": { "type": "string" } }, "additionalProperties": false, "required": ["targets", "visits_done", "revenue_minor", "new_customers", "spoken_summary"] }, "reads": ["sales_target", "kpi_daily", "sales_order", "visit"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "order-upsert": { "slug": "order-upsert", "method": "POST", "kind": "http", "gate": "orders.write", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "order_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "account_id": { "type": "string", "format": "uuid" }, "status": { "type": "string", "enum": ["draft", "confirmed", "cancelled"] }, "lines": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "quantity": { "type": "number" }, "unit_price_minor": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "discount_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["product_id", "quantity"] } } }, "additionalProperties": false, "required": ["account_id", "status", "lines"] }, "response": { "type": "object", "properties": { "order": { "$ref": "../_defs.json#/$defs/OrderSummary" } }, "additionalProperties": false, "required": ["order"] }, "reads": [], "writes": ["sales_order", "order_line"], "errors": [], "llm": [], "integrations": [], "notes": "Confirming requires the rep's explicit confirmation (draft -> confirmed). Prices default to list price; discount_pct above the rep limit is rejected unless an approved discount_request exists.", "scope": "account" }, "orders-list": { "slug": "orders-list", "method": "GET", "kind": "http", "gate": "orders.read", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "from": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "to": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/OrderSummary" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["sales_order", "order_line"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "problem-update": { "slug": "problem-update", "method": "POST", "kind": "http", "gate": "accounts.write", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "problem_id": { "type": "string", "format": "uuid" }, "status": { "type": "string", "enum": ["open", "in_progress", "resolved"] }, "due_date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["problem_id", "status"] }, "response": { "type": "object", "properties": { "problem_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["problem_id"] }, "reads": [], "writes": ["problem"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "product-lookup": { "slug": "product-lookup", "method": "GET", "kind": "http", "gate": "products.read", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "query": { "type": "string" } }, "additionalProperties": false, "required": ["query"] }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "sku": { "type": "string" }, "name": { "type": "string" }, "unit": { "type": "string" }, "list_price_minor": { "type": "integer" }, "category": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "active_campaigns": { "type": "array", "items": { "type": "string" } }, "stock": { "type": "string", "enum": ["unknown", "in_stock", "out_of_stock"] } }, "additionalProperties": false, "required": ["product_id", "sku", "name", "unit", "list_price_minor", "active_campaigns", "stock"] } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["product", "product_category", "campaign_product", "campaign"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "prospect-search": { "slug": "prospect-search", "method": "POST", "kind": "http", "gate": "prospects.search", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "area_text": { "type": "string" }, "category_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "category_text": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "origin": { "type": "string", "enum": ["manual", "route", "list_upload"] } }, "additionalProperties": false, "required": ["area_text", "origin"] }, "response": { "type": "object", "properties": { "search_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["search_id", "status"] }, "reads": [], "writes": ["prospect_search"], "errors": [], "llm": [], "integrations": ["procedure:prospecting-pipeline"], "notes": "" }, "rep-detail": { "slug": "rep-detail", "method": "GET", "kind": "http", "gate": "team.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "rep_id": { "type": "string", "format": "uuid" }, "from": { "type": "string", "format": "date" }, "to": { "type": "string", "format": "date" } }, "additionalProperties": false, "required": ["rep_id", "from", "to"] }, "response": { "type": "object", "properties": { "rep": { "$ref": "../_defs.json#/$defs/UserRef" }, "kpis": { "type": "object" }, "recent_visits": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/VisitSummary" } }, "recent_debriefs": { "type": "array", "items": { "type": "object" } }, "open_alerts": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/AlertCard" } } }, "additionalProperties": false, "required": ["rep", "kpis", "recent_visits", "recent_debriefs", "open_alerts"] }, "reads": [], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "Debrief transcripts visible only if OPEN-13 allows.", "scope": "team" }, "retention-purge": { "slug": "retention-purge", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["voice_log", "organization"], "writes": ["voice_log"], "errors": [], "llm": [], "integrations": [], "notes": "Clear audio_ref (and delete stored audio) older than recording_retention_days; keep transcript.", "schedule": "30 2 * * *" }, "search-finalize": { "slug": "search-finalize", "method": "POST", "kind": "http", "gate": null, "callers": ["procedure"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "search_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["search_id"] }, "response": { "type": "object", "properties": { "found": { "type": "integer" }, "duplicates": { "type": "integer" }, "scored": { "type": "integer" } }, "additionalProperties": false, "required": ["found", "duplicates", "scored"] }, "reads": ["candidate"], "writes": ["prospect_search"], "errors": [], "llm": [], "integrations": [], "notes": "Pushes candidates.ready to the requester." }, "settings-get": { "slug": "settings-get", "method": "GET", "kind": "http", "gate": "settings.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": {}, "additionalProperties": false }, "response": { "type": "object", "properties": { "organization": { "type": "object" }, "ai_permissions": { "type": "array", "items": { "type": "object" } }, "alert_rules": { "type": "array", "items": { "type": "object" } }, "icp": { "type": "object" }, "discount_policies": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["organization", "ai_permissions", "alert_rules", "icp", "discount_policies"] }, "reads": ["organization", "ai_permission", "alert_rule", "icp_criterion", "icp_category", "discount_policy", "account_category"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "settings-update": { "slug": "settings-update", "method": "PUT", "kind": "http", "gate": "settings.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "organization": { "anyOf": [{ "type": "object" }, { "type": "null" }] }, "ai_permissions": { "type": "array", "items": { "type": "object" } }, "alert_rules": { "type": "array", "items": { "type": "object" } }, "icp": { "anyOf": [{ "type": "object" }, { "type": "null" }] }, "discount_policies": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["ai_permissions", "alert_rules", "discount_policies"] }, "response": { "type": "object", "properties": { "updated": { "type": "boolean" } }, "additionalProperties": false, "required": ["updated"] }, "reads": [], "writes": ["organization", "ai_permission", "alert_rule", "icp_criterion", "icp_category", "discount_policy", "audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "Partial updates; arrays replace only the listed rows (matched by natural key)." }, "summary-data": { "slug": "summary-data", "method": "GET", "kind": "http", "gate": null, "callers": ["merc-ops"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "kind": { "type": "string", "enum": ["weekly", "monthly"] }, "scope_user_id": { "type": "string", "format": "uuid" }, "from": { "type": "string", "format": "date" }, "to": { "type": "string", "format": "date" } }, "additionalProperties": false, "required": ["kind", "scope_user_id", "from", "to"] }, "response": { "type": "object", "properties": { "facts": { "type": "object" } }, "additionalProperties": false, "required": ["facts"] }, "reads": ["kpi_daily", "deal", "alert", "sales_target", "organization"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "target-upsert": { "slug": "target-upsert", "method": "POST", "kind": "http", "gate": "targets.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "target_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "scope": { "type": "string", "enum": ["org", "territory", "user"] }, "territory_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "user_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "metric": { "type": "string", "enum": ["revenue", "volume", "visits", "new_customers"] }, "period_start": { "type": "string", "format": "date" }, "period_end": { "type": "string", "format": "date" }, "target_value": { "type": "number" } }, "additionalProperties": false, "required": ["scope", "metric", "period_start", "period_end", "target_value"] }, "response": { "type": "object", "properties": { "target_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["target_id"] }, "reads": [], "writes": ["sales_target", "audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "team" }, "targets-list": { "slug": "targets-list", "method": "GET", "kind": "http", "gate": "targets.read", "callers": ["mgmt", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "period_start": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/TargetProgress" } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["sales_target"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner_or_team" }, "task-assign": { "slug": "task-assign", "method": "POST", "kind": "http", "gate": "team.assign", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "rep_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["rep_id", "title"] }, "response": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["task_id"] }, "reads": [], "writes": ["task"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "team" }, "task-create": { "slug": "task-create", "method": "POST", "kind": "http", "gate": "tasks.create", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "title": { "type": "string" }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "deal_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "is_customer_promise": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["title"] }, "response": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" }, "ai_action_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["task_id"] }, "reads": [], "writes": ["task", "ai_action"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "task-update": { "slug": "task-update", "method": "POST", "kind": "http", "gate": "tasks.create", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" }, "status": { "anyOf": [{ "type": "string", "enum": ["open", "done", "cancelled"] }, { "type": "null" }] }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "title": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["task_id"] }, "response": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["task_id"] }, "reads": [], "writes": ["task"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner_or_team" }, "tasks-list": { "slug": "tasks-list", "method": "GET", "kind": "http", "gate": "tasks.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "status": { "anyOf": [{ "type": "string", "enum": ["open", "done", "cancelled"] }, { "type": "null" }] }, "owner_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "due_before": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["task"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner_or_team" }, "team-list": { "slug": "team-list", "method": "GET", "kind": "http", "gate": "team.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "include_inactive": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object", "properties": { "user": { "$ref": "../_defs.json#/$defs/UserRef" }, "manager_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "territory_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["user", "territory_ids", "status"] } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["app_user", "territory_rep", "territory"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "Roster for manager screens: the caller's direct and indirect reports, plus reps of territories they manage. Admin sees everyone.", "scope": "team" }, "territories-list": { "slug": "territories-list", "method": "GET", "kind": "http", "gate": "territories.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": {}, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["territory", "territory_rep", "territory_postal_code"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "territory-upsert": { "slug": "territory-upsert", "method": "POST", "kind": "http", "gate": "territories.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "territory_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "name": { "type": "string" }, "manager_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "default_rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "postal_codes": { "type": "array", "items": { "type": "string" } }, "rep_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "boundary_geojson": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["name", "postal_codes", "rep_ids"] }, "response": { "type": "object", "properties": { "territory_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["territory_id"] }, "reads": [], "writes": ["territory", "territory_rep", "territory_postal_code", "audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "today-get": { "slug": "today-get", "method": "GET", "kind": "http", "gate": "plan.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "date": { "type": "string", "format": "date" }, "visits": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/VisitSummary" } }, "briefing_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "pending_recordings_hint": { "type": "integer" } }, "additionalProperties": false, "required": ["date", "visits", "pending_recordings_hint"] }, "reads": ["visit", "account", "briefing"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "usage-flush": { "slug": "usage-flush", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": [], "writes": ["usage_event"], "errors": [], "llm": [], "integrations": [], "notes": "Aggregate usage counters into usage_event (atomic increase).", "schedule": "*/30 * * * *" }, "user-upsert": { "slug": "user-upsert", "method": "POST", "kind": "http", "gate": "users.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "user_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "email": { "type": "string" }, "full_name": { "type": "string" }, "role_code": { "type": "string", "enum": ["rep", "manager", "admin"] }, "manager_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "territory_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "status": { "anyOf": [{ "type": "string", "enum": ["active", "left"] }, { "type": "null" }] } }, "additionalProperties": false, "required": ["email", "full_name", "role_code", "territory_ids"] }, "response": { "type": "object", "properties": { "user_id": { "type": "string", "format": "uuid" }, "invited": { "type": "boolean" } }, "additionalProperties": false, "required": ["user_id", "invited"] }, "reads": ["role"], "writes": ["app_user", "territory_rep", "audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "users-list": { "slug": "users-list", "method": "GET", "kind": "http", "gate": "users.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": {}, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["app_user", "role"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "visit-assign": { "slug": "visit-assign", "method": "POST", "kind": "http", "gate": "team.assign", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "rep_id": { "type": "string", "format": "uuid" }, "account_id": { "type": "string", "format": "uuid" }, "date": { "type": "string", "format": "date" }, "purpose": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["rep_id", "account_id", "date"] }, "response": { "type": "object", "properties": { "visit": { "$ref": "../_defs.json#/$defs/VisitSummary" } }, "additionalProperties": false, "required": ["visit"] }, "reads": [], "writes": ["visit", "visit_change"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "team" }, "visit-card-get": { "slug": "visit-card-get", "method": "GET", "kind": "http", "gate": "accounts.read", "callers": ["app", "buddy"], "timeout_ms": 4e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["account_id"] }, "response": { "$ref": "../_defs.json#/$defs/VisitCard" }, "reads": ["account", "contact", "problem", "task", "sales_order", "order_line", "account_metrics", "alert", "campaign", "campaign_product", "dossier", "dossier_fact", "product"], "writes": ["campaign_exposure"], "errors": [], "llm": ["visit_card_pitch"], "integrations": [], "notes": "", "scope": "account" }, "visit-plan-accept": { "slug": "visit-plan-accept", "method": "POST", "kind": "http", "gate": "plan.edit", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "plan_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["plan_id"] }, "response": { "type": "object", "properties": { "plan_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["plan_id", "status"] }, "reads": [], "writes": ["visit_plan"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner" }, "visit-plan-get": { "slug": "visit-plan-get", "method": "GET", "kind": "http", "gate": "plan.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "week_start": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "plan_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "week_start": { "type": "string", "format": "date" }, "status": { "type": "string" }, "days": { "type": "array", "items": { "type": "object", "properties": { "date": { "type": "string", "format": "date" }, "visits": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/VisitSummary" } } }, "additionalProperties": false, "required": ["date", "visits"] } } }, "additionalProperties": false, "required": ["week_start", "status", "days"] }, "reads": ["visit_plan", "visit", "account"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner_or_team" }, "visit-plan-suggest": { "slug": "visit-plan-suggest", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["account", "account_metrics", "task", "campaign", "candidate", "organization", "postal_area", "account_category"], "writes": ["visit_plan", "visit"], "errors": [], "llm": [], "integrations": [], "notes": "Next week's plan per rep (metrics.md#visit-plan).", "schedule": "0 18 * * 0" }, "visit-update": { "slug": "visit-update", "method": "POST", "kind": "http", "gate": "plan.edit", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "visit_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "action": { "type": "string", "enum": ["move", "skip", "add", "reorder", "done"] }, "date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "position": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["action"] }, "response": { "type": "object", "properties": { "visit": { "$ref": "../_defs.json#/$defs/VisitSummary" }, "day_count": { "type": "integer" }, "warning": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["visit", "day_count"] }, "reads": [], "writes": ["visit", "visit_change"], "errors": [], "llm": [], "integrations": [], "notes": "add requires account_id + date. warning when the day exceeds visits_per_day.", "scope": "owner" }, "voice-log-upload": { "slug": "voice-log-upload", "method": "POST", "kind": "http", "gate": "voicelog.create", "callers": ["app"], "timeout_ms": 6e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "idempotency_key": { "type": "string" }, "recorded_at": { "type": "string", "format": "date-time" }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "visit_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "audio_base64": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "audio_mime": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "transcript": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "language": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["idempotency_key", "recorded_at"] }, "response": { "type": "object", "properties": { "voice_log_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" }, "duplicate": { "type": "boolean" } }, "additionalProperties": false, "required": ["voice_log_id", "status", "duplicate"] }, "reads": [], "writes": ["voice_log"], "errors": [], "llm": [], "integrations": [], "notes": "Body <= 1 MB (platform limit). Same idempotency_key returns the existing voice_log (duplicate=true). Triggers transcription (OPEN-04) then debrief-process." }, "weekly-summary": { "slug": "weekly-summary", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["kpi_daily", "deal", "alert"], "writes": [], "errors": [], "llm": [], "integrations": ["backoffice:merc-ops"], "notes": "Creates merc-ops task weekly_summary per manager + admin.", "schedule": "0 7 * * 1" } };
-var events = { "alert.created": { "type": "alert.created", "payload": { "type": "object", "properties": { "alert": { "$ref": "../_defs.json#/$defs/AlertCard" } }, "additionalProperties": false, "required": ["alert"] } }, "approval.created": { "type": "approval.created", "payload": { "type": "object", "properties": { "approval": { "$ref": "../_defs.json#/$defs/ApprovalCard" } }, "additionalProperties": false, "required": ["approval"] } }, "approval.decided": { "type": "approval.decided", "payload": { "type": "object", "properties": { "approval": { "$ref": "../_defs.json#/$defs/ApprovalCard" } }, "additionalProperties": false, "required": ["approval"] } }, "briefing.ready": { "type": "briefing.ready", "payload": { "type": "object", "properties": { "briefing_id": { "type": "string", "format": "uuid" }, "date": { "type": "string", "format": "date" } }, "additionalProperties": false, "required": ["briefing_id", "date"] } }, "candidates.ready": { "type": "candidates.ready", "payload": { "type": "object", "properties": { "search_id": { "type": "string", "format": "uuid" }, "found": { "type": "integer" }, "duplicates": { "type": "integer" }, "scored": { "type": "integer" } }, "additionalProperties": false, "required": ["search_id", "found", "duplicates", "scored"] } }, "manager_call.status": { "type": "manager_call.status", "payload": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "outcome": { "type": "string", "enum": ["queued", "ringing", "answered", "no_answer", "busy", "voicemail", "failed"] } }, "additionalProperties": false, "required": ["approval_id", "outcome"] } }, "plan.proposed": { "type": "plan.proposed", "payload": { "type": "object", "properties": { "plan_id": { "type": "string", "format": "uuid" }, "week_start": { "type": "string", "format": "date" } }, "additionalProperties": false, "required": ["plan_id", "week_start"] } }, "result_card.ready": { "type": "result_card.ready", "payload": { "type": "object", "properties": { "voice_log_id": { "type": "string", "format": "uuid" }, "result": { "$ref": "../_defs.json#/$defs/ResultCard" } }, "additionalProperties": false, "required": ["voice_log_id", "result"] } }, "voice_log.status": { "type": "voice_log.status", "payload": { "type": "object", "properties": { "voice_log_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" }, "error": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["voice_log_id", "status"] } } };
+var defs = { "Error": { "type": "object", "properties": { "code": { "type": "string", "enum": ["not_found", "forbidden", "validation_failed", "needs_confirmation", "conflict", "upstream_failed", "timeout", "blocked_by_policy"] }, "message": { "type": "string" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["code", "message"] }, "AccountRef": { "type": "object", "properties": { "id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "account_type": { "type": "string", "enum": ["prospect", "customer", "lost"] }, "postal_code": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "city": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "distance_m": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["id", "name", "account_type"] }, "ActionLine": { "type": "object", "properties": { "ai_action_id": { "type": "string", "format": "uuid" }, "action_type": { "type": "string" }, "action_class": { "type": "string", "enum": ["internal", "draft", "external", "structural", "destructive"] }, "status": { "type": "string", "enum": ["suggested", "applied", "undone", "rejected"] }, "summary": { "type": "string" }, "target_table": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "target_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "undoable": { "type": "boolean" }, "approval_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["ai_action_id", "action_type", "action_class", "status", "summary", "undoable"] }, "MissingField": { "type": "object", "properties": { "field": { "type": "string" }, "question": { "type": "string" } }, "additionalProperties": false, "required": ["field", "question"] }, "ApprovalCard": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "kind": { "type": "string", "enum": ["customer_message", "discount", "terms", "conversion"] }, "status": { "type": "string", "enum": ["pending", "approved", "countered", "sent", "failed", "rejected", "expired", "escalated"] }, "mode": { "type": "string", "enum": ["live", "async"] }, "account": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "requested_by": { "$ref": "../_defs.json#/$defs/UserRef" }, "approver": { "$ref": "../_defs.json#/$defs/UserRef" }, "preview": { "type": "string" }, "channel": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "recipient": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "subject": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "body": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "requested_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "policy_limit_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "approved_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "decision_note": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "expires_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "created_at": { "type": "string", "format": "date-time" } }, "additionalProperties": false, "required": ["approval_id", "kind", "status", "mode", "requested_by", "approver", "preview", "created_at"] }, "UserRef": { "type": "object", "properties": { "id": { "type": "string", "format": "uuid" }, "full_name": { "type": "string" }, "role": { "type": "string", "enum": ["rep", "manager", "admin"] } }, "additionalProperties": false, "required": ["id", "full_name", "role"] }, "ResultCard": { "type": "object", "properties": { "voice_log_id": { "type": "string", "format": "uuid" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "lines": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ActionLine" } }, "missing_fields": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/MissingField" } }, "pending_approvals": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ApprovalCard" } }, "spoken_summary": { "type": "string" }, "processing_ms": { "type": "integer" } }, "additionalProperties": false, "required": ["voice_log_id", "account", "lines", "missing_fields", "pending_approvals", "spoken_summary", "processing_ms"] }, "VisitSummary": { "type": "object", "properties": { "visit_id": { "type": "string", "format": "uuid" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "planned_date": { "type": "string", "format": "date" }, "route_position": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "status": { "type": "string", "enum": ["planned", "done", "skipped"] }, "purpose": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "lat": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "lng": { "anyOf": [{ "type": "number" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["visit_id", "account", "planned_date", "status"] }, "BriefingItem": { "type": "object", "properties": { "position": { "type": "integer" }, "item_type": { "type": "string" }, "display_text": { "type": "string" }, "ref_table": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "ref_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["position", "item_type", "display_text"] }, "Briefing": { "type": "object", "properties": { "briefing_id": { "type": "string", "format": "uuid" }, "date": { "type": "string", "format": "date" }, "status": { "type": "string", "enum": ["generated", "delivered", "read"] }, "script_text": { "type": "string" }, "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/BriefingItem" } } }, "additionalProperties": false, "required": ["briefing_id", "date", "status", "script_text", "items"] }, "OrderSummary": { "type": "object", "properties": { "order_id": { "type": "string", "format": "uuid" }, "order_date": { "type": "string", "format": "date" }, "status": { "type": "string", "enum": ["draft", "confirmed", "cancelled"] }, "total_minor": { "type": "integer" }, "lines": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "quantity": { "type": "number" }, "unit": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "quantity", "unit"] } } }, "additionalProperties": false, "required": ["order_id", "order_date", "status", "total_minor", "lines"] }, "Pitch": { "type": "object", "properties": { "opening_line": { "type": "string" }, "arguments": { "type": "array", "items": { "type": "string" } }, "products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "why": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "why"] } }, "objections": { "type": "array", "items": { "type": "object", "properties": { "objection": { "type": "string" }, "answer": { "type": "string" } }, "additionalProperties": false, "required": ["objection", "answer"] } } }, "additionalProperties": false, "required": ["opening_line", "arguments", "products", "objections"] }, "DossierView": { "type": "object", "properties": { "summary": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "price_level": { "anyOf": [{ "type": "string", "enum": ["low", "mid", "premium"] }, { "type": "null" }] }, "facts": { "type": "array", "items": { "type": "object", "properties": { "fact_type": { "type": "string" }, "value": { "type": "string" }, "source_url": { "type": "string" }, "retrieved_at": { "type": "string", "format": "date-time" } }, "additionalProperties": false, "required": ["fact_type", "value", "source_url", "retrieved_at"] } }, "competitor_brands": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["facts", "competitor_brands"] }, "VisitCard": { "type": "object", "properties": { "kind": { "type": "string", "enum": ["customer", "prospect"] }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "contacts": { "type": "array", "items": { "type": "object", "properties": { "contact_id": { "type": "string", "format": "uuid" }, "full_name": { "type": "string" }, "role_title": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "is_decision_maker": { "type": "boolean" }, "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["contact_id", "full_name", "is_decision_maker"] } }, "open_problems": { "type": "array", "items": { "type": "object", "properties": { "problem_id": { "type": "string", "format": "uuid" }, "description": { "type": "string" }, "status": { "type": "string" }, "due_date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["problem_id", "description", "status"] } }, "open_tasks": { "type": "array", "items": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "is_customer_promise": { "type": "boolean" } }, "additionalProperties": false, "required": ["task_id", "title", "is_customer_promise"] } }, "recent_orders": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/OrderSummary" } }, "metrics": { "type": "object", "properties": { "avg_order_interval_days": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "days_since_last_order": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "risk_score": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "risk_reasons": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["risk_reasons"] }, "alerts": { "type": "array", "items": { "type": "object", "properties": { "alert_id": { "type": "string", "format": "uuid" }, "type": { "type": "string" }, "message": { "type": "string" } }, "additionalProperties": false, "required": ["alert_id", "type", "message"] } }, "suggested_products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "why": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "why"] } }, "campaigns": { "type": "array", "items": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "message": { "type": "string" } }, "additionalProperties": false, "required": ["campaign_id", "title", "message"] } }, "how_to_talk": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "dossier": { "anyOf": [{ "$ref": "../_defs.json#/$defs/DossierView" }, { "type": "null" }] }, "pitch": { "anyOf": [{ "$ref": "../_defs.json#/$defs/Pitch" }, { "type": "null" }] }, "spoken_summary": { "type": "string" } }, "additionalProperties": false, "required": ["kind", "account", "contacts", "open_problems", "open_tasks", "recent_orders", "metrics", "alerts", "suggested_products", "campaigns", "spoken_summary"] }, "VisitBrief": { "type": "object", "properties": { "visit_brief_id": { "type": "string", "format": "uuid" }, "visit": { "$ref": "../_defs.json#/$defs/VisitSummary" }, "planned_start_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "bullets": { "type": "array", "items": { "type": "object", "properties": { "text": { "type": "string" }, "ref_table": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "ref_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["text"] } }, "push": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "reason": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "reason"] }, "avoid": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "reason": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "reason"] }, "spoken_script": { "type": "string" }, "status": { "type": "string", "enum": ["generated", "sent", "called", "failed", "skipped"] }, "channel": { "anyOf": [{ "type": "string", "enum": ["whatsapp", "call", "app"] }, { "type": "null" }] } }, "additionalProperties": false, "required": ["visit_brief_id", "visit", "bullets", "push", "avoid", "spoken_script", "status"] }, "AlertCard": { "type": "object", "properties": { "alert_id": { "type": "string", "format": "uuid" }, "type": { "type": "string" }, "severity": { "type": "string", "enum": ["low", "medium", "high"] }, "status": { "type": "string", "enum": ["open", "done", "dismissed"] }, "message": { "type": "string" }, "account": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "suggested_action": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "created_at": { "type": "string", "format": "date-time" } }, "additionalProperties": false, "required": ["alert_id", "type", "severity", "status", "message", "created_at"] }, "CandidateCard": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" }, "business_name": { "type": "string" }, "status": { "type": "string" }, "postal_code": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "score": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "reasons": { "type": "array", "items": { "type": "string" } }, "dossier": { "anyOf": [{ "$ref": "../_defs.json#/$defs/DossierView" }, { "type": "null" }] }, "duplicate_of": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "assigned_rep": { "anyOf": [{ "$ref": "../_defs.json#/$defs/UserRef" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["candidate_id", "business_name", "status", "reasons"] }, "TargetProgress": { "type": "object", "properties": { "target_id": { "type": "string", "format": "uuid" }, "metric": { "type": "string", "enum": ["revenue", "volume", "visits", "new_customers"] }, "period_start": { "type": "string", "format": "date" }, "period_end": { "type": "string", "format": "date" }, "target_value": { "type": "number" }, "actual_value": { "type": "number" }, "pct": { "type": "number" }, "days_left": { "type": "integer" } }, "additionalProperties": false, "required": ["target_id", "metric", "period_start", "period_end", "target_value", "actual_value", "pct", "days_left"] }, "Page": { "type": "object", "properties": { "page": { "type": "integer" }, "limit": { "type": "integer" }, "total": { "type": "integer" } }, "additionalProperties": false, "required": ["page", "limit", "total"] }, "KpiSet": { "type": "object", "properties": { "visits_per_rep_day": { "type": "number" }, "pipeline_by_stage": { "type": "array", "items": { "type": "object", "properties": { "stage_code": { "type": "string" }, "amount_minor": { "type": "integer" }, "count": { "type": "integer" } }, "additionalProperties": false, "required": ["stage_code", "amount_minor", "count"] } }, "weighted_pipeline_minor": { "type": "integer" }, "revenue_minor": { "type": "integer" }, "new_customers": { "type": "integer" }, "at_risk_customers": { "type": "integer" }, "at_risk_value_minor": { "type": "integer" }, "customers_saved": { "type": "integer" }, "lost_customers": { "type": "integer" }, "crm_completeness_pct": { "type": "number" }, "voice_logs_per_rep_day": { "type": "number" }, "voice_logs_within_1h_pct": { "type": "number" }, "ai_actions_applied": { "type": "integer" }, "ai_actions_undone": { "type": "integer" }, "approvals_approved": { "type": "integer" }, "approvals_rejected": { "type": "integer" }, "discount_requests": { "type": "integer" }, "discounts_approved": { "type": "integer" }, "targets": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/TargetProgress" } }, "baseline": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["visits_per_rep_day", "pipeline_by_stage", "weighted_pipeline_minor", "revenue_minor", "new_customers", "at_risk_customers", "at_risk_value_minor", "customers_saved", "lost_customers", "crm_completeness_pct", "voice_logs_per_rep_day", "voice_logs_within_1h_pct", "ai_actions_applied", "ai_actions_undone", "approvals_approved", "approvals_rejected", "discount_requests", "discounts_approved", "targets"] } };
+var functions = { "account-convert": { "slug": "account-convert", "method": "POST", "kind": "http", "gate": "accounts.convert", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["account_id"] }, "response": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["approval_id", "status"] }, "reads": [], "writes": ["ai_action", "approval"], "errors": [], "llm": [], "integrations": [], "notes": "Structural action: always creates an approval unless ai_permission says otherwise.", "scope": "account" }, "account-get": { "slug": "account-get", "method": "GET", "kind": "http", "gate": "accounts.read", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["account_id"] }, "response": { "type": "object", "properties": { "account": { "type": "object" }, "contacts": { "type": "array", "items": { "type": "object" } }, "deals": { "type": "array", "items": { "type": "object" } }, "activities": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["account", "contacts", "deals", "activities"] }, "reads": ["account", "contact", "deal", "activity"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "account-lifecycle": { "slug": "account-lifecycle", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["account_metrics", "organization"], "writes": ["account", "ai_action"], "errors": [], "llm": [], "integrations": [], "notes": "Customers past the lost rule -> lost via ai_action mark_account_lost (internal, undo).", "schedule": "45 2 * * *" }, "account-resolve": { "slug": "account-resolve", "method": "GET", "kind": "http", "gate": "accounts.read", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "hint": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "lat": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "lng": { "anyOf": [{ "type": "number" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "status": { "type": "string", "enum": ["resolved", "ambiguous", "not_found"] }, "account": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "candidates": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/AccountRef" } } }, "additionalProperties": false, "required": ["status", "candidates"] }, "reads": ["account", "visit", "postal_area"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "Order of evidence: exact/fuzzy name in rep scope -> today's scheduled visits -> nearest (lat/lng, never stored).", "scope": "account" }, "account-upsert": { "slug": "account-upsert", "method": "POST", "kind": "http", "gate": "accounts.write", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "fields": { "type": "object" } }, "additionalProperties": false, "required": ["fields"] }, "response": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" }, "audit": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["account_id"] }, "reads": [], "writes": ["account"], "errors": [], "llm": [], "integrations": [], "notes": "Human edit. account_type changes to/from customer go through account-convert.", "scope": "account" }, "accounts-list": { "slug": "accounts-list", "method": "GET", "kind": "http", "gate": "accounts.read", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "q": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "account_type": { "anyOf": [{ "type": "string", "enum": ["prospect", "customer", "lost"] }, { "type": "null" }] }, "territory_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "owner_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "at_risk": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/AccountRef" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["account", "account_metrics", "account_category"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "ai-action-undo": { "slug": "ai-action-undo", "method": "POST", "kind": "http", "gate": "aiaction.undo", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "ai_action_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["ai_action_id"] }, "response": { "type": "object", "properties": { "ai_action_id": { "type": "string", "format": "uuid" }, "status": { "type": "string", "enum": ["undone"] }, "restored": { "type": "object", "properties": { "table": { "type": "string" }, "id": { "type": "string" } }, "additionalProperties": false, "required": ["table", "id"] } }, "additionalProperties": false, "required": ["ai_action_id", "status", "restored"] }, "reads": ["ai_action"], "writes": ["ai_action", "*"], "errors": [], "llm": [], "integrations": [], "notes": "Restores before_snapshot exactly; rows created by the action are deleted by the engine (the only delete path, internal rows only).", "scope": "owner" }, "ai-actions-list": { "slug": "ai-actions-list", "method": "GET", "kind": "http", "gate": "aiaction.read", "callers": ["app", "mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "voice_log_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "user_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "status": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "from": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "to": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ActionLine" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["ai_action"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner_or_team" }, "alert-act": { "slug": "alert-act", "method": "POST", "kind": "http", "gate": "alerts.act", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "alert_id": { "type": "string", "format": "uuid" }, "action": { "type": "string", "enum": ["create_task", "create_draft", "done", "dismiss"] } }, "additionalProperties": false, "required": ["alert_id", "action"] }, "response": { "type": "object", "properties": { "alert": { "$ref": "../_defs.json#/$defs/AlertCard" }, "task_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "approval_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["alert"] }, "reads": [], "writes": ["alert", "task", "approval"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner" }, "alerts-engine": { "slug": "alerts-engine", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["account_metrics", "deal", "task", "competitor_signal", "visit", "voice_log", "alert_rule", "alert_type"], "writes": ["alert"], "errors": [], "llm": [], "integrations": [], "notes": "Evaluate every enabled alert_rule; dedupe by dedupe_key; push alert.created.", "schedule": "0 * * * *" }, "alerts-list": { "slug": "alerts-list", "method": "GET", "kind": "http", "gate": "alerts.read", "callers": ["app", "buddy", "mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "status": { "anyOf": [{ "type": "string", "enum": ["open", "done", "dismissed"] }, { "type": "null" }] }, "scope": { "anyOf": [{ "type": "string", "enum": ["mine", "team"] }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/AlertCard" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["alert", "alert_type"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner_or_team" }, "approval-decide": { "slug": "approval-decide", "method": "POST", "kind": "http", "gate": "discounts.approve", "callers": ["mgmt", "merc-approver", "sms_link"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "decision": { "type": "string", "enum": ["approve", "counter", "reject"] }, "approved_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "note": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "via": { "type": "string", "enum": ["app", "phone_call", "sms_link"] }, "link_token": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["approval_id", "decision", "via"] }, "response": { "type": "object", "properties": { "approval": { "$ref": "../_defs.json#/$defs/ApprovalCard" }, "requester_notified": { "type": "boolean" } }, "additionalProperties": false, "required": ["approval", "requester_notified"] }, "reads": ["approval", "discount_request", "discount_policy"], "writes": ["approval", "discount_request", "ai_action", "task"], "errors": [], "llm": [], "integrations": [], "notes": "counter requires approved_pct < requested_pct. approved_pct must be <= approver's own limit. Pushes approval.decided to the requester (merc-live + SMS).", "scope": "approver" }, "approval-resolve": { "slug": "approval-resolve", "method": "POST", "kind": "http", "gate": "approvals.decide", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "decision": { "type": "string", "enum": ["approve", "edit_approve", "reject"] }, "final_body": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["approval_id", "decision"] }, "response": { "type": "object", "properties": { "approval": { "$ref": "../_defs.json#/$defs/ApprovalCard" } }, "additionalProperties": false, "required": ["approval"] }, "reads": ["approval", "message_approval", "channel"], "writes": ["approval", "message_approval", "ai_action"], "errors": [], "llm": [], "integrations": ["integration:gmail.google_workspace_gmail_message_send"], "notes": "For kind customer_message / conversion. Approve sends synchronously via message-send in the caller's (rep's) identity (S3/OPEN-03). Failed sends keep status failed with failure_reason; the rep can retry by approving again.", "scope": "approver" }, "approval-sla-watch": { "slug": "approval-sla-watch", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["approval", "app_user"], "writes": ["approval", "alert"], "errors": [], "llm": [], "integrations": ["sms"], "notes": "Async discount approvals past due_at -> escalated to approver's manager or admin; SMS both sides.", "schedule": "*/5 * * * *" }, "approval-status": { "slug": "approval-status", "method": "GET", "kind": "http", "gate": "approvals.read", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["approval_id"] }, "response": { "type": "object", "properties": { "approval": { "$ref": "../_defs.json#/$defs/ApprovalCard" } }, "additionalProperties": false, "required": ["approval"] }, "reads": ["approval", "discount_request", "manager_call"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "requester_or_approver" }, "approvals-expire": { "slug": "approvals-expire", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["approval"], "writes": ["approval"], "errors": [], "llm": [], "integrations": [], "notes": "customer_message approvals pending > approval_expiry_hours -> expired.", "schedule": "0 * * * *" }, "approvals-list": { "slug": "approvals-list", "method": "GET", "kind": "http", "gate": "approvals.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "kind": { "anyOf": [{ "type": "string", "enum": ["customer_message", "discount", "terms", "conversion"] }, { "type": "null" }] }, "status": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "role": { "anyOf": [{ "type": "string", "enum": ["requester", "approver"] }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ApprovalCard" } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["approval", "message_approval", "discount_request"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "requester_or_approver" }, "approver-brief": { "slug": "approver-brief", "method": "GET", "kind": "http", "gate": null, "callers": ["merc-approver"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["approval_id"] }, "response": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "callee": { "$ref": "../_defs.json#/$defs/UserRef" }, "requester": { "$ref": "../_defs.json#/$defs/UserRef" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "requested_pct": { "type": "number" }, "policy_limit_pct": { "type": "number" }, "approver_limit_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "lines": { "type": "array", "items": { "type": "object", "properties": { "name": { "type": "string" }, "quantity": { "type": "number" }, "unit": { "type": "string" } }, "additionalProperties": false, "required": ["name", "quantity", "unit"] } }, "context_facts": { "type": "array", "items": { "type": "string" } }, "spoken_brief": { "type": "string" } }, "additionalProperties": false, "required": ["approval_id", "callee", "requester", "account", "requested_pct", "policy_limit_pct", "lines", "context_facts", "spoken_brief"] }, "reads": ["approval", "discount_request", "discount_request_line", "account_metrics", "competitor_signal", "sales_order"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "spoken_brief is one sentence built from rows only (no LLM numbers)." }, "ask-crm": { "slug": "ask-crm", "method": "GET", "kind": "http", "gate": "accounts.read", "callers": ["buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "question": { "type": "string" }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["question"] }, "response": { "type": "object", "properties": { "template": { "type": "string" }, "params": { "type": "object" }, "facts": { "type": "array", "items": { "type": "object", "properties": { "label": { "type": "string" }, "value": { "type": "string" }, "source": { "type": "string" } }, "additionalProperties": false, "required": ["label", "value", "source"] } }, "no_data": { "type": "boolean" } }, "additionalProperties": false, "required": ["template", "params", "facts", "no_data"] }, "reads": ["account", "sales_order", "order_line", "product", "task", "problem", "deal", "visit", "competitor_signal"], "writes": [], "errors": [], "llm": ["ask_crm_route"], "integrations": [], "notes": "LLM only selects a template + params (contracts/llm/ask_crm_route.json). Values come from queries. The buddy phrases the answer.", "scope": "account" }, "assignments-transfer": { "slug": "assignments-transfer", "method": "POST", "kind": "http", "gate": "territories.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "from_rep_id": { "type": "string", "format": "uuid" }, "to_rep_id": { "type": "string", "format": "uuid" }, "account_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "all_accounts": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] }, "reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["from_rep_id", "to_rep_id", "account_ids"] }, "response": { "type": "object", "properties": { "moved": { "type": "integer" } }, "additionalProperties": false, "required": ["moved"] }, "reads": [], "writes": ["account", "account_assignment_history", "visit", "task", "audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "Moves open visits/tasks too. Customer memory follows automatically (keyed by account.id)." }, "briefing-generate": { "slug": "briefing-generate", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["organization", "visit", "task", "account_metrics", "candidate", "campaign", "approval", "sales_target"], "writes": ["briefing", "briefing_item"], "errors": [], "llm": ["briefing_script"], "integrations": [], "notes": "For reps whose local time >= briefing_time and no briefing today. Push briefing.ready.", "schedule": "*/15 * * * *" }, "briefing-get": { "slug": "briefing-get", "method": "GET", "kind": "http", "gate": "plan.read", "callers": ["app", "buddy"], "timeout_ms": 45e3, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "regenerate": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "$ref": "../_defs.json#/$defs/Briefing" }, "reads": ["briefing", "briefing_item"], "writes": ["briefing", "briefing_item"], "errors": [], "llm": ["briefing_script"], "integrations": [], "notes": "" }, "buddy-call-outcome": { "slug": "buddy-call-outcome", "method": "POST", "kind": "http", "gate": null, "callers": ["internal", "merc-buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "buddy_call_id": { "type": "string", "format": "uuid" }, "outcome": { "type": "string", "enum": ["answered", "no_answer", "busy", "voicemail", "failed"] }, "conversation_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["buddy_call_id", "outcome"] }, "response": { "type": "object", "properties": { "buddy_call_id": { "type": "string", "format": "uuid" }, "fallback": { "type": "string", "enum": ["none", "whatsapp", "app"] } }, "additionalProperties": false, "required": ["buddy_call_id", "fallback"] }, "reads": ["app_user"], "writes": ["buddy_call"], "errors": [], "llm": [], "integrations": ["integration:whatsapp.send_template"], "notes": "merc-buddy triggers OnVoicemailDetected / OnEnd on an outbound call. no_answer/busy/voicemail -> one WhatsApp template ping if the rep has WhatsApp, else push + inbox. No call retry." }, "buddy-call-start": { "slug": "buddy-call-start", "method": "POST", "kind": "http", "gate": "voicelog.create", "callers": ["buddy", "app", "internal"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "channel": { "anyOf": [{ "type": "string", "enum": ["call", "whatsapp"] }, { "type": "null" }] }, "purpose": { "type": "string", "enum": ["callback", "briefing", "approval_decided", "alert", "eod", "pre_visit", "post_visit", "debrief_confirm"] }, "reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "ref_table": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "ref_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["purpose"] }, "response": { "type": "object", "properties": { "buddy_call_id": { "type": "string", "format": "uuid" }, "status": { "type": "string", "enum": ["scheduled", "started", "sent", "failed"] }, "due_at": { "type": "string", "format": "date-time" }, "channel": { "type": "string", "enum": ["call", "whatsapp"] } }, "additionalProperties": false, "required": ["buddy_call_id", "status", "due_at", "channel"] }, "reads": ["app_user", "organization"], "writes": ["buddy_call"], "errors": [], "llm": [], "integrations": ["outbound_call:merc-buddy", "integration:whatsapp.send_template"], "notes": "Target is always the caller's own app_user.phone (never a request field). channel defaults to app_user.notify_channel (app -> call). at in the future -> status scheduled (buddy-callbacks-due starts it). Now: call -> POST /v1/agents/outbound {from: global MERC_BUDDY_NUMBER, to: phone, call_purpose: 'merc_buddy:<buddy_call_id>:<purpose>'} via service account merc-platform-api; whatsapp -> template merc_buddy_ping (free text only inside whatsapp_window_until). Call hours 07:30-21:00 org time; outside -> scheduled for the next allowed slot. Idempotent on (user, purpose, ref_id) for 10 min. Meeting loop (REQ-MTG-*): pre_visit (ref visit_brief) -> WhatsApp template merc_previsit_brief with the brief bullets and quick replies Call me / Useful / Not useful, or a call that reads spoken_script; post_visit (ref visit) -> 'How did it go at <account>?'; debrief_confirm (ref debrief_confirmation) -> template merc_debrief_confirm with quick replies Correct / Fix / Brief did not help. Inside whatsapp_window_until send the same content as an interactive free-form message instead of a template." }, "buddy-callbacks-due": { "slug": "buddy-callbacks-due", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 4, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["buddy_call", "app_user", "organization"], "writes": ["buddy_call"], "errors": [], "llm": [], "integrations": ["outbound_call:merc-buddy", "integration:whatsapp.send_template"], "notes": "Start buddy_call rows with status scheduled and due_at <= now (same path as buddy-call-start 'now').", "schedule": "*/5 * * * *" }, "campaign-draft-from-text": { "slug": "campaign-draft-from-text", "method": "POST", "kind": "http", "gate": "campaigns.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "text": { "type": "string" } }, "additionalProperties": false, "required": ["text"] }, "response": { "type": "object", "properties": { "draft": { "type": "object" }, "unresolved": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["draft", "unresolved"] }, "reads": [], "writes": [], "errors": [], "llm": ["campaign_from_text"], "integrations": [], "notes": "" }, "campaign-funnel": { "slug": "campaign-funnel", "method": "GET", "kind": "http", "gate": "campaigns.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["campaign_id"] }, "response": { "type": "object", "properties": { "shown": { "type": "integer" }, "pitched": { "type": "integer" }, "ordered": { "type": "integer" }, "by_rep": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["shown", "pitched", "ordered", "by_rep"] }, "reads": ["campaign_exposure"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "campaign-upsert": { "slug": "campaign-upsert", "method": "POST", "kind": "http", "gate": "campaigns.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "campaign_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "title": { "type": "string" }, "message": { "type": "string" }, "starts_on": { "type": "string", "format": "date" }, "ends_on": { "type": "string", "format": "date" }, "status": { "type": "string", "enum": ["draft", "active", "ended"] }, "product_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "territory_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "category_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "rep_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } } }, "additionalProperties": false, "required": ["title", "message", "starts_on", "ends_on", "status", "product_ids", "territory_ids", "category_ids", "rep_ids"] }, "response": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["campaign_id"] }, "reads": [], "writes": ["campaign", "campaign_product", "campaign_territory", "campaign_category", "campaign_rep"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "campaigns-list": { "slug": "campaigns-list", "method": "GET", "kind": "http", "gate": "campaigns.read", "callers": ["mgmt", "app"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "status": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["campaign"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "candidate-act": { "slug": "candidate-act", "method": "POST", "kind": "http", "gate": "prospects.act", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" }, "action": { "type": "string", "enum": ["add_to_route", "assign", "dismiss"] }, "rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["candidate_id", "action"] }, "response": { "type": "object", "properties": { "candidate": { "$ref": "../_defs.json#/$defs/CandidateCard" }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "visit_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["candidate"] }, "reads": [], "writes": ["candidate", "account", "visit", "dossier"], "errors": [], "llm": [], "integrations": [], "notes": "add_to_route creates account(type=prospect, source=prospecting), moves the dossier to it, creates a visit. assign defaults to territory.default_rep_id." }, "candidate-add": { "slug": "candidate-add", "method": "POST", "kind": "http", "gate": "prospects.search", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "business_name": { "type": "string" }, "location_hint": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["business_name"] }, "response": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" }, "search_id": { "type": "string", "format": "uuid" }, "duplicate_of": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["candidate_id", "search_id"] }, "reads": [], "writes": ["prospect_search", "candidate"], "errors": [], "llm": [], "integrations": ["procedure:prospecting-pipeline"], "notes": "" }, "candidate-dedupe": { "slug": "candidate-dedupe", "method": "POST", "kind": "http", "gate": null, "callers": ["procedure"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["candidate_id"] }, "response": { "type": "object", "properties": { "duplicate": { "type": "boolean" }, "matched_account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "matched_candidate_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "rule": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["duplicate"] }, "reads": ["candidate", "account"], "writes": ["candidate"], "errors": [], "llm": [], "integrations": [], "notes": "Rules in order: VAT exact; website domain; phone E.164; normalized name + postal code (trigram >= 0.85)." }, "candidate-get": { "slug": "candidate-get", "method": "GET", "kind": "http", "gate": null, "callers": ["merc-research", "procedure"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["candidate_id"] }, "response": { "type": "object", "properties": { "candidate": { "$ref": "../_defs.json#/$defs/CandidateCard" }, "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "vat_number": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["candidate"] }, "reads": ["candidate"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "candidate-score": { "slug": "candidate-score", "method": "POST", "kind": "http", "gate": null, "callers": ["procedure"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["candidate_id"] }, "response": { "type": "object", "properties": { "score": { "type": "number" }, "reasons": { "type": "array", "items": { "type": "object", "properties": { "criterion": { "type": "string" }, "reason": { "type": "string" } }, "additionalProperties": false, "required": ["criterion", "reason"] } } }, "additionalProperties": false, "required": ["score", "reasons"] }, "reads": ["candidate", "dossier", "dossier_fact", "icp_criterion", "icp_category", "visit"], "writes": ["candidate_score", "candidate_score_reason", "candidate"], "errors": [], "llm": ["candidate_score"], "integrations": [], "notes": "" }, "candidates-list": { "slug": "candidates-list", "method": "GET", "kind": "http", "gate": "prospects.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "search_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "status": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/CandidateCard" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["candidate", "candidate_score", "candidate_score_reason", "dossier", "dossier_fact"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "competitor-signals-list": { "slug": "competitor-signals-list", "method": "GET", "kind": "http", "gate": "team.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "competitor_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "territory_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "from": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["competitor_signal", "account"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "team" }, "contact-erase": { "slug": "contact-erase", "method": "POST", "kind": "http", "gate": "gdpr.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "contact_id": { "type": "string", "format": "uuid" }, "confirm": { "type": "boolean" } }, "additionalProperties": false, "required": ["contact_id", "confirm"] }, "response": { "type": "object", "properties": { "erased": { "type": "boolean" } }, "additionalProperties": false, "required": ["erased"] }, "reads": [], "writes": ["contact", "audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "Human-only delete. References are set null by FK rules. Never callable by any agent tool." }, "contact-export": { "slug": "contact-export", "method": "POST", "kind": "http", "gate": "gdpr.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "contact_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["contact_id"] }, "response": { "type": "object", "properties": { "export": { "type": "object" } }, "additionalProperties": false, "required": ["export"] }, "reads": ["contact", "activity", "message_approval"], "writes": ["audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "contact-upsert": { "slug": "contact-upsert", "method": "POST", "kind": "http", "gate": "accounts.write", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "contact_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "account_id": { "type": "string", "format": "uuid" }, "fields": { "type": "object" } }, "additionalProperties": false, "required": ["account_id", "fields"] }, "response": { "type": "object", "properties": { "contact_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["contact_id"] }, "reads": [], "writes": ["contact"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "dashboard-kpis": { "slug": "dashboard-kpis", "method": "GET", "kind": "http", "gate": "dashboard.read", "callers": ["mgmt", "app"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "scope": { "type": "string", "enum": ["me", "team", "org"] }, "territory_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "from": { "type": "string", "format": "date" }, "to": { "type": "string", "format": "date" }, "compare_baseline": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["scope", "from", "to"] }, "response": { "type": "object", "properties": { "kpis": { "$ref": "../_defs.json#/$defs/KpiSet" }, "by_rep": { "type": "array", "items": { "type": "object", "properties": { "rep": { "$ref": "../_defs.json#/$defs/UserRef" }, "kpis": { "type": "object" } }, "additionalProperties": false, "required": ["rep", "kpis"] } } }, "additionalProperties": false, "required": ["kpis", "by_rep"] }, "reads": ["kpi_daily", "deal", "account_metrics", "sales_target", "deal_stage"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "dashboard" }, "deal-upsert": { "slug": "deal-upsert", "method": "POST", "kind": "http", "gate": "deals.write", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "deal_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "account_id": { "type": "string", "format": "uuid" }, "fields": { "type": "object" } }, "additionalProperties": false, "required": ["account_id", "fields"] }, "response": { "type": "object", "properties": { "deal_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["deal_id"] }, "reads": ["deal_stage"], "writes": ["deal", "deal_stage_history"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "deals-list": { "slug": "deals-list", "method": "GET", "kind": "http", "gate": "deals.read", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "owner_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "stage_code": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["deal", "deal_stage"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "debrief-confirm-due": { "slug": "debrief-confirm-due", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 4, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["voice_log", "debrief_confirmation"], "writes": ["debrief_confirmation", "buddy_call"], "errors": [], "llm": [], "integrations": ["integration:whatsapp.send_template"], "notes": "Completed voice_logs of the last 30 min without a debrief_confirmation -> debrief-confirm-send. Sent confirmations without a reply after 4 h -> no_reply (the applied actions stay, they are undoable).", "schedule": "* * * * *" }, "debrief-confirm-send": { "slug": "debrief-confirm-send", "method": "POST", "kind": "http", "gate": "voicelog.create", "callers": ["buddy", "internal"], "timeout_ms": 3e4, "priority": "P0", "wave": 4, "request": { "type": "object", "properties": { "voice_log_id": { "type": "string", "format": "uuid" }, "channel": { "anyOf": [{ "type": "string", "enum": ["whatsapp", "app"] }, { "type": "null" }] } }, "additionalProperties": false, "required": ["voice_log_id"] }, "response": { "type": "object", "properties": { "debrief_confirmation_id": { "type": "string", "format": "uuid" }, "status": { "type": "string", "enum": ["pending", "sent", "confirmed", "corrected", "no_reply", "failed"] }, "summary_text": { "type": "string" } }, "additionalProperties": false, "required": ["debrief_confirmation_id", "status", "summary_text"] }, "reads": ["voice_log", "ai_action", "visit", "app_user", "debrief_confirmation"], "writes": ["debrief_confirmation", "buddy_call"], "errors": [], "llm": [], "integrations": ["integration:whatsapp.send_template", "integration:whatsapp.send_text"], "notes": "Idempotent on voice_log_id. Summary = at most 6 bullets built in code from the applied ai_action summaries of the voice log, plus pending approvals. No LLM. Channel defaults to whatsapp when the rep has phone_channel_enabled, else app (push + result card). Sends through buddy-call-start purpose debrief_confirm.", "scope": "owner" }, "debrief-process": { "slug": "debrief-process", "method": "POST", "kind": "http", "gate": "voicelog.create", "callers": ["buddy", "internal"], "timeout_ms": 6e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "voice_log_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "utterance": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "conversation_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "lat": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "lng": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "language": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "corrects_voice_log_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "status": { "type": "string", "enum": ["completed", "needs_confirmation", "failed"] }, "result": { "anyOf": [{ "$ref": "../_defs.json#/$defs/ResultCard" }, { "type": "null" }] }, "candidates": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/AccountRef" } }, "question": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["status", "candidates"] }, "reads": ["account", "problem", "deal", "product", "campaign", "contact", "visit", "ai_permission", "action_type"], "writes": ["voice_log", "activity", "task", "problem", "deal", "deal_stage_history", "sales_order", "order_line", "competitor_signal", "contact", "campaign_exposure", "visit", "ai_action", "approval", "message_approval"], "errors": [], "llm": ["debrief_extraction", "draft_message"], "integrations": [], "notes": "Exactly one of voice_log_id / utterance. corrects_voice_log_id (with utterance = the correction words): code undoes every applied line of that completed debrief, then processes its transcript + ' Correction: ' + utterance for the same account, so a fix never creates a second visit. Target p95 < 20 s. Pushes events result_card.ready." }, "debrief-result-get": { "slug": "debrief-result-get", "method": "GET", "kind": "http", "gate": "voicelog.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "voice_log_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["voice_log_id"] }, "response": { "$ref": "../_defs.json#/$defs/ResultCard" }, "reads": ["voice_log", "ai_action", "approval"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner" }, "directory-search": { "slug": "directory-search", "method": "POST", "kind": "http", "gate": null, "callers": ["procedure"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "search_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["search_id"] }, "response": { "type": "object", "properties": { "candidates_created": { "type": "integer" } }, "additionalProperties": false, "required": ["candidates_created"] }, "reads": [], "writes": ["candidate"], "errors": [], "llm": [], "integrations": ["integration:business-directory.search"], "notes": "Source decided by spike S5 (OPEN-05). CSV fallback reads contracts/seed/prospect_list_*.json." }, "discount-check": { "slug": "discount-check", "method": "POST", "kind": "http", "gate": "discounts.request", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" }, "discount_pct": { "type": "number" }, "product_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } } }, "additionalProperties": false, "required": ["account_id", "discount_pct", "product_ids"] }, "response": { "type": "object", "properties": { "allowed": { "type": "boolean" }, "limit_pct": { "type": "number" }, "policy_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "approver": { "anyOf": [{ "$ref": "../_defs.json#/$defs/UserRef" }, { "type": "null" }] }, "manager_call_available": { "type": "boolean" }, "ai_action_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["allowed", "limit_pct", "manager_call_available"] }, "reads": ["discount_policy", "account", "product", "app_user", "account_category"], "writes": ["ai_action"], "errors": [], "llm": [], "integrations": [], "notes": "Resolution order in metrics.md#discount-limit. allowed=true writes ai_action discount_within_limit (internal log).", "scope": "account" }, "discount-request": { "slug": "discount-request", "method": "POST", "kind": "http", "gate": "discounts.request", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" }, "deal_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "discount_pct": { "type": "number" }, "lines": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "quantity": { "type": "number" } }, "additionalProperties": false, "required": ["product_id", "quantity"] } }, "justification": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "mode": { "type": "string", "enum": ["live", "async"] }, "voice_log_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "conversation_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["account_id", "discount_pct", "lines", "mode"] }, "response": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" }, "mode": { "type": "string", "enum": ["live", "async"] }, "manager_call_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "approver": { "$ref": "../_defs.json#/$defs/UserRef" }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["approval_id", "status", "mode", "approver"] }, "reads": ["discount_policy", "app_user", "organization"], "writes": ["approval", "discount_request", "discount_request_line", "manager_call", "task"], "errors": [], "llm": [], "integrations": ["outbound_call:merc-approver"], "notes": "live: POST /v1/agents/outbound {from: merc-approver caller id, to: approver phone, call_purpose: 'merc_approval:<approval_id>'} via service account merc-platform-api (S7). Call hours 08:00-20:00 org time are checked here. If outside hours, manager_call_enabled=false, no caller id, or the start fails -> async. async: due_at = now + approval_sla_minutes, push + inbox to approver, task for requester; SMS only when an SMS sender exists. Stores conversation_id on discount_request for relaying the decision (S8)." }, "dossier-save": { "slug": "dossier-save", "method": "POST", "kind": "http", "gate": null, "callers": ["merc-research"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "candidate_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "summary": { "type": "string" }, "price_level": { "anyOf": [{ "type": "string", "enum": ["low", "mid", "premium"] }, { "type": "null" }] }, "facts": { "type": "array", "items": { "type": "object", "properties": { "fact_type": { "type": "string" }, "value": { "type": "string" }, "source_url": { "type": "string" }, "competitor_name": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["fact_type", "value", "source_url"] } }, "research_task_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["summary", "facts"] }, "response": { "type": "object", "properties": { "dossier_id": { "type": "string", "format": "uuid" }, "facts_saved": { "type": "integer" }, "facts_rejected": { "type": "integer" } }, "additionalProperties": false, "required": ["dossier_id", "facts_saved", "facts_rejected"] }, "reads": ["competitor"], "writes": ["dossier", "dossier_fact", "candidate"], "errors": [], "llm": [], "integrations": [], "notes": "Rejects facts without source_url, or whose source host is a maps service (REQ-PRS-005)." }, "draft-message": { "slug": "draft-message", "method": "POST", "kind": "http", "gate": null, "callers": ["internal"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" }, "contact_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "intent": { "type": "string" }, "channel": { "type": "string", "enum": ["email", "whatsapp", "viber"] }, "context": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "on_behalf_of": { "type": "string", "format": "uuid" }, "voice_log_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["account_id", "intent", "channel", "on_behalf_of"] }, "response": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "ai_action_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["approval_id", "ai_action_id"] }, "reads": ["account", "contact", "activity", "channel"], "writes": ["ai_action", "approval", "message_approval"], "errors": [], "llm": ["draft_message"], "integrations": [], "notes": "Internal only (called by debrief-process, alert-act). Never sends." }, "eod-summary": { "slug": "eod-summary", "method": "GET", "kind": "http", "gate": "plan.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "date": { "type": "string", "format": "date" }, "visits_done": { "type": "integer" }, "offers_sent": { "type": "integer" }, "new_customers": { "type": "integer" }, "pending": { "type": "array", "items": { "type": "string" } }, "tomorrow_start_with": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "learned": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "target_progress": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/TargetProgress" } }, "spoken_summary": { "type": "string" } }, "additionalProperties": false, "required": ["date", "visits_done", "offers_sent", "new_customers", "pending", "target_progress", "spoken_summary"] }, "reads": ["visit", "activity", "approval", "task", "sales_target"], "writes": [], "errors": [], "llm": ["eod_summary"], "integrations": [], "notes": "" }, "escalate": { "slug": "escalate", "method": "POST", "kind": "http", "gate": "tasks.create", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" }, "reason": { "type": "string" } }, "additionalProperties": false, "required": ["account_id", "reason"] }, "response": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" }, "alert_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["task_id", "alert_id"] }, "reads": [], "writes": ["task", "alert"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "feedback-record": { "slug": "feedback-record", "method": "POST", "kind": "http", "gate": "voicelog.create", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 4, "request": { "type": "object", "properties": { "kind": { "type": "string", "enum": ["brief_useful", "brief_not_useful", "debrief_confirmed", "debrief_corrected"] }, "visit_brief_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "debrief_confirmation_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "detail": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "correction_voice_log_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["kind"] }, "response": { "type": "object", "properties": { "feedback_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["feedback_id", "status"] }, "reads": ["visit_brief", "debrief_confirmation"], "writes": ["rep_feedback", "visit_brief", "debrief_confirmation"], "errors": [], "llm": [], "integrations": [], "notes": "brief_* needs visit_brief_id and sets visit_brief.rating; debrief_* needs debrief_confirmation_id and sets its status. debrief_corrected stores detail verbatim and links correction_voice_log_id when the buddy logged the fix as a new debrief; without a confirmation (fix said in a call or chat) it needs correction_voice_log_id. Only the owner rep.", "scope": "owner" }, "import-analyze": { "slug": "import-analyze", "method": "POST", "kind": "http", "gate": null, "callers": ["procedure"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "import_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["import_id"] }, "response": { "type": "object", "properties": { "status": { "type": "string" }, "rows_total": { "type": "integer" }, "issues": { "type": "integer" } }, "additionalProperties": false, "required": ["status", "rows_total", "issues"] }, "reads": ["data_import", "account", "contact", "product"], "writes": ["data_import", "import_column_mapping", "import_row_issue"], "errors": [], "llm": ["import_mapping"], "integrations": [], "notes": "Parse, map columns with confidence, clean phones (E.164) / VAT (EL 9 digits) / addresses, find duplicates, build preview." }, "import-apply": { "slug": "import-apply", "method": "POST", "kind": "http", "gate": null, "callers": ["procedure"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "import_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["import_id"] }, "response": { "type": "object", "properties": { "rows_imported": { "type": "integer" }, "rows_with_issues": { "type": "integer" } }, "additionalProperties": false, "required": ["rows_imported", "rows_with_issues"] }, "reads": ["data_import", "import_column_mapping"], "writes": ["account", "contact", "sales_order", "order_line", "product", "visit", "data_import"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "import-confirm": { "slug": "import-confirm", "method": "POST", "kind": "http", "gate": "import.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "import_id": { "type": "string", "format": "uuid" }, "mapping_overrides": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["import_id", "mapping_overrides"] }, "response": { "type": "object", "properties": { "import_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["import_id", "status"] }, "reads": [], "writes": ["data_import", "import_column_mapping"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "import-get": { "slug": "import-get", "method": "GET", "kind": "http", "gate": "import.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "import_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["import_id"] }, "response": { "type": "object", "properties": { "import": { "type": "object" }, "mapping": { "type": "array", "items": { "type": "object" } }, "issues": { "type": "array", "items": { "type": "object" } }, "preview_rows": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["import", "mapping", "issues", "preview_rows"] }, "reads": ["data_import", "import_column_mapping", "import_row_issue"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "import-start": { "slug": "import-start", "method": "POST", "kind": "http", "gate": "import.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "data_type": { "type": "string", "enum": ["accounts", "contacts", "orders", "products", "visits"] }, "filename": { "type": "string" }, "csv_base64": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "file_ref": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "is_baseline": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["data_type", "filename"] }, "response": { "type": "object", "properties": { "import_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["import_id", "status"] }, "reads": [], "writes": ["data_import"], "errors": [], "llm": [], "integrations": ["procedure:import-pipeline"], "notes": "" }, "kpi-drilldown": { "slug": "kpi-drilldown", "method": "GET", "kind": "http", "gate": "dashboard.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "kpi": { "type": "string", "enum": ["at_risk", "new_customers", "pipeline", "stuck_deals", "low_logging", "customers_saved", "lost", "incomplete_accounts", "revenue", "visits", "ai_actions", "approvals", "discounts"] }, "territory_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "from": { "type": "string", "format": "date" }, "to": { "type": "string", "format": "date" }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["kpi", "from", "to"] }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": [], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "dashboard" }, "kpi-rollup": { "slug": "kpi-rollup", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["visit", "voice_log", "account", "ai_action", "approval", "deal", "sales_order", "alert", "discount_request"], "writes": ["kpi_daily"], "errors": [], "llm": [], "integrations": [], "notes": "Yesterday per rep (metrics.md).", "schedule": "5 0 * * *" }, "manager-approvals-list": { "slug": "manager-approvals-list", "method": "GET", "kind": "http", "gate": "discounts.approve", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "status": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ApprovalCard" } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["approval", "discount_request"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "approver" }, "manager-call-outcome": { "slug": "manager-call-outcome", "method": "POST", "kind": "http", "gate": null, "callers": ["internal", "merc-approver"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "manager_call_id": { "type": "string", "format": "uuid" }, "outcome": { "type": "string", "enum": ["answered", "no_answer", "busy", "voicemail", "failed"] }, "conversation_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["manager_call_id", "outcome"] }, "response": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "fallback": { "type": "string", "enum": ["none", "async"] } }, "additionalProperties": false, "required": ["approval_id", "fallback"] }, "reads": [], "writes": ["manager_call", "approval", "task"], "errors": [], "llm": [], "integrations": [], "notes": "Called by merc-approver triggers OnVoicemailDetected / OnEnd (no decision recorded), and lazily by approval-status / approval-sla-watch when a live call has no outcome after 90 s. Non-answered outcome switches the approval to async." }, "me": { "slug": "me", "method": "GET", "kind": "http", "gate": null, "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 1, "request": { "type": "object", "properties": {}, "additionalProperties": false }, "response": { "type": "object", "properties": { "user": { "$ref": "../_defs.json#/$defs/UserRef" }, "org_id": { "type": "string", "format": "uuid" }, "language": { "type": "string" }, "territory_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "manager": { "anyOf": [{ "$ref": "../_defs.json#/$defs/UserRef" }, { "type": "null" }] }, "settings": { "type": "object", "properties": { "briefing_time": { "type": "string" }, "timezone": { "type": "string" }, "currency": { "type": "string" } }, "additionalProperties": false, "required": ["briefing_time", "timezone", "currency"] }, "permissions": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["user", "org_id", "language", "territory_ids", "settings", "permissions"] }, "reads": ["app_user", "territory_rep", "organization", "role"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "merc-chat-token": { "slug": "merc-chat-token", "method": "POST", "kind": "http", "gate": "voicelog.create", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": {}, "additionalProperties": false }, "response": { "type": "object", "properties": { "token": { "type": "string" }, "expires_at": { "type": "string", "format": "date-time" }, "agent_id": { "type": "string" } }, "additionalProperties": false, "required": ["token", "expires_at", "agent_id"] }, "reads": ["app_user", "organization"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "Resolves the caller with me(), then calls POST /api/v1/jwt/sign (secret MERC_CHAT_API_KEY) with user {id, display_name} and metadata {merc_uid, merc_org, merc_exp, merc_sig = HMAC-SHA256(MERC_INTERNAL_CALL_KEY, 'uid|org|exp')}. The Rep app passes the token to createChat. Buddy tools read the claims from communication.metadata and verify merc_sig (shared/core me.ts). TTL 60 min; the app refreshes." }, "merc-live": { "slug": "merc-live", "method": "WS", "kind": "websocket", "gate": null, "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "connect_query": { "type": "object", "properties": { "client": { "type": "string", "enum": ["rep", "mgmt"] } }, "additionalProperties": false, "required": ["client"] } }, "additionalProperties": false, "required": ["connect_query"] }, "response": { "type": "object", "properties": { "channels": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["channels"] }, "reads": [], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "connect: resolve caller -> channels rep:{user_id} and, for managers, team:{user_id}. Messages: contracts/events/*.json." }, "message-send": { "slug": "message-send", "method": "POST", "kind": "http", "gate": null, "callers": ["internal"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["approval_id"] }, "response": { "type": "object", "properties": { "status": { "type": "string", "enum": ["sent", "failed"] }, "external_message_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "failure_reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["status"] }, "reads": ["approval", "message_approval", "app_user"], "writes": ["approval", "message_approval", "ai_action", "activity", "usage_event"], "errors": [], "llm": [], "integrations": ["integration:gmail.google_workspace_gmail_message_send", "integration:outlook.send_mail"], "notes": "Library call made inside approval-resolve, in the caller's identity (S3: per-user Hub connections need a user identity; procedures/crons have none). Idempotent on approval_id." }, "metrics-rollup": { "slug": "metrics-rollup", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["sales_order", "visit", "problem", "competitor_signal"], "writes": ["account_metrics"], "errors": [], "llm": [], "integrations": [], "notes": "Recompute account_metrics for all accounts (metrics.md#usual-frequency, #risk).", "schedule": "15 * * * *" }, "monthly-report": { "slug": "monthly-report", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["kpi_daily", "organization"], "writes": [], "errors": [], "llm": [], "integrations": ["backoffice:merc-ops"], "notes": "Creates merc-ops task monthly_report for admins.", "schedule": "0 7 1 * *" }, "my-performance": { "slug": "my-performance", "method": "GET", "kind": "http", "gate": "plan.read", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "period": { "type": "string", "enum": ["week", "month", "custom"] }, "from": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "to": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["period"] }, "response": { "type": "object", "properties": { "targets": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/TargetProgress" } }, "visits_done": { "type": "integer" }, "revenue_minor": { "type": "integer" }, "new_customers": { "type": "integer" }, "spoken_summary": { "type": "string" } }, "additionalProperties": false, "required": ["targets", "visits_done", "revenue_minor", "new_customers", "spoken_summary"] }, "reads": ["sales_target", "kpi_daily", "sales_order", "visit"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "order-upsert": { "slug": "order-upsert", "method": "POST", "kind": "http", "gate": "orders.write", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "order_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "account_id": { "type": "string", "format": "uuid" }, "status": { "type": "string", "enum": ["draft", "confirmed", "cancelled"] }, "lines": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "quantity": { "type": "number" }, "unit_price_minor": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "discount_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["product_id", "quantity"] } } }, "additionalProperties": false, "required": ["account_id", "status", "lines"] }, "response": { "type": "object", "properties": { "order": { "$ref": "../_defs.json#/$defs/OrderSummary" } }, "additionalProperties": false, "required": ["order"] }, "reads": [], "writes": ["sales_order", "order_line"], "errors": [], "llm": [], "integrations": [], "notes": "Confirming requires the rep's explicit confirmation (draft -> confirmed). Prices default to list price; discount_pct above the rep limit is rejected unless an approved discount_request exists.", "scope": "account" }, "orders-list": { "slug": "orders-list", "method": "GET", "kind": "http", "gate": "orders.read", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "from": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "to": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/OrderSummary" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["sales_order", "order_line"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "postvisit-prompts-due": { "slug": "postvisit-prompts-due", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 4, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["visit", "voice_log", "buddy_call", "app_user", "organization"], "writes": ["buddy_call"], "errors": [], "llm": [], "integrations": ["outbound_call:merc-buddy", "integration:whatsapp.send_template"], "notes": "Visits whose planned_start_at + planned_duration_min + postvisit_prompt_minutes has passed, still planned, with no voice_log for the visit and no post_visit buddy_call -> one buddy-call-start purpose post_visit. Never records the customer conversation.", "schedule": "*/5 * * * *" }, "previsit-briefs-due": { "slug": "previsit-briefs-due", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 4, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["visit", "app_user", "organization", "visit_brief"], "writes": ["visit_brief", "buddy_call"], "errors": [], "llm": ["visit_brief_bullets"], "integrations": ["outbound_call:merc-buddy", "integration:whatsapp.send_template"], "notes": "Visits with status planned and planned_start_at within previsit_lead_minutes, no visit_brief yet -> build the brief (visit-brief-get handler) and deliver it on notify_channel through buddy-call-start purpose pre_visit (whatsapp default, call if notify_channel=call). Once per visit; outside call hours only WhatsApp.", "schedule": "*/5 * * * *" }, "problem-update": { "slug": "problem-update", "method": "POST", "kind": "http", "gate": "accounts.write", "callers": ["app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "problem_id": { "type": "string", "format": "uuid" }, "status": { "type": "string", "enum": ["open", "in_progress", "resolved"] }, "due_date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["problem_id", "status"] }, "response": { "type": "object", "properties": { "problem_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["problem_id"] }, "reads": [], "writes": ["problem"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "account" }, "product-lookup": { "slug": "product-lookup", "method": "GET", "kind": "http", "gate": "products.read", "callers": ["buddy", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "query": { "type": "string" } }, "additionalProperties": false, "required": ["query"] }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "sku": { "type": "string" }, "name": { "type": "string" }, "unit": { "type": "string" }, "list_price_minor": { "type": "integer" }, "category": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "active_campaigns": { "type": "array", "items": { "type": "string" } }, "stock": { "type": "string", "enum": ["unknown", "in_stock", "out_of_stock"] } }, "additionalProperties": false, "required": ["product_id", "sku", "name", "unit", "list_price_minor", "active_campaigns", "stock"] } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["product", "product_category", "campaign_product", "campaign"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "prospect-search": { "slug": "prospect-search", "method": "POST", "kind": "http", "gate": "prospects.search", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "area_text": { "type": "string" }, "category_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "category_text": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "origin": { "type": "string", "enum": ["manual", "route", "list_upload"] } }, "additionalProperties": false, "required": ["area_text", "origin"] }, "response": { "type": "object", "properties": { "search_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["search_id", "status"] }, "reads": [], "writes": ["prospect_search"], "errors": [], "llm": [], "integrations": ["procedure:prospecting-pipeline"], "notes": "" }, "rep-detail": { "slug": "rep-detail", "method": "GET", "kind": "http", "gate": "team.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "rep_id": { "type": "string", "format": "uuid" }, "from": { "type": "string", "format": "date" }, "to": { "type": "string", "format": "date" } }, "additionalProperties": false, "required": ["rep_id", "from", "to"] }, "response": { "type": "object", "properties": { "rep": { "$ref": "../_defs.json#/$defs/UserRef" }, "kpis": { "type": "object" }, "recent_visits": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/VisitSummary" } }, "recent_debriefs": { "type": "array", "items": { "type": "object" } }, "open_alerts": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/AlertCard" } } }, "additionalProperties": false, "required": ["rep", "kpis", "recent_visits", "recent_debriefs", "open_alerts"] }, "reads": [], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "Debrief transcripts visible only if OPEN-13 allows.", "scope": "team" }, "retention-purge": { "slug": "retention-purge", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["voice_log", "organization"], "writes": ["voice_log"], "errors": [], "llm": [], "integrations": [], "notes": "Clear audio_ref (and delete stored audio) older than recording_retention_days; keep transcript.", "schedule": "30 2 * * *" }, "search-finalize": { "slug": "search-finalize", "method": "POST", "kind": "http", "gate": null, "callers": ["procedure"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "search_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["search_id"] }, "response": { "type": "object", "properties": { "found": { "type": "integer" }, "duplicates": { "type": "integer" }, "scored": { "type": "integer" } }, "additionalProperties": false, "required": ["found", "duplicates", "scored"] }, "reads": ["candidate"], "writes": ["prospect_search"], "errors": [], "llm": [], "integrations": [], "notes": "Pushes candidates.ready to the requester." }, "settings-get": { "slug": "settings-get", "method": "GET", "kind": "http", "gate": "settings.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": {}, "additionalProperties": false }, "response": { "type": "object", "properties": { "organization": { "type": "object" }, "ai_permissions": { "type": "array", "items": { "type": "object" } }, "alert_rules": { "type": "array", "items": { "type": "object" } }, "icp": { "type": "object" }, "discount_policies": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["organization", "ai_permissions", "alert_rules", "icp", "discount_policies"] }, "reads": ["organization", "ai_permission", "alert_rule", "icp_criterion", "icp_category", "discount_policy", "account_category"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "settings-update": { "slug": "settings-update", "method": "PUT", "kind": "http", "gate": "settings.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "organization": { "anyOf": [{ "type": "object" }, { "type": "null" }] }, "ai_permissions": { "type": "array", "items": { "type": "object" } }, "alert_rules": { "type": "array", "items": { "type": "object" } }, "icp": { "anyOf": [{ "type": "object" }, { "type": "null" }] }, "discount_policies": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["ai_permissions", "alert_rules", "discount_policies"] }, "response": { "type": "object", "properties": { "updated": { "type": "boolean" } }, "additionalProperties": false, "required": ["updated"] }, "reads": [], "writes": ["organization", "ai_permission", "alert_rule", "icp_criterion", "icp_category", "discount_policy", "audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "Partial updates; arrays replace only the listed rows (matched by natural key)." }, "summary-data": { "slug": "summary-data", "method": "GET", "kind": "http", "gate": null, "callers": ["merc-ops"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "kind": { "type": "string", "enum": ["weekly", "monthly"] }, "scope_user_id": { "type": "string", "format": "uuid" }, "from": { "type": "string", "format": "date" }, "to": { "type": "string", "format": "date" } }, "additionalProperties": false, "required": ["kind", "scope_user_id", "from", "to"] }, "response": { "type": "object", "properties": { "facts": { "type": "object" } }, "additionalProperties": false, "required": ["facts"] }, "reads": ["kpi_daily", "deal", "alert", "sales_target", "organization"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "target-upsert": { "slug": "target-upsert", "method": "POST", "kind": "http", "gate": "targets.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "target_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "scope": { "type": "string", "enum": ["org", "territory", "user"] }, "territory_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "user_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "metric": { "type": "string", "enum": ["revenue", "volume", "visits", "new_customers"] }, "period_start": { "type": "string", "format": "date" }, "period_end": { "type": "string", "format": "date" }, "target_value": { "type": "number" } }, "additionalProperties": false, "required": ["scope", "metric", "period_start", "period_end", "target_value"] }, "response": { "type": "object", "properties": { "target_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["target_id"] }, "reads": [], "writes": ["sales_target", "audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "team" }, "targets-list": { "slug": "targets-list", "method": "GET", "kind": "http", "gate": "targets.read", "callers": ["mgmt", "app"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "period_start": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/TargetProgress" } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["sales_target"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner_or_team" }, "task-assign": { "slug": "task-assign", "method": "POST", "kind": "http", "gate": "team.assign", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "rep_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["rep_id", "title"] }, "response": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["task_id"] }, "reads": [], "writes": ["task"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "team" }, "task-create": { "slug": "task-create", "method": "POST", "kind": "http", "gate": "tasks.create", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "title": { "type": "string" }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "deal_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "is_customer_promise": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["title"] }, "response": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" }, "ai_action_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["task_id"] }, "reads": [], "writes": ["task", "ai_action"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "task-update": { "slug": "task-update", "method": "POST", "kind": "http", "gate": "tasks.create", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" }, "status": { "anyOf": [{ "type": "string", "enum": ["open", "done", "cancelled"] }, { "type": "null" }] }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "title": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["task_id"] }, "response": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["task_id"] }, "reads": [], "writes": ["task"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner_or_team" }, "tasks-list": { "slug": "tasks-list", "method": "GET", "kind": "http", "gate": "tasks.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "status": { "anyOf": [{ "type": "string", "enum": ["open", "done", "cancelled"] }, { "type": "null" }] }, "owner_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "due_before": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "page": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } }, "page": { "$ref": "../_defs.json#/$defs/Page" } }, "additionalProperties": false, "required": ["items", "page"] }, "reads": ["task"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner_or_team" }, "team-list": { "slug": "team-list", "method": "GET", "kind": "http", "gate": "team.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "include_inactive": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object", "properties": { "user": { "$ref": "../_defs.json#/$defs/UserRef" }, "manager_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "territory_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["user", "territory_ids", "status"] } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["app_user", "territory_rep", "territory"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "Roster for manager screens: the caller's direct and indirect reports, plus reps of territories they manage. Admin sees everyone.", "scope": "team" }, "territories-list": { "slug": "territories-list", "method": "GET", "kind": "http", "gate": "territories.read", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": {}, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["territory", "territory_rep", "territory_postal_code"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "territory-upsert": { "slug": "territory-upsert", "method": "POST", "kind": "http", "gate": "territories.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "territory_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "name": { "type": "string" }, "manager_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "default_rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "postal_codes": { "type": "array", "items": { "type": "string" } }, "rep_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "boundary_geojson": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["name", "postal_codes", "rep_ids"] }, "response": { "type": "object", "properties": { "territory_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["territory_id"] }, "reads": [], "writes": ["territory", "territory_rep", "territory_postal_code", "audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "today-get": { "slug": "today-get", "method": "GET", "kind": "http", "gate": "plan.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "date": { "type": "string", "format": "date" }, "visits": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/VisitSummary" } }, "briefing_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "pending_recordings_hint": { "type": "integer" } }, "additionalProperties": false, "required": ["date", "visits", "pending_recordings_hint"] }, "reads": ["visit", "account", "briefing"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "usage-flush": { "slug": "usage-flush", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": [], "writes": ["usage_event"], "errors": [], "llm": [], "integrations": [], "notes": "Aggregate usage counters into usage_event (atomic increase).", "schedule": "*/30 * * * *" }, "user-upsert": { "slug": "user-upsert", "method": "POST", "kind": "http", "gate": "users.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "user_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "email": { "type": "string" }, "full_name": { "type": "string" }, "role_code": { "type": "string", "enum": ["rep", "manager", "admin"] }, "manager_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "territory_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "status": { "anyOf": [{ "type": "string", "enum": ["active", "left"] }, { "type": "null" }] } }, "additionalProperties": false, "required": ["email", "full_name", "role_code", "territory_ids"] }, "response": { "type": "object", "properties": { "user_id": { "type": "string", "format": "uuid" }, "invited": { "type": "boolean" } }, "additionalProperties": false, "required": ["user_id", "invited"] }, "reads": ["role"], "writes": ["app_user", "territory_rep", "audit_event"], "errors": [], "llm": [], "integrations": [], "notes": "" }, "users-list": { "slug": "users-list", "method": "GET", "kind": "http", "gate": "users.manage", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": {}, "additionalProperties": false }, "response": { "type": "object", "properties": { "items": { "type": "array", "items": { "type": "object" } } }, "additionalProperties": false, "required": ["items"] }, "reads": ["app_user", "role"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "" }, "visit-assign": { "slug": "visit-assign", "method": "POST", "kind": "http", "gate": "team.assign", "callers": ["mgmt"], "timeout_ms": 3e4, "priority": "P0", "wave": 3, "request": { "type": "object", "properties": { "rep_id": { "type": "string", "format": "uuid" }, "account_id": { "type": "string", "format": "uuid" }, "date": { "type": "string", "format": "date" }, "purpose": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["rep_id", "account_id", "date"] }, "response": { "type": "object", "properties": { "visit": { "$ref": "../_defs.json#/$defs/VisitSummary" } }, "additionalProperties": false, "required": ["visit"] }, "reads": [], "writes": ["visit", "visit_change"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "team" }, "visit-brief-get": { "slug": "visit-brief-get", "method": "GET", "kind": "http", "gate": "plan.read", "callers": ["app", "buddy", "internal"], "timeout_ms": 4e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "visit_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "regenerate": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "$ref": "../_defs.json#/$defs/VisitBrief" }, "reads": ["visit", "account", "account_metrics", "problem", "task", "sales_order", "order_line", "product", "product_guidance", "campaign", "campaign_product", "rep_feedback", "visit_brief", "contact"], "writes": ["visit_brief"], "errors": [], "llm": ["visit_brief_bullets"], "integrations": [], "notes": "Exactly one of visit_id / account_id (account_id -> the rep's next planned visit there today). Returns the stored brief unless regenerate. Facts come from the visit card handler (shared, not re-implemented). Push/avoid are chosen in code per metrics.md#visit-brief-hints; the LLM only words at most 6 bullets and a spoken script of at most 45 s. Company values come from the Context Hub KB merc-company.", "scope": "account" }, "visit-card-get": { "slug": "visit-card-get", "method": "GET", "kind": "http", "gate": "accounts.read", "callers": ["app", "buddy"], "timeout_ms": 4e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "account_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["account_id"] }, "response": { "$ref": "../_defs.json#/$defs/VisitCard" }, "reads": ["account", "contact", "problem", "task", "sales_order", "order_line", "account_metrics", "alert", "campaign", "campaign_product", "dossier", "dossier_fact", "product"], "writes": ["campaign_exposure"], "errors": [], "llm": ["visit_card_pitch"], "integrations": [], "notes": "", "scope": "account" }, "visit-plan-accept": { "slug": "visit-plan-accept", "method": "POST", "kind": "http", "gate": "plan.edit", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "plan_id": { "type": "string", "format": "uuid" } }, "additionalProperties": false, "required": ["plan_id"] }, "response": { "type": "object", "properties": { "plan_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["plan_id", "status"] }, "reads": [], "writes": ["visit_plan"], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner" }, "visit-plan-get": { "slug": "visit-plan-get", "method": "GET", "kind": "http", "gate": "plan.read", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "week_start": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "rep_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "plan_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "week_start": { "type": "string", "format": "date" }, "status": { "type": "string" }, "days": { "type": "array", "items": { "type": "object", "properties": { "date": { "type": "string", "format": "date" }, "visits": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/VisitSummary" } } }, "additionalProperties": false, "required": ["date", "visits"] } } }, "additionalProperties": false, "required": ["week_start", "status", "days"] }, "reads": ["visit_plan", "visit", "account"], "writes": [], "errors": [], "llm": [], "integrations": [], "notes": "", "scope": "owner_or_team" }, "visit-plan-suggest": { "slug": "visit-plan-suggest", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["account", "account_metrics", "task", "campaign", "candidate", "organization", "postal_area", "account_category"], "writes": ["visit_plan", "visit"], "errors": [], "llm": [], "integrations": [], "notes": "Next week's plan per rep (metrics.md#visit-plan).", "schedule": "0 18 * * 0" }, "visit-update": { "slug": "visit-update", "method": "POST", "kind": "http", "gate": "plan.edit", "callers": ["app", "buddy"], "timeout_ms": 3e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "visit_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "action": { "type": "string", "enum": ["move", "skip", "add", "reorder", "done"] }, "date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "position": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["action"] }, "response": { "type": "object", "properties": { "visit": { "$ref": "../_defs.json#/$defs/VisitSummary" }, "day_count": { "type": "integer" }, "warning": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["visit", "day_count"] }, "reads": [], "writes": ["visit", "visit_change"], "errors": [], "llm": [], "integrations": [], "notes": "add requires account_id + date. warning when the day exceeds visits_per_day.", "scope": "owner" }, "voice-log-upload": { "slug": "voice-log-upload", "method": "POST", "kind": "http", "gate": "voicelog.create", "callers": ["app"], "timeout_ms": 6e4, "priority": "P0", "wave": 2, "request": { "type": "object", "properties": { "idempotency_key": { "type": "string" }, "recorded_at": { "type": "string", "format": "date-time" }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "visit_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "audio_base64": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "audio_mime": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "transcript": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "language": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["idempotency_key", "recorded_at"] }, "response": { "type": "object", "properties": { "voice_log_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" }, "duplicate": { "type": "boolean" } }, "additionalProperties": false, "required": ["voice_log_id", "status", "duplicate"] }, "reads": [], "writes": ["voice_log"], "errors": [], "llm": [], "integrations": [], "notes": "Body <= 1 MB (platform limit). Same idempotency_key returns the existing voice_log (duplicate=true). Triggers transcription (OPEN-04) then debrief-process." }, "weekly-summary": { "slug": "weekly-summary", "method": "CRON", "kind": "cron", "gate": null, "callers": ["scheduler"], "timeout_ms": 3e5, "priority": "P1", "wave": 3, "request": { "type": "object", "properties": { "dry_run": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] } }, "additionalProperties": false }, "response": { "type": "object", "properties": { "processed": { "type": "integer" }, "created": { "type": "integer" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["processed", "created"] }, "reads": ["kpi_daily", "deal", "alert"], "writes": [], "errors": [], "llm": [], "integrations": ["backoffice:merc-ops"], "notes": "Creates merc-ops task weekly_summary per manager + admin.", "schedule": "0 7 * * 1" } };
+var events = { "alert.created": { "type": "alert.created", "payload": { "type": "object", "properties": { "alert": { "$ref": "../_defs.json#/$defs/AlertCard" } }, "additionalProperties": false, "required": ["alert"] } }, "approval.created": { "type": "approval.created", "payload": { "type": "object", "properties": { "approval": { "$ref": "../_defs.json#/$defs/ApprovalCard" } }, "additionalProperties": false, "required": ["approval"] } }, "approval.decided": { "type": "approval.decided", "payload": { "type": "object", "properties": { "approval": { "$ref": "../_defs.json#/$defs/ApprovalCard" } }, "additionalProperties": false, "required": ["approval"] } }, "briefing.ready": { "type": "briefing.ready", "payload": { "type": "object", "properties": { "briefing_id": { "type": "string", "format": "uuid" }, "date": { "type": "string", "format": "date" } }, "additionalProperties": false, "required": ["briefing_id", "date"] } }, "buddy_call.status": { "type": "buddy_call.status", "payload": { "type": "object", "properties": { "buddy_call_id": { "type": "string", "format": "uuid" }, "channel": { "type": "string", "enum": ["call", "whatsapp"] }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["buddy_call_id", "channel", "status"] } }, "candidates.ready": { "type": "candidates.ready", "payload": { "type": "object", "properties": { "search_id": { "type": "string", "format": "uuid" }, "found": { "type": "integer" }, "duplicates": { "type": "integer" }, "scored": { "type": "integer" } }, "additionalProperties": false, "required": ["search_id", "found", "duplicates", "scored"] } }, "debrief_confirmation.status": { "type": "debrief_confirmation.status", "payload": { "type": "object", "properties": { "debrief_confirmation_id": { "type": "string", "format": "uuid" }, "voice_log_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" } }, "additionalProperties": false, "required": ["debrief_confirmation_id", "voice_log_id", "status"] } }, "manager_call.status": { "type": "manager_call.status", "payload": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "outcome": { "type": "string", "enum": ["queued", "ringing", "answered", "no_answer", "busy", "voicemail", "failed"] } }, "additionalProperties": false, "required": ["approval_id", "outcome"] } }, "plan.proposed": { "type": "plan.proposed", "payload": { "type": "object", "properties": { "plan_id": { "type": "string", "format": "uuid" }, "week_start": { "type": "string", "format": "date" } }, "additionalProperties": false, "required": ["plan_id", "week_start"] } }, "result_card.ready": { "type": "result_card.ready", "payload": { "type": "object", "properties": { "voice_log_id": { "type": "string", "format": "uuid" }, "result": { "$ref": "../_defs.json#/$defs/ResultCard" } }, "additionalProperties": false, "required": ["voice_log_id", "result"] } }, "visit_brief.ready": { "type": "visit_brief.ready", "payload": { "type": "object", "properties": { "visit_brief_id": { "type": "string", "format": "uuid" }, "visit_id": { "type": "string", "format": "uuid" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" } }, "additionalProperties": false, "required": ["visit_brief_id", "visit_id", "account"] } }, "voice_log.status": { "type": "voice_log.status", "payload": { "type": "object", "properties": { "voice_log_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" }, "error": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["voice_log_id", "status"] } } };
 
 // shared/core/src/validate.ts
 var FORMATS = {
@@ -4348,6 +4865,23 @@ function safeEqual(a, b) {
 }
 
 // shared/core/src/me.ts
+function normalizePhone(raw, defaultCc = "30") {
+  if (!raw) return null;
+  let v = String(raw).trim().replace(/^(tel:|sip:|whatsapp:)/i, "").split("@")[0].replace(/[\s().-]/g, "");
+  if (v.startsWith("00")) v = "+" + v.slice(2);
+  if (!v.startsWith("+")) v = /^\d{10}$/.test(v) ? `+${defaultCc}${v}` : `+${v}`;
+  return /^\+\d{8,15}$/.test(v) ? v : null;
+}
+function channelNumberFromTool(ctx) {
+  const c = ctx?.metadata?.communication;
+  if (!c) return null;
+  const type = String(c.type ?? "").toLowerCase();
+  const channel = type.includes("whatsapp") ? "whatsapp" : /voice|phone|call|sip|pstn/.test(type) ? "phone" : null;
+  if (!channel) return null;
+  const outbound = String(c.direction ?? "").toLowerCase() === "outbound";
+  const number = normalizePhone(outbound ? c.toNumber : c.fromNumber);
+  return number ? { number, channel } : null;
+}
 var IDENTITY_KEYS = { uid: "merc_uid", org: "merc_org", exp: "merc_exp", sig: "merc_sig" };
 var PLATFORM_USER_KEYS = ["wonderful.customer_user.id", "wonderful.web_sdk.entity_id"];
 var claimMessage = (uid, org, exp) => `${uid}|${org}|${exp}`;
@@ -4367,6 +4901,10 @@ function callerFromTool(ctx, key, now = Date.now()) {
     return typeof v === "string" ? v : typeof v === "number" ? String(v) : "";
   };
   const uid = s(IDENTITY_KEYS.uid), org = s(IDENTITY_KEYS.org), exp = s(IDENTITY_KEYS.exp), sig = s(IDENTITY_KEYS.sig);
+  if (!uid && !org && !exp && !sig) {
+    const ch = channelNumberFromTool(ctx);
+    if (ch) return { kind: "channel_number", ...ch };
+  }
   if (!key) throw forbidden("identity verification key missing");
   if (!uid || !org || !exp || !sig) throw forbidden("no signed Merc identity in this session");
   if (!/^\d+$/.test(exp) || Number(exp) * 1e3 < now) throw forbidden("session identity expired");
@@ -4382,9 +4920,23 @@ function rolePermissions(role) {
   return [.../* @__PURE__ */ new Set([...r.all, ...Object.values(r.relation).flat()])].sort();
 }
 var ROLES = ["rep", "manager", "admin"];
+var OPEN_ACCESS_WUID = "open-access";
+async function openAccess(db) {
+  const g = await db.app_user.findOne({ wonderful_user_id: OPEN_ACCESS_WUID });
+  return !!g && g.status === "active";
+}
 async function resolvePrincipal(api, source) {
   const root = createDb(api);
-  const user = source.kind === "wonderful_user" ? await root.app_user.findOne({ wonderful_user_id: source.wonderfulUserId }) : await root.app_user.get(source.appUserId);
+  let user;
+  if (source.kind === "wonderful_user") {
+    user = await root.app_user.findOne({ wonderful_user_id: source.wonderfulUserId });
+    if (!user) user = await root.app_user.findOne({ wonderful_user_id: OPEN_ACCESS_WUID });
+  } else if (source.kind === "app_user") user = await root.app_user.get(source.appUserId);
+  else {
+    const matches = (await root.app_user.all({ phone: source.number })).filter((u) => u.status === "active" && u.phone_channel_enabled !== false);
+    if (matches.length !== 1) throw forbidden(matches.length ? "phone number matches more than one Merc user" : "Merc does not know this number");
+    user = matches[0];
+  }
   if (!user || source.kind === "app_user" && user.org_id !== source.orgId) throw forbidden("caller is not a Merc user");
   if (user.status !== "active") throw forbidden("Merc user is not active");
   if (!ROLES.includes(user.role_code)) throw forbidden(`unknown role ${user.role_code}`);
@@ -4408,7 +4960,7 @@ async function resolvePrincipal(api, source) {
     const teamTerr = (await db.territory_rep.all({ user_id: team_user_ids })).map((r) => r.territory_id);
     team_territory_ids = [.../* @__PURE__ */ new Set([...managed, ...teamTerr])];
   }
-  return { kind: "user", id: user.id, role, org_id: user.org_id, user, org, manager, territory_ids, team_user_ids, team_territory_ids, permissions: rolePermissions(role) };
+  return { kind: "user", id: user.id, role, org_id: user.org_id, user, org, manager, territory_ids, team_user_ids, team_territory_ids, permissions: await openAccess(db) ? rolePermissions("admin") : rolePermissions(role) };
 }
 async function systemPrincipal(api, orgId, caller = "scheduler") {
   if (!orgId) throw forbidden("system principal needs an org id");
@@ -4416,6 +4968,7 @@ async function systemPrincipal(api, orgId, caller = "scheduler") {
   if (!org) throw notFound("organization not found", { org_id: orgId });
   return { kind: "system", caller, id: `system:${orgId}`, role: "admin", org_id: orgId, org, user: null, manager: null, territory_ids: [], team_user_ids: [], team_territory_ids: [], permissions: rolePermissions("admin") };
 }
+var actorUserId = (p) => p.kind === "user" ? p.id : null;
 function assertNotSystem(p, what = "customer messages") {
   if (p.kind === "system") throw forbidden(`system callers cannot send ${what}`, { caller: p.caller });
 }
@@ -4489,14 +5042,14 @@ function stripInjected(body) {
   for (const k of INJECTED) delete b[k];
   return b;
 }
-async function runFunction(slug, impl39, args) {
+async function runFunction(slug, impl44, args) {
   try {
     const c = contract(slug);
     const v = validateRequest(slug, stripInjected(args.data), { coerce: c.method === "GET" });
     if (!v.ok) return { error: v.error };
     const me = await args.principal();
     if (c.gate && !hasPermission(me, c.gate)) throw forbidden(`missing permission ${c.gate}`, { permission: c.gate });
-    const out = await impl39({ req: v.value, db: createDb(args.tables, me.org_id), me, platform: args.platform ?? {} });
+    const out = await impl44({ req: v.value, db: createDb(args.tables, me.org_id), me, platform: args.platform ?? {} });
     if (args.checkResponse !== false) {
       const r = validateResponse(slug, out);
       if (!r.ok) return { error: { code: "validation_failed", message: `${slug} response breaks its contract`, details: { errors: r.errors } } };
@@ -4508,7 +5061,7 @@ async function runFunction(slug, impl39, args) {
 }
 var platformOf = (c) => {
   const ws = c.metadata?.workspaceId;
-  return { secrets: c.secrets ?? null, globals: c.globals ?? null, workspaceId: typeof ws === "string" && ws ? ws : null };
+  return { secrets: c.secrets ?? null, globals: c.globals ?? null, workspaceId: typeof ws === "string" && ws ? ws : null, api: c.api ?? null };
 };
 function secretString(platform, name) {
   let v;
@@ -4533,15 +5086,15 @@ function globalString(platform, name) {
   }
   return typeof v === "string" && v.trim() ? v.trim() : null;
 }
-function defineFunction(slug, impl39, opts = {}) {
-  return (context) => runFunction(slug, impl39, { tables: context.tables, data: context.data, principal: () => principalFromFunction(context.tables, context), platform: platformOf(context), ...opts });
+function defineFunction(slug, impl44, opts = {}) {
+  return (context) => runFunction(slug, impl44, { tables: context.tables, data: context.data, principal: () => principalFromFunction(context.tables, context), platform: platformOf(context), ...opts });
 }
-function runAsTool(slug, impl39, ctx, params, key, opts = {}) {
-  return runFunction(slug, impl39, { tables: ctx.tables, data: params, principal: () => principalFromTool(ctx.tables, ctx, key), platform: platformOf(ctx), ...opts });
+function runAsTool(slug, impl44, ctx, params, key, opts = {}) {
+  return runFunction(slug, impl44, { tables: ctx.tables, data: params, principal: () => principalFromTool(ctx.tables, ctx, key), platform: platformOf(ctx), ...opts });
 }
-function runAsSystem(slug, impl39, args) {
+function runAsSystem(slug, impl44, args) {
   const { orgId, caller, ...rest } = args;
-  return runFunction(slug, impl39, { ...rest, principal: () => systemPrincipal(args.tables, orgId, caller ?? "scheduler") });
+  return runFunction(slug, impl44, { ...rest, principal: () => systemPrincipal(args.tables, orgId, caller ?? "scheduler") });
 }
 
 // shared/core/src/dates.ts
@@ -4654,9 +5207,57 @@ function withinLocalHours(tz, start, end, at = Date.now()) {
   return start <= end ? t >= start && t < end : t >= start || t < end;
 }
 
+// shared/core/src/text.ts
+var FOLD = {};
+var add = (to, from) => {
+  for (const ch of from) FOLD[ch] = to;
+};
+add("a", "\xE0\xE1\xE2\xE3\xE4\xE5\u0101\u0103\u0105");
+add("A", "\xC0\xC1\xC2\xC3\xC4\xC5\u0100\u0102\u0104");
+add("c", "\xE7\u0107\u010D");
+add("C", "\xC7\u0106\u010C");
+add("e", "\xE8\xE9\xEA\xEB\u0113\u0117\u0119\u011B");
+add("E", "\xC8\xC9\xCA\xCB\u0112\u0116\u0118\u011A");
+add("i", "\xEC\xED\xEE\xEF\u012B\u012F");
+add("I", "\xCC\xCD\xCE\xCF\u012A\u012E");
+add("n", "\xF1\u0144\u0148");
+add("N", "\xD1\u0143\u0147");
+add("o", "\xF2\xF3\xF4\xF5\xF6\xF8\u014D");
+add("O", "\xD2\xD3\xD4\xD5\xD6\xD8\u014C");
+add("u", "\xF9\xFA\xFB\xFC\u016B\u016F");
+add("U", "\xD9\xDA\xDB\xDC\u016A\u016E");
+add("y", "\xFD\xFF");
+add("Y", "\xDD\u0178");
+add("s", "\u015B\u0161\u015F");
+add("S", "\u015A\u0160\u015E");
+add("z", "\u017A\u017C\u017E");
+add("Z", "\u0179\u017B\u017D");
+add("\u03B1", "\u03AC");
+add("\u0391", "\u0386");
+add("\u03B5", "\u03AD");
+add("\u0395", "\u0388");
+add("\u03B7", "\u03AE");
+add("\u0397", "\u0389");
+add("\u03B9", "\u03AF\u03CA\u0390");
+add("\u0399", "\u038A\u03AA");
+add("\u03BF", "\u03CC");
+add("\u039F", "\u038C");
+add("\u03C5", "\u03CD\u03CB\u03B0");
+add("\u03A5", "\u038E\u03AB");
+add("\u03C9", "\u03CE");
+add("\u03A9", "\u038F");
+var hasNormalize = typeof "".normalize === "function";
+function stripAccents(s) {
+  const str = String(s ?? "");
+  if (hasNormalize) return str.normalize("NFD").replace(/[̀-ͯ]/g, "");
+  let out = "";
+  for (const ch of str) out += FOLD[ch] ?? ch;
+  return out.replace(/[̀-ͯ]/g, "");
+}
+
 // packages/contracts/src/generated/schemas.ts
-var defs2 = { "Error": { "type": "object", "properties": { "code": { "type": "string", "enum": ["not_found", "forbidden", "validation_failed", "needs_confirmation", "conflict", "upstream_failed", "timeout", "blocked_by_policy"] }, "message": { "type": "string" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["code", "message"] }, "AccountRef": { "type": "object", "properties": { "id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "account_type": { "type": "string", "enum": ["prospect", "customer", "lost"] }, "postal_code": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "city": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "distance_m": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["id", "name", "account_type"] }, "ActionLine": { "type": "object", "properties": { "ai_action_id": { "type": "string", "format": "uuid" }, "action_type": { "type": "string" }, "action_class": { "type": "string", "enum": ["internal", "draft", "external", "structural", "destructive"] }, "status": { "type": "string", "enum": ["suggested", "applied", "undone", "rejected"] }, "summary": { "type": "string" }, "target_table": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "target_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "undoable": { "type": "boolean" }, "approval_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["ai_action_id", "action_type", "action_class", "status", "summary", "undoable"] }, "MissingField": { "type": "object", "properties": { "field": { "type": "string" }, "question": { "type": "string" } }, "additionalProperties": false, "required": ["field", "question"] }, "ApprovalCard": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "kind": { "type": "string", "enum": ["customer_message", "discount", "terms", "conversion"] }, "status": { "type": "string", "enum": ["pending", "approved", "countered", "sent", "failed", "rejected", "expired", "escalated"] }, "mode": { "type": "string", "enum": ["live", "async"] }, "account": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "requested_by": { "$ref": "../_defs.json#/$defs/UserRef" }, "approver": { "$ref": "../_defs.json#/$defs/UserRef" }, "preview": { "type": "string" }, "channel": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "recipient": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "subject": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "body": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "requested_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "policy_limit_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "approved_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "decision_note": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "expires_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "created_at": { "type": "string", "format": "date-time" } }, "additionalProperties": false, "required": ["approval_id", "kind", "status", "mode", "requested_by", "approver", "preview", "created_at"] }, "UserRef": { "type": "object", "properties": { "id": { "type": "string", "format": "uuid" }, "full_name": { "type": "string" }, "role": { "type": "string", "enum": ["rep", "manager", "admin"] } }, "additionalProperties": false, "required": ["id", "full_name", "role"] }, "ResultCard": { "type": "object", "properties": { "voice_log_id": { "type": "string", "format": "uuid" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "lines": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ActionLine" } }, "missing_fields": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/MissingField" } }, "pending_approvals": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ApprovalCard" } }, "spoken_summary": { "type": "string" }, "processing_ms": { "type": "integer" } }, "additionalProperties": false, "required": ["voice_log_id", "account", "lines", "missing_fields", "pending_approvals", "spoken_summary", "processing_ms"] }, "VisitSummary": { "type": "object", "properties": { "visit_id": { "type": "string", "format": "uuid" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "planned_date": { "type": "string", "format": "date" }, "route_position": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "status": { "type": "string", "enum": ["planned", "done", "skipped"] }, "purpose": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "lat": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "lng": { "anyOf": [{ "type": "number" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["visit_id", "account", "planned_date", "status"] }, "BriefingItem": { "type": "object", "properties": { "position": { "type": "integer" }, "item_type": { "type": "string" }, "display_text": { "type": "string" }, "ref_table": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "ref_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["position", "item_type", "display_text"] }, "Briefing": { "type": "object", "properties": { "briefing_id": { "type": "string", "format": "uuid" }, "date": { "type": "string", "format": "date" }, "status": { "type": "string", "enum": ["generated", "delivered", "read"] }, "script_text": { "type": "string" }, "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/BriefingItem" } } }, "additionalProperties": false, "required": ["briefing_id", "date", "status", "script_text", "items"] }, "OrderSummary": { "type": "object", "properties": { "order_id": { "type": "string", "format": "uuid" }, "order_date": { "type": "string", "format": "date" }, "status": { "type": "string", "enum": ["draft", "confirmed", "cancelled"] }, "total_minor": { "type": "integer" }, "lines": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "quantity": { "type": "number" }, "unit": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "quantity", "unit"] } } }, "additionalProperties": false, "required": ["order_id", "order_date", "status", "total_minor", "lines"] }, "Pitch": { "type": "object", "properties": { "opening_line": { "type": "string" }, "arguments": { "type": "array", "items": { "type": "string" } }, "products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "why": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "why"] } }, "objections": { "type": "array", "items": { "type": "object", "properties": { "objection": { "type": "string" }, "answer": { "type": "string" } }, "additionalProperties": false, "required": ["objection", "answer"] } } }, "additionalProperties": false, "required": ["opening_line", "arguments", "products", "objections"] }, "DossierView": { "type": "object", "properties": { "summary": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "price_level": { "anyOf": [{ "type": "string", "enum": ["low", "mid", "premium"] }, { "type": "null" }] }, "facts": { "type": "array", "items": { "type": "object", "properties": { "fact_type": { "type": "string" }, "value": { "type": "string" }, "source_url": { "type": "string" }, "retrieved_at": { "type": "string", "format": "date-time" } }, "additionalProperties": false, "required": ["fact_type", "value", "source_url", "retrieved_at"] } }, "competitor_brands": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["facts", "competitor_brands"] }, "VisitCard": { "type": "object", "properties": { "kind": { "type": "string", "enum": ["customer", "prospect"] }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "contacts": { "type": "array", "items": { "type": "object", "properties": { "contact_id": { "type": "string", "format": "uuid" }, "full_name": { "type": "string" }, "role_title": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "is_decision_maker": { "type": "boolean" }, "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["contact_id", "full_name", "is_decision_maker"] } }, "open_problems": { "type": "array", "items": { "type": "object", "properties": { "problem_id": { "type": "string", "format": "uuid" }, "description": { "type": "string" }, "status": { "type": "string" }, "due_date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["problem_id", "description", "status"] } }, "open_tasks": { "type": "array", "items": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "is_customer_promise": { "type": "boolean" } }, "additionalProperties": false, "required": ["task_id", "title", "is_customer_promise"] } }, "recent_orders": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/OrderSummary" } }, "metrics": { "type": "object", "properties": { "avg_order_interval_days": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "days_since_last_order": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "risk_score": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "risk_reasons": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["risk_reasons"] }, "alerts": { "type": "array", "items": { "type": "object", "properties": { "alert_id": { "type": "string", "format": "uuid" }, "type": { "type": "string" }, "message": { "type": "string" } }, "additionalProperties": false, "required": ["alert_id", "type", "message"] } }, "suggested_products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "why": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "why"] } }, "campaigns": { "type": "array", "items": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "message": { "type": "string" } }, "additionalProperties": false, "required": ["campaign_id", "title", "message"] } }, "how_to_talk": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "dossier": { "anyOf": [{ "$ref": "../_defs.json#/$defs/DossierView" }, { "type": "null" }] }, "pitch": { "anyOf": [{ "$ref": "../_defs.json#/$defs/Pitch" }, { "type": "null" }] }, "spoken_summary": { "type": "string" } }, "additionalProperties": false, "required": ["kind", "account", "contacts", "open_problems", "open_tasks", "recent_orders", "metrics", "alerts", "suggested_products", "campaigns", "spoken_summary"] }, "AlertCard": { "type": "object", "properties": { "alert_id": { "type": "string", "format": "uuid" }, "type": { "type": "string" }, "severity": { "type": "string", "enum": ["low", "medium", "high"] }, "status": { "type": "string", "enum": ["open", "done", "dismissed"] }, "message": { "type": "string" }, "account": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "suggested_action": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "created_at": { "type": "string", "format": "date-time" } }, "additionalProperties": false, "required": ["alert_id", "type", "severity", "status", "message", "created_at"] }, "CandidateCard": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" }, "business_name": { "type": "string" }, "status": { "type": "string" }, "postal_code": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "score": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "reasons": { "type": "array", "items": { "type": "string" } }, "dossier": { "anyOf": [{ "$ref": "../_defs.json#/$defs/DossierView" }, { "type": "null" }] }, "duplicate_of": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "assigned_rep": { "anyOf": [{ "$ref": "../_defs.json#/$defs/UserRef" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["candidate_id", "business_name", "status", "reasons"] }, "TargetProgress": { "type": "object", "properties": { "target_id": { "type": "string", "format": "uuid" }, "metric": { "type": "string", "enum": ["revenue", "volume", "visits", "new_customers"] }, "period_start": { "type": "string", "format": "date" }, "period_end": { "type": "string", "format": "date" }, "target_value": { "type": "number" }, "actual_value": { "type": "number" }, "pct": { "type": "number" }, "days_left": { "type": "integer" } }, "additionalProperties": false, "required": ["target_id", "metric", "period_start", "period_end", "target_value", "actual_value", "pct", "days_left"] }, "Page": { "type": "object", "properties": { "page": { "type": "integer" }, "limit": { "type": "integer" }, "total": { "type": "integer" } }, "additionalProperties": false, "required": ["page", "limit", "total"] }, "KpiSet": { "type": "object", "properties": { "visits_per_rep_day": { "type": "number" }, "pipeline_by_stage": { "type": "array", "items": { "type": "object", "properties": { "stage_code": { "type": "string" }, "amount_minor": { "type": "integer" }, "count": { "type": "integer" } }, "additionalProperties": false, "required": ["stage_code", "amount_minor", "count"] } }, "weighted_pipeline_minor": { "type": "integer" }, "revenue_minor": { "type": "integer" }, "new_customers": { "type": "integer" }, "at_risk_customers": { "type": "integer" }, "at_risk_value_minor": { "type": "integer" }, "customers_saved": { "type": "integer" }, "lost_customers": { "type": "integer" }, "crm_completeness_pct": { "type": "number" }, "voice_logs_per_rep_day": { "type": "number" }, "voice_logs_within_1h_pct": { "type": "number" }, "ai_actions_applied": { "type": "integer" }, "ai_actions_undone": { "type": "integer" }, "approvals_approved": { "type": "integer" }, "approvals_rejected": { "type": "integer" }, "discount_requests": { "type": "integer" }, "discounts_approved": { "type": "integer" }, "targets": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/TargetProgress" } }, "baseline": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["visits_per_rep_day", "pipeline_by_stage", "weighted_pipeline_minor", "revenue_minor", "new_customers", "at_risk_customers", "at_risk_value_minor", "customers_saved", "lost_customers", "crm_completeness_pct", "voice_logs_per_rep_day", "voice_logs_within_1h_pct", "ai_actions_applied", "ai_actions_undone", "approvals_approved", "approvals_rejected", "discount_requests", "discounts_approved", "targets"] } };
-var llm = { "ask_crm_route": { "name": "ask_crm_route", "profile": "merc-extract", "used_by": ["ask-crm"], "purpose": "Choose one safe query template and its parameters.", "rules": ["unknown when no template fits; the buddy then says it doesn't know."], "eval_set": "evals/ask-crm/", "input": { "type": "object", "properties": { "question": { "type": "string" }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "today": { "type": "string", "format": "date" } }, "additionalProperties": false, "required": ["question", "today"] }, "output": { "type": "object", "properties": { "template": { "type": "string", "enum": ["last_order", "order_history_product", "open_items", "account_overview", "deal_status", "visit_history", "competitor_mentions", "top_products", "price_of_product", "unknown"] }, "params": { "type": "object", "properties": { "account_hint": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "product_hint": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "from": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "to": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "confidence": { "type": "number" } }, "additionalProperties": false, "required": ["template", "params", "confidence"] } }, "briefing_script": { "name": "briefing_script", "profile": "merc-write", "used_by": ["briefing-get", "briefing-generate"], "purpose": "Word the deterministic briefing items as a <= 90 s spoken script.", "rules": ["Keep item order.", "Every number in the script appears in an item's display_text.", "No new facts.", "Code checks: numbers subset of items; word count <= 2.3 words/s x max_seconds."], "eval_set": "evals/briefing/", "input": { "type": "object", "properties": { "rep_name": { "type": "string" }, "language": { "type": "string" }, "date": { "type": "string", "format": "date" }, "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/BriefingItem" } }, "max_seconds": { "type": "integer" } }, "additionalProperties": false, "required": ["rep_name", "language", "date", "items", "max_seconds"] }, "output": { "type": "object", "properties": { "script_text": { "type": "string" }, "estimated_seconds": { "type": "integer" } }, "additionalProperties": false, "required": ["script_text", "estimated_seconds"] } }, "campaign_from_text": { "name": "campaign_from_text", "profile": "merc-extract", "used_by": ["campaign-draft-from-text"], "purpose": "Turn 'push product X to bakeries in the North this week' into a campaign form.", "rules": ["Names only from the input lists; others go to the function's `unresolved`."], "eval_set": "evals/campaign-text/", "input": { "type": "object", "properties": { "text": { "type": "string" }, "today": { "type": "string", "format": "date" }, "products": { "type": "array", "items": { "type": "string" } }, "territories": { "type": "array", "items": { "type": "string" } }, "categories": { "type": "array", "items": { "type": "string" } }, "reps": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["text", "today", "products", "territories", "categories", "reps"] }, "output": { "type": "object", "properties": { "title": { "type": "string" }, "message": { "type": "string" }, "starts_on": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "ends_on": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "product_names": { "type": "array", "items": { "type": "string" } }, "territory_names": { "type": "array", "items": { "type": "string" } }, "category_names": { "type": "array", "items": { "type": "string" } }, "rep_names": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["title", "message", "product_names", "territory_names", "category_names", "rep_names"] } }, "candidate_score": { "name": "candidate_score", "profile": "merc-decide", "used_by": ["candidate-score"], "purpose": "Rate each ICP criterion 0-1 with a reason; code computes score = 100 x sum(weight x rating) / sum(weight).", "rules": ["near_route rating is computed by code from distance, not by the model.", "Top 3 reasons by weight x rating are stored."], "eval_set": "evals/scoring/", "input": { "type": "object", "properties": { "dossier": { "$ref": "../_defs.json#/$defs/DossierView" }, "category": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "icp": { "type": "object", "properties": { "target_categories": { "type": "array", "items": { "type": "string" } }, "criteria": { "type": "array", "items": { "type": "object", "properties": { "criterion": { "type": "string" }, "weight": { "type": "number" } }, "additionalProperties": false, "required": ["criterion", "weight"] } } }, "additionalProperties": false, "required": ["target_categories", "criteria"] }, "distance_to_route_m": { "anyOf": [{ "type": "number" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["dossier", "icp"] }, "output": { "type": "object", "properties": { "ratings": { "type": "array", "items": { "type": "object", "properties": { "criterion": { "type": "string" }, "rating": { "type": "number" }, "reason": { "type": "string" } }, "additionalProperties": false, "required": ["criterion", "rating", "reason"] } } }, "additionalProperties": false, "required": ["ratings"] } }, "debrief_extraction": { "name": "debrief_extraction", "profile": "merc-extract", "used_by": ["debrief-process"], "purpose": "Turn the rep's free speech about a visit into proposed actions.", "rules": ["Every numeric field must appear literally (or as a number word) in the utterance; otherwise null + a missing_fields entry.", "Every non-null item carries an evidence quote copied from the utterance.", "Relative dates ('Thursday', 'tomorrow') resolve against `today` in the org timezone.", "Use only ids from the input lists; unknown product -> product_id null + product_text.", "Code re-validates: evidence must be a substring of the utterance (normalized); numbers in evidence; else drop + ask."], "eval_set": "evals/debrief/", "input": { "type": "object", "properties": { "utterance": { "type": "string" }, "language_hint": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "today": { "type": "string", "format": "date" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "open_problems": { "type": "array", "items": { "type": "object", "properties": { "problem_id": { "type": "string", "format": "uuid" }, "description": { "type": "string" } }, "additionalProperties": false, "required": ["problem_id", "description"] } }, "open_deals": { "type": "array", "items": { "type": "object", "properties": { "deal_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "stage_code": { "type": "string" }, "amount_minor": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["deal_id", "title", "stage_code"] } }, "products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "unit": { "type": "string" }, "aliases": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["product_id", "name", "unit", "aliases"] } }, "active_campaigns": { "type": "array", "items": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "product_names": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["campaign_id", "title", "product_names"] } }, "contacts": { "type": "array", "items": { "type": "object", "properties": { "contact_id": { "type": "string", "format": "uuid" }, "full_name": { "type": "string" } }, "additionalProperties": false, "required": ["contact_id", "full_name"] } }, "competitors": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["utterance", "today", "account", "open_problems", "open_deals", "products", "active_campaigns", "contacts", "competitors"] }, "output": { "type": "object", "properties": { "language": { "type": "string", "enum": ["el", "en", "mixed"] }, "note": { "type": "string" }, "problems": { "type": "array", "items": { "type": "object", "properties": { "existing_problem_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "description": { "type": "string" }, "status": { "type": "string", "enum": ["open", "in_progress", "resolved"] }, "due_date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["description", "status", "evidence"] } }, "tasks": { "type": "array", "items": { "type": "object", "properties": { "title": { "type": "string" }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "is_customer_promise": { "type": "boolean" }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["title", "is_customer_promise", "evidence"] } }, "deal_update": { "type": "object", "properties": { "deal_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "new_deal_title": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "stage_code": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "amount_minor": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "next_step": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "expected_close_date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["evidence"] }, "order_intent": { "type": "object", "properties": { "lines": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "product_text": { "type": "string" }, "quantity": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "unit": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["product_text"] } }, "requested_discount_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["lines", "evidence"] }, "competitor_signals": { "type": "array", "items": { "type": "object", "properties": { "competitor_name": { "type": "string" }, "statement": { "type": "string" }, "price_delta_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["competitor_name", "statement", "evidence"] } }, "contacts": { "type": "array", "items": { "type": "object", "properties": { "existing_contact_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "full_name": { "type": "string" }, "role_title": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "email": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "is_decision_maker": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["full_name", "evidence"] } }, "campaigns_pitched": { "type": "array", "items": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["campaign_id", "evidence"] } }, "follow_up": { "type": "object", "properties": { "intent": { "type": "string" }, "channel": { "type": "string", "enum": ["email", "whatsapp", "viber"] }, "contact_name": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["intent", "channel", "evidence"] }, "visit_done": { "type": "boolean" }, "missing_fields": { "type": "array", "items": { "type": "object", "properties": { "field": { "type": "string" }, "question": { "type": "string" } }, "additionalProperties": false, "required": ["field", "question"] } } }, "additionalProperties": false, "required": ["language", "note", "problems", "tasks", "deal_update", "order_intent", "competitor_signals", "contacts", "campaigns_pitched", "follow_up", "visit_done", "missing_fields"] } }, "draft_message": { "name": "draft_message", "profile": "merc-write", "used_by": ["draft-message"], "purpose": "Write a customer message in the rep's own style.", "rules": ["Only facts from `facts`; no invented prices, dates or quantities.", "Signed as the rep.", "<= 120 words."], "eval_set": "evals/draft-message/", "input": { "type": "object", "properties": { "intent": { "type": "string" }, "channel": { "type": "string", "enum": ["email", "whatsapp", "viber"] }, "language": { "type": "string" }, "rep_name": { "type": "string" }, "rep_style_samples": { "type": "array", "items": { "type": "string" } }, "account_name": { "type": "string" }, "contact_name": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "facts": { "type": "array", "items": { "type": "object", "properties": { "label": { "type": "string" }, "value": { "type": "string" } }, "additionalProperties": false, "required": ["label", "value"] } } }, "additionalProperties": false, "required": ["intent", "channel", "language", "rep_name", "rep_style_samples", "account_name", "facts"] }, "output": { "type": "object", "properties": { "subject": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "body": { "type": "string" } }, "additionalProperties": false, "required": ["body"] } }, "eod_summary": { "name": "eod_summary", "profile": "merc-write", "used_by": ["eod-summary"], "purpose": "Speak the end-of-day facts briefly.", "rules": ["Numbers only from facts.", "<= 45 s."], "eval_set": "evals/eod/", "input": { "type": "object", "properties": { "language": { "type": "string" }, "facts": { "type": "array", "items": { "type": "object", "properties": { "label": { "type": "string" }, "value": { "type": "string" } }, "additionalProperties": false, "required": ["label", "value"] } } }, "additionalProperties": false, "required": ["language", "facts"] }, "output": { "type": "object", "properties": { "spoken_summary": { "type": "string" }, "learned": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["spoken_summary"] } }, "import_mapping": { "name": "import_mapping", "profile": "merc-extract", "used_by": ["import-analyze"], "purpose": "Map arbitrary spreadsheet columns to Merc fields.", "rules": ["target_field null when unsure (confidence < 0.6 is shown for confirmation)."], "eval_set": "evals/import/", "input": { "type": "object", "properties": { "data_type": { "type": "string" }, "headers": { "type": "array", "items": { "type": "string" } }, "sample_rows": { "type": "array", "items": { "type": "array", "items": { "type": "string" } } }, "target_fields": { "type": "array", "items": { "type": "object", "properties": { "field": { "type": "string" }, "description": { "type": "string" } }, "additionalProperties": false, "required": ["field", "description"] } } }, "additionalProperties": false, "required": ["data_type", "headers", "sample_rows", "target_fields"] }, "output": { "type": "object", "properties": { "mappings": { "type": "array", "items": { "type": "object", "properties": { "source_column": { "type": "string" }, "target_field": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "confidence": { "type": "number" } }, "additionalProperties": false, "required": ["source_column", "confidence"] } } }, "additionalProperties": false, "required": ["mappings"] } }, "research_dossier": { "name": "research_dossier", "profile": "merc-extract", "used_by": ["merc-research"], "purpose": "Extract dossier facts from scraped pages.", "rules": ["source_url must be one of the input page urls.", "No facts from outside the pages."], "eval_set": "evals/merc-research/", "input": { "type": "object", "properties": { "business_name": { "type": "string" }, "pages": { "type": "array", "items": { "type": "object", "properties": { "url": { "type": "string" }, "markdown": { "type": "string" } }, "additionalProperties": false, "required": ["url", "markdown"] } }, "known_competitors": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["business_name", "pages", "known_competitors"] }, "output": { "type": "object", "properties": { "summary": { "type": "string" }, "price_level": { "anyOf": [{ "type": "string", "enum": ["low", "mid", "premium"] }, { "type": "null" }] }, "facts": { "type": "array", "items": { "type": "object", "properties": { "fact_type": { "type": "string" }, "value": { "type": "string" }, "source_url": { "type": "string" }, "competitor_name": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["fact_type", "value", "source_url"] } } }, "additionalProperties": false, "required": ["summary", "facts"] } }, "visit_card_pitch": { "name": "visit_card_pitch", "profile": "merc-write", "used_by": ["visit-card-get"], "purpose": "Pitch, objections and 'how to talk to them' for a visit card.", "rules": ["Exactly 3 arguments.", "Products only from the input list.", "Objections grounded in dossier/playbook."], "eval_set": "evals/visit-card/", "input": { "type": "object", "properties": { "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "kind": { "type": "string", "enum": ["customer", "prospect"] }, "dossier": { "anyOf": [{ "$ref": "../_defs.json#/$defs/DossierView" }, { "type": "null" }] }, "history_facts": { "type": "array", "items": { "type": "string" } }, "memory_snippets": { "type": "array", "items": { "type": "string" } }, "products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name"] } }, "campaigns": { "type": "array", "items": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" } }, "additionalProperties": false, "required": ["campaign_id", "title"] } }, "playbook_snippets": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["account", "kind", "history_facts", "memory_snippets", "products", "campaigns", "playbook_snippets"] }, "output": { "type": "object", "properties": { "pitch": { "anyOf": [{ "$ref": "../_defs.json#/$defs/Pitch" }, { "type": "null" }] }, "how_to_talk": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "suggested_products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "why": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "why"] } } }, "additionalProperties": false, "required": ["suggested_products"] } } };
+var defs2 = { "Error": { "type": "object", "properties": { "code": { "type": "string", "enum": ["not_found", "forbidden", "validation_failed", "needs_confirmation", "conflict", "upstream_failed", "timeout", "blocked_by_policy"] }, "message": { "type": "string" }, "details": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["code", "message"] }, "AccountRef": { "type": "object", "properties": { "id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "account_type": { "type": "string", "enum": ["prospect", "customer", "lost"] }, "postal_code": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "city": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "distance_m": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["id", "name", "account_type"] }, "ActionLine": { "type": "object", "properties": { "ai_action_id": { "type": "string", "format": "uuid" }, "action_type": { "type": "string" }, "action_class": { "type": "string", "enum": ["internal", "draft", "external", "structural", "destructive"] }, "status": { "type": "string", "enum": ["suggested", "applied", "undone", "rejected"] }, "summary": { "type": "string" }, "target_table": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "target_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "undoable": { "type": "boolean" }, "approval_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["ai_action_id", "action_type", "action_class", "status", "summary", "undoable"] }, "MissingField": { "type": "object", "properties": { "field": { "type": "string" }, "question": { "type": "string" } }, "additionalProperties": false, "required": ["field", "question"] }, "ApprovalCard": { "type": "object", "properties": { "approval_id": { "type": "string", "format": "uuid" }, "kind": { "type": "string", "enum": ["customer_message", "discount", "terms", "conversion"] }, "status": { "type": "string", "enum": ["pending", "approved", "countered", "sent", "failed", "rejected", "expired", "escalated"] }, "mode": { "type": "string", "enum": ["live", "async"] }, "account": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "requested_by": { "$ref": "../_defs.json#/$defs/UserRef" }, "approver": { "$ref": "../_defs.json#/$defs/UserRef" }, "preview": { "type": "string" }, "channel": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "recipient": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "subject": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "body": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "requested_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "policy_limit_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "approved_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "decision_note": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "expires_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "created_at": { "type": "string", "format": "date-time" } }, "additionalProperties": false, "required": ["approval_id", "kind", "status", "mode", "requested_by", "approver", "preview", "created_at"] }, "UserRef": { "type": "object", "properties": { "id": { "type": "string", "format": "uuid" }, "full_name": { "type": "string" }, "role": { "type": "string", "enum": ["rep", "manager", "admin"] } }, "additionalProperties": false, "required": ["id", "full_name", "role"] }, "ResultCard": { "type": "object", "properties": { "voice_log_id": { "type": "string", "format": "uuid" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "lines": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ActionLine" } }, "missing_fields": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/MissingField" } }, "pending_approvals": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/ApprovalCard" } }, "spoken_summary": { "type": "string" }, "processing_ms": { "type": "integer" } }, "additionalProperties": false, "required": ["voice_log_id", "account", "lines", "missing_fields", "pending_approvals", "spoken_summary", "processing_ms"] }, "VisitSummary": { "type": "object", "properties": { "visit_id": { "type": "string", "format": "uuid" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "planned_date": { "type": "string", "format": "date" }, "route_position": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "status": { "type": "string", "enum": ["planned", "done", "skipped"] }, "purpose": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "lat": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "lng": { "anyOf": [{ "type": "number" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["visit_id", "account", "planned_date", "status"] }, "BriefingItem": { "type": "object", "properties": { "position": { "type": "integer" }, "item_type": { "type": "string" }, "display_text": { "type": "string" }, "ref_table": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "ref_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["position", "item_type", "display_text"] }, "Briefing": { "type": "object", "properties": { "briefing_id": { "type": "string", "format": "uuid" }, "date": { "type": "string", "format": "date" }, "status": { "type": "string", "enum": ["generated", "delivered", "read"] }, "script_text": { "type": "string" }, "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/BriefingItem" } } }, "additionalProperties": false, "required": ["briefing_id", "date", "status", "script_text", "items"] }, "OrderSummary": { "type": "object", "properties": { "order_id": { "type": "string", "format": "uuid" }, "order_date": { "type": "string", "format": "date" }, "status": { "type": "string", "enum": ["draft", "confirmed", "cancelled"] }, "total_minor": { "type": "integer" }, "lines": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "quantity": { "type": "number" }, "unit": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "quantity", "unit"] } } }, "additionalProperties": false, "required": ["order_id", "order_date", "status", "total_minor", "lines"] }, "Pitch": { "type": "object", "properties": { "opening_line": { "type": "string" }, "arguments": { "type": "array", "items": { "type": "string" } }, "products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "why": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "why"] } }, "objections": { "type": "array", "items": { "type": "object", "properties": { "objection": { "type": "string" }, "answer": { "type": "string" } }, "additionalProperties": false, "required": ["objection", "answer"] } } }, "additionalProperties": false, "required": ["opening_line", "arguments", "products", "objections"] }, "DossierView": { "type": "object", "properties": { "summary": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "price_level": { "anyOf": [{ "type": "string", "enum": ["low", "mid", "premium"] }, { "type": "null" }] }, "facts": { "type": "array", "items": { "type": "object", "properties": { "fact_type": { "type": "string" }, "value": { "type": "string" }, "source_url": { "type": "string" }, "retrieved_at": { "type": "string", "format": "date-time" } }, "additionalProperties": false, "required": ["fact_type", "value", "source_url", "retrieved_at"] } }, "competitor_brands": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["facts", "competitor_brands"] }, "VisitCard": { "type": "object", "properties": { "kind": { "type": "string", "enum": ["customer", "prospect"] }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "contacts": { "type": "array", "items": { "type": "object", "properties": { "contact_id": { "type": "string", "format": "uuid" }, "full_name": { "type": "string" }, "role_title": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "is_decision_maker": { "type": "boolean" }, "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["contact_id", "full_name", "is_decision_maker"] } }, "open_problems": { "type": "array", "items": { "type": "object", "properties": { "problem_id": { "type": "string", "format": "uuid" }, "description": { "type": "string" }, "status": { "type": "string" }, "due_date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["problem_id", "description", "status"] } }, "open_tasks": { "type": "array", "items": { "type": "object", "properties": { "task_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "is_customer_promise": { "type": "boolean" } }, "additionalProperties": false, "required": ["task_id", "title", "is_customer_promise"] } }, "recent_orders": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/OrderSummary" } }, "metrics": { "type": "object", "properties": { "avg_order_interval_days": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "days_since_last_order": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "risk_score": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "risk_reasons": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["risk_reasons"] }, "alerts": { "type": "array", "items": { "type": "object", "properties": { "alert_id": { "type": "string", "format": "uuid" }, "type": { "type": "string" }, "message": { "type": "string" } }, "additionalProperties": false, "required": ["alert_id", "type", "message"] } }, "suggested_products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "why": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "why"] } }, "campaigns": { "type": "array", "items": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "message": { "type": "string" } }, "additionalProperties": false, "required": ["campaign_id", "title", "message"] } }, "how_to_talk": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "dossier": { "anyOf": [{ "$ref": "../_defs.json#/$defs/DossierView" }, { "type": "null" }] }, "pitch": { "anyOf": [{ "$ref": "../_defs.json#/$defs/Pitch" }, { "type": "null" }] }, "spoken_summary": { "type": "string" } }, "additionalProperties": false, "required": ["kind", "account", "contacts", "open_problems", "open_tasks", "recent_orders", "metrics", "alerts", "suggested_products", "campaigns", "spoken_summary"] }, "VisitBrief": { "type": "object", "properties": { "visit_brief_id": { "type": "string", "format": "uuid" }, "visit": { "$ref": "../_defs.json#/$defs/VisitSummary" }, "planned_start_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "bullets": { "type": "array", "items": { "type": "object", "properties": { "text": { "type": "string" }, "ref_table": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "ref_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["text"] } }, "push": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "reason": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "reason"] }, "avoid": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "reason": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "reason"] }, "spoken_script": { "type": "string" }, "status": { "type": "string", "enum": ["generated", "sent", "called", "failed", "skipped"] }, "channel": { "anyOf": [{ "type": "string", "enum": ["whatsapp", "call", "app"] }, { "type": "null" }] } }, "additionalProperties": false, "required": ["visit_brief_id", "visit", "bullets", "push", "avoid", "spoken_script", "status"] }, "AlertCard": { "type": "object", "properties": { "alert_id": { "type": "string", "format": "uuid" }, "type": { "type": "string" }, "severity": { "type": "string", "enum": ["low", "medium", "high"] }, "status": { "type": "string", "enum": ["open", "done", "dismissed"] }, "message": { "type": "string" }, "account": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "suggested_action": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "created_at": { "type": "string", "format": "date-time" } }, "additionalProperties": false, "required": ["alert_id", "type", "severity", "status", "message", "created_at"] }, "CandidateCard": { "type": "object", "properties": { "candidate_id": { "type": "string", "format": "uuid" }, "business_name": { "type": "string" }, "status": { "type": "string" }, "postal_code": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "website": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "score": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "reasons": { "type": "array", "items": { "type": "string" } }, "dossier": { "anyOf": [{ "$ref": "../_defs.json#/$defs/DossierView" }, { "type": "null" }] }, "duplicate_of": { "anyOf": [{ "$ref": "../_defs.json#/$defs/AccountRef" }, { "type": "null" }] }, "assigned_rep": { "anyOf": [{ "$ref": "../_defs.json#/$defs/UserRef" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["candidate_id", "business_name", "status", "reasons"] }, "TargetProgress": { "type": "object", "properties": { "target_id": { "type": "string", "format": "uuid" }, "metric": { "type": "string", "enum": ["revenue", "volume", "visits", "new_customers"] }, "period_start": { "type": "string", "format": "date" }, "period_end": { "type": "string", "format": "date" }, "target_value": { "type": "number" }, "actual_value": { "type": "number" }, "pct": { "type": "number" }, "days_left": { "type": "integer" } }, "additionalProperties": false, "required": ["target_id", "metric", "period_start", "period_end", "target_value", "actual_value", "pct", "days_left"] }, "Page": { "type": "object", "properties": { "page": { "type": "integer" }, "limit": { "type": "integer" }, "total": { "type": "integer" } }, "additionalProperties": false, "required": ["page", "limit", "total"] }, "KpiSet": { "type": "object", "properties": { "visits_per_rep_day": { "type": "number" }, "pipeline_by_stage": { "type": "array", "items": { "type": "object", "properties": { "stage_code": { "type": "string" }, "amount_minor": { "type": "integer" }, "count": { "type": "integer" } }, "additionalProperties": false, "required": ["stage_code", "amount_minor", "count"] } }, "weighted_pipeline_minor": { "type": "integer" }, "revenue_minor": { "type": "integer" }, "new_customers": { "type": "integer" }, "at_risk_customers": { "type": "integer" }, "at_risk_value_minor": { "type": "integer" }, "customers_saved": { "type": "integer" }, "lost_customers": { "type": "integer" }, "crm_completeness_pct": { "type": "number" }, "voice_logs_per_rep_day": { "type": "number" }, "voice_logs_within_1h_pct": { "type": "number" }, "ai_actions_applied": { "type": "integer" }, "ai_actions_undone": { "type": "integer" }, "approvals_approved": { "type": "integer" }, "approvals_rejected": { "type": "integer" }, "discount_requests": { "type": "integer" }, "discounts_approved": { "type": "integer" }, "targets": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/TargetProgress" } }, "baseline": { "anyOf": [{ "type": "object" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["visits_per_rep_day", "pipeline_by_stage", "weighted_pipeline_minor", "revenue_minor", "new_customers", "at_risk_customers", "at_risk_value_minor", "customers_saved", "lost_customers", "crm_completeness_pct", "voice_logs_per_rep_day", "voice_logs_within_1h_pct", "ai_actions_applied", "ai_actions_undone", "approvals_approved", "approvals_rejected", "discount_requests", "discounts_approved", "targets"] } };
+var llm = { "ask_crm_route": { "name": "ask_crm_route", "profile": "merc-extract", "used_by": ["ask-crm"], "purpose": "Choose one safe query template and its parameters.", "rules": ["unknown when no template fits; the buddy then says it doesn't know."], "eval_set": "evals/ask-crm/", "input": { "type": "object", "properties": { "question": { "type": "string" }, "account_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "today": { "type": "string", "format": "date" } }, "additionalProperties": false, "required": ["question", "today"] }, "output": { "type": "object", "properties": { "template": { "type": "string", "enum": ["last_order", "order_history_product", "open_items", "account_overview", "deal_status", "visit_history", "competitor_mentions", "top_products", "price_of_product", "unknown"] }, "params": { "type": "object", "properties": { "account_hint": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "product_hint": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "from": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "to": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "limit": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false }, "confidence": { "type": "number" } }, "additionalProperties": false, "required": ["template", "params", "confidence"] } }, "briefing_script": { "name": "briefing_script", "profile": "merc-write", "used_by": ["briefing-get", "briefing-generate"], "purpose": "Word the deterministic briefing items as a <= 90 s spoken script.", "rules": ["Keep item order.", "Every number in the script appears in an item's display_text.", "No new facts.", "Code checks: numbers subset of items; word count <= 2.3 words/s x max_seconds."], "eval_set": "evals/briefing/", "input": { "type": "object", "properties": { "rep_name": { "type": "string" }, "language": { "type": "string" }, "date": { "type": "string", "format": "date" }, "items": { "type": "array", "items": { "$ref": "../_defs.json#/$defs/BriefingItem" } }, "max_seconds": { "type": "integer" } }, "additionalProperties": false, "required": ["rep_name", "language", "date", "items", "max_seconds"] }, "output": { "type": "object", "properties": { "script_text": { "type": "string" }, "estimated_seconds": { "type": "integer" } }, "additionalProperties": false, "required": ["script_text", "estimated_seconds"] } }, "campaign_from_text": { "name": "campaign_from_text", "profile": "merc-extract", "used_by": ["campaign-draft-from-text"], "purpose": "Turn 'push product X to bakeries in the North this week' into a campaign form.", "rules": ["Names only from the input lists; others go to the function's `unresolved`."], "eval_set": "evals/campaign-text/", "input": { "type": "object", "properties": { "text": { "type": "string" }, "today": { "type": "string", "format": "date" }, "products": { "type": "array", "items": { "type": "string" } }, "territories": { "type": "array", "items": { "type": "string" } }, "categories": { "type": "array", "items": { "type": "string" } }, "reps": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["text", "today", "products", "territories", "categories", "reps"] }, "output": { "type": "object", "properties": { "title": { "type": "string" }, "message": { "type": "string" }, "starts_on": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "ends_on": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "product_names": { "type": "array", "items": { "type": "string" } }, "territory_names": { "type": "array", "items": { "type": "string" } }, "category_names": { "type": "array", "items": { "type": "string" } }, "rep_names": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["title", "message", "product_names", "territory_names", "category_names", "rep_names"] } }, "candidate_score": { "name": "candidate_score", "profile": "merc-decide", "used_by": ["candidate-score"], "purpose": "Rate each ICP criterion 0-1 with a reason; code computes score = 100 x sum(weight x rating) / sum(weight).", "rules": ["near_route rating is computed by code from distance, not by the model.", "Top 3 reasons by weight x rating are stored."], "eval_set": "evals/scoring/", "input": { "type": "object", "properties": { "dossier": { "$ref": "../_defs.json#/$defs/DossierView" }, "category": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "icp": { "type": "object", "properties": { "target_categories": { "type": "array", "items": { "type": "string" } }, "criteria": { "type": "array", "items": { "type": "object", "properties": { "criterion": { "type": "string" }, "weight": { "type": "number" } }, "additionalProperties": false, "required": ["criterion", "weight"] } } }, "additionalProperties": false, "required": ["target_categories", "criteria"] }, "distance_to_route_m": { "anyOf": [{ "type": "number" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["dossier", "icp"] }, "output": { "type": "object", "properties": { "ratings": { "type": "array", "items": { "type": "object", "properties": { "criterion": { "type": "string" }, "rating": { "type": "number" }, "reason": { "type": "string" } }, "additionalProperties": false, "required": ["criterion", "rating", "reason"] } } }, "additionalProperties": false, "required": ["ratings"] } }, "debrief_extraction": { "name": "debrief_extraction", "profile": "merc-extract", "used_by": ["debrief-process"], "purpose": "Turn the rep's free speech about a visit into proposed actions.", "rules": ["Every numeric field must appear literally (or as a number word) in the utterance; otherwise null + a missing_fields entry.", "Every non-null item carries an evidence quote copied from the utterance.", "Relative dates ('Thursday', 'tomorrow') resolve against `today` in the org timezone.", "Use only ids from the input lists; unknown product -> product_id null + product_text.", "Code re-validates: evidence must be a substring of the utterance (normalized); numbers in evidence; else drop + ask."], "eval_set": "evals/debrief/", "input": { "type": "object", "properties": { "utterance": { "type": "string" }, "language_hint": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "today": { "type": "string", "format": "date" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "open_problems": { "type": "array", "items": { "type": "object", "properties": { "problem_id": { "type": "string", "format": "uuid" }, "description": { "type": "string" } }, "additionalProperties": false, "required": ["problem_id", "description"] } }, "open_deals": { "type": "array", "items": { "type": "object", "properties": { "deal_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "stage_code": { "type": "string" }, "amount_minor": { "anyOf": [{ "type": "integer" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["deal_id", "title", "stage_code"] } }, "products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "unit": { "type": "string" }, "aliases": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["product_id", "name", "unit", "aliases"] } }, "active_campaigns": { "type": "array", "items": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "product_names": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["campaign_id", "title", "product_names"] } }, "contacts": { "type": "array", "items": { "type": "object", "properties": { "contact_id": { "type": "string", "format": "uuid" }, "full_name": { "type": "string" } }, "additionalProperties": false, "required": ["contact_id", "full_name"] } }, "competitors": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["utterance", "today", "account", "open_problems", "open_deals", "products", "active_campaigns", "contacts", "competitors"] }, "output": { "type": "object", "properties": { "language": { "type": "string", "enum": ["el", "en", "mixed"] }, "note": { "type": "string" }, "problems": { "type": "array", "items": { "type": "object", "properties": { "existing_problem_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "description": { "type": "string" }, "status": { "type": "string", "enum": ["open", "in_progress", "resolved"] }, "due_date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["description", "status", "evidence"] } }, "tasks": { "type": "array", "items": { "type": "object", "properties": { "title": { "type": "string" }, "due_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] }, "is_customer_promise": { "type": "boolean" }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["title", "is_customer_promise", "evidence"] } }, "deal_update": { "type": "object", "properties": { "deal_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "new_deal_title": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "stage_code": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "amount_minor": { "anyOf": [{ "type": "integer" }, { "type": "null" }] }, "next_step": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "expected_close_date": { "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }] }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["evidence"] }, "order_intent": { "type": "object", "properties": { "lines": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "product_text": { "type": "string" }, "quantity": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "unit": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["product_text"] } }, "requested_discount_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["lines", "evidence"] }, "competitor_signals": { "type": "array", "items": { "type": "object", "properties": { "competitor_name": { "type": "string" }, "statement": { "type": "string" }, "price_delta_pct": { "anyOf": [{ "type": "number" }, { "type": "null" }] }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["competitor_name", "statement", "evidence"] } }, "contacts": { "type": "array", "items": { "type": "object", "properties": { "existing_contact_id": { "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }] }, "full_name": { "type": "string" }, "role_title": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "email": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "is_decision_maker": { "anyOf": [{ "type": "boolean" }, { "type": "null" }] }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["full_name", "evidence"] } }, "campaigns_pitched": { "type": "array", "items": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["campaign_id", "evidence"] } }, "follow_up": { "type": "object", "properties": { "intent": { "type": "string" }, "channel": { "type": "string", "enum": ["email", "whatsapp", "viber"] }, "contact_name": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "evidence": { "type": "string" } }, "additionalProperties": false, "required": ["intent", "channel", "evidence"] }, "visit_done": { "type": "boolean" }, "missing_fields": { "type": "array", "items": { "type": "object", "properties": { "field": { "type": "string" }, "question": { "type": "string" } }, "additionalProperties": false, "required": ["field", "question"] } } }, "additionalProperties": false, "required": ["language", "note", "problems", "tasks", "deal_update", "order_intent", "competitor_signals", "contacts", "campaigns_pitched", "follow_up", "visit_done", "missing_fields"] } }, "draft_message": { "name": "draft_message", "profile": "merc-write", "used_by": ["draft-message"], "purpose": "Write a customer message in the rep's own style.", "rules": ["Only facts from `facts`; no invented prices, dates or quantities.", "Signed as the rep.", "<= 120 words."], "eval_set": "evals/draft-message/", "input": { "type": "object", "properties": { "intent": { "type": "string" }, "channel": { "type": "string", "enum": ["email", "whatsapp", "viber"] }, "language": { "type": "string" }, "rep_name": { "type": "string" }, "rep_style_samples": { "type": "array", "items": { "type": "string" } }, "account_name": { "type": "string" }, "contact_name": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "facts": { "type": "array", "items": { "type": "object", "properties": { "label": { "type": "string" }, "value": { "type": "string" } }, "additionalProperties": false, "required": ["label", "value"] } } }, "additionalProperties": false, "required": ["intent", "channel", "language", "rep_name", "rep_style_samples", "account_name", "facts"] }, "output": { "type": "object", "properties": { "subject": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "body": { "type": "string" } }, "additionalProperties": false, "required": ["body"] } }, "eod_summary": { "name": "eod_summary", "profile": "merc-write", "used_by": ["eod-summary"], "purpose": "Speak the end-of-day facts briefly.", "rules": ["Numbers only from facts.", "<= 45 s."], "eval_set": "evals/eod/", "input": { "type": "object", "properties": { "language": { "type": "string" }, "facts": { "type": "array", "items": { "type": "object", "properties": { "label": { "type": "string" }, "value": { "type": "string" } }, "additionalProperties": false, "required": ["label", "value"] } } }, "additionalProperties": false, "required": ["language", "facts"] }, "output": { "type": "object", "properties": { "spoken_summary": { "type": "string" }, "learned": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["spoken_summary"] } }, "import_mapping": { "name": "import_mapping", "profile": "merc-extract", "used_by": ["import-analyze"], "purpose": "Map arbitrary spreadsheet columns to Merc fields.", "rules": ["target_field null when unsure (confidence < 0.6 is shown for confirmation)."], "eval_set": "evals/import/", "input": { "type": "object", "properties": { "data_type": { "type": "string" }, "headers": { "type": "array", "items": { "type": "string" } }, "sample_rows": { "type": "array", "items": { "type": "array", "items": { "type": "string" } } }, "target_fields": { "type": "array", "items": { "type": "object", "properties": { "field": { "type": "string" }, "description": { "type": "string" } }, "additionalProperties": false, "required": ["field", "description"] } } }, "additionalProperties": false, "required": ["data_type", "headers", "sample_rows", "target_fields"] }, "output": { "type": "object", "properties": { "mappings": { "type": "array", "items": { "type": "object", "properties": { "source_column": { "type": "string" }, "target_field": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "confidence": { "type": "number" } }, "additionalProperties": false, "required": ["source_column", "confidence"] } } }, "additionalProperties": false, "required": ["mappings"] } }, "research_dossier": { "name": "research_dossier", "profile": "merc-extract", "used_by": ["merc-research"], "purpose": "Extract dossier facts from scraped pages.", "rules": ["source_url must be one of the input page urls.", "No facts from outside the pages."], "eval_set": "evals/merc-research/", "input": { "type": "object", "properties": { "business_name": { "type": "string" }, "pages": { "type": "array", "items": { "type": "object", "properties": { "url": { "type": "string" }, "markdown": { "type": "string" } }, "additionalProperties": false, "required": ["url", "markdown"] } }, "known_competitors": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["business_name", "pages", "known_competitors"] }, "output": { "type": "object", "properties": { "summary": { "type": "string" }, "price_level": { "anyOf": [{ "type": "string", "enum": ["low", "mid", "premium"] }, { "type": "null" }] }, "facts": { "type": "array", "items": { "type": "object", "properties": { "fact_type": { "type": "string" }, "value": { "type": "string" }, "source_url": { "type": "string" }, "competitor_name": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["fact_type", "value", "source_url"] } } }, "additionalProperties": false, "required": ["summary", "facts"] } }, "visit_brief_bullets": { "name": "visit_brief_bullets", "profile": "merc-write", "used_by": ["visit-brief-get", "previsit-briefs-due"], "purpose": "Word the pre-meeting brief: at most 6 bullets for WhatsApp and a short spoken script for a call.", "rules": ["Order: why this visit, open problem or promise, orders vs usual, push with its reason, avoid with its reason, how to talk to them.", "Name only the push and avoid products given; never swap or add a product.", "Every number in a bullet or the script appears in a fact value. Code checks it and drops the bullet otherwise.", "Company values shape tone and the framing of the push, never add facts.", "At most max_bullets bullets of at most 15 words; script <= 2.3 words/s x max_seconds."], "eval_set": "evals/visit-brief/", "input": { "type": "object", "properties": { "language": { "type": "string" }, "rep_first_name": { "type": "string" }, "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "visit_reason": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "facts": { "type": "array", "items": { "type": "object", "properties": { "label": { "type": "string" }, "value": { "type": "string" }, "ref_table": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "ref_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] } }, "additionalProperties": false, "required": ["label", "value"] } }, "push": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "reason": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "reason"] }, "avoid": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "reason": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name", "reason"] }, "company_values": { "type": "array", "items": { "type": "string" } }, "how_to_talk_snippets": { "type": "array", "items": { "type": "string" } }, "max_bullets": { "type": "integer" }, "max_seconds": { "type": "integer" } }, "additionalProperties": false, "required": ["language", "rep_first_name", "account", "facts", "push", "avoid", "company_values", "how_to_talk_snippets", "max_bullets", "max_seconds"] }, "output": { "type": "object", "properties": { "bullets": { "type": "array", "items": { "type": "object", "properties": { "text": { "type": "string" }, "fact_labels": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["text", "fact_labels"] } }, "spoken_script": { "type": "string" } }, "additionalProperties": false, "required": ["bullets", "spoken_script"] } }, "visit_card_pitch": { "name": "visit_card_pitch", "profile": "merc-write", "used_by": ["visit-card-get"], "purpose": "Pitch, objections and 'how to talk to them' for a visit card.", "rules": ["Exactly 3 arguments.", "Products only from the input list.", "Objections grounded in dossier/playbook."], "eval_set": "evals/visit-card/", "input": { "type": "object", "properties": { "account": { "$ref": "../_defs.json#/$defs/AccountRef" }, "kind": { "type": "string", "enum": ["customer", "prospect"] }, "dossier": { "anyOf": [{ "$ref": "../_defs.json#/$defs/DossierView" }, { "type": "null" }] }, "history_facts": { "type": "array", "items": { "type": "string" } }, "memory_snippets": { "type": "array", "items": { "type": "string" } }, "products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "name": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "name"] } }, "campaigns": { "type": "array", "items": { "type": "object", "properties": { "campaign_id": { "type": "string", "format": "uuid" }, "title": { "type": "string" } }, "additionalProperties": false, "required": ["campaign_id", "title"] } }, "playbook_snippets": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false, "required": ["account", "kind", "history_facts", "memory_snippets", "products", "campaigns", "playbook_snippets"] }, "output": { "type": "object", "properties": { "pitch": { "anyOf": [{ "$ref": "../_defs.json#/$defs/Pitch" }, { "type": "null" }] }, "how_to_talk": { "anyOf": [{ "type": "string" }, { "type": "null" }] }, "suggested_products": { "type": "array", "items": { "type": "object", "properties": { "product_id": { "type": "string", "format": "uuid" }, "why": { "type": "string" } }, "additionalProperties": false, "required": ["product_id", "why"] } } }, "additionalProperties": false, "required": ["suggested_products"] } } };
 
 // shared/llm/src/rules.generated.ts
 var llmRules = {
@@ -4724,6 +5325,16 @@ var llmRules = {
     "rules": [
       "source_url must be one of the input page urls.",
       "No facts from outside the pages."
+    ]
+  },
+  "visit_brief_bullets": {
+    "purpose": "Word the pre-meeting brief: at most 6 bullets for WhatsApp and a short spoken script for a call.",
+    "rules": [
+      "Order: why this visit, open problem or promise, orders vs usual, push with its reason, avoid with its reason, how to talk to them.",
+      "Name only the push and avoid products given; never swap or add a product.",
+      "Every number in a bullet or the script appears in a fact value. Code checks it and drops the bullet otherwise.",
+      "Company values shape tone and the framing of the push, never add facts.",
+      "At most max_bullets bullets of at most 15 words; script <= 2.3 words/s x max_seconds."
     ]
   },
   "visit_card_pitch": {
@@ -5088,7 +5699,7 @@ function extractNumbers(text) {
     if (groups.length >= 2 && groups.slice(1).every((g) => g.length === 3)) out.add(Number(groups.join("")));
     if (groups.length > 2 && !groups.slice(1).every((g) => g.length === 3)) out.add(Number(groups.join("")));
   }
-  const words = normalizeText(text).split(" ");
+  const words2 = normalizeText(text).split(" ");
   let total = 0, cur = 0, inRun = false;
   const flush = () => {
     if (inRun) out.add(total + cur);
@@ -5096,7 +5707,7 @@ function extractNumbers(text) {
     cur = 0;
     inRun = false;
   };
-  for (const w of words) {
+  for (const w of words2) {
     if (w in UNITS && !(w === "a" || w === "an")) {
       cur += UNITS[w];
       out.add(UNITS[w]);
@@ -5287,7 +5898,64 @@ async function pushToRepAndTeams(platform, db, repUserId, type, payload, opts = 
 
 // shared/autonomy/src/snapshot.ts
 var SNAPSHOT_VERSION = 1;
+var SYSTEM2 = /* @__PURE__ */ new Set(["created_at", "updated_at"]);
+function businessColumns(input) {
+  const out = {};
+  if (!input) return out;
+  const row = input;
+  for (const k of Object.keys(row).sort()) {
+    const v = row[k];
+    if (SYSTEM2.has(k) || v === null || v === void 0) continue;
+    out[k] = v;
+  }
+  return out;
+}
+var sameRow = (a, b) => JSON.stringify(businessColumns(a)) === JSON.stringify(businessColumns(b));
+function repo(db, table) {
+  if (!TABLES[table]) throw new Error(`unknown table ${table}`);
+  return db[table];
+}
 var encode = (rows) => JSON.stringify({ v: SNAPSHOT_VERSION, rows });
+function decode(json) {
+  if (!json) return null;
+  try {
+    const s = JSON.parse(json);
+    return s && s.v === SNAPSHOT_VERSION && Array.isArray(s.rows) ? s : null;
+  } catch {
+    return null;
+  }
+}
+function restorePatch(table, before, current) {
+  const meta = TABLES[table];
+  const b = businessColumns(before), c = businessColumns(current);
+  const patch = {};
+  for (const k of /* @__PURE__ */ new Set([...Object.keys(b), ...Object.keys(c)])) {
+    if (k === meta.pk || !meta.columns[k]) continue;
+    if (JSON.stringify(b[k]) !== JSON.stringify(c[k])) patch[k] = k in b ? b[k] : null;
+  }
+  return patch;
+}
+async function restore(db, before, after) {
+  const current = /* @__PURE__ */ new Map();
+  for (const s of before) current.set(`${s.table}:${s.id}`, await repo(db, s.table).get(s.id));
+  if (after) {
+    for (const a of after) {
+      const cur = current.get(`${a.table}:${a.id}`);
+      if (cur === void 0) continue;
+      if (cur && !sameRow(cur, a.row)) throw conflict(`${a.table} ${a.id} was changed after the AI action; undo it by hand`, { table: a.table, id: a.id });
+    }
+  }
+  for (const s of [...before].reverse()) {
+    const cur = current.get(`${s.table}:${s.id}`) ?? null;
+    if (s.row === null) {
+      if (cur) await repo(db, s.table).delete(s.id);
+      continue;
+    }
+    if (!cur) throw conflict(`${s.table} ${s.id} no longer exists; cannot restore it`, { table: s.table, id: s.id });
+    const patch = restorePatch(s.table, s.row, cur);
+    if (Object.keys(patch).length) await repo(db, s.table).update(s.id, patch);
+  }
+}
 
 // shared/handlers/src/accounts-list.ts
 var AT_RISK_MIN_SCORE = 50;
@@ -5337,7 +6005,7 @@ var GREEK = {
   \u03C9: "o"
 };
 function normalizeName(s) {
-  const base = s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const base = stripAccents(s).toLowerCase();
   return [...base.replace(/ου/g, "ou")].map((ch) => GREEK[ch] ?? ch).join("").replace(/[^a-z0-9]+/g, " ").trim();
 }
 async function scopedAccounts(db, me, where = {}) {
@@ -5482,9 +6150,9 @@ async function todaysAccountIds(db, me) {
 }
 function clearNearest(cands) {
   const s = cands.filter((c) => c.d !== null).sort((x, y) => x.d - y.d);
-  const [first, second] = s;
-  if (!first || first.d > NEAR_M) return null;
-  return !second || second.d >= 2 * first.d || second.d - first.d >= 100 ? first : null;
+  const [first2, second] = s;
+  if (!first2 || first2.d > NEAR_M) return null;
+  return !second || second.d >= 2 * first2.d || second.d - first2.d >= 100 ? first2 : null;
 }
 var impl3 = async ({ req, db, me }) => {
   const scope = await scopedAccounts(db, me);
@@ -5533,6 +6201,138 @@ var impl3 = async ({ req, db, me }) => {
   return visits.length ? ambiguous(visits) : notFound2();
 };
 var handle2 = defineFunction("account-resolve", impl3);
+
+// shared/autonomy/src/index.ts
+var UNDOABLE_CLASSES = ["internal", "draft"];
+async function resolveMode(db, role, code) {
+  const at = await db.action_type.get(code);
+  if (!at) throw invalid(`unknown action type ${code}`, { action_type: code });
+  const action_class = at.action_class;
+  if (action_class === "destructive") return { mode: "never", action_class, source: "destructive" };
+  const perm = await db.ai_permission.findOne({ role_code: role, action_type_code: code });
+  return perm ? { mode: perm.mode, action_class, source: "ai_permission" } : { mode: at.default_mode, action_class, source: "default" };
+}
+var pkOf = (t, row) => String(row[TABLES[t].pk]);
+var plain = (r) => r ? { ...r } : null;
+var Writer = class {
+  constructor(db) {
+    this.db = db;
+    this.touched = /* @__PURE__ */ new Map();
+  }
+  note(table, id, before, after) {
+    const k = `${table}:${id}`;
+    const cur = this.touched.get(k);
+    if (cur) cur.after = after;
+    else this.touched.set(k, { table, id, before, after });
+  }
+  async insert(table, data) {
+    const row = await repo(this.db, table).insert(data);
+    this.note(table, pkOf(table, row), null, plain(row));
+    return row;
+  }
+  async update(table, id, patch) {
+    const before = this.touched.has(`${table}:${id}`) ? null : plain(await repo(this.db, table).require(id));
+    const row = await repo(this.db, table).update(id, patch);
+    this.note(table, id, before, plain(row));
+    return row;
+  }
+  get before() {
+    return [...this.touched.values()].map((x) => ({ table: x.table, id: x.id, row: x.before }));
+  }
+  get after() {
+    return [...this.touched.values()].map((x) => ({ table: x.table, id: x.id, row: x.after }));
+  }
+};
+var KIND = {
+  send_email: "customer_message",
+  send_whatsapp: "customer_message",
+  send_viber: "customer_message",
+  book_meeting: "customer_message",
+  convert_prospect: "conversion",
+  discount_within_limit: "discount"
+};
+function lineOf(a, action_class, approval_id = null) {
+  return {
+    ai_action_id: a.id,
+    action_type: a.action_type_code,
+    action_class,
+    status: a.status,
+    summary: a.reason ?? a.action_type_code,
+    target_table: a.target_table ?? null,
+    target_id: a.target_id ?? null,
+    undoable: a.status === "applied" && UNDOABLE_CLASSES.includes(action_class) && !!decode(a.before_snapshot_json),
+    approval_id
+  };
+}
+async function propose(db, me, p, opts = {}) {
+  const onBehalfOf = p.on_behalf_of ?? actorUserId(me);
+  if (!onBehalfOf) throw invalid("ai_action.on_behalf_of is required for system callers", { action_type: p.code });
+  const info = await resolveMode(db, p.role ?? me.role, p.code);
+  const at = new Date(opts.now ?? Date.now()).toISOString();
+  const base = {
+    on_behalf_of: onBehalfOf,
+    agent: p.agent,
+    action_type_code: p.code,
+    voice_log_id: p.voice_log_id ?? null,
+    reason: p.summary.slice(0, 500),
+    payload_json: JSON.stringify(p.payload ?? null)
+  };
+  if (info.mode === "auto") {
+    const w = new Writer(db);
+    const target2 = await p.apply(w) ?? p.target ?? null;
+    const ai2 = await db.ai_action.insert({
+      ...base,
+      target_table: target2?.table ?? null,
+      target_id: target2?.id ?? null,
+      status: "applied",
+      applied_at: at,
+      before_snapshot_json: encode(w.before),
+      after_snapshot_json: encode(w.after)
+    });
+    return { ...info, applied: true, ai_action: ai2, approval: null, target: target2, line: lineOf(ai2, info.action_class) };
+  }
+  const target = p.target ?? null;
+  const ai = await db.ai_action.insert({ ...base, target_table: target?.table ?? null, target_id: target?.id ?? null, status: "suggested" });
+  let approval = null;
+  if (info.mode === "ask") {
+    const approver = p.approval?.approver_id ?? (me.kind === "user" ? me.manager?.id : null) ?? onBehalfOf;
+    approval = await db.approval.insert({
+      ai_action_id: ai.id,
+      kind: p.approval?.kind ?? KIND[p.code] ?? "terms",
+      requested_by: onBehalfOf,
+      approver_id: approver,
+      mode: p.approval?.mode ?? "async",
+      status: "pending",
+      due_at: p.approval?.due_at ?? null,
+      expires_at: p.approval?.expires_at ?? null
+    });
+  }
+  return { ...info, applied: false, ai_action: ai, approval, target, line: lineOf(ai, info.action_class, approval?.id ?? null) };
+}
+async function undo(db, me, aiActionId, opts = {}) {
+  const a = await db.ai_action.require(aiActionId);
+  assertOwner(me, a.on_behalf_of, "ai action");
+  if (a.status === "undone") throw conflict("ai action is already undone", { ai_action_id: a.id, status: a.status });
+  if (a.status !== "applied") throw conflict(`ai action is ${a.status}; only applied actions can be undone`, { ai_action_id: a.id, status: a.status });
+  const at = await db.action_type.get(a.action_type_code);
+  const cls = at?.action_class ?? "external";
+  if (!UNDOABLE_CLASSES.includes(cls)) throw blocked(`${cls} actions cannot be undone`, { ai_action_id: a.id, action_class: cls });
+  const before = decode(a.before_snapshot_json);
+  if (!before) throw conflict("ai action has no usable before snapshot", { ai_action_id: a.id });
+  const after = decode(a.after_snapshot_json);
+  await restore(db, before.rows, after?.rows ?? null);
+  await db.ai_action.update(a.id, { status: "undone", undone_at: new Date(opts.now ?? Date.now()).toISOString(), undone_by: actorUserId(me) });
+  const first2 = before.rows[0];
+  const restored = a.target_table && a.target_id ? { table: a.target_table, id: a.target_id } : first2 ? { table: first2.table, id: first2.id } : { table: "ai_action", id: a.id };
+  return { ai_action_id: a.id, status: "undone", restored };
+}
+
+// shared/handlers/src/ai-action-undo.ts
+function makeImpl2(deps = {}) {
+  return async ({ req, db, me }) => undo(db, me, req.ai_action_id, { now: deps.now?.() });
+}
+var impl4 = makeImpl2();
+var handle3 = defineFunction("ai-action-undo", impl4);
 
 // shared/handlers/src/metrics-rollup.ts
 var WINDOW_DAYS = 180;
@@ -5626,7 +6426,7 @@ async function computeOrgMetrics(db, me, now) {
   }
   return out;
 }
-function makeImpl2(deps = {}) {
+function makeImpl3(deps = {}) {
   return async ({ req, db, me }) => {
     const now = (deps.now ?? Date.now)();
     const metrics = await computeOrgMetrics(db, me, now);
@@ -5650,7 +6450,7 @@ function makeImpl2(deps = {}) {
     return { processed: metrics.size, created, details: { updated, unchanged, dry_run: dry, today: today(me.org, now) } };
   };
 }
-var impl4 = makeImpl2();
+var impl5 = makeImpl3();
 
 // shared/handlers/src/alerts-list.ts
 var DEFAULT_LIMIT2 = 50;
@@ -5683,7 +6483,7 @@ async function recipientsFor(db, me, scope) {
   if (isManager(me)) return [me.id, ...me.team_user_ids];
   throw forbidden("scope team is for managers and admins");
 }
-var impl5 = async ({ req, db, me }) => {
+var impl6 = async ({ req, db, me }) => {
   const limit = Math.min(Math.max(req.limit ?? DEFAULT_LIMIT2, 1), MAX_LIMIT2);
   const page = Math.max(req.page ?? 1, 1);
   const recipients = await recipientsFor(db, me, req.scope ?? "mine");
@@ -5694,7 +6494,7 @@ var impl5 = async ({ req, db, me }) => {
   });
   return { items: await cardsFor(db, res.items), page: { page, limit, total: res.total } };
 };
-var handle3 = defineFunction("alerts-list", impl5);
+var handle4 = defineFunction("alerts-list", impl6);
 
 // shared/handlers/src/alert-act.ts
 var VISIT_ALERTS = /* @__PURE__ */ new Set(["going_quiet", "visit_overdue"]);
@@ -5706,7 +6506,7 @@ var noDraft = async () => {
     how: "build fn:draft-message (internal, contracts/functions/draft-message.json) and pass it to alert-act makeImpl({draft})"
   });
 };
-function makeImpl3(deps = {}) {
+function makeImpl4(deps = {}) {
   const draft = deps.draft ?? noDraft;
   return async ({ req, db, me }) => {
     const now = (deps.now ?? Date.now)();
@@ -5752,8 +6552,8 @@ function makeImpl3(deps = {}) {
     return { alert: card, task_id, approval_id };
   };
 }
-var impl6 = makeImpl3();
-var handle4 = defineFunction("alert-act", impl6);
+var impl7 = makeImpl4();
+var handle5 = defineFunction("alert-act", impl7);
 
 // shared/handlers/src/approvals-list.ts
 var PREVIEW_MAX = 160;
@@ -5869,13 +6669,13 @@ async function listApprovals(db, me, f) {
   return rows.sort((x, y) => msOf(y.created_at) - msOf(x.created_at) || x.id.localeCompare(y.id));
 }
 var LIST_LIMIT = 100;
-var impl7 = async ({ req, db, me }) => {
+var impl8 = async ({ req, db, me }) => {
   const rows = (await listApprovals(db, me, req)).slice(0, LIST_LIMIT);
   const items = [];
   for (const a of rows) items.push(await approvalCard(db, a));
   return { items };
 };
-var handle5 = defineFunction("approvals-list", impl7);
+var handle6 = defineFunction("approvals-list", impl8);
 
 // shared/handlers/src/message-send.ts
 var GLOBAL_GMAIL_CONNECTION = "MERC_GMAIL_CONNECTION";
@@ -5948,10 +6748,10 @@ ${body}`, occurred_at: sentAt });
   }
   return { status: "sent", external_message_id: externalId, failure_reason: null };
 }
-function makeImpl4(deps) {
+function makeImpl5(deps) {
   return async ({ req, db, me, platform }) => sendApproved(db, me, platform, deps, req.approval_id);
 }
-var impl8 = makeImpl4({});
+var impl9 = makeImpl5({});
 
 // shared/handlers/src/approval-resolve.ts
 async function decide(db, me, a, status, via, at) {
@@ -5961,7 +6761,7 @@ async function decide(db, me, a, status, via, at) {
     if (act2 && act2.status === "suggested") await db.ai_action.update(act2.id, { status: "rejected" });
   }
 }
-function makeImpl5(deps = {}) {
+function makeImpl6(deps = {}) {
   const via = deps.via ?? "app";
   const now = deps.now ?? Date.now;
   return async ({ req, db, me, platform }) => {
@@ -6004,14 +6804,14 @@ function makeImpl5(deps = {}) {
     return { approval: card };
   };
 }
-var impl9 = makeImpl5();
+var impl10 = makeImpl6();
 
 // shared/handlers/src/approval-status.ts
-var impl10 = async ({ req, db, me }) => ({ approval: await approvalCard(db, await requireVisibleApproval(db, me, req.approval_id)) });
-var handle6 = defineFunction("approval-status", impl10);
+var impl11 = async ({ req, db, me }) => ({ approval: await approvalCard(db, await requireVisibleApproval(db, me, req.approval_id)) });
+var handle7 = defineFunction("approval-status", impl11);
 
 // shared/handlers/src/product-lookup.ts
-var norm = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+var norm = (s) => stripAccents(s).toLowerCase().replace(/[^a-z0-9\u00c0-\u024f\u0370-\u03ff\u1f00-\u1fff]+/g, " ").trim();
 var FILLER = /* @__PURE__ */ new Set(["the", "a", "of", "how", "much", "is", "price", "for", "and", "to", "\u03C4\u03BF", "\u03B7", "\u03BF", "\u03C4\u03B9", "\u03C0\u03CC\u03C3\u03BF", "\u03C0\u03BF\u03C3\u03BF", "\u03BA\u03AC\u03BD\u03B5\u03B9", "\u03BA\u03B1\u03BD\u03B5\u03B9", "\u03C4\u03B9\u03BC\u03AE", "\u03C4\u03B9\u03BC\u03B7"]);
 function tokens2(q) {
   return norm(q).split(" ").filter((t) => t.length >= 2 && !FILLER.has(t));
@@ -6053,14 +6853,14 @@ async function toItems(db, products, day) {
     stock: "unknown"
   }));
 }
-function makeImpl6(deps = {}) {
+function makeImpl7(deps = {}) {
   return async ({ req, db, me }) => {
     const day = today(me.org, deps.now?.() ?? Date.now());
     return { items: await toItems(db, await findProducts(db, req.query), day) };
   };
 }
-var impl11 = makeImpl6();
-var handle7 = defineFunction("product-lookup", impl11);
+var impl12 = makeImpl7();
+var handle8 = defineFunction("product-lookup", impl12);
 
 // shared/handlers/src/my-performance.ts
 var lineTotalMinor = (l) => Math.round(l.quantity * l.unit_price_minor * (1 - (l.discount_pct ?? 0) / 100));
@@ -6151,7 +6951,7 @@ function spokenSummary(lang, period, from, to, targets2, a, currency) {
   const parts = targets2.map((t) => w.target(w.metric[t.metric], val(t.metric, t.actual_value), val(t.metric, t.target_value), t.pct, t.days_left));
   return [`${head}:`, ...parts.length ? parts : [w.none], w.totals(a.visits_done, `${money(a.revenue_minor)} ${currency}`, a.new_customers)].join(" ");
 }
-function makeImpl7(deps = {}) {
+function makeImpl8(deps = {}) {
   return async ({ req, db, me }) => {
     const day = today(me.org, deps.now?.() ?? Date.now());
     const { from, to } = periodRange(me, req, day);
@@ -6162,8 +6962,8 @@ function makeImpl7(deps = {}) {
     return { targets: targets2, ...totals, spoken_summary: spokenSummary(lang, req.period, from, to, targets2, totals, me.org.currency ?? "EUR") };
   };
 }
-var impl12 = makeImpl7();
-var handle8 = defineFunction("my-performance", impl12);
+var impl13 = makeImpl8();
+var handle9 = defineFunction("my-performance", impl13);
 
 // shared/handlers/src/ask-crm.ts
 var TEMPLATES = [
@@ -6211,8 +7011,8 @@ async function resolveAccount(db, me, accountId, hint, question) {
     });
     if (hits.length) return hits.sort(byLen)[0];
   }
-  const words = new Set(norm(question).split(" "));
-  const scored = visible.map((a) => ({ a, s: distinctive(a.name).filter((t) => words.has(t)).length })).filter((x) => x.s > 0);
+  const words2 = new Set(norm(question).split(" "));
+  const scored = visible.map((a) => ({ a, s: distinctive(a.name).filter((t) => words2.has(t)).length })).filter((x) => x.s > 0);
   scored.sort((x, y) => y.s - x.s || byLen(x.a, y.a));
   return scored[0]?.a ?? null;
 }
@@ -6221,9 +7021,9 @@ async function resolveProduct(db, hint, question) {
     const p = (await findProducts(db, hint, 1))[0];
     if (p) return p;
   }
-  const words = new Set(norm(question).split(" "));
+  const words2 = new Set(norm(question).split(" "));
   const products = await db.product.all({ active: true });
-  const scored = products.map((p) => ({ p, s: norm(p.name).split(" ").filter((t) => t.length >= 3 && !/^\d/.test(t) && words.has(t)).length })).filter((x) => x.s > 0);
+  const scored = products.map((p) => ({ p, s: norm(p.name).split(" ").filter((t) => t.length >= 3 && !/^\d/.test(t) && words2.has(t)).length })).filter((x) => x.s > 0);
   scored.sort((x, y) => y.s - x.s || x.p.name.length - y.p.name.length);
   return scored[0]?.p ?? null;
 }
@@ -6349,7 +7149,7 @@ var RUN = {
     return out;
   }
 };
-function makeImpl8(deps = {}) {
+function makeImpl9(deps = {}) {
   const route = deps.route ?? llmRouter;
   return async ({ req, db, me }) => {
     const day = today(me.org, deps.now?.() ?? Date.now());
@@ -6370,8 +7170,8 @@ function makeImpl8(deps = {}) {
     return { template, params, facts, no_data: facts.length === 0 };
   };
 }
-var impl13 = makeImpl8();
-var handle9 = defineFunction("ask-crm", impl13);
+var impl14 = makeImpl9();
+var handle10 = defineFunction("ask-crm", impl14);
 
 // shared/handlers/src/briefing-generate.ts
 var langOf = (user, org) => (user?.preferred_language || org.default_language) === "en" ? "en" : "el";
@@ -6383,7 +7183,7 @@ var wordCount = (s) => s.trim().split(/\s+/).filter(Boolean).length;
 var maxWords = (seconds) => Math.floor(WORDS_PER_SECOND * seconds);
 var estimatedSeconds = (s) => Math.ceil(wordCount(s) / WORDS_PER_SECOND);
 var dm = (d) => `${Number(d.slice(8, 10))}/${Number(d.slice(5, 7))}`;
-var KIND = {
+var KIND2 = {
   el: { customer_message: "\u03BC\u03AE\u03BD\u03C5\u03BC\u03B1 \u03C3\u03B5 \u03C0\u03B5\u03BB\u03AC\u03C4\u03B7", discount: "\u03AD\u03BA\u03C0\u03C4\u03C9\u03C3\u03B7", terms: "\u03CC\u03C1\u03BF\u03B9 \u03C3\u03C5\u03BD\u03B5\u03C1\u03B3\u03B1\u03C3\u03AF\u03B1\u03C2", conversion: "\u03BC\u03B5\u03C4\u03B1\u03C4\u03C1\u03BF\u03C0\u03AE \u03C3\u03B5 \u03C0\u03B5\u03BB\u03AC\u03C4\u03B7" },
   en: { customer_message: "customer message", discount: "discount", terms: "terms", conversion: "conversion to customer" }
 };
@@ -6407,7 +7207,7 @@ var TEXT = {
     campaign: (title, ends) => `\u039A\u03B1\u03BC\u03C0\u03AC\u03BD\u03B9\u03B1 \u03C4\u03B7\u03C2 \u03B5\u03B2\u03B4\u03BF\u03BC\u03AC\u03B4\u03B1\u03C2: ${title}, \u03AD\u03C9\u03C2 ${dm(ends)}`,
     target: (metric, actual, target, unit, pct2, days) => `\u03A3\u03C4\u03CC\u03C7\u03BF\u03C2 ${metric}: ${actual} \u03B1\u03C0\u03CC ${target}${unit ? ` ${unit}` : ""} (${pct2}%), ${days} \u03B7\u03BC\u03AD\u03C1\u03B5\u03C2 \u03B1\u03BA\u03CC\u03BC\u03B7`,
     prospect: (name) => `\u039D\u03AD\u03BF\u03C2 \u03C5\u03C0\u03BF\u03C8\u03AE\u03C6\u03B9\u03BF\u03C2 \u03C0\u03B5\u03BB\u03AC\u03C4\u03B7\u03C2: ${name}`,
-    hello: (first) => `\u039A\u03B1\u03BB\u03B7\u03BC\u03AD\u03C1\u03B1 ${first}.`,
+    hello: (first2) => `\u039A\u03B1\u03BB\u03B7\u03BC\u03AD\u03C1\u03B1 ${first2}.`,
     empty: "\u0394\u03B5\u03BD \u03C5\u03C0\u03AC\u03C1\u03C7\u03B5\u03B9 \u03BA\u03AC\u03C4\u03B9 \u03C0\u03C1\u03BF\u03B3\u03C1\u03B1\u03BC\u03BC\u03B1\u03C4\u03B9\u03C3\u03BC\u03AD\u03BD\u03BF \u03B3\u03B9\u03B1 \u03C3\u03AE\u03BC\u03B5\u03C1\u03B1."
   },
   en: {
@@ -6421,7 +7221,7 @@ var TEXT = {
     campaign: (title, ends) => `Campaign of the week: ${title}, until ${dm(ends)}`,
     target: (metric, actual, target, unit, pct2, days) => `Target ${metric}: ${actual} of ${target}${unit ? ` ${unit}` : ""} (${pct2}%), ${days} days left`,
     prospect: (name) => `New candidate: ${name}`,
-    hello: (first) => `Good morning ${first}.`,
+    hello: (first2) => `Good morning ${first2}.`,
     empty: "Nothing is planned for today."
   }
 };
@@ -6430,7 +7230,7 @@ function targetText(lang, org, t) {
   const v = (x) => money2 ? Math.round(x / 100) : Math.round(x);
   return TEXT[lang].target(METRIC[lang][t.metric] ?? t.metric, v(t.actual_value), v(t.target_value), money2 ? org.currency : "", Math.round(t.pct), t.days_left);
 }
-var kindText = (lang, kind) => KIND[lang][kind] ?? kind;
+var kindText = (lang, kind) => KIND2[lang][kind] ?? kind;
 var between3 = (column, from, to) => [
   { column, operator: "gte", value: from },
   { column, operator: "lte", value: to }
@@ -6481,7 +7281,7 @@ async function targetProgress2(db, userId, date) {
 var ms = (v) => typeof v === "number" ? v : typeof v === "string" ? Date.parse(v) : NaN;
 var byRoute = (a, b) => (a.route_position ?? 1e9) - (b.route_position ?? 1e9) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
 async function buildItems({ db, org, rep, date, lang }) {
-  const T2 = TEXT[lang];
+  const T3 = TEXT[lang];
   const items = [];
   const accounts = /* @__PURE__ */ new Map();
   const remember = (rows) => rows.forEach((a) => accounts.set(a.id, a));
@@ -6496,14 +7296,14 @@ async function buildItems({ db, org, rep, date, lang }) {
   const visits = (await db.visit.all({ rep_id: rep.id, planned_date: date, status: ["planned", "done"] })).sort(byRoute);
   if (visits.length) remember(await db.account.all({ id: [...new Set(visits.map((v) => v.account_id))] }));
   for (const [i, v] of visits.entries()) {
-    items.push({ item_type: "stop", display_text: T2.stop(i + 1, await nameOf(v.account_id) ?? "?", v.purpose ?? null), ref_table: "visit", ref_id: v.id });
+    items.push({ item_type: "stop", display_text: T3.stop(i + 1, await nameOf(v.account_id) ?? "?", v.purpose ?? null), ref_table: "visit", ref_id: v.id });
   }
   const endTomorrow = ms(dayRange(org, addDays(date, 1)).to);
   const promises = (await db.task.all({ owner_id: rep.id, status: "open", is_customer_promise: true })).filter((t) => t.due_at && ms(t.due_at) < endTomorrow).sort((a, b) => ms(a.due_at) - ms(b.due_at));
   for (const p of promises.slice(0, MAX_PER_TYPE)) {
     const due = localParts(org, p.due_at).date;
-    const when = due < date ? T2.when.overdue : due === date ? T2.when.today : T2.when.tomorrow;
-    items.push({ item_type: "promise_due", display_text: T2.promise(p.title, await nameOf(p.account_id), when), ref_table: "task", ref_id: p.id });
+    const when = due < date ? T3.when.overdue : due === date ? T3.when.today : T3.when.tomorrow;
+    items.push({ item_type: "promise_due", display_text: T3.promise(p.title, await nameOf(p.account_id), when), ref_table: "task", ref_id: p.id });
   }
   const owned = await db.account.all({ owner_rep_id: rep.id, account_type: "customer" });
   remember(owned);
@@ -6515,16 +7315,16 @@ async function buildItems({ db, org, rep, date, lang }) {
   const risky = [...latest.values()].filter((m) => (m.risk_score ?? 0) >= AT_RISK_MIN).sort((a, b) => (b.risk_score ?? 0) - (a.risk_score ?? 0));
   for (const m of risky.slice(0, MAX_PER_TYPE)) {
     const days = m.days_since_last_order == null ? null : Math.round(m.days_since_last_order);
-    items.push({ item_type: "at_risk", display_text: T2.atRisk(await nameOf(m.account_id) ?? "?", days), ref_table: "account", ref_id: m.account_id });
+    items.push({ item_type: "at_risk", display_text: T3.atRisk(await nameOf(m.account_id) ?? "?", days), ref_table: "account", ref_id: m.account_id });
   }
   const mine = await db.approval.all({ requested_by: rep.id, status: "pending" });
   const toMe = (await db.approval.all({ approver_id: rep.id, status: "pending" })).filter((a) => a.requested_by !== rep.id);
-  for (const a of mine.slice(0, MAX_PER_TYPE)) items.push({ item_type: "pending_approval", display_text: T2.approvalMine(kindText(lang, a.kind)), ref_table: "approval", ref_id: a.id });
-  for (const a of toMe.slice(0, MAX_PER_TYPE)) items.push({ item_type: "pending_approval", display_text: T2.approvalToMe(kindText(lang, a.kind)), ref_table: "approval", ref_id: a.id });
+  for (const a of mine.slice(0, MAX_PER_TYPE)) items.push({ item_type: "pending_approval", display_text: T3.approvalMine(kindText(lang, a.kind)), ref_table: "approval", ref_id: a.id });
+  for (const a of toMe.slice(0, MAX_PER_TYPE)) items.push({ item_type: "pending_approval", display_text: T3.approvalToMe(kindText(lang, a.kind)), ref_table: "approval", ref_id: a.id });
   const since = ms(dayRange(org, addDays(date, -1)).from), until = ms(dayRange(org, date).to);
   const decided = (await db.approval.all({ requested_by: rep.id, status: ["approved", "countered", "rejected"] })).filter((a) => a.decided_at && ms(a.decided_at) >= since && ms(a.decided_at) < until).sort((a, b) => ms(b.decided_at) - ms(a.decided_at));
   for (const a of decided.slice(0, MAX_PER_TYPE)) {
-    items.push({ item_type: "decision_received", display_text: T2.decision(kindText(lang, a.kind), DECISION[lang][a.status] ?? a.status), ref_table: "approval", ref_id: a.id });
+    items.push({ item_type: "decision_received", display_text: T3.decision(kindText(lang, a.kind), DECISION[lang][a.status] ?? a.status), ref_table: "approval", ref_id: a.id });
   }
   const camps = (await db.campaign.all({ status: "active" })).filter((c) => c.starts_on <= date && date <= c.ends_on);
   if (camps.length) {
@@ -6536,11 +7336,11 @@ async function buildItems({ db, org, rep, date, lang }) {
       const t = ct.filter((x) => x.campaign_id === c.id), r = cr.filter((x) => x.campaign_id === c.id);
       return !t.length && !r.length || t.some((x) => terr.has(x.territory_id)) || r.some((x) => x.user_id === rep.id);
     }).sort((a, b) => b.starts_on.localeCompare(a.starts_on) || a.id.localeCompare(b.id));
-    for (const c of forRep.slice(0, 2)) items.push({ item_type: "campaign", display_text: T2.campaign(c.title, c.ends_on), ref_table: "campaign", ref_id: c.id });
+    for (const c of forRep.slice(0, 2)) items.push({ item_type: "campaign", display_text: T3.campaign(c.title, c.ends_on), ref_table: "campaign", ref_id: c.id });
   }
   for (const t of await targetProgress2(db, rep.id, date)) items.push({ item_type: "target_progress", display_text: targetText(lang, org, t), ref_table: "sales_target", ref_id: t.target_id });
   const cands = (await db.candidate.all({ assigned_rep_id: rep.id, status: ["new", "researched", "scored"] })).sort((a, b) => a.business_name.localeCompare(b.business_name));
-  for (const c of cands.slice(0, MAX_PER_TYPE)) items.push({ item_type: "new_prospect", display_text: T2.prospect(c.business_name), ref_table: "candidate", ref_id: c.id });
+  for (const c of cands.slice(0, MAX_PER_TYPE)) items.push({ item_type: "new_prospect", display_text: T3.prospect(c.business_name), ref_table: "candidate", ref_id: c.id });
   return items.map((x, i) => ({ position: i + 1, ...x }));
 }
 function scriptProblems(text, sources, maxSeconds) {
@@ -6553,9 +7353,9 @@ function scriptProblems(text, sources, maxSeconds) {
   return p;
 }
 function fallbackScript(lang, repName, items, maxSeconds = BRIEFING_MAX_SECONDS) {
-  const T2 = TEXT[lang];
-  const first = repName.trim().split(/\s+/)[0] || repName;
-  const parts = [T2.hello(first), ...items.length ? items.map((i) => `${i.display_text.replace(/[.\s]+$/, "")}.`) : [T2.empty]];
+  const T3 = TEXT[lang];
+  const first2 = repName.trim().split(/\s+/)[0] || repName;
+  const parts = [T3.hello(first2), ...items.length ? items.map((i) => `${i.display_text.replace(/[.\s]+$/, "")}.`) : [T3.empty]];
   while (parts.length > 1 && wordCount(parts.join(" ")) > maxWords(maxSeconds)) parts.pop();
   return parts.join(" ");
 }
@@ -6637,7 +7437,7 @@ async function generateForRep(db, org, rep, date, deps = {}, opts = {}) {
 }
 
 // shared/handlers/src/briefing-get.ts
-function makeImpl9(deps = {}) {
+function makeImpl10(deps = {}) {
   return async ({ req, db, me }) => {
     const now = today(me.org, deps.now?.() ?? Date.now());
     const date = req.date ?? now;
@@ -6650,8 +7450,417 @@ function makeImpl9(deps = {}) {
     return (await generateForRep(db, me.org, me.user, date, deps, { regenerate: !!req.regenerate })).briefing;
   };
 }
-var impl14 = makeImpl9();
-var handle10 = defineFunction("briefing-get", impl14);
+var impl15 = makeImpl10();
+var handle11 = defineFunction("briefing-get", impl15);
+
+// shared/handlers/src/buddy-call-start.ts
+var GLOBAL_BUDDY_NUMBER = "MERC_BUDDY_NUMBER";
+var GLOBAL_WHATSAPP_CONNECTION = "MERC_WHATSAPP_CONNECTION";
+var GLOBAL_CHANNELS_LIVE = "MERC_CHANNELS_LIVE";
+var WHATSAPP_DEFAULT_CONNECTION = "default";
+var GLOBAL_WA_RELAY_URL = "MERC_OPS_WHATSAPP_URL";
+var NAME_WA_RELAY_HOOK = "MERC_OPS_WHATSAPP_HOOK";
+var WA_RELAY_TASK_TYPE = "whatsapp_send";
+var WA_RELAY_HEADER = "X-Webhook-Secret";
+var OUTBOUND_PATH = "/v1/agents/outbound";
+var CALL_PURPOSE_PREFIX = "merc_buddy:";
+var CALL_HOURS = { start: "07:30", end: "21:00" };
+var ANSWER_TIMEOUT_S = 25;
+var DEDUPE_MS = 10 * 6e4;
+var E164 = /^\+[1-9]\d{6,14}$/;
+var TEMPLATES2 = { ping: "merc_buddy_ping", pre_visit: "merc_previsit_brief", debrief_confirm: "merc_debrief_confirm" };
+var QUICK_REPLIES = {
+  pre_visit: [{ id: "call_me", title: "Call me" }, { id: "useful", title: "Useful" }, { id: "not_useful", title: "Not useful" }],
+  debrief_confirm: [{ id: "correct", title: "Correct" }, { id: "fix", title: "Fix" }, { id: "brief_not_helpful", title: "Brief did not help" }],
+  post_visit: [{ id: "call_me", title: "Call me" }]
+};
+var nowOf = (d) => d.now ? d.now() : Date.now();
+var isoAt = (ms3) => new Date(ms3).toISOString();
+var defaultLog2 = (level, message2, details) => {
+  try {
+    console.log(JSON.stringify({ level, message: message2, ...details ?? {} }));
+  } catch {
+  }
+};
+var logOf = (d) => d.log ?? defaultLog2;
+function globalFlag(platform, name) {
+  let v;
+  try {
+    v = platform.globals?.get(name);
+  } catch {
+    v = null;
+  }
+  return v === true || typeof v === "string" && v.trim().toLowerCase() === "true";
+}
+function nextCallSlot(org, ms3) {
+  if (withinLocalHours(org, CALL_HOURS.start, CALL_HOURS.end, ms3)) return ms3;
+  const lp = localParts(org, ms3);
+  const day = lp.time < CALL_HOURS.start ? lp.date : addDays(lp.date, 1);
+  return Date.parse(zonedInstant(org, day, CALL_HOURS.start));
+}
+var langOf2 = (u, org) => (u.preferred_language || org.default_language) === "en" ? "en" : "el";
+var first = (u) => u.full_name.split(/\s+/)[0] ?? u.full_name;
+var DEFAULT_REASON = {
+  callback: { en: "You asked Merc to call you back.", el: "\u0396\u03AE\u03C4\u03B7\u03C3\u03B5\u03C2 \u03B1\u03C0\u03CC \u03C4\u03BF Merc \u03BD\u03B1 \u03C3\u03B5 \u03BA\u03B1\u03BB\u03AD\u03C3\u03B5\u03B9." },
+  briefing: { en: "Your morning briefing is ready.", el: "\u0397 \u03C0\u03C1\u03C9\u03B9\u03BD\u03AE \u03C3\u03BF\u03C5 \u03B5\u03BD\u03B7\u03BC\u03AD\u03C1\u03C9\u03C3\u03B7 \u03B5\u03AF\u03BD\u03B1\u03B9 \u03AD\u03C4\u03BF\u03B9\u03BC\u03B7." },
+  approval_decided: { en: "Your approval has been decided.", el: "\u03A5\u03C0\u03AC\u03C1\u03C7\u03B5\u03B9 \u03B1\u03C0\u03CC\u03C6\u03B1\u03C3\u03B7 \u03B3\u03B9\u03B1 \u03C4\u03B7\u03BD \u03AD\u03B3\u03BA\u03C1\u03B9\u03C3\u03AE \u03C3\u03BF\u03C5." },
+  alert: { en: "There is a new alert for you.", el: "\u03A5\u03C0\u03AC\u03C1\u03C7\u03B5\u03B9 \u03BD\u03AD\u03B1 \u03B5\u03B9\u03B4\u03BF\u03C0\u03BF\u03AF\u03B7\u03C3\u03B7 \u03B3\u03B9\u03B1 \u03C3\u03AD\u03BD\u03B1." },
+  eod: { en: "Time to wrap up your day.", el: "\u038F\u03C1\u03B1 \u03BD\u03B1 \u03BA\u03BB\u03B5\u03AF\u03C3\u03BF\u03C5\u03BC\u03B5 \u03C4\u03B7 \u03BC\u03AD\u03C1\u03B1." },
+  pre_visit: { en: "Your visit brief is ready.", el: "\u03A4\u03BF brief \u03C4\u03B7\u03C2 \u03B5\u03C0\u03AF\u03C3\u03BA\u03B5\u03C8\u03B7\u03C2 \u03B5\u03AF\u03BD\u03B1\u03B9 \u03AD\u03C4\u03BF\u03B9\u03BC\u03BF." },
+  post_visit: { en: "How did the visit go?", el: "\u03A0\u03CE\u03C2 \u03C0\u03AE\u03B3\u03B5 \u03B7 \u03B5\u03C0\u03AF\u03C3\u03BA\u03B5\u03C8\u03B7;" },
+  debrief_confirm: { en: "Here is the summary of your debrief.", el: "\u0397 \u03C3\u03CD\u03BD\u03BF\u03C8\u03B7 \u03C4\u03B7\u03C2 \u03B1\u03BD\u03B1\u03C6\u03BF\u03C1\u03AC\u03C2 \u03C3\u03BF\u03C5." }
+};
+async function accountName(db, id) {
+  if (!id) return null;
+  return (await db.account.get(id))?.name ?? null;
+}
+async function buildMessage(db, row, user, org) {
+  const lang = langOf2(user, org);
+  const name = first(user);
+  const reason = (row.reason ?? "").trim() || DEFAULT_REASON[row.purpose][lang];
+  const ping = {
+    template: TEMPLATES2.ping,
+    params: [name, reason],
+    buttons: [],
+    text: lang === "en" ? `Merc: ${reason} Reply or call back.` : `Merc: ${reason} \u0391\u03C0\u03AC\u03BD\u03C4\u03B7\u03C3\u03B5 \u03AE \u03BA\u03AC\u03BB\u03B5\u03C3\u03B5 \u03C0\u03AF\u03C3\u03C9.`,
+    spoken: reason
+  };
+  if (row.purpose === "pre_visit" && row.ref_id) {
+    const brief = await db.visit_brief.get(row.ref_id);
+    if (brief && brief.rep_id === user.id) {
+      const acct = await accountName(db, brief.account_id) ?? "";
+      const bullets = (brief.bullets_text ?? "").trim();
+      return {
+        template: TEMPLATES2.pre_visit,
+        params: [name, acct, bullets],
+        buttons: [...QUICK_REPLIES.pre_visit],
+        text: (acct ? `*${acct}*
+${bullets}` : bullets).trim(),
+        spoken: (brief.spoken_script ?? "").trim() || reason
+      };
+    }
+  }
+  if (row.purpose === "post_visit" && row.ref_id) {
+    const visit = await db.visit.get(row.ref_id);
+    if (visit && visit.rep_id === user.id) {
+      const acct = await accountName(db, visit.account_id) ?? "";
+      const q = lang === "en" ? `How did it go at ${acct}?` : `\u03A0\u03CE\u03C2 \u03C0\u03AE\u03B3\u03B5 \u03C3\u03C4\u03BF ${acct};`;
+      return { template: TEMPLATES2.ping, params: [name, q], text: q, buttons: [...QUICK_REPLIES.post_visit], spoken: q };
+    }
+  }
+  if (row.purpose === "debrief_confirm" && row.ref_id) {
+    const dc = await db.debrief_confirmation.get(row.ref_id);
+    if (dc && dc.rep_id === user.id) {
+      const summary = (dc.summary_text ?? "").trim();
+      return { template: TEMPLATES2.debrief_confirm, params: [name, summary], text: summary, buttons: [...QUICK_REPLIES.debrief_confirm], spoken: summary || reason };
+    }
+  }
+  return ping;
+}
+function repNumber(u) {
+  if (u.phone_channel_enabled === false) return { ok: false, reason: "phone_channel_disabled" };
+  if (!u.phone || !E164.test(u.phone)) return { ok: false, reason: "rep_has_no_phone" };
+  return { ok: true, number: u.phone };
+}
+var inWhatsAppWindow = (u, now) => !!u.whatsapp_window_until && Date.parse(u.whatsapp_window_until) > now;
+var hasWhatsApp = (u, platform) => repNumber(u).ok && !!globalString(platform, GLOBAL_WHATSAPP_CONNECTION);
+var idOf = (res) => {
+  const r = res && typeof res === "object" && "data" in res ? res.data : res;
+  for (const k of ["communication_id", "conversation_id", "id"]) if (r && typeof r[k] === "string" && r[k]) return r[k];
+  return null;
+};
+var errText2 = (e) => {
+  const status = e?.status;
+  const payload = e?.payload ?? e?.body;
+  let extra = "";
+  try {
+    extra = payload === void 0 ? "" : ` ${typeof payload === "string" ? payload : JSON.stringify(payload)}`;
+  } catch {
+    extra = "";
+  }
+  return `${typeof status === "number" ? status : "error"}: ${String(e?.message ?? e).slice(0, 200)}${extra.slice(0, 300)}`;
+};
+async function finish(db, deps, row, patch, request) {
+  const r = await db.buddy_call.update(row.id, patch);
+  await push(deps, "buddy_call.status", { buddy_call_id: r.id, channel: r.channel, status: r.status }, repChannel(r.user_id), { now: deps.now, log: logOf(deps) });
+  return { row: r, status: r.status === "scheduled" || r.status === "sent" || r.status === "failed" ? r.status : "started", request };
+}
+async function startNow(db, platform, deps, row, user, org) {
+  const now = nowOf(deps);
+  const log2 = logOf(deps);
+  const target = repNumber(user);
+  if (!target.ok) return finish(db, deps, row, { status: "failed", failure_reason: target.reason, ended_at: isoAt(now) });
+  const msg = await buildMessage(db, row, user, org);
+  const live = globalFlag(platform, GLOBAL_CHANNELS_LIVE);
+  if (row.channel === "call") {
+    const slot = nextCallSlot(org, now);
+    if (slot > now) return finish(db, deps, row, { status: "scheduled", due_at: isoAt(slot) });
+    const from = globalString(platform, GLOBAL_BUDDY_NUMBER);
+    const body2 = { from: from ?? `<${GLOBAL_BUDDY_NUMBER} unset>`, to: target.number, call_purpose: `${CALL_PURPOSE_PREFIX}${row.id}:${row.purpose}`, answer_timeout_after_progress_seconds: ANSWER_TIMEOUT_S };
+    const request2 = { path: OUTBOUND_PATH, body: body2 };
+    if (!from || !E164.test(from)) return finish(db, deps, row, { status: "failed", failure_reason: `no_caller_id: global ${GLOBAL_BUDDY_NUMBER} is not set`, ended_at: isoAt(now) }, request2);
+    if (!live) {
+      log2("warn", `buddy_call ${row.id}: ${GLOBAL_CHANNELS_LIVE} is not true; outbound call NOT placed`, { would_post: request2 });
+      return finish(db, deps, row, { status: "failed", failure_reason: `channels_not_live: would POST ${OUTBOUND_PATH} ${JSON.stringify(body2)}`.slice(0, 500), ended_at: isoAt(now) }, request2);
+    }
+    if (!deps.api) return finish(db, deps, row, { status: "failed", failure_reason: "no_service_account: context.api unavailable (pin service account merc-platform-api)", ended_at: isoAt(now) }, request2);
+    try {
+      const res = await deps.api.post(OUTBOUND_PATH, { body: body2 });
+      const conv = idOf(res);
+      log2("info", `buddy_call ${row.id}: calling the rep`, { conversation_id: conv });
+      return finish(db, deps, row, { status: "started", started_at: isoAt(now), ...conv ? { wonderful_conversation_id: conv } : {} }, request2);
+    } catch (e) {
+      return finish(db, deps, row, { status: "failed", failure_reason: `outbound call could not start (${errText2(e)})`, ended_at: isoAt(nowOf(deps)) }, request2);
+    }
+  }
+  const connectionName = globalString(platform, GLOBAL_WHATSAPP_CONNECTION);
+  const named = connectionName && connectionName.trim().toLowerCase() !== WHATSAPP_DEFAULT_CONNECTION ? { connectionName } : {};
+  const interactive = inWhatsAppWindow(user, now);
+  const lang = langOf2(user, org);
+  const body = interactive ? { destination: target.number, message: msg.text, interaction: { type: "buttons", buttons: msg.buttons.length ? msg.buttons : [{ id: "call_me", title: "Call me" }] }, ...named } : { destination: target.number, templateName: msg.template, languageCode: lang === "en" ? "en_US" : "el", templateParams: msg.params, ...named };
+  const request = { path: interactive ? "outbound.whatsapp.sendInteractive" : "outbound.whatsapp.sendTemplate", body };
+  const tpl = interactive ? null : msg.template;
+  if (!connectionName) {
+    log2("warn", `buddy_call ${row.id}: WhatsApp not configured (global ${GLOBAL_WHATSAPP_CONNECTION} missing)`, { would_send: request });
+    return finish(db, deps, row, { status: "failed", template_name: tpl, failure_reason: "whatsapp_not_configured", ended_at: isoAt(now) }, request);
+  }
+  if (!live) {
+    log2("warn", `buddy_call ${row.id}: ${GLOBAL_CHANNELS_LIVE} is not true; WhatsApp NOT sent`, { would_send: request });
+    return finish(db, deps, row, { status: "failed", template_name: tpl, failure_reason: "channels_not_live", ended_at: isoAt(now) }, request);
+  }
+  const wa = deps.outbound?.whatsapp;
+  const send = interactive ? wa?.sendInteractive : wa?.sendTemplate;
+  if (!send) {
+    const relay = await relayWhatsApp(platform, deps, row.id);
+    if (relay.ok) {
+      log2("info", `buddy_call ${row.id}: WhatsApp relayed to merc-ops`, { status: relay.status });
+      return finish(db, deps, row, { status: "started", template_name: tpl, started_at: isoAt(now) }, request);
+    }
+    return finish(db, deps, row, { status: "failed", template_name: tpl, failure_reason: `whatsapp_not_configured: no context.outbound in this runtime; relay ${relay.error}`.slice(0, 500), ended_at: isoAt(now) }, request);
+  }
+  try {
+    await send.call(wa, body);
+    return finish(db, deps, row, { status: "sent", template_name: tpl, started_at: isoAt(now), ended_at: isoAt(now) }, request);
+  } catch (e) {
+    return finish(db, deps, row, { status: "failed", template_name: tpl, failure_reason: `whatsapp send failed (${errText2(e)})`, ended_at: isoAt(nowOf(deps)) }, request);
+  }
+}
+var relayFetchOf = (deps) => deps.fetch ?? (typeof globalThis.fetch === "function" ? (url, init) => globalThis.fetch(url, init) : null);
+async function relayWhatsApp(platform, deps, buddyCallId) {
+  const url = globalString(platform, GLOBAL_WA_RELAY_URL);
+  const key = secretString(platform, NAME_WA_RELAY_HOOK);
+  if (!url || !key) return { ok: false, status: 0, error: `not wired (global ${GLOBAL_WA_RELAY_URL} and secret ${NAME_WA_RELAY_HOOK} needed)` };
+  const f = relayFetchOf(deps);
+  if (!f) return { ok: false, status: 0, error: "no fetch in this runtime" };
+  const payload = { task_type: WA_RELAY_TASK_TYPE, buddy_call_id: buddyCallId, instructions: `Call deliver_whatsapp with buddy_call_id=${buddyCallId}, then finish the task.` };
+  try {
+    const res = await f(url, { method: "POST", headers: { "Content-Type": "application/json", [WA_RELAY_HEADER]: key }, body: JSON.stringify(payload) });
+    return res.ok ? { ok: true, status: res.status } : { ok: false, status: res.status, error: `HTTP ${res.status}` };
+  } catch (e) {
+    return { ok: false, status: 0, error: errText2(e) };
+  }
+}
+var ACTIVE = ["scheduled", "started", "answered", "sent"];
+var createdMs = (r) => {
+  const c = r.created_at;
+  const ms3 = typeof c === "number" ? c : typeof c === "string" ? Date.parse(c) : NaN;
+  return Number.isFinite(ms3) && ms3 > 0 ? ms3 : null;
+};
+var asResponse = (s) => ({ buddy_call_id: s.row.id, status: s.status, due_at: s.row.due_at, channel: s.row.channel });
+var channelFor = (req, u) => req.channel ?? (req.purpose === "callback" ? "call" : u.notify_channel === "whatsapp" ? "whatsapp" : "call");
+async function requestBuddyCall(db, platform, deps, user, org, req) {
+  const now = nowOf(deps);
+  const channel = channelFor(req, user);
+  const at = req.at ? Date.parse(req.at) : now;
+  if (!Number.isFinite(at)) throw invalid("at must be an ISO date-time", { at: req.at });
+  if (req.ref_id && !req.ref_table) throw invalid("ref_table is required with ref_id");
+  const ref_id = req.ref_id ?? null;
+  const same = (await db.buddy_call.all({ user_id: user.id, purpose: req.purpose })).filter((r) => (r.ref_id ?? null) === ref_id && ACTIVE.includes(r.status));
+  const pending = same.find((r) => r.status === "scheduled");
+  const recent = same.filter((r) => r.status !== "answered" && !r.ended_at).find((r) => {
+    const c = r.started_at ? Date.parse(r.started_at) : createdMs(r);
+    return c !== null && Math.abs(now - c) < DEDUPE_MS;
+  });
+  if (pending) {
+    const due2 = channel === "call" ? nextCallSlot(org, Math.max(at, now)) : Math.max(at, now);
+    const moved = await db.buddy_call.update(pending.id, { due_at: isoAt(due2), channel, reason: req.reason ?? pending.reason ?? null });
+    if (due2 > now) return { row: moved, status: "scheduled" };
+    return startNow(db, platform, deps, moved, user, org);
+  }
+  if (recent) return { row: recent, status: recent.status === "sent" ? "sent" : "started" };
+  const due = channel === "call" ? nextCallSlot(org, Math.max(at, now)) : Math.max(at, now);
+  const row = await db.buddy_call.insert({
+    user_id: user.id,
+    channel,
+    purpose: req.purpose,
+    reason: req.reason ?? null,
+    due_at: isoAt(due),
+    ref_table: req.ref_table ?? null,
+    ref_id,
+    status: "scheduled"
+  });
+  if (due > now) {
+    logOf(deps)("info", `buddy_call ${row.id} scheduled`, { due_at: row.due_at, channel });
+    return { row, status: "scheduled" };
+  }
+  return startNow(db, platform, deps, row, user, org);
+}
+function makeImpl11(deps = {}) {
+  return async ({ req, db, me, platform }) => {
+    if (me.kind !== "user") throw forbidden("buddy-call-start needs a Merc user: it only ever calls the caller's own phone");
+    const out = await requestBuddyCall(db, platform, deps, me.user, me.org, req);
+    return asResponse(out);
+  };
+}
+var impl16 = makeImpl11();
+var apiOf = (context) => {
+  const a = context?.api;
+  return a && typeof a.post === "function" ? a : null;
+};
+var outboundOf = (context) => {
+  const o = context?.outbound;
+  return o && typeof o === "object" ? o : null;
+};
+var depsFrom = (context, extra = {}) => ({ api: apiOf(context), outbound: outboundOf(context), ...extra });
+function defineWithDeps(slug, make) {
+  return (context) => defineFunction(slug, make(depsFrom(context)))(context);
+}
+var handle12 = defineWithDeps("buddy-call-start", makeImpl11);
+
+// shared/handlers/src/buddy-call-outcome.ts
+var NOT_ANSWERED = ["no_answer", "busy", "voicemail"];
+var NO_ANSWER_AFTER_MS = 3 * 6e4;
+async function fallbackFor(db, platform, deps, call, user, org) {
+  const refKey = { ref_table: "buddy_call", ref_id: call.id };
+  if (hasWhatsApp(user, platform)) {
+    const prior = (await db.buddy_call.all({ user_id: user.id, ...refKey })).find((r) => r.channel === "whatsapp");
+    if (prior) return "whatsapp";
+    const ping = await db.buddy_call.insert({
+      user_id: user.id,
+      channel: "whatsapp",
+      purpose: call.purpose,
+      reason: call.reason ?? null,
+      due_at: isoAt(nowOf(deps)),
+      ...refKey,
+      status: "scheduled"
+    });
+    const sent = await startNow(db, platform, deps, ping, user, org);
+    if (sent.status === "sent") return "whatsapp";
+    logOf(deps)("warn", `buddy_call ${call.id}: WhatsApp fallback failed (${sent.row.failure_reason}); using the app`);
+  }
+  const title = (user.preferred_language || org.default_language) === "en" ? `Merc tried to call you: ${call.reason ?? call.purpose}` : `\u03A4\u03BF Merc \u03C0\u03C1\u03BF\u03C3\u03C0\u03AC\u03B8\u03B7\u03C3\u03B5 \u03BD\u03B1 \u03C3\u03B5 \u03BA\u03B1\u03BB\u03AD\u03C3\u03B5\u03B9: ${call.reason ?? call.purpose}`;
+  const existing = await db.task.findOne({ owner_id: user.id, title, status: "open" });
+  if (!existing) await db.task.insert({ owner_id: user.id, title: title.slice(0, 240), is_customer_promise: false, due_at: isoAt(nowOf(deps)), status: "open", source: "ai" });
+  await push(deps, "buddy_call.status", { buddy_call_id: call.id, channel: call.channel, status: call.status }, repChannel(user.id), { now: deps.now, log: logOf(deps) });
+  return "app";
+}
+async function applyOutcome(db, platform, deps, call, outcome, conversationId = null) {
+  const user = await db.app_user.require(call.user_id);
+  const org = await createDb(db.api, user.org_id).organization.require(user.org_id);
+  if (call.status !== "started") return "none";
+  const updated = await db.buddy_call.update(call.id, {
+    status: outcome,
+    ...outcome !== "answered" ? { ended_at: isoAt(nowOf(deps)) } : {},
+    ...conversationId && !call.wonderful_conversation_id ? { wonderful_conversation_id: conversationId } : {}
+  });
+  await push(deps, "buddy_call.status", { buddy_call_id: call.id, channel: call.channel, status: outcome }, repChannel(user.id), { now: deps.now, log: logOf(deps) });
+  if (call.channel !== "call" || !NOT_ANSWERED.includes(outcome)) return "none";
+  return fallbackFor(db, platform, deps, updated, user, org);
+}
+function makeImpl12(deps = {}) {
+  return async ({ req, db, me, platform }) => {
+    const call = await db.buddy_call.get(req.buddy_call_id);
+    const owner = call ? await db.app_user.get(call.user_id) : null;
+    if (!call || !owner) throw notFound("buddy_call not found", { buddy_call_id: req.buddy_call_id });
+    if (me.kind === "user" && me.id !== call.user_id && me.role !== "admin") throw forbidden("this buddy call belongs to another user");
+    const fallback = await applyOutcome(db, platform, deps, call, req.outcome, req.conversation_id ?? null);
+    return { buddy_call_id: call.id, fallback };
+  };
+}
+var impl17 = makeImpl12();
+var handle13 = defineWithDeps("buddy-call-outcome", makeImpl12);
+var UUID = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+var PURPOSE_RE = new RegExp(`${CALL_PURPOSE_PREFIX}(${UUID})`, "i");
+function buddyCallIdFrom(v, depth = 0) {
+  if (typeof v === "string") return PURPOSE_RE.exec(v)?.[1]?.toLowerCase() ?? null;
+  if (!v || typeof v !== "object" || depth > 4) return null;
+  for (const x of Object.values(v)) {
+    const id = buddyCallIdFrom(x, depth + 1);
+    if (id) return id;
+  }
+  return null;
+}
+async function resolveSessionCall(ctx, me, now = Date.now()) {
+  const db = createDb(ctx.tables, me.org_id);
+  const comm = ctx.metadata?.communication;
+  if (String(comm?.direction ?? "").toLowerCase() === "inbound") return null;
+  let call = null;
+  if (comm?.id) call = await db.buddy_call.findOne({ wonderful_conversation_id: comm.id });
+  if (!call) {
+    const id = buddyCallIdFrom(comm ?? null);
+    if (id) call = await db.buddy_call.get(id);
+  }
+  if (!call && String(comm?.direction ?? "").toLowerCase() === "outbound") {
+    call = (await db.buddy_call.all({ user_id: me.id, channel: "call" })).filter((c) => c.started_at && now - Date.parse(c.started_at) >= 0 && now - Date.parse(c.started_at) < SESSION_MATCH_MS).filter((c) => c.status === "started" || c.status === "answered" && !c.ended_at).sort((a, b) => Date.parse(b.started_at) - Date.parse(a.started_at))[0] ?? null;
+  }
+  return call && call.user_id === me.id && call.channel === "call" ? call : null;
+}
+var SESSION_MATCH_MS = 5 * 6e4;
+async function openCallFromSession(ctx, key, extra = {}) {
+  const comm = ctx.metadata?.communication;
+  if (String(comm?.direction ?? "").toLowerCase() !== "outbound") return { kind: "inbound" };
+  let me;
+  try {
+    me = await principalFromTool(ctx.tables, ctx, key);
+  } catch {
+    return { kind: "inbound" };
+  }
+  const call = await resolveSessionCall(ctx, me, nowOf(extra));
+  if (!call) return { kind: "inbound" };
+  if (call.status === "started") await reportFromSession(ctx, "answered", key, extra);
+  const user = await createDb(ctx.tables, me.org_id).app_user.get(me.id);
+  const first2 = String(user?.full_name ?? "").trim().split(/\s+/)[0] || null;
+  return { kind: "buddy_call", buddy_call_id: call.id, purpose: call.purpose, reason: call.reason ?? null, first_name: first2 };
+}
+async function closeCallFromSession(ctx, key, extra = {}) {
+  let me;
+  try {
+    me = await principalFromTool(ctx.tables, ctx, key);
+  } catch (e) {
+    return { skipped: true, reason: e.message };
+  }
+  const call = await resolveSessionCall(ctx, me, nowOf(extra));
+  if (!call) return { skipped: true, reason: "not an outbound merc-buddy call" };
+  if (call.status === "started") return reportFromSession(ctx, "no_answer", key, extra);
+  if (call.status === "answered" && !call.ended_at) {
+    const comm = ctx.metadata?.communication;
+    await createDb(ctx.tables, me.org_id).buddy_call.update(call.id, {
+      ended_at: isoAt(nowOf(extra)),
+      ...comm?.id && !call.wonderful_conversation_id ? { wonderful_conversation_id: comm.id } : {}
+    });
+    return { buddy_call_id: call.id, status: "answered", ended: true };
+  }
+  return { skipped: true, reason: `buddy_call is already ${call.status}`, buddy_call_id: call.id };
+}
+async function reportFromSession(ctx, outcome, key, extra = {}) {
+  let me;
+  try {
+    me = await principalFromTool(ctx.tables, ctx, key);
+  } catch (e) {
+    return { skipped: true, reason: e.message };
+  }
+  const call = await resolveSessionCall(ctx, me, nowOf(extra));
+  if (!call) return { skipped: true, reason: "not an outbound merc-buddy call" };
+  if (call.status !== "started") return { skipped: true, reason: `buddy_call is already ${call.status}`, buddy_call_id: call.id };
+  const comm = ctx.metadata?.communication;
+  const out = await runFunction("buddy-call-outcome", makeImpl12(depsFrom(ctx, extra)), {
+    tables: ctx.tables,
+    data: { buddy_call_id: call.id, outcome, conversation_id: comm?.id ?? null },
+    principal: async () => me,
+    platform: { secrets: ctx.secrets ?? null, globals: ctx.globals ?? null, workspaceId: null }
+  });
+  return out;
+}
 
 // shared/handlers/src/candidate-get.ts
 function platformOf2(c) {
@@ -6673,7 +7882,7 @@ async function orgOfAccount(api, accountId) {
   if (!a) throw notFound("account not found", { id: accountId });
   return a.org_id;
 }
-function defineSystemFunction(slug, makeImpl26, orgOf) {
+function defineSystemFunction(slug, makeImpl32, orgOf) {
   return async (context) => {
     const body = context.data && typeof context.data === "object" && !Array.isArray(context.data) ? { ...context.data } : context.data ?? {};
     if (body && typeof body === "object") delete body.caller;
@@ -6685,7 +7894,7 @@ function defineSystemFunction(slug, makeImpl26, orgOf) {
     } catch (e) {
       return errorResult(e);
     }
-    return runAsSystem(slug, makeImpl26(context), { tables: context.tables, data: body, orgId, caller: "procedure", platform: platformOf2(context) });
+    return runAsSystem(slug, makeImpl32(context), { tables: context.tables, data: body, orgId, caller: "procedure", platform: platformOf2(context) });
   };
 }
 async function territoryOfPostal(db, postalCode) {
@@ -6755,11 +7964,11 @@ async function candidateCard(db, c) {
     assigned_rep: rep ? userRef2(rep) : null
   };
 }
-var impl15 = async ({ req, db, me }) => {
+var impl18 = async ({ req, db, me }) => {
   const { candidate } = await requireCandidate(db, me, req.candidate_id);
   return { candidate: await candidateCard(db, candidate), website: candidate.website ?? null, vat_number: candidate.vat_number ?? null };
 };
-var handle11 = defineSystemFunction("candidate-get", () => impl15, (api, req) => orgOfCandidate(api, req.candidate_id));
+var handle14 = defineSystemFunction("candidate-get", () => impl18, (api, req) => orgOfCandidate(api, req.candidate_id));
 
 // shared/handlers/src/candidate-dedupe.ts
 var NAME_THRESHOLD = 0.85;
@@ -6791,7 +8000,7 @@ var GREEK2 = {
   \u03C9: "o"
 };
 function normName(s) {
-  const base = String(s ?? "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/&/g, " and ");
+  const base = stripAccents(String(s ?? "").toLowerCase()).replace(/&/g, " and ");
   let out = "";
   for (const ch of base) out += GREEK2[ch] ?? ch;
   return out.replace(/oy/g, "ou").replace(/[^a-z0-9]+/g, " ").trim().replace(/\s+/g, " ");
@@ -6882,11 +8091,11 @@ async function dedupeCandidate(db, c) {
   if (c.status === "new" || c.status === "duplicate") await db.candidate.update(c.id, { status: "duplicate", matched_account_id: accountId });
   return { duplicate: true, matched_account_id: accountId, matched_candidate_id: m.candidate?.id ?? null, rule: m.rule };
 }
-var impl16 = async ({ req, db, me }) => {
+var impl19 = async ({ req, db, me }) => {
   const { candidate } = await requireCandidate(db, me, req.candidate_id);
   return dedupeCandidate(db, candidate);
 };
-var handle12 = defineSystemFunction("candidate-dedupe", () => impl16, (api, req) => orgOfCandidate(api, req.candidate_id));
+var handle15 = defineSystemFunction("candidate-dedupe", () => impl19, (api, req) => orgOfCandidate(api, req.candidate_id));
 
 // shared/handlers/src/candidate-act.ts
 async function requireRep(db, me, repId) {
@@ -6931,7 +8140,7 @@ async function addToRoute(db, me, c, s, repIdIn, dateIn) {
   const updated = await db.candidate.update(c.id, { status: "added", converted_account_id: account.id, assigned_rep_id: repId });
   return { candidate: await candidateCard(db, updated), account_id: account.id, visit_id: visit.id };
 }
-var impl17 = async ({ req, db, me }) => {
+var impl20 = async ({ req, db, me }) => {
   const { candidate: c, search } = await requireCandidate(db, me, req.candidate_id);
   if (req.action === "add_to_route") return addToRoute(db, me, c, search, req.rep_id ?? null, req.date ?? null);
   if (req.action === "assign") {
@@ -6946,7 +8155,7 @@ var impl17 = async ({ req, db, me }) => {
   const updated = await db.candidate.update(c.id, { status: "dismissed" });
   return { candidate: await candidateCard(db, updated), account_id: null, visit_id: null };
 };
-var handle13 = defineFunction("candidate-act", impl17);
+var handle16 = defineFunction("candidate-act", impl20);
 
 // shared/handlers/src/dossier-save.ts
 var BLOCKED_SOURCES = [
@@ -6991,7 +8200,7 @@ function competitorFor(index, f) {
   const v = ` ${normName(f.value)} `;
   return index.find((c) => v.includes(` ${c.key} `))?.id ?? null;
 }
-function makeImpl10(deps = {}) {
+function makeImpl13(deps = {}) {
   return async ({ req, db, me }) => {
     const now = new Date(deps.now?.() ?? Date.now()).toISOString();
     let candidate = null;
@@ -7031,8 +8240,8 @@ function makeImpl10(deps = {}) {
     return { dossier_id: dossier.id, facts_saved: accepted.length, facts_rejected: rejected.length };
   };
 }
-var impl18 = makeImpl10();
-var handle14 = defineSystemFunction("dossier-save", () => impl18, (api, req) => req.candidate_id ? orgOfCandidate(api, req.candidate_id) : req.account_id ? orgOfAccount(api, req.account_id) : Promise.reject(invalid("candidate_id or account_id is required")));
+var impl21 = makeImpl13();
+var handle17 = defineSystemFunction("dossier-save", () => impl21, (api, req) => req.candidate_id ? orgOfCandidate(api, req.candidate_id) : req.account_id ? orgOfAccount(api, req.account_id) : Promise.reject(invalid("candidate_id or account_id is required")));
 
 // shared/handlers/src/directory-search.ts
 var GLOBAL_SOURCE = "MERC_PROSPECT_SOURCE";
@@ -7082,7 +8291,7 @@ function osmSelectors(categories) {
 }
 var ACCENTS2 = { \u03B1: "[\u03B1\u03AC]", \u03B5: "[\u03B5\u03AD]", \u03B7: "[\u03B7\u03AE]", \u03B9: "[\u03B9\u03AF\u03CA\u0390]", \u03BF: "[\u03BF\u03CC]", \u03C5: "[\u03C5\u03CD\u03CB\u03B0]", \u03C9: "[\u03C9\u03CE]" };
 function areaPattern(area) {
-  const clean = area.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^\p{L}\p{N} -]/gu, " ").trim().replace(/\s+/g, " ");
+  const clean = stripAccents(area.toLowerCase()).replace(/[^a-z0-9\u00c0-\u024f\u0370-\u03ff\u1f00-\u1fff -]/g, " ").trim().replace(/\s+/g, " ");
   let out = "";
   for (const ch of clean) out += ACCENTS2[ch] ?? ch;
   return out;
@@ -7179,15 +8388,15 @@ async function runDirectorySearch(db, search, platform, deps) {
   }
   return { created, source: useCsv ? "csv" : "overpass" };
 }
-function makeImpl11(deps) {
+function makeImpl14(deps) {
   return async ({ req, db, platform }) => {
     const search = await db.prospect_search.require(req.search_id);
     return { candidates_created: (await runDirectorySearch(db, search, platform, deps)).created };
   };
 }
 var runtimeFetch = (url, init) => globalThis.fetch(url, init);
-var impl19 = makeImpl11({ fetch: runtimeFetch });
-var handle15 = defineSystemFunction("directory-search", (_c) => impl19, (api, req) => orgOfSearch(api, req.search_id));
+var impl22 = makeImpl14({ fetch: runtimeFetch });
+var handle18 = defineSystemFunction("directory-search", (_c) => impl22, (api, req) => orgOfSearch(api, req.search_id));
 
 // shared/handlers/src/candidate-score.ts
 var NEAR_ROUTE = "near_route";
@@ -7265,14 +8474,14 @@ async function scoreCandidate(db, me, c, deps = {}) {
   if (c.status === "new" || c.status === "researched") await db.candidate.update(c.id, { status: "scored" });
   return { score, reasons };
 }
-function makeImpl12(deps = {}) {
+function makeImpl15(deps = {}) {
   return async ({ req, db, me }) => {
     const { candidate } = await requireCandidate(db, me, req.candidate_id);
     return scoreCandidate(db, me, candidate, deps);
   };
 }
-var impl20 = makeImpl12();
-var handle16 = defineSystemFunction("candidate-score", () => impl20, (api, req) => orgOfCandidate(api, req.candidate_id));
+var impl23 = makeImpl15();
+var handle19 = defineSystemFunction("candidate-score", () => impl23, (api, req) => orgOfCandidate(api, req.candidate_id));
 
 // shared/handlers/src/search-finalize.ts
 async function finalizeSearch(db, search, deps = {}) {
@@ -7286,15 +8495,15 @@ async function finalizeSearch(db, search, deps = {}) {
   const r = await push({ api: deps.api ?? null }, "candidates.ready", { search_id: search.id, found, duplicates, scored }, repChannel(search.requested_by), { log: deps.log, now: deps.now });
   return { found, duplicates, scored, push: r };
 }
-function makeImpl13(deps = {}) {
+function makeImpl16(deps = {}) {
   return async ({ req, db }) => {
     const search = await db.prospect_search.require(req.search_id);
     const { found, duplicates, scored } = await finalizeSearch(db, search, deps);
     return { found, duplicates, scored };
   };
 }
-var impl21 = makeImpl13();
-var handle17 = defineSystemFunction("search-finalize", (c) => makeImpl13({ api: c.api ?? null }), (api, req) => orgOfSearch(api, req.search_id));
+var impl24 = makeImpl16();
+var handle20 = defineSystemFunction("search-finalize", (c) => makeImpl16({ api: c.api ?? null }), (api, req) => orgOfSearch(api, req.search_id));
 
 // shared/handlers/src/prospect-search.ts
 var GLOBAL_PIPELINE_ID = "MERC_PROSPECTING_PROCEDURE_ID";
@@ -7354,7 +8563,7 @@ async function resolveCategory(db, text) {
   });
   return hit?.id ?? null;
 }
-function makeImpl14(deps) {
+function makeImpl17(deps) {
   return async ({ req, db, me, platform }) => {
     const area = req.area_text.trim();
     if (!area) throw invalid("area_text is empty");
@@ -7366,7 +8575,7 @@ function makeImpl14(deps) {
     return { search_id: search.id, status };
   };
 }
-var impl22 = makeImpl14({ fetch: runtimeFetch });
+var impl25 = makeImpl17({ fetch: runtimeFetch });
 
 // shared/handlers/src/candidate-add.ts
 var GENERIC2 = /* @__PURE__ */ new Set(["cafe", "kafe", "coffee", "bakery", "fournos", "artos", "mini", "market", "bistro", "taverna", "hotel", "restaurant", "corner", "next", "near", "the", "and", "bar", "deli", "patisserie", "brunch", "view"]);
@@ -7380,12 +8589,12 @@ async function resolveLocation(db, me, hint) {
     const pa = await db.postal_area.get(code);
     if (pa) return { postal_code: code, lat: pa.lat ?? null, lng: pa.lng ?? null, near_account_id: null };
   }
-  const words = new Set(normName(h).split(" "));
+  const words2 = new Set(normName(h).split(" "));
   const accounts = (await listAccounts(db, me, {}, { limit: 1e3 })).items;
-  const hit = accounts.find((a) => normName(a.name).split(" ").some((w) => w.length >= 4 && !GENERIC2.has(w) && words.has(w)));
+  const hit = accounts.find((a) => normName(a.name).split(" ").some((w) => w.length >= 4 && !GENERIC2.has(w) && words2.has(w)));
   return hit ? { postal_code: hit.postal_code ?? null, lat: hit.lat ?? null, lng: hit.lng ?? null, near_account_id: hit.id } : none;
 }
-function makeImpl15(deps) {
+function makeImpl18(deps) {
   return async ({ req, db, me, platform }) => {
     const name = req.business_name.trim();
     if (!name) throw invalid("business_name is empty");
@@ -7420,12 +8629,12 @@ function makeImpl15(deps) {
     return { candidate_id: candidate.id, search_id: search.id, duplicate_of };
   };
 }
-var impl23 = makeImpl15({ fetch: runtimeFetch });
+var impl26 = makeImpl18({ fetch: runtimeFetch });
 
 // shared/handlers/src/candidates-list.ts
 var DEFAULT_LIMIT3 = 20;
 var MAX_LIMIT3 = 100;
-var impl24 = async ({ req, db, me }) => {
+var impl27 = async ({ req, db, me }) => {
   const page = Math.max(1, req.page ?? 1);
   const limit = Math.min(MAX_LIMIT3, Math.max(1, req.limit ?? DEFAULT_LIMIT3));
   const searches = req.search_id ? [await db.prospect_search.get(req.search_id)].filter((s) => !!s) : await db.prospect_search.all();
@@ -7438,7 +8647,7 @@ var impl24 = async ({ req, db, me }) => {
   cards.sort((a, b) => (b.score ?? -1) - (a.score ?? -1) || a.business_name.localeCompare(b.business_name) || a.candidate_id.localeCompare(b.candidate_id));
   return { items: cards.slice((page - 1) * limit, page * limit), page: { page, limit, total: cards.length } };
 };
-var handle18 = defineFunction("candidates-list", impl24);
+var handle21 = defineFunction("candidates-list", impl27);
 
 // shared/handlers/src/draft-message.ts
 var ACTION_FOR_CHANNEL = { email: "send_email", whatsapp: "send_whatsapp", viber: "send_viber" };
@@ -7510,10 +8719,10 @@ async function draftMessage(db, me, req, deps = {}) {
   await push({ api: deps.api ?? null }, "approval.created", { approval: card }, repChannel(rep.id), { now });
   return { approval_id: approvalId, ai_action_id: action.id };
 }
-function makeImpl16(deps = {}) {
+function makeImpl19(deps = {}) {
   return async ({ req, db, me }) => draftMessage(db, me, req, deps);
 }
-var impl25 = makeImpl16();
+var impl28 = makeImpl19();
 
 // shared/handlers/src/debrief-process.ts
 var runtimeDeps = {
@@ -7559,9 +8768,9 @@ var WEEKDAYS = {
 };
 var REL = { today: 0, tomorrow: 1, \u03C3\u03B7\u03BC\u03B5\u03C1\u03B1: 0, \u03B1\u03C5\u03C1\u03B9\u03BF: 1, \u03BC\u03B5\u03B8\u03B1\u03C5\u03C1\u03B9\u03BF: 2 };
 function groundedDate(evidence, todayDate, modelDate) {
-  const words = normalizeText(evidence).split(" ");
-  for (const w of words) if (w in REL) return addDays(todayDate, REL[w]);
-  for (const w of words) if (w in WEEKDAYS) return nextWeekday(todayDate, WEEKDAYS[w]);
+  const words2 = normalizeText(evidence).split(" ");
+  for (const w of words2) if (w in REL) return addDays(todayDate, REL[w]);
+  for (const w of words2) if (w in WEEKDAYS) return nextWeekday(todayDate, WEEKDAYS[w]);
   if (modelDate && /^\d{4}-\d{2}-\d{2}/.test(modelDate)) {
     const day = Number(modelDate.slice(8, 10));
     if (extractNumbers(evidence).includes(day)) return modelDate.slice(0, 10);
@@ -7603,12 +8812,12 @@ function accountsMentioned(utterance, accounts) {
   });
   if (full.length) return full;
   return accounts.filter((a) => {
-    const words = latinKey(a.name).split(" ").filter((w) => w.length >= 4 && !GENERIC3.has(w));
-    return words.length > 0 && words.every((w) => u.includes(` ${w} `) || w.length >= 6 && u.includes(` ${w.slice(0, -1)}`));
+    const words2 = latinKey(a.name).split(" ").filter((w) => w.length >= 4 && !GENERIC3.has(w));
+    return words2.length > 0 && words2.every((w) => u.includes(` ${w} `) || w.length >= 6 && u.includes(` ${w.slice(0, -1)}`));
   });
 }
 var GENERIC3 = /* @__PURE__ */ new Set(["cafe", "kafe", "market", "mini", "fournos", "bistro", "artos", "kafeneio", "bakery", "super"]);
-function langOf2(out, hint) {
+function langOf3(out, hint) {
   if (hint === "en" || hint === "el") return hint;
   return out?.language === "en" ? "en" : "el";
 }
@@ -7659,77 +8868,10 @@ function spokenSummary2(lines, approvals, missing, lang) {
   if (missing.length) parts.push(T.sumQuestions[lang](missing[0].question));
   return parts.join(" ");
 }
-async function modeFor(db, me, code) {
-  const at = await db.action_type.get(code);
-  if (!at) throw invalid(`unknown action type ${code}`);
-  const perm = await db.ai_permission.findOne({ role_code: me.role, action_type_code: code });
-  const action_class = at.action_class;
-  const mode = action_class === "destructive" ? "never" : perm?.mode ?? at.default_mode;
-  return { mode, action_class };
-}
-var strip = (r) => {
-  const o = { ...r };
-  delete o.created_at;
-  delete o.updated_at;
-  return o;
-};
-var repo = (db, t) => db[t];
-var Writer = class {
-  constructor(db) {
-    this.db = db;
-    this.writes = [];
-  }
-  async insert(t, data) {
-    const row = await repo(this.db, t).insert(data);
-    this.writes.push({ table: t, id: row.id ?? row.code, before: null, after: strip(row) });
-    return row;
-  }
-  async update(t, id, patch, before) {
-    const b = before ?? await repo(this.db, t).get(id);
-    const row = await repo(this.db, t).update(id, patch);
-    this.writes.push({ table: t, id, before: strip(b), after: strip(row) });
-    return row;
-  }
-};
 async function act(c, code, summary, payload, apply) {
-  const p = c.perms.get(code) ?? await modeFor(c.db, c.me, code);
-  c.perms.set(code, p);
-  let target = null;
-  let writes = [];
-  const applied = p.mode === "auto";
-  if (applied) {
-    const w = new Writer(c.db);
-    target = await apply(w);
-    writes = w.writes;
-  }
-  const before = writes.map((x) => ({ table: x.table, id: x.id, row: x.before }));
-  const after = writes.map((x) => ({ table: x.table, id: x.id, row: x.after }));
-  const ai = await c.db.ai_action.insert({
-    on_behalf_of: c.me.id,
-    agent: "debrief",
-    action_type_code: code,
-    target_table: target?.table ?? null,
-    target_id: target?.id ?? null,
-    voice_log_id: c.voiceLogId,
-    status: applied ? "applied" : "suggested",
-    reason: summary.slice(0, 500),
-    payload_json: JSON.stringify(payload ?? null),
-    before_snapshot_json: applied ? encode(before) : null,
-    after_snapshot_json: applied ? encode(after) : null,
-    applied_at: applied ? c.nowIso : null
-  });
-  c.lines.push({
-    ai_action_id: ai.id,
-    action_type: code,
-    action_class: p.action_class,
-    status: applied ? "applied" : "suggested",
-    summary: applied ? summary : T.suggested[c.lang](summary),
-    target_table: target?.table ?? null,
-    target_id: target?.id ?? null,
-    undoable: applied && p.action_class === "internal" || applied && p.action_class === "draft",
-    approval_id: null
-  });
-  return { aiId: ai.id, applied, target };
+  const o = await propose(c.db, c.me, { code, agent: "debrief", summary, payload, voice_log_id: c.voiceLogId, apply }, { now: Date.parse(c.nowIso) });
+  c.lines.push({ ...o.line, summary: o.applied ? summary : T.suggested[c.lang](summary) });
+  return { aiId: o.ai_action.id, applied: o.applied, target: o.target };
 }
 async function extractionInput(db, me, account, utterance, language, day) {
   const [problems, deals, products, campaigns, contacts, competitors] = await Promise.all([
@@ -7769,7 +8911,7 @@ function accountRef3(a, extra = {}) {
 function groundOutput(raw, x, utterance, day) {
   const { output, dropped } = enforceDebriefEvidence(raw, utterance);
   const out = output;
-  const lang = langOf2(out);
+  const lang = langOf3(out);
   const ask = (field, question) => {
     if (!out.missing_fields.some((m) => m.field === field)) out.missing_fields.push({ field, question });
   };
@@ -7889,7 +9031,7 @@ async function applyOutput(c, x, out, account, visitId, day, deps, api) {
     if (!planned || planned.status !== "done") {
       const r = await act(c, "mark_visit_done", T.visit[lang], { visit_id: planned?.id ?? null }, async (w) => {
         if (planned) {
-          await w.update("visit", planned.id, { status: "done", completed_at: nowIso, outcome: out.note.slice(0, 500) }, planned);
+          await w.update("visit", planned.id, { status: "done", completed_at: nowIso, outcome: out.note.slice(0, 500) });
           return { table: "visit", id: planned.id };
         }
         const v = await w.insert("visit", { account_id: account.id, rep_id: me.id, origin: "buddy", planned_date: day, status: "done", started_at: nowIso, completed_at: nowIso, outcome: out.note.slice(0, 500) });
@@ -7905,7 +9047,7 @@ async function applyOutput(c, x, out, account, visitId, day, deps, api) {
       if (p.due_date) patch.due_date = p.due_date;
       if (p.status === "resolved") patch.resolved_at = nowIso;
       await act(c, "update_problem", T.problemUpd[lang](cur.description, T.statusWord[lang](p.status)), { ...p, patch }, async (w) => {
-        await w.update("problem", cur.id, patch, cur);
+        await w.update("problem", cur.id, patch);
         return { table: "problem", id: cur.id };
       });
     } else {
@@ -7927,7 +9069,7 @@ async function applyOutput(c, x, out, account, visitId, day, deps, api) {
     if (x.stages.find((s) => s.code === patch.stage_code)?.is_closed) patch.closed_at = nowIso;
     if (Object.keys(patch).length > 1) {
       await act(c, "update_deal", T.dealUpd[lang](cur.title), { ...du, patch }, async (w) => {
-        await w.update("deal", cur.id, patch, cur);
+        await w.update("deal", cur.id, patch);
         if (patch.stage_code) await w.insert("deal_stage_history", { deal_id: cur.id, from_stage_code: cur.stage_code, to_stage_code: patch.stage_code, changed_by: me.id, changed_at: nowIso });
         return { table: "deal", id: cur.id };
       });
@@ -7963,7 +9105,7 @@ async function applyOutput(c, x, out, account, visitId, day, deps, api) {
       for (const f of ["role_title", "phone", "email"]) if (k[f] && k[f] !== cur[f]) patch[f] = k[f];
       if (typeof k.is_decision_maker === "boolean" && k.is_decision_maker !== cur.is_decision_maker) patch.is_decision_maker = k.is_decision_maker;
       if (Object.keys(patch).length) await act(c, "update_contact", T.contactUpd[lang](cur.full_name), { ...k, patch }, async (w) => {
-        await w.update("contact", cur.id, patch, cur);
+        await w.update("contact", cur.id, patch);
         return { table: "contact", id: cur.id };
       });
     } else {
@@ -8028,8 +9170,8 @@ async function followUp(c, out, account, contactIdByName, deps, api) {
   const allowed = [fu.intent, ...promises, account.name, me.user.full_name, contact?.full_name ?? ""];
   let body = m.draft_body, subject = m.subject ?? null;
   if (unknownNumbers(`${subject ?? ""} ${body}`, allowed).length) {
-    const first = contact ? ` ${contact.full_name.split(" ")[0]}` : "";
-    body = `${lang === "el" ? `\u039A\u03B1\u03BB\u03B7\u03C3\u03C0\u03AD\u03C1\u03B1${first},` : `Hello${first},`}
+    const first2 = contact ? ` ${contact.full_name.split(" ")[0]}` : "";
+    body = `${lang === "el" ? `\u039A\u03B1\u03BB\u03B7\u03C3\u03C0\u03AD\u03C1\u03B1${first2},` : `Hello${first2},`}
 
 ${fu.intent}
 
@@ -8139,7 +9281,7 @@ function metaOf(actions) {
 }
 var PROCESSABLE = /* @__PURE__ */ new Set(["uploaded", "processing", "needs_confirmation", "failed", "transcribing", "offline"]);
 var rand = () => Math.random().toString(36).slice(2, 10);
-function makeImpl17(deps) {
+function makeImpl20(deps) {
   return async ({ req, db, me, platform }) => {
     const now = deps.now ?? Date.now;
     const t0 = now();
@@ -8155,20 +9297,37 @@ function makeImpl17(deps) {
       if (!PROCESSABLE.has(vl.status)) throw invalid(`voice log is ${vl.status}`);
       if (!vl.transcript?.trim()) throw blocked("this voice log has no transcript yet (transcription pending)", { voice_log_id: vl.id, status: vl.status });
     } else {
+      let transcript = req.utterance.trim();
+      if (req.corrects_voice_log_id) {
+        const orig = await db.voice_log.require(req.corrects_voice_log_id);
+        assertOwner(me, orig.rep_id, "voice log");
+        if (orig.status !== "completed" || !orig.account_id) throw invalid(`only a completed debrief can be corrected (voice log is ${orig.status})`);
+        if (req.account_id && req.account_id !== orig.account_id) throw invalid("a correction keeps the account of the debrief it corrects");
+        req = { ...req, account_id: orig.account_id };
+        const acts = (await db.ai_action.all({ voice_log_id: orig.id })).filter((a) => a.status === "applied").sort((a, b) => Number(b.created_at ?? 0) - Number(a.created_at ?? 0));
+        for (const a of acts) {
+          try {
+            await undo(db, me, a.id, { now: t0 });
+          } catch (e) {
+            deps.log?.(`debrief-process correction: could not undo ${a.id} (${a.action_type_code}): ${e.message}`);
+          }
+        }
+        transcript = `${orig.transcript?.trim() ?? ""} Correction: ${transcript}`.trim();
+      }
       vl = await db.voice_log.insert({
         rep_id: me.id,
         account_id: null,
         capture_mode: req.conversation_id ? "live_buddy" : "typed",
         wonderful_conversation_id: req.conversation_id ?? null,
         language: req.language ?? null,
-        transcript: req.utterance.trim(),
+        transcript,
         status: "processing",
         idempotency_key: `debrief:${me.id}:${t0}:${rand()}`,
         recorded_at: nowIso
       });
     }
     const utterance = vl.transcript.trim();
-    const lang0 = langOf2(null, req.language ?? vl.language);
+    const lang0 = langOf3(null, req.language ?? vl.language);
     let account = null;
     const accountId = req.account_id ?? vl.account_id ?? null;
     if (accountId) account = await requireAccount(db, me, accountId);
@@ -8189,9 +9348,9 @@ function makeImpl17(deps) {
       return { status: "failed", result: null, candidates: [], question: lang0 === "el" ? "\u0394\u03B5\u03BD \u03BA\u03B1\u03C4\u03AC\u03C6\u03B5\u03C1\u03B1 \u03BD\u03B1 \u03B5\u03C0\u03B5\u03BE\u03B5\u03C1\u03B3\u03B1\u03C3\u03C4\u03CE \u03C4\u03B7\u03BD \u03B5\u03BD\u03B7\u03BC\u03AD\u03C1\u03C9\u03C3\u03B7. \u0398\u03B5\u03C2 \u03BD\u03B1 \u03C4\u03BF \u03BE\u03B1\u03BD\u03B1\u03C0\u03B5\u03AF\u03C2;" : "I could not process that debrief. Could you say it again?" };
     }
     const { out, dropped } = groundOutput(ex.value, x, utterance, day);
-    const lang = langOf2(out, req.language === "en" || req.language === "el" ? req.language : null);
+    const lang = langOf3(out, req.language === "en" || req.language === "el" ? req.language : null);
     if (dropped.length) deps.log?.(`debrief-process dropped ${dropped.length}: ${JSON.stringify(dropped).slice(0, 800)}`);
-    const c = { db, me, voiceLogId: vl.id, lang, nowIso, lines: [], perms: /* @__PURE__ */ new Map() };
+    const c = { db, me, voiceLogId: vl.id, lang, nowIso, lines: [] };
     const api = platform.api ?? null;
     const { approvals, visitId } = await applyOutput(c, x, out, account, vl.visit_id ?? null, day, deps, api);
     const meta = { missing_fields: out.missing_fields, spoken_summary: spokenSummary2(c.lines, approvals, out.missing_fields, lang), language: lang };
@@ -8204,39 +9363,86 @@ function makeImpl17(deps) {
     return { status: "completed", result: card, candidates: [], question: out.missing_fields[0]?.question ?? null };
   };
 }
-var impl26 = makeImpl17(runtimeDeps);
+var impl29 = makeImpl20(runtimeDeps);
 function makeHandle(deps) {
-  const run = makeImpl17(deps);
+  const run = makeImpl20(deps);
   return (context) => {
     const ws = context.metadata?.workspaceId;
     const platform = { secrets: context.secrets ?? null, globals: context.globals ?? null, workspaceId: typeof ws === "string" ? ws : null, api: context.api ?? null };
     return runFunction("debrief-process", run, { tables: context.tables, data: context.data, principal: () => principalFromFunction(context.tables, context), platform });
   };
 }
-var handle19 = makeHandle({ ...runtimeDeps, log: (m) => console.log(m) });
+var handle22 = makeHandle({ ...runtimeDeps, log: (m) => console.log(m) });
+
+// shared/handlers/src/debrief-confirm-send.ts
+var MAX_BULLETS = 6;
+function summaryBullets(card, lang) {
+  const lines = card.lines.filter((l) => l.status === "applied" || l.status === "suggested").map((l) => `\u2022 ${l.summary}`);
+  const waiting = lang === "en" ? "Waiting for your OK" : "\u03A0\u03B5\u03C1\u03B9\u03BC\u03AD\u03BD\u03B5\u03B9 \u03C4\u03BF OK \u03C3\u03BF\u03C5";
+  const pending = card.pending_approvals.map((a) => `\u2022 ${waiting}: ${a.preview}`);
+  const all = [...lines, ...pending];
+  if (!all.length) return [lang === "en" ? "\u2022 Nothing to change was logged" : "\u2022 \u0394\u03B5\u03BD \u03BA\u03B1\u03C4\u03B1\u03B3\u03C1\u03AC\u03C6\u03B7\u03BA\u03B5 \u03BA\u03AC\u03C0\u03BF\u03B9\u03B1 \u03B1\u03BB\u03BB\u03B1\u03B3\u03AE"];
+  if (all.length <= MAX_BULLETS) return all;
+  const more = all.length - (MAX_BULLETS - 1);
+  return [...all.slice(0, MAX_BULLETS - 1), lang === "en" ? `\u2022 +${more} more in the app` : `\u2022 +${more} \u03B1\u03BA\u03CC\u03BC\u03B7 \u03C3\u03C4\u03B7\u03BD \u03B5\u03C6\u03B1\u03C1\u03BC\u03BF\u03B3\u03AE`];
+}
+function summaryText(accountName2, bullets, lang) {
+  const head = lang === "en" ? `${accountName2}: what I logged` : `${accountName2}: \u03C4\u03B9 \u03BA\u03B1\u03C4\u03AD\u03B3\u03C1\u03B1\u03C8\u03B1`;
+  return [head, ...bullets].join("\n");
+}
+async function sendConfirmation(db, platform, deps, vl, user, org, channel = null) {
+  const existing = await db.debrief_confirmation.findOne({ voice_log_id: vl.id });
+  if (existing) return existing;
+  if (vl.status !== "completed") throw invalid(`voice log is ${vl.status}; only a completed debrief can be confirmed`, { voice_log_id: vl.id, status: vl.status });
+  const card = await cardFromRows(db, vl);
+  const lang = langOf2(user, org);
+  const summary = summaryText(card.account.name, summaryBullets(card, lang), lang);
+  const now = nowOf(deps);
+  const want = channel ?? (hasWhatsApp(user, platform) ? "whatsapp" : "app");
+  let row = await db.debrief_confirmation.insert({ voice_log_id: vl.id, rep_id: vl.rep_id, visit_id: vl.visit_id ?? null, channel: want, summary_text: summary, status: "pending" });
+  if (want === "whatsapp") {
+    const out = await requestBuddyCall(db, platform, deps, user, org, { channel: "whatsapp", purpose: "debrief_confirm", ref_table: "debrief_confirmation", ref_id: row.id });
+    row = out.status === "sent" ? await db.debrief_confirmation.update(row.id, { buddy_call_id: out.row.id, status: "sent", sent_at: isoAt(now) }) : await db.debrief_confirmation.update(row.id, { buddy_call_id: out.row.id, channel: "app", status: "sent", sent_at: isoAt(now) });
+  } else {
+    row = await db.debrief_confirmation.update(row.id, { status: "sent", sent_at: isoAt(now) });
+  }
+  await push(deps, "debrief_confirmation.status", { debrief_confirmation_id: row.id, voice_log_id: vl.id, status: row.status }, repChannel(vl.rep_id), { now: deps.now, log: logOf(deps) });
+  return row;
+}
+function makeImpl21(deps = {}) {
+  return async ({ req, db, me, platform }) => {
+    const vl = await db.voice_log.require(req.voice_log_id);
+    assertOwner(me, vl.rep_id, "voice log");
+    const user = await db.app_user.require(vl.rep_id);
+    const row = await sendConfirmation(db, platform, deps, vl, user, me.org, req.channel ?? null);
+    return { debrief_confirmation_id: row.id, status: row.status, summary_text: row.summary_text };
+  };
+}
+var impl30 = makeImpl21();
+var handle23 = defineWithDeps("debrief-confirm-send", makeImpl21);
 
 // shared/handlers/src/debrief-result-get.ts
-var impl27 = async ({ req, db, me }) => {
+var impl31 = async ({ req, db, me }) => {
   const vl = await db.voice_log.require(req.voice_log_id);
   assertOwner(me, vl.rep_id, "voice log");
   if (vl.status !== "completed") throw notFound(`result not ready (voice log is ${vl.status})`, { voice_log_id: vl.id, status: vl.status });
   return cardFromRows(db, vl);
 };
-var handle20 = defineFunction("debrief-result-get", impl27);
+var handle24 = defineFunction("debrief-result-get", impl31);
 
 // shared/handlers/src/discount-check.ts
-var nowOf = (d) => d.now ? d.now() : Date.now();
-var isoAt = (ms3) => new Date(ms3).toISOString();
+var nowOf2 = (d) => d.now ? d.now() : Date.now();
+var isoAt2 = (ms3) => new Date(ms3).toISOString();
 var GLOBAL_APPROVER_CALLER_ID = "MERC_APPROVER_CALLER_ID";
-var OUTBOUND_PATH = "/v1/agents/outbound";
-var CALL_HOURS = { start: "08:00", end: "20:00" };
-var ANSWER_TIMEOUT_S = 25;
-var apiOf = (context) => {
+var OUTBOUND_PATH2 = "/v1/agents/outbound";
+var CALL_HOURS2 = { start: "08:00", end: "20:00" };
+var ANSWER_TIMEOUT_S2 = 25;
+var apiOf2 = (context) => {
   const a = context?.api;
   return a && typeof a.post === "function" ? a : null;
 };
 function defineWithApi(slug, make) {
-  return (context) => defineFunction(slug, make({ api: apiOf(context) }))(context);
+  return (context) => defineFunction(slug, make({ api: apiOf2(context) }))(context);
 }
 var userRef4 = (u) => ({ id: u.id, full_name: u.full_name, role: u.role_code });
 var accountRef4 = (a) => ({ id: a.id, name: a.name, account_type: a.account_type, postal_code: a.postal_code ?? null });
@@ -8289,25 +9495,25 @@ async function pickApprover(db, org, requester, account, productIds, requestedPc
 }
 var CALL_BLOCK_TEXT = {
   manager_call_disabled: "organization.manager_call_enabled is false",
-  outside_call_hours: `outside call hours ${CALL_HOURS.start}-${CALL_HOURS.end} org time`,
+  outside_call_hours: `outside call hours ${CALL_HOURS2.start}-${CALL_HOURS2.end} org time`,
   no_caller_id: `no caller id for merc-approver (global variable ${GLOBAL_APPROVER_CALLER_ID} is not set)`,
   no_service_account: "no service account on this function (context.api unavailable)",
-  approver_has_no_phone: "the approver has no valid phone number"
+  approver_has_no_phone: "the approver has no valid phone number, or phone_channel_enabled is false"
 };
-var E164 = /^\+[1-9]\d{6,14}$/;
+var E1642 = /^\+[1-9]\d{6,14}$/;
 function callBlock(org, approver, platform, deps) {
   if (!org.manager_call_enabled) return "manager_call_disabled";
-  if (!withinLocalHours(org, CALL_HOURS.start, CALL_HOURS.end, nowOf(deps))) return "outside_call_hours";
+  if (!withinLocalHours(org, CALL_HOURS2.start, CALL_HOURS2.end, nowOf2(deps))) return "outside_call_hours";
   const from = globalString(platform, GLOBAL_APPROVER_CALLER_ID);
-  if (!from || !E164.test(from)) return "no_caller_id";
+  if (!from || !E1642.test(from)) return "no_caller_id";
   if (!deps.api) return "no_service_account";
-  if (!approver.phone || !E164.test(approver.phone)) return "approver_has_no_phone";
+  if (approver.phone_channel_enabled === false || !approver.phone || !E1642.test(approver.phone)) return "approver_has_no_phone";
   return null;
 }
-function makeImpl18(deps = {}) {
+function makeImpl22(deps = {}) {
   return async ({ req, db, me, platform }) => {
     checkPct(req.discount_pct);
-    const now = nowOf(deps);
+    const now = nowOf2(deps);
     const account = await requireAccount(db, me, req.account_id);
     const limit = await resolveLimit(db, me.org, me.user, account, req.product_ids, now);
     const allowed = req.discount_pct <= limit.limit_pct;
@@ -8320,7 +9526,7 @@ function makeImpl18(deps = {}) {
         target_table: "account",
         target_id: account.id,
         status: "applied",
-        applied_at: isoAt(now),
+        applied_at: isoAt2(now),
         reason: `${pct(req.discount_pct)} is within the limit of ${pct(limit.limit_pct)}`,
         payload_json: JSON.stringify({ discount_pct: req.discount_pct, limit_pct: limit.limit_pct, policy_id: limit.policy_id, product_ids: req.product_ids })
       });
@@ -8330,12 +9536,12 @@ function makeImpl18(deps = {}) {
     return { allowed, limit_pct: limit.limit_pct, policy_id: limit.policy_id, approver: userRef4(approver), manager_call_available: callBlock(me.org, approver, platform, deps) === null, ai_action_id: null };
   };
 }
-var impl28 = makeImpl18();
-var handle21 = defineWithApi("discount-check", makeImpl18);
+var impl32 = makeImpl22();
+var handle25 = defineWithApi("discount-check", makeImpl22);
 
 // shared/handlers/src/discount-request.ts
-var defaultLog2 = (level, message2, details) => (level === "error" ? console.error : level === "warn" ? console.warn : console.log)(`[merc-discount] ${message2}${details ? " " + JSON.stringify(details) : ""}`);
-var logOf = (d) => d.log ?? defaultLog2;
+var defaultLog3 = (level, message2, details) => (level === "error" ? console.error : level === "warn" ? console.warn : console.log)(`[merc-discount] ${message2}${details ? " " + JSON.stringify(details) : ""}`);
+var logOf2 = (d) => d.log ?? defaultLog3;
 async function approvalCard3(db, a, dr) {
   const d = dr === void 0 ? await db.discount_request.findOne({ approval_id: a.id }) : dr;
   const [by, approver, account] = await Promise.all([db.app_user.require(a.requested_by), db.app_user.require(a.approver_id), d ? db.account.get(d.account_id) : Promise.resolve(null)]);
@@ -8360,27 +9566,27 @@ async function approvalCard3(db, a, dr) {
     decision_note: a.decision_note ?? null,
     due_at: a.due_at ?? null,
     expires_at: a.expires_at ?? null,
-    created_at: isoAt(typeof a.created_at === "number" ? a.created_at : Date.parse(String(a.created_at ?? 0)) || 0)
+    created_at: isoAt2(typeof a.created_at === "number" ? a.created_at : Date.parse(String(a.created_at ?? 0)) || 0)
   };
 }
 var waitingTaskTitle = (approver, requestedPct, account) => `Waiting for ${firstName(approver)}: ${pct(requestedPct)} discount for ${account.name}`;
 async function goAsync(db, platform, deps, a, reason) {
-  const now = nowOf(deps);
+  const now = nowOf2(deps);
   const org = await db.organization.require(db.orgId);
   const dr = await db.discount_request.findOne({ approval_id: a.id });
   if (!dr) throw invalid("approval has no discount request", { approval_id: a.id });
   const [approver, account] = await Promise.all([db.app_user.require(a.approver_id), db.account.require(dr.account_id)]);
-  const due_at = isoAt(now + org.approval_sla_minutes * 6e4);
+  const due_at = isoAt2(now + org.approval_sla_minutes * 6e4);
   const updated = await db.approval.update(a.id, { mode: "async", due_at });
   const title = waitingTaskTitle(approver, dr.requested_pct, account);
   const existing = await db.task.findOne({ owner_id: a.requested_by, account_id: account.id, title, status: "open" });
   const task = existing ?? await db.task.insert({ owner_id: a.requested_by, account_id: account.id, deal_id: dr.deal_id ?? null, title, is_customer_promise: false, due_at, status: "open", source: "ai", voice_log_id: dr.voice_log_id ?? null });
-  const log2 = logOf(deps);
+  const log2 = logOf2(deps);
   log2("warn", `approval ${a.id} is async: ${reason}`, { due_at, sms: "skipped: no SMS sender in the tenant" });
   const p = await push(deps, "approval.created", { approval: await approvalCard3(db, updated, dr) }, repChannel(approver.id), { now: deps.now, log: log2 });
   return { due_at, task_id: task.id, pushed: p.pushed };
 }
-var idOf = (res) => {
+var idOf2 = (res) => {
   const r = res && typeof res === "object" && "data" in res ? res.data : res;
   for (const k of ["communication_id", "conversation_id", "id"]) if (r && typeof r[k] === "string" && r[k]) return r[k];
   return null;
@@ -8389,28 +9595,28 @@ async function startCall(db, platform, deps, a, requester, approver) {
   if (approver.id === requester.id || approver.org_id !== requester.org_id || approver.status !== "active" || !["manager", "admin"].includes(approver.role_code)) {
     return { ok: false, call: null, reason: "approver is not an active manager/admin of this team; refusing to dial" };
   }
-  const now = nowOf(deps);
+  const now = nowOf2(deps);
   const from = globalString(platform, GLOBAL_APPROVER_CALLER_ID);
   const attempt_no = await db.manager_call.count({ approval_id: a.id }) + 1;
-  const call = await db.manager_call.insert({ approval_id: a.id, callee_id: approver.id, attempt_no, outcome: "queued", started_at: isoAt(now) });
+  const call = await db.manager_call.insert({ approval_id: a.id, callee_id: approver.id, attempt_no, outcome: "queued", started_at: isoAt2(now) });
   try {
-    const res = await deps.api.post(OUTBOUND_PATH, { body: { from, to: approver.phone, call_purpose: `merc_approval:${a.id}`, answer_timeout_after_progress_seconds: ANSWER_TIMEOUT_S } });
-    const conv = idOf(res);
+    const res = await deps.api.post(OUTBOUND_PATH2, { body: { from, to: approver.phone, call_purpose: `merc_approval:${a.id}`, answer_timeout_after_progress_seconds: ANSWER_TIMEOUT_S2 } });
+    const conv = idOf2(res);
     const ringing = await db.manager_call.update(call.id, { outcome: "ringing", ...conv ? { wonderful_conversation_id: conv } : {} });
-    await push(deps, "manager_call.status", { approval_id: a.id, outcome: "ringing" }, repChannel(requester.id), { now: deps.now, log: logOf(deps) });
+    await push(deps, "manager_call.status", { approval_id: a.id, outcome: "ringing" }, repChannel(requester.id), { now: deps.now, log: logOf2(deps) });
     return { ok: true, call: ringing };
   } catch (e) {
     const status = e?.status;
-    const failed = await db.manager_call.update(call.id, { outcome: "failed", ended_at: isoAt(nowOf(deps)) });
+    const failed = await db.manager_call.update(call.id, { outcome: "failed", ended_at: isoAt2(nowOf2(deps)) });
     return { ok: false, call: failed, reason: `outbound call could not start (${typeof status === "number" ? status : "error"}: ${String(e?.message ?? e).slice(0, 200)})` };
   }
 }
-function makeImpl19(deps = {}) {
+function makeImpl23(deps = {}) {
   return async ({ req, db, me, platform }) => {
     checkPct(req.discount_pct);
     if (!req.lines.length) throw invalid("a discount request needs at least one line");
     for (const l of req.lines) if (!(l.quantity > 0)) throw invalid("line quantity must be above 0", { product_id: l.product_id });
-    const now = nowOf(deps);
+    const now = nowOf2(deps);
     const account = await requireAccount(db, me, req.account_id);
     if (req.deal_id) {
       const deal = await db.deal.require(req.deal_id);
@@ -8426,7 +9632,7 @@ function makeImpl19(deps = {}) {
       approver_id: approver.id,
       mode: req.mode,
       status: "pending",
-      expires_at: isoAt(now + me.org.approval_expiry_hours * 36e5)
+      expires_at: isoAt2(now + me.org.approval_expiry_hours * 36e5)
     });
     const dr = await db.discount_request.insert({
       approval_id: approval.id,
@@ -8449,7 +9655,7 @@ function makeImpl19(deps = {}) {
         const started = await startCall(db, platform, deps, approval, me.user, approver);
         manager_call_id = started.call?.id ?? null;
         if (started.ok) {
-          logOf(deps)("info", `approval ${approval.id}: calling ${approver.full_name}`, { manager_call_id });
+          logOf2(deps)("info", `approval ${approval.id}: calling ${approver.full_name}`, { manager_call_id });
           return { approval_id: approval.id, status: approval.status, mode: "live", manager_call_id, approver: userRef4(approver), due_at: null };
         }
         reason = started.reason;
@@ -8459,8 +9665,8 @@ function makeImpl19(deps = {}) {
     return { approval_id: approval.id, status: "pending", mode: "async", manager_call_id, approver: userRef4(approver), due_at: asy.due_at };
   };
 }
-var impl29 = makeImpl19();
-var handle22 = defineWithApi("discount-request", makeImpl19);
+var impl33 = makeImpl23();
+var handle26 = defineWithApi("discount-request", makeImpl23);
 
 // shared/handlers/src/eod-summary.ts
 var EOD_MAX_SECONDS = 45;
@@ -8488,9 +9694,9 @@ var EOD = {
   }
 };
 function fallbackSummary(lang, f) {
-  const T2 = EOD[lang];
+  const T3 = EOD[lang];
   let pending = f.pending.slice(0, 3);
-  const build = () => [T2.head(f.visits_done, f.offers_sent, f.new_customers), pending.length ? T2.open(pending) : T2.nothingOpen, f.tomorrow_start_with ? T2.tomorrow(f.tomorrow_start_with) : "", ...f.targets.map((t) => `${t}.`)].filter(Boolean).join(" ");
+  const build = () => [T3.head(f.visits_done, f.offers_sent, f.new_customers), pending.length ? T3.open(pending) : T3.nothingOpen, f.tomorrow_start_with ? T3.tomorrow(f.tomorrow_start_with) : "", ...f.targets.map((t) => `${t}.`)].filter(Boolean).join(" ");
   let s = build();
   while (wordCount(s) > maxWords(EOD_MAX_SECONDS) && pending.length) {
     pending = pending.slice(0, -1);
@@ -8499,12 +9705,12 @@ function fallbackSummary(lang, f) {
   return s;
 }
 var ms2 = (v) => typeof v === "number" ? v : typeof v === "string" ? Date.parse(v) : NaN;
-function makeImpl20(deps = {}) {
+function makeImpl24(deps = {}) {
   return async ({ req, db, me }) => {
     const org = me.org;
     const date = req.date ?? today(org, deps.now?.() ?? Date.now());
     const lang = langOf(me.user, org);
-    const T2 = EOD[lang];
+    const T3 = EOD[lang];
     const day = dayRange(org, date);
     const inDay = (v) => ms2(v) >= ms2(day.from) && ms2(v) < ms2(day.to);
     const accounts = /* @__PURE__ */ new Map();
@@ -8527,23 +9733,23 @@ function makeImpl20(deps = {}) {
       const named = await Promise.all(vs.map(async (v) => ({ v, name: await nameOf(v.account_id) ?? "?" })));
       return named.sort((a, b) => (a.v.route_position ?? 1e9) - (b.v.route_position ?? 1e9) || a.name.localeCompare(b.name));
     };
-    for (const { name } of await routeThenName(todays.filter((v) => v.status === "planned"))) pending.push(T2.notVisited(name));
+    for (const { name } of await routeThenName(todays.filter((v) => v.status === "planned"))) pending.push(T3.notVisited(name));
     const endTomorrow = ms2(dayRange(org, addDays(date, 1)).to);
     const tasks = (await db.task.all({ owner_id: me.id, status: "open" })).filter((t) => t.due_at && ms2(t.due_at) < endTomorrow).sort((a, b) => ms2(a.due_at) - ms2(b.due_at));
-    for (const t of tasks) pending.push(T2.task(t.title, await nameOf(t.account_id)));
-    for (const a of approvals.filter((x) => x.status === "pending")) pending.push(T2.approval(kindText(lang, a.kind)));
+    for (const t of tasks) pending.push(T3.task(t.title, await nameOf(t.account_id)));
+    for (const a of approvals.filter((x) => x.status === "pending")) pending.push(T3.approval(kindText(lang, a.kind)));
     const tomorrowVisits = await routeThenName(await db.visit.all({ rep_id: me.id, planned_date: addDays(date, 1), status: "planned" }));
-    const first = tomorrowVisits[0];
-    const tomorrow = first ? `${first.name}${first.v.purpose ? ` (${first.v.purpose})` : ""}` : null;
+    const first2 = tomorrowVisits[0];
+    const tomorrow = first2 ? `${first2.name}${first2.v.purpose ? ` (${first2.v.purpose})` : ""}` : null;
     const target_progress = await targetProgress2(db, me.id, date);
     const facts = { visits_done: doneIds.size, offers_sent: offers, new_customers: newCustomers, pending: pending.slice(0, MAX_PENDING), tomorrow_start_with: tomorrow, targets: target_progress.map((t) => targetText(lang, org, t)) };
     const factList = [
-      { label: T2.labels.visits, value: String(facts.visits_done) },
-      { label: T2.labels.offers, value: String(facts.offers_sent) },
-      { label: T2.labels.customers, value: String(facts.new_customers) },
-      ...facts.pending.map((p) => ({ label: T2.labels.pending, value: p })),
-      ...tomorrow ? [{ label: T2.labels.tomorrow, value: tomorrow }] : [],
-      ...facts.targets.map((t) => ({ label: T2.labels.target, value: t }))
+      { label: T3.labels.visits, value: String(facts.visits_done) },
+      { label: T3.labels.offers, value: String(facts.offers_sent) },
+      { label: T3.labels.customers, value: String(facts.new_customers) },
+      ...facts.pending.map((p) => ({ label: T3.labels.pending, value: p })),
+      ...tomorrow ? [{ label: T3.labels.tomorrow, value: tomorrow }] : [],
+      ...facts.targets.map((t) => ({ label: T3.labels.target, value: t }))
     ];
     const { spoken, learned } = await speak(lang, factList, facts, deps.model);
     return { date, visits_done: facts.visits_done, offers_sent: facts.offers_sent, new_customers: facts.new_customers, pending: facts.pending, tomorrow_start_with: tomorrow, learned, target_progress, spoken_summary: spoken };
@@ -8579,15 +9785,15 @@ Your previous answer was rejected: ${problems.join("; ")}.` : base });
   }
   return { spoken: fallbackSummary(lang, raw), learned: null, source: "fallback", problems };
 }
-var impl30 = makeImpl20();
-var handle23 = defineFunction("eod-summary", impl30);
+var impl34 = makeImpl24();
+var handle27 = defineFunction("eod-summary", impl34);
 
 // shared/handlers/src/escalate.ts
 var ESCALATION_TYPE = "escalation";
 var FALLBACK_TYPE = "promise_due";
 var DUE_TIME = "12:00";
 var clip3 = (s, n) => s.length > n ? `${s.slice(0, n - 1)}\u2026` : s;
-var impl31 = async ({ req, db, me }) => {
+var impl35 = async ({ req, db, me }) => {
   const account = await requireAccount(db, me, req.account_id);
   const reason = req.reason.trim().replace(/\s+/g, " ");
   if (!reason) throw invalid("reason must not be empty");
@@ -8624,7 +9830,86 @@ var impl31 = async ({ req, db, me }) => {
     throw e;
   }
 };
-var handle24 = defineFunction("escalate", impl31);
+var handle28 = defineFunction("escalate", impl35);
+
+// shared/handlers/src/feedback-record.ts
+var briefOfConfirmation = async (db, dc) => dc.visit_id ? db.visit_brief.findOne({ visit_id: dc.visit_id }) : null;
+function makeImpl25(deps = {}) {
+  return async ({ req, db, me }) => {
+    const at = new Date(deps.now?.() ?? Date.now()).toISOString();
+    const detail = req.detail?.trim() || null;
+    if (req.kind === "brief_useful" || req.kind === "brief_not_useful") {
+      if (!req.visit_brief_id && !req.debrief_confirmation_id) throw invalid("brief feedback needs visit_brief_id (or the debrief_confirmation_id of that visit)");
+      let brief2 = null;
+      if (req.visit_brief_id) brief2 = await db.visit_brief.get(req.visit_brief_id);
+      else {
+        const dc2 = await db.debrief_confirmation.require(req.debrief_confirmation_id);
+        assertOwner(me, dc2.rep_id, "debrief confirmation");
+        brief2 = await briefOfConfirmation(db, dc2);
+      }
+      if (!brief2) throw notFound("no pre-meeting brief found for this feedback", { visit_brief_id: req.visit_brief_id ?? null, debrief_confirmation_id: req.debrief_confirmation_id ?? null });
+      assertOwner(me, brief2.rep_id, "visit brief");
+      const rating = req.kind === "brief_useful" ? "useful" : "not_useful";
+      await db.visit_brief.update(brief2.id, { rating });
+      const fb2 = await db.rep_feedback.insert({
+        rep_id: brief2.rep_id,
+        account_id: brief2.account_id,
+        kind: req.kind,
+        visit_brief_id: brief2.id,
+        debrief_confirmation_id: req.debrief_confirmation_id ?? null,
+        product_id: brief2.push_product_id ?? null,
+        detail,
+        exported_to_evals: false
+      });
+      return { feedback_id: fb2.id, status: rating };
+    }
+    if (!req.debrief_confirmation_id && req.kind === "debrief_corrected" && req.correction_voice_log_id) {
+      if (!detail) throw invalid("say what was wrong: detail is required for debrief_corrected");
+      const fix = await db.voice_log.require(req.correction_voice_log_id);
+      assertOwner(me, fix.rep_id, "voice log");
+      const fb2 = await db.rep_feedback.insert({
+        rep_id: fix.rep_id,
+        account_id: fix.account_id ?? null,
+        kind: req.kind,
+        visit_brief_id: null,
+        debrief_confirmation_id: null,
+        product_id: null,
+        detail,
+        exported_to_evals: false
+      });
+      return { feedback_id: fb2.id, status: "corrected" };
+    }
+    if (!req.debrief_confirmation_id) throw invalid(`${req.kind} needs debrief_confirmation_id`);
+    const dc = await db.debrief_confirmation.require(req.debrief_confirmation_id);
+    assertOwner(me, dc.rep_id, "debrief confirmation");
+    if (req.kind === "debrief_corrected" && !detail) throw invalid("say what was wrong: detail is required for debrief_corrected");
+    if (req.correction_voice_log_id) {
+      const fix = await db.voice_log.require(req.correction_voice_log_id);
+      assertOwner(me, fix.rep_id, "voice log");
+    }
+    const status = req.kind === "debrief_confirmed" ? "confirmed" : "corrected";
+    await db.debrief_confirmation.update(dc.id, {
+      status,
+      reply_text: detail ?? (status === "confirmed" ? "Correct" : null),
+      replied_at: at,
+      ...req.correction_voice_log_id ? { correction_voice_log_id: req.correction_voice_log_id } : {}
+    });
+    const [vl, brief] = await Promise.all([db.voice_log.get(dc.voice_log_id), briefOfConfirmation(db, dc)]);
+    const fb = await db.rep_feedback.insert({
+      rep_id: dc.rep_id,
+      account_id: vl?.account_id ?? brief?.account_id ?? null,
+      kind: req.kind,
+      visit_brief_id: brief?.id ?? null,
+      debrief_confirmation_id: dc.id,
+      product_id: null,
+      detail,
+      exported_to_evals: false
+    });
+    return { feedback_id: fb.id, status };
+  };
+}
+var impl36 = makeImpl25();
+var handle29 = defineFunction("feedback-record", impl36);
 
 // shared/handlers/src/order-upsert.ts
 var lineTotal = (l) => Math.round(l.quantity * l.unit_price_minor * (1 - (l.discount_pct ?? 0) / 100));
@@ -8711,7 +9996,7 @@ async function summaryOf(db, order) {
   const products = new Map((await db.product.all({ id: [...new Set(lines.map((l) => l.product_id))] })).map((p) => [p.id, p]));
   return orderSummary(order, lines, products);
 }
-var impl32 = async ({ req, db, me }) => {
+var impl37 = async ({ req, db, me }) => {
   const account = await requireAccount(db, me, req.account_id);
   if (!req.order_id) {
     if (req.status === "confirmed") throw needsConfirmation("a new order is saved as a draft; confirm it in a second call after the rep says yes", { status: "draft" });
@@ -8745,7 +10030,7 @@ var impl32 = async ({ req, db, me }) => {
   const updated = Object.keys(patch).length ? await db.sales_order.update(order.id, patch) : order;
   return { order: orderSummary(updated, await writeLines(db, order.id, lines, true), products) };
 };
-var handle25 = defineFunction("order-upsert", impl32);
+var handle30 = defineFunction("order-upsert", impl37);
 
 // shared/handlers/src/task-create.ts
 var MAX_TITLE = 200;
@@ -8755,7 +10040,7 @@ function cleanTitle(title) {
   if (t.length > MAX_TITLE) throw invalid(`title must be at most ${MAX_TITLE} characters`);
   return t;
 }
-var impl33 = async ({ req, db, me }) => {
+var impl38 = async ({ req, db, me }) => {
   const title = cleanTitle(req.title);
   let account_id = req.account_id ?? null;
   if (req.deal_id) {
@@ -8777,10 +10062,10 @@ var impl33 = async ({ req, db, me }) => {
   });
   return { task_id: task.id, ai_action_id: null };
 };
-var handle26 = defineFunction("task-create", impl33);
+var handle31 = defineFunction("task-create", impl38);
 
 // shared/handlers/src/task-update.ts
-var impl34 = async ({ req, db, me }) => {
+var impl39 = async ({ req, db, me }) => {
   const task = await db.task.require(req.task_id);
   assertOwnerOrTeam(me, task.owner_id, "task");
   const patch = {};
@@ -8790,7 +10075,7 @@ var impl34 = async ({ req, db, me }) => {
   if (Object.keys(patch).length) await db.task.update(task.id, patch);
   return { task_id: task.id };
 };
-var handle27 = defineFunction("task-update", impl34);
+var handle32 = defineFunction("task-update", impl39);
 
 // shared/handlers/src/today-get.ts
 var IN_FLIGHT = ["uploaded", "transcribing", "processing", "needs_confirmation"];
@@ -8808,7 +10093,7 @@ function visitSummary(v, a) {
     lng: a?.lng ?? null
   };
 }
-function makeImpl21(deps = {}) {
+function makeImpl26(deps = {}) {
   return async ({ req, db, me }) => {
     const date = req.date ?? today(me.org, deps.now?.() ?? Date.now());
     const visits = await db.visit.all({ rep_id: me.id, planned_date: date });
@@ -8819,8 +10104,8 @@ function makeImpl21(deps = {}) {
     return { date, visits: visits.map((v) => visitSummary(v, accounts.get(v.account_id))), briefing_id: briefing?.id ?? null, pending_recordings_hint: pending };
   };
 }
-var impl35 = makeImpl21();
-var handle28 = defineFunction("today-get", impl35);
+var impl40 = makeImpl26();
+var handle33 = defineFunction("today-get", impl40);
 
 // shared/handlers/src/visit-card-get.ts
 var MAX_SPOKEN_WORDS = 75;
@@ -8877,15 +10162,15 @@ var qty = (q, unit, name) => `${q} ${unit === "piece" ? q === 1 ? "piece" : "pie
 var REASON_TEXT = { order_gap: "ordering less often than usual", competitor: "a competitor was seen recently", open_problem: "an old open problem", no_visit: "no recent visit" };
 function fitSpoken(sentences, max = MAX_SPOKEN_WORDS) {
   const out = [];
-  let words = 0;
+  let words2 = 0;
   for (const s of sentences.filter(Boolean)) {
     const n = s.split(/\s+/).filter(Boolean).length;
-    if (words + n > max) {
+    if (words2 + n > max) {
       if (!out.length) out.push(s.split(/\s+/).slice(0, max).join(" "));
       break;
     }
     out.push(s);
-    words += n;
+    words2 += n;
   }
   return out.join(" ");
 }
@@ -8945,7 +10230,7 @@ async function recordShown(db, me, accountId, campaignIds, day, nowIso, log2) {
     }
   }
 }
-function makeImpl22(deps) {
+function makeImpl27(deps) {
   const log2 = deps.log ?? ((m) => console.warn(m));
   return async ({ req, db, me }) => {
     const now = deps.now?.() ?? Date.now();
@@ -9030,7 +10315,7 @@ function makeImpl22(deps) {
     const open_tasks = [...tasksRaw].sort((a, b) => String(a.due_at ?? "9").localeCompare(String(b.due_at ?? "9"))).map((t) => ({ task_id: t.id, title: t.title, due_at: t.due_at ? new Date(t.due_at).toISOString() : null, is_customer_promise: !!t.is_customer_promise }));
     const alerts = alertsRaw.map((a) => ({ alert_id: a.id, type: a.alert_type_code, message: a.message ?? a.alert_type_code }));
     const campaigns = campaignsRaw.map((c) => ({ campaign_id: c.id, title: c.title, message: c.message ?? "" }));
-    const accountRef5 = { id: account.id, name: account.name, account_type: account.account_type, postal_code: account.postal_code ?? null, city: null, distance_m: null, reason: null };
+    const accountRef6 = { id: account.id, name: account.name, account_type: account.account_type, postal_code: account.postal_code ?? null, city: null, distance_m: null, reason: null };
     const campaignProducts = campaignsRaw.length ? await db.campaign_product.all({ campaign_id: campaignsRaw.map((c) => c.id) }) : [];
     const ordered = [.../* @__PURE__ */ new Set([...campaignProducts.map((x) => x.product_id), ...usual.map((u) => u.product_id), ...productsRaw.map((p) => p.id)])].filter((id) => productNames.has(id));
     const llmProducts = ordered.slice(0, 20).map((id) => ({ product_id: id, name: productNames.get(id) }));
@@ -9048,7 +10333,7 @@ function makeImpl22(deps) {
       ...metrics.risk_reasons.map((r) => `Risk: ${REASON_TEXT[r] ?? r}`)
     ];
     const input = {
-      account: accountRef5,
+      account: accountRef6,
       kind,
       dossier,
       history_facts,
@@ -9099,7 +10384,7 @@ function makeImpl22(deps) {
     await recordShown(db, me, account.id, campaigns.map((c) => c.campaign_id), day, new Date(now).toISOString(), log2);
     return {
       kind,
-      account: accountRef5,
+      account: accountRef6,
       contacts,
       open_problems,
       open_tasks,
@@ -9116,8 +10401,360 @@ function makeImpl22(deps) {
   };
 }
 
+// shared/handlers/src/visit-brief-get.ts
+var MAX_BULLETS2 = 6;
+var MAX_SECONDS = 45;
+var MAX_BULLET_WORDS = 15;
+var MAX_SCRIPT_WORDS = Math.floor(2.3 * MAX_SECONDS);
+var FEEDBACK_DAYS = 30;
+var RECENT_ORDER_DAYS = 30;
+var CAMPAIGN_BOOST = 50;
+var PROBLEM_BOOST = 25;
+var BRIEF_INSTRUCTIONS = [
+  "Write the bullets in the input language (el = Greek, en = English). Keep product names exactly as given.",
+  "fact_labels: the labels of the facts each bullet uses ([] for none).",
+  "The push bullet names push.name with its reason; the avoid bullet names avoid.name with its reason.",
+  "Do not mention any other product except the ones that already appear in a fact value.",
+  "Never write a number that is not in a fact value: no counts, prices, dates or percents of your own."
+].join("\n");
+var words = (s) => s.split(/\s+/).filter(Boolean);
+var shortName = (name) => words(name).filter((w) => !/\d/.test(w)).join(" ") || name;
+var productKey = (name) => normalizeText(words(shortName(name)).slice(0, 2).join(" "));
+function productsMentioned(text, products) {
+  const t = ` ${normalizeText(text)} `;
+  return new Set(products.filter((p) => {
+    const k = productKey(p.name);
+    return !!k && t.includes(` ${k} `);
+  }).map((p) => p.id));
+}
+function chooseHints(x) {
+  const live = x.guidance.filter((g) => g.active === true && (!g.valid_from || g.valid_from <= x.today) && (!g.valid_to || g.valid_to >= x.today) && (!g.category_id || g.category_id === x.category_id) && x.products.has(g.product_id));
+  const name = (id) => x.products.get(id).name;
+  const byScore = (a, b) => b.score - a.score || a.name.localeCompare(b.name);
+  const avoid = live.filter((g) => g.stance === "avoid").map((g) => ({ product_id: g.product_id, name: name(g.product_id), reason: g.reason, guidance_id: g.id, score: Number(g.priority) })).sort(byScore)[0] ?? null;
+  const avoidIds = new Set(live.filter((g) => g.stance === "avoid").map((g) => g.product_id));
+  const skipped = [];
+  const push2 = live.filter((g) => g.stance === "push").filter((g) => {
+    if (avoidIds.has(g.product_id)) {
+      skipped.push({ product_id: g.product_id, why: "avoid" });
+      return false;
+    }
+    if (x.feedbackSkip.has(g.product_id)) {
+      skipped.push({ product_id: g.product_id, why: "feedback" });
+      return false;
+    }
+    if (x.recentlyOrdered.has(g.product_id)) {
+      skipped.push({ product_id: g.product_id, why: "recent_order" });
+      return false;
+    }
+    return true;
+  }).map((g) => {
+    const campaign = x.campaignProducts.get(g.product_id);
+    const paired = x.problemProducts.has(g.product_id);
+    const extra = [campaign ? `campaign: ${campaign}` : "", paired ? "fits the open problem" : ""].filter(Boolean);
+    return {
+      product_id: g.product_id,
+      name: name(g.product_id),
+      guidance_id: g.id,
+      reason: extra.length ? `${g.reason} (${extra.join("; ")})` : g.reason,
+      score: Number(g.priority) + (campaign ? CAMPAIGN_BOOST : 0) + (paired ? PROBLEM_BOOST : 0)
+    };
+  }).sort(byScore)[0] ?? null;
+  return { push: push2, avoid, skipped };
+}
+var msOf2 = (v) => {
+  if (typeof v === "number" && Number.isFinite(v) && v > 0) return v < 1e11 ? v * 1e3 : v;
+  if (typeof v === "string" && v) {
+    const t = Date.parse(v);
+    return Number.isNaN(t) ? null : t;
+  }
+  return null;
+};
+async function loadHints(db, args) {
+  const { account, day } = args;
+  const [guidance, products, campaigns, problems, deals, tasks, feedback, orders] = await Promise.all([
+    db.product_guidance.all({ active: true }),
+    db.product.all({ active: true }),
+    db.campaign.all({ status: "active" }),
+    db.problem.all({ account_id: account.id, status: ["open", "in_progress"] }),
+    db.deal.all({ account_id: account.id }),
+    db.task.all({ account_id: account.id, status: "open" }),
+    db.rep_feedback.all({ account_id: account.id, kind: "brief_not_useful" }),
+    db.sales_order.all({ account_id: account.id, order_date: { op: "gte", value: addDays(day, -RECENT_ORDER_DAYS) } })
+  ]);
+  const productMap = new Map(products.map((p) => [p.id, { name: p.name }]));
+  const plist = products.map((p) => ({ id: p.id, name: p.name }));
+  const live = campaigns.filter((c) => (!c.starts_on || c.starts_on <= day) && (!c.ends_on || c.ends_on >= day));
+  const campaignProducts = /* @__PURE__ */ new Map();
+  if (live.length) {
+    const ids = live.map((c) => c.id);
+    const [cp, cr, cc, ct] = await Promise.all([
+      db.campaign_product.all({ campaign_id: ids }),
+      db.campaign_rep.all({ campaign_id: ids }),
+      db.campaign_category.all({ campaign_id: ids }),
+      db.campaign_territory.all({ campaign_id: ids })
+    ]);
+    for (const c of [...live].sort((a, b) => a.title.localeCompare(b.title))) {
+      const r = cr.filter((x) => x.campaign_id === c.id), k = cc.filter((x) => x.campaign_id === c.id), t = ct.filter((x) => x.campaign_id === c.id);
+      const targets2 = !r.length && !k.length && !t.length || r.some((x) => x.user_id === args.repId) || k.some((x) => x.category_id === account.category_id) || t.some((x) => x.territory_id === account.territory_id);
+      if (!targets2) continue;
+      for (const p of cp.filter((x) => x.campaign_id === c.id)) if (!campaignProducts.has(p.product_id)) campaignProducts.set(p.product_id, c.title);
+    }
+  }
+  const problemProducts = /* @__PURE__ */ new Set();
+  if (problems.length) {
+    const texts = [...deals.filter((d) => !d.closed_at).map((d) => d.title), ...tasks.map((t) => t.title)];
+    for (const t of texts) for (const id of productsMentioned(t, plist)) problemProducts.add(id);
+  }
+  const cutoff = args.now - FEEDBACK_DAYS * 864e5;
+  const briefIds = [...new Set(feedback.map((f) => f.visit_brief_id).filter((x) => !!x))];
+  const briefs = briefIds.length ? await db.visit_brief.all({ id: briefIds }) : [];
+  const feedbackSkip = /* @__PURE__ */ new Set();
+  for (const f of feedback) {
+    const b = f.visit_brief_id ? briefs.find((x) => x.id === f.visit_brief_id) : void 0;
+    const pid = f.product_id ?? b?.push_product_id ?? null;
+    const at = msOf2(f.created_at) ?? msOf2(b?.generated_at);
+    if (pid && (at === null || at >= cutoff)) feedbackSkip.add(pid);
+  }
+  const recent = orders.filter((o) => o.status !== "cancelled" && o.order_date >= addDays(day, -RECENT_ORDER_DAYS) && o.order_date <= day);
+  const lines = recent.length ? await db.order_line.all({ order_id: recent.map((o) => o.id) }) : [];
+  const recentlyOrdered = new Set(lines.map((l) => l.product_id));
+  const input = { today: day, category_id: account.category_id ?? null, guidance, products: productMap, campaignProducts, problemProducts, feedbackSkip, recentlyOrdered };
+  return { ...chooseHints(input), input };
+}
+var T2 = {
+  en: { why: "Why", problem: "Open problem", promise: "Promise", usual: "Usually", last: "last order", ago: (n) => n === 0 ? "today" : n === 1 ? "1 day ago" : `${n} days ago`, noOrders: "No confirmed orders yet", push: "Push", avoid: "Avoid", routine: "routine visit" },
+  el: { why: "\u0393\u03B9\u03B1\u03C4\u03AF", problem: "\u0391\u03BD\u03BF\u03B9\u03C7\u03C4\u03CC \u03B8\u03AD\u03BC\u03B1", promise: "\u03A5\u03C0\u03CC\u03C3\u03C7\u03B5\u03C3\u03B7", usual: "\u03A3\u03C5\u03BD\u03AE\u03B8\u03C9\u03C2", last: "\u03C4\u03B5\u03BB\u03B5\u03C5\u03C4\u03B1\u03AF\u03B1 \u03C0\u03B1\u03C1\u03B1\u03B3\u03B3\u03B5\u03BB\u03AF\u03B1", ago: (n) => n === 0 ? "\u03C3\u03AE\u03BC\u03B5\u03C1\u03B1" : n === 1 ? "\u03C0\u03C1\u03B9\u03BD 1 \u03BC\u03AD\u03C1\u03B1" : `\u03C0\u03C1\u03B9\u03BD ${n} \u03BC\u03AD\u03C1\u03B5\u03C2`, noOrders: "\u039A\u03B1\u03BC\u03AF\u03B1 \u03B5\u03C0\u03B9\u03B2\u03B5\u03B2\u03B1\u03B9\u03C9\u03BC\u03AD\u03BD\u03B7 \u03C0\u03B1\u03C1\u03B1\u03B3\u03B3\u03B5\u03BB\u03AF\u03B1 \u03B1\u03BA\u03CC\u03BC\u03B1", push: "\u03A0\u03C1\u03CC\u03C4\u03B5\u03B9\u03BD\u03B5", avoid: "\u0391\u03C0\u03CC\u03C6\u03C5\u03B3\u03B5", routine: "\u03C4\u03B1\u03BA\u03C4\u03B9\u03BA\u03AE \u03B5\u03C0\u03AF\u03C3\u03BA\u03B5\u03C8\u03B7" }
+};
+var clip4 = (s, n = MAX_BULLET_WORDS) => {
+  const w = words(s);
+  return w.length <= n ? s : `${w.slice(0, n).join(" ")}\u2026`;
+};
+var firstClause = (s) => s.split(/[;(]/)[0].trim();
+function briefFacts(a) {
+  const t = T2[a.lang], c = a.card;
+  const facts = [];
+  const bullets = [];
+  const purpose = a.visit.purpose?.trim() || null;
+  if (purpose) facts.push({ label: "visit_purpose", value: purpose, ref_table: "visit", ref_id: a.visit.id });
+  if (a.startLocal) facts.push({ label: "planned_start", value: a.startLocal, ref_table: "visit", ref_id: a.visit.id });
+  bullets.push({ role: "why", text: clip4(`${t.why}: ${purpose ?? t.routine}`), ref_table: "visit", ref_id: a.visit.id });
+  c.open_problems.forEach((p, i) => facts.push({ label: `open_problem_${i + 1}`, value: p.description, ref_table: "problem", ref_id: p.problem_id }));
+  const promises = c.open_tasks.filter((x) => x.is_customer_promise);
+  promises.forEach((x, i) => facts.push({ label: `promise_${i + 1}`, value: x.title, ref_table: "task", ref_id: x.task_id }));
+  const p0 = c.open_problems[0], pr0 = promises[0];
+  if (p0) bullets.push({ role: "problem", text: clip4(`${t.problem}: ${p0.description}`), ref_table: "problem", ref_id: p0.problem_id });
+  else if (pr0) bullets.push({ role: "problem", text: clip4(`${t.promise}: ${pr0.title}`), ref_table: "task", ref_id: pr0.task_id });
+  a.usual.slice(0, 3).forEach((u, i) => facts.push({ label: `usual_order_${i + 1}`, value: `${u.quantity} ${u.unit} ${u.name}`, ref_table: "product", ref_id: u.product_id }));
+  const last = c.recent_orders.find((o) => o.status === "confirmed");
+  if (last) facts.push({ label: "last_order", value: `${last.order_date}: ${last.lines.map((l) => `${l.quantity} ${l.unit} ${l.name}`).join(", ")}`, ref_table: "sales_order", ref_id: last.order_id });
+  const since = c.metrics.days_since_last_order ?? null, avg = c.metrics.avg_order_interval_days ?? null;
+  if (since !== null) facts.push({ label: "days_since_last_order", value: String(since), ref_table: "account_metrics", ref_id: null });
+  if (avg !== null) facts.push({ label: "usual_order_interval_days", value: String(avg), ref_table: "account_metrics", ref_id: null });
+  c.metrics.risk_reasons.forEach((r, i) => facts.push({ label: `risk_${i + 1}`, value: r, ref_table: "account_metrics", ref_id: null }));
+  const u0 = a.usual[0];
+  const orderText = [u0 ? `${t.usual} ${u0.quantity} ${u0.unit} ${shortName(u0.name)}` : "", since !== null ? `${t.last} ${t.ago(since)}` : t.noOrders].filter(Boolean).join("; ");
+  bullets.push({ role: "orders", text: clip4(orderText), ref_table: last ? "sales_order" : null, ref_id: last?.order_id ?? null });
+  c.campaigns.forEach((x, i) => facts.push({ label: `campaign_${i + 1}`, value: x.title, ref_table: "campaign", ref_id: x.campaign_id }));
+  if (a.push) bullets.push({ role: "push", text: clip4(`${t.push} ${shortName(a.push.name)}: ${firstClause(a.push.reason)}`), ref_table: "product_guidance", ref_id: a.push.guidance_id });
+  if (a.avoid) bullets.push({ role: "avoid", text: clip4(`${t.avoid} ${shortName(a.avoid.name)}: ${firstClause(a.avoid.reason)}`), ref_table: "product_guidance", ref_id: a.avoid.guidance_id });
+  const dm2 = c.contacts.find((x) => x.is_decision_maker) ?? c.contacts[0];
+  if (dm2) facts.push({ label: "decision_maker", value: `${dm2.full_name}${dm2.role_title ? ` (${dm2.role_title})` : ""}`, ref_table: "contact", ref_id: dm2.contact_id });
+  const talk = c.how_to_talk?.trim() || "";
+  if (talk) facts.push({ label: "how_to_talk", value: talk, ref_table: null, ref_id: null });
+  if (talk) bullets.push({ role: "talk", text: clip4(talk), ref_table: dm2 ? "contact" : null, ref_id: dm2?.contact_id ?? null });
+  return { facts, bullets: bullets.slice(0, MAX_BULLETS2) };
+}
+function checkOutput(out, a) {
+  const rejected = [];
+  const factText = a.facts.map((f) => f.value).join(" \n ");
+  const allowed = /* @__PURE__ */ new Set([a.push.product_id, a.avoid.product_id, ...productsMentioned(factText, a.products)]);
+  const sources = [...a.facts.map((f) => f.value), ...a.sources];
+  const all = [...out.bullets.map((b) => b.text), out.spoken_script].join(" \n ");
+  const foreign = [...productsMentioned(all, a.products)].filter((id) => !allowed.has(id));
+  if (foreign.length) return { bullets: null, script: null, rejected: [`names product(s) other than push/avoid: ${foreign.map((id) => a.products.find((p) => p.id === id).name).join(", ")}`] };
+  const refOf = (labels) => a.facts.find((f) => labels.includes(f.label) && f.ref_table);
+  const kept = [];
+  let hasPush = false, hasAvoid = false;
+  for (const b of out.bullets.slice(0, MAX_BULLETS2)) {
+    const text = b.text.trim();
+    if (!text) continue;
+    const bad = unknownNumbers(text, sources);
+    if (bad.length) {
+      rejected.push(`bullet dropped (ungrounded number ${bad.join(", ")}): ${text}`);
+      continue;
+    }
+    if (words(text).length > MAX_BULLET_WORDS) {
+      rejected.push(`bullet dropped (over ${MAX_BULLET_WORDS} words): ${text}`);
+      continue;
+    }
+    const named = productsMentioned(text, a.products);
+    const isPush = named.has(a.push.product_id), isAvoid = named.has(a.avoid.product_id);
+    hasPush || (hasPush = isPush);
+    hasAvoid || (hasAvoid = isAvoid);
+    const ref = isPush ? { ref_table: "product_guidance", ref_id: a.push.guidance_id } : isAvoid ? { ref_table: "product_guidance", ref_id: a.avoid.guidance_id } : (() => {
+      const f = refOf(b.fact_labels ?? []);
+      return { ref_table: f?.ref_table ?? null, ref_id: f?.ref_id ?? null };
+    })();
+    kept.push({ text, ...ref });
+  }
+  let bullets = kept;
+  if (!hasPush || !hasAvoid) {
+    rejected.push(`bullets missing the ${!hasPush ? "push" : "avoid"} product after checks`);
+    bullets = null;
+  }
+  let script = out.spoken_script?.trim() || null;
+  const badScript = script ? unknownNumbers(script, sources) : [];
+  if (badScript.length) {
+    rejected.push(`script dropped (ungrounded number ${badScript.join(", ")})`);
+    script = null;
+  }
+  if (script && words(script).length > MAX_SCRIPT_WORDS) script = fitSpoken(script.match(/[^.!;;?]+[.!;;?]*/g)?.map((x) => x.trim()) ?? [script], MAX_SCRIPT_WORDS);
+  return { bullets, script, rejected };
+}
+var deterministicScript = (accountName2, bullets) => fitSpoken([`${accountName2}.`, ...bullets.map((b) => /[.!?…]$/.test(b.text) ? b.text : `${b.text}.`)], MAX_SCRIPT_WORDS);
+var visitSummary2 = (v, account, a) => ({
+  visit_id: v.id,
+  account,
+  planned_date: v.planned_date,
+  route_position: v.route_position ?? null,
+  status: v.status,
+  purpose: v.purpose ?? null,
+  reason: null,
+  lat: a.lat ?? null,
+  lng: a.lng ?? null
+});
+var accountRef5 = (a) => ({ id: a.id, name: a.name, account_type: a.account_type, postal_code: a.postal_code ?? null, city: null, distance_m: null, reason: null });
+var iso4 = (v) => {
+  const ms3 = msOf2(v);
+  return ms3 === null ? null : new Date(ms3).toISOString();
+};
+async function findVisit(db, me, req, day, now) {
+  if (!!req.visit_id === !!req.account_id) throw invalid("give exactly one of visit_id or account_id");
+  if (req.visit_id) {
+    const visit = await db.visit.require(req.visit_id);
+    return { visit, account: await requireAccount(db, me, visit.account_id) };
+  }
+  const account = await requireAccount(db, me, req.account_id);
+  const where = { account_id: account.id, planned_date: day, status: "planned" };
+  if (me.kind === "user") where.rep_id = me.id;
+  const visits = (await db.visit.all(where)).sort((a, b) => String(a.planned_start_at ?? "~").localeCompare(String(b.planned_start_at ?? "~")) || Number(a.route_position ?? 99) - Number(b.route_position ?? 99));
+  const next = visits.find((v) => (msOf2(v.planned_start_at) ?? Infinity) >= now) ?? visits[0];
+  if (!next) throw notFound(`no planned visit at ${account.name} today`, { account_id: account.id, date: day });
+  return { visit: next, account };
+}
+async function storedResponse(db, row, visit, account) {
+  const ids = [row.push_product_id, row.avoid_product_id].filter((x) => !!x);
+  const products = ids.length ? await db.product.all({ id: ids }) : [];
+  const hint = (id, reason) => {
+    const p = id ? products.find((x) => x.id === id) : void 0;
+    return p ? { product_id: p.id, name: p.name, reason: reason ?? "" } : void 0;
+  };
+  const out = {
+    visit_brief_id: row.id,
+    visit: visitSummary2(visit, accountRef5(account), account),
+    planned_start_at: iso4(visit.planned_start_at),
+    bullets: String(row.bullets_text ?? "").split("\n").map((s) => s.trim()).filter(Boolean).map((text) => ({ text, ref_table: null, ref_id: null })),
+    spoken_script: row.spoken_script ?? "",
+    status: row.status,
+    channel: row.channel ?? null
+  };
+  const push2 = hint(row.push_product_id, row.push_reason), avoid = hint(row.avoid_product_id, row.avoid_reason);
+  if (push2) out.push = push2;
+  if (avoid) out.avoid = avoid;
+  return out;
+}
+async function usualOf(db, accountId, day) {
+  const orders = (await db.sales_order.all({ account_id: accountId, status: "confirmed", order_date: { op: "gte", value: addDays(day, -180) } })).filter((o) => o.order_date >= addDays(day, -180));
+  if (!orders.length) return [];
+  const [lines, products] = await Promise.all([db.order_line.all({ order_id: orders.map((o) => o.id) }), db.product.all({})]);
+  const pm = new Map(products.map((p) => [p.id, p]));
+  return usualItems(orders.map((o) => ({ lines: lines.filter((l) => l.order_id === o.id).map((l) => ({ product_id: l.product_id, name: pm.get(l.product_id)?.name ?? "?", quantity: Number(l.quantity), unit: pm.get(l.product_id)?.unit ?? "piece" })) })));
+}
+var NO_LLM = async () => ({ ok: false, error: { code: "upstream_failed", message: "pitch not needed for the brief" }, attempts: 0, profile: "none", logs: [] });
+function makeImpl28(deps) {
+  const log2 = deps.log ?? ((m) => console.warn(m));
+  return async ({ req, db, me, platform }) => {
+    const now = deps.now?.() ?? Date.now();
+    const day = today(me.org, now);
+    const { visit, account } = await findVisit(db, me, req, day, now);
+    const existing = await db.visit_brief.findOne({ visit_id: visit.id });
+    if (existing && !req.regenerate) return await storedResponse(db, existing, visit, account);
+    const card = await makeImpl27({ pitch: NO_LLM, kb: async () => [], now: () => now, log: (m) => {
+      if (!/visit_card_pitch failed/.test(m)) log2(m);
+    } })(
+      { req: { account_id: account.id }, db, me, platform }
+    );
+    const [hints, usual, rep] = await Promise.all([
+      loadHints(db, { account, repId: visit.rep_id, day, now, org: me.org }),
+      usualOf(db, account.id, day),
+      db.app_user.get(visit.rep_id)
+    ]);
+    const lang = String(rep?.preferred_language ?? me.org.default_language ?? "el").toLowerCase().startsWith("en") ? "en" : "el";
+    const startLocal = visit.planned_start_at ? localParts(me.org, visit.planned_start_at).time.slice(0, 5) : null;
+    const { facts, bullets: codeBullets } = briefFacts({ lang, visit, card, usual, push: hints.push, avoid: hints.avoid, startLocal });
+    let bullets = codeBullets.map(({ role: _r, ...b }) => b);
+    let script = deterministicScript(account.name, bullets);
+    if (hints.push && hints.avoid) {
+      const products = [...hints.input.products.entries()].map(([id, p]) => ({ id, name: p.name }));
+      const company_values = await deps.kb(`Why push ${shortName(hints.push.name)} (${hints.push.reason}) and avoid ${shortName(hints.avoid.name)} (${hints.avoid.reason}) at a ${card.kind}? Values and what we never do.`).catch(() => []);
+      const input = {
+        language: lang,
+        rep_first_name: words(rep?.full_name ?? "")[0] ?? "",
+        account: card.account,
+        visit_reason: visit.purpose ?? null,
+        facts,
+        push: { product_id: hints.push.product_id, name: hints.push.name, reason: hints.push.reason },
+        avoid: { product_id: hints.avoid.product_id, name: hints.avoid.name, reason: hints.avoid.reason },
+        company_values: company_values.slice(0, 4),
+        how_to_talk_snippets: card.how_to_talk ? [card.how_to_talk] : [],
+        max_bullets: MAX_BULLETS2,
+        max_seconds: MAX_SECONDS
+      };
+      try {
+        const r = await deps.bullets(input);
+        if (r.ok) {
+          const c = checkOutput(r.value, { facts, push: hints.push, avoid: hints.avoid, products, sources: [hints.push.name, hints.push.reason, hints.avoid.name, hints.avoid.reason, account.name, input.rep_first_name] });
+          for (const m of c.rejected) log2(`visit-brief-get: ${m}`);
+          if (c.bullets?.length) bullets = c.bullets;
+          if (c.script) script = c.script;
+        } else log2(`visit-brief-get: visit_brief_bullets failed (${r.error.code}): ${r.error.message}`);
+      } catch (e) {
+        log2(`visit-brief-get: visit_brief_bullets threw: ${e?.message ?? e}`);
+      }
+    } else log2(`visit-brief-get: no ${hints.push ? "avoid" : "push"} candidate in product_guidance for ${account.name}; bullet omitted, code wording used`);
+    const rowData = {
+      visit_id: visit.id,
+      rep_id: visit.rep_id,
+      account_id: account.id,
+      bullets_text: bullets.map((b) => b.text).join("\n"),
+      spoken_script: script,
+      push_product_id: hints.push?.product_id ?? null,
+      push_reason: hints.push?.reason ?? null,
+      push_guidance_id: hints.push?.guidance_id ?? null,
+      avoid_product_id: hints.avoid?.product_id ?? null,
+      avoid_reason: hints.avoid?.reason ?? null,
+      avoid_guidance_id: hints.avoid?.guidance_id ?? null,
+      generated_at: new Date(now).toISOString()
+    };
+    const row = existing ? await db.visit_brief.update(existing.id, rowData) : await db.visit_brief.insert({ ...rowData, status: "generated", channel: null });
+    const out = {
+      visit_brief_id: row.id,
+      visit: visitSummary2(visit, card.account, account),
+      planned_start_at: iso4(visit.planned_start_at),
+      bullets,
+      spoken_script: script,
+      status: row.status,
+      channel: row.channel ?? null
+    };
+    if (hints.push) out.push = { product_id: hints.push.product_id, name: hints.push.name, reason: hints.push.reason };
+    if (hints.avoid) out.avoid = { product_id: hints.avoid.product_id, name: hints.avoid.name, reason: hints.avoid.reason };
+    return out;
+  };
+}
+
 // shared/handlers/src/visit-plan-accept.ts
-function makeImpl23(clock = {}) {
+function makeImpl29(clock = {}) {
   return async ({ req, db, me }) => {
     const plan = await db.visit_plan.require(req.plan_id);
     assertOwner(me, plan.rep_id, "plan");
@@ -9127,8 +10764,8 @@ function makeImpl23(clock = {}) {
     return { plan_id: saved.id, status: saved.status };
   };
 }
-var impl36 = makeImpl23();
-var handle29 = defineFunction("visit-plan-accept", impl36);
+var impl41 = makeImpl29();
+var handle34 = defineFunction("visit-plan-accept", impl41);
 
 // shared/handlers/src/visit-plan-get.ts
 var workWeek = (weekStart) => [0, 1, 2, 3, 4].map((i) => addDays(weekStart, i));
@@ -9163,7 +10800,7 @@ async function visitSummaries(db, visits) {
     };
   });
 }
-var visitSummary2 = async (db, v) => (await visitSummaries(db, [v]))[0];
+var visitSummary3 = async (db, v) => (await visitSummaries(db, [v]))[0];
 var byRoute2 = (a, b) => (a.route_position ?? Infinity) - (b.route_position ?? Infinity) || a.account_id.localeCompare(b.account_id) || a.id.localeCompare(b.id);
 async function dayVisits(db, repId, date) {
   return (await db.visit.all({ rep_id: repId, planned_date: date, status: ["planned", "done"] })).sort(byRoute2);
@@ -9172,7 +10809,7 @@ function capWarning(p, date, count) {
   const cap = p.org.visits_per_day;
   return count > cap ? `${date} now has ${count} visits, above the daily cap of ${cap}` : null;
 }
-function makeImpl24(clock = {}) {
+function makeImpl30(clock = {}) {
   return async ({ req, db, me }) => {
     const repId = req.rep_id ?? me.id;
     assertOwnerOrTeam(me, repId, "plan");
@@ -9190,8 +10827,8 @@ function makeImpl24(clock = {}) {
     };
   };
 }
-var impl37 = makeImpl24();
-var handle30 = defineFunction("visit-plan-get", impl37);
+var impl42 = makeImpl30();
+var handle35 = defineFunction("visit-plan-get", impl42);
 
 // shared/handlers/src/visit-update.ts
 async function targetVisit(db, me, req, todayDate) {
@@ -9218,7 +10855,7 @@ async function placeInDay(db, visit, position) {
   }
   return self;
 }
-function makeImpl25(via = "app", clock = {}) {
+function makeImpl31(via = "app", clock = {}) {
   return async ({ req, db, me }) => {
     const nowMs = (clock.now ?? Date.now)();
     const todayDate = today(me.org, nowMs);
@@ -9287,54 +10924,64 @@ function makeImpl25(via = "app", clock = {}) {
       }
     }
     const dayCount = (await dayVisits(db, visit.rep_id, visit.planned_date)).length;
-    return { visit: await visitSummary2(db, visit), day_count: dayCount, warning: capWarning(me, visit.planned_date, dayCount) };
+    return { visit: await visitSummary3(db, visit), day_count: dayCount, warning: capWarning(me, visit.planned_date, dayCount) };
   };
 }
-var impl38 = makeImpl25("app");
-var buddyImpl = makeImpl25("buddy");
-var handle31 = defineFunction("visit-update", impl38);
+var impl43 = makeImpl31("app");
+var buddyImpl = makeImpl31("buddy");
+var handle36 = defineFunction("visit-update", impl43);
 
 // shared/handlers/src/merc-buddy-entry.ts
-var visit_card_get_impl = makeImpl22({ pitch: (input) => callStructured("visit_card_pitch", input, { instructions: PITCH_INSTRUCTIONS }), kb: async () => [] });
-var ai_action_undo_impl = null;
-var PRESENT_HANDLERS = ["account-convert", "account-resolve", "alert-act", "alerts-list", "approval-resolve", "approval-status", "approvals-list", "ask-crm", "briefing-get", "candidate-act", "candidate-add", "candidates-list", "debrief-process", "debrief-result-get", "discount-check", "discount-request", "eod-summary", "escalate", "my-performance", "order-upsert", "product-lookup", "prospect-search", "task-create", "task-update", "today-get", "visit-card-get", "visit-plan-accept", "visit-plan-get", "visit-update"];
-var MISSING_HANDLERS = ["ai-action-undo"];
+var visit_brief_get_impl = makeImpl28({ bullets: (input) => callStructured("visit_brief_bullets", input, { instructions: BRIEF_INSTRUCTIONS }), kb: async () => [] });
+var visit_card_get_impl = makeImpl27({ pitch: (input) => callStructured("visit_card_pitch", input, { instructions: PITCH_INSTRUCTIONS }), kb: async () => [] });
+var TOOL_FACTORIES = { "buddy-call-start": makeImpl11, "buddy-call-outcome": makeImpl12, "debrief-confirm-send": makeImpl21 };
+var PRESENT_HANDLERS = ["account-convert", "account-resolve", "ai-action-undo", "alert-act", "alerts-list", "approval-resolve", "approval-status", "approvals-list", "ask-crm", "briefing-get", "buddy-call-outcome", "buddy-call-start", "candidate-act", "candidate-add", "candidates-list", "debrief-confirm-send", "debrief-process", "debrief-result-get", "discount-check", "discount-request", "eod-summary", "escalate", "feedback-record", "my-performance", "order-upsert", "product-lookup", "prospect-search", "task-create", "task-update", "today-get", "visit-brief-get", "visit-card-get", "visit-plan-accept", "visit-plan-get", "visit-update"];
+var MISSING_HANDLERS = [];
 export {
   MISSING_HANDLERS,
   MercError,
   PRESENT_HANDLERS,
+  TOOL_FACTORIES,
   impl2 as account_convert_impl,
   impl3 as account_resolve_impl,
-  ai_action_undo_impl,
-  impl6 as alert_act_impl,
-  impl5 as alerts_list_impl,
-  impl9 as approval_resolve_impl,
-  impl10 as approval_status_impl,
-  impl7 as approvals_list_impl,
-  impl13 as ask_crm_impl,
-  impl14 as briefing_get_impl,
+  impl4 as ai_action_undo_impl,
+  impl7 as alert_act_impl,
+  impl6 as alerts_list_impl,
+  impl10 as approval_resolve_impl,
+  impl11 as approval_status_impl,
+  impl8 as approvals_list_impl,
+  impl14 as ask_crm_impl,
+  impl15 as briefing_get_impl,
+  depsFrom as buddyDepsFrom,
+  impl17 as buddy_call_outcome_impl,
+  impl16 as buddy_call_start_impl,
   callerFromTool,
-  impl17 as candidate_act_impl,
-  impl23 as candidate_add_impl,
-  impl24 as candidates_list_impl,
-  impl26 as debrief_process_impl,
-  impl27 as debrief_result_get_impl,
-  impl28 as discount_check_impl,
-  impl29 as discount_request_impl,
-  impl30 as eod_summary_impl,
-  impl31 as escalate_impl,
+  impl20 as candidate_act_impl,
+  impl26 as candidate_add_impl,
+  impl27 as candidates_list_impl,
+  closeCallFromSession,
+  impl30 as debrief_confirm_send_impl,
+  impl29 as debrief_process_impl,
+  impl31 as debrief_result_get_impl,
+  impl32 as discount_check_impl,
+  impl33 as discount_request_impl,
+  impl34 as eod_summary_impl,
+  impl35 as escalate_impl,
+  impl36 as feedback_record_impl,
   globalString,
-  impl12 as my_performance_impl,
-  impl32 as order_upsert_impl,
-  impl11 as product_lookup_impl,
-  impl22 as prospect_search_impl,
+  impl13 as my_performance_impl,
+  openCallFromSession,
+  impl37 as order_upsert_impl,
+  impl12 as product_lookup_impl,
+  impl25 as prospect_search_impl,
   runAsTool,
   secretString,
-  impl33 as task_create_impl,
-  impl34 as task_update_impl,
-  impl35 as today_get_impl,
+  impl38 as task_create_impl,
+  impl39 as task_update_impl,
+  impl40 as today_get_impl,
+  visit_brief_get_impl,
   visit_card_get_impl,
-  impl36 as visit_plan_accept_impl,
-  impl37 as visit_plan_get_impl,
+  impl41 as visit_plan_accept_impl,
+  impl42 as visit_plan_get_impl,
   buddyImpl as visit_update_impl
 };

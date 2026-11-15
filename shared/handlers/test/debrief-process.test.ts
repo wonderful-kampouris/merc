@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { runAsTool, validateRequest, validateResponse } from "../../core/src/index";
-import { decode, restore, sameRow } from "../../autonomy/src/snapshot";
+import { canonicalRow, decode, restore, sameRow } from "../../autonomy/src/snapshot";
 import { kit, ok, errCode, IDS } from "../src/_lib/testkit";
 import { bundleText, FUNCTIONS } from "../src/_lib/bundle";
 import { groundedChannel, groundedDate, groundOutput, extractionInput, makeHandle, makeImpl, matchCompetitor, accountsMentioned, type DebriefDeps } from "../src/debrief-process";
@@ -81,7 +81,12 @@ describe("fn:debrief-process", () => {
     const actions = (await t.db.ai_action.all({ voice_log_id: r.result!.voice_log_id, status: "applied" })).sort((a, b) => Number(b.created_at) - Number(a.created_at));
     expect(actions.length).toBeGreaterThanOrEqual(8);
     for (const a of actions) await restore(t.db, decode(a.before_snapshot_json)!.rows, decode(a.after_snapshot_json)!.rows);
-    for (const [k, row] of before) { const [tb, id] = k.split(":"); expect(sameRow(await (t.db as any)[tb!].get(id), row as any)).toBe(true); }
+    for (const [k, row] of before) {
+      const [tb, id] = k.split(":");
+      const now = await (t.db as any)[tb!].get(id);
+      expect(sameRow(now, row as any)).toBe(true);
+      expect(canonicalRow(tb as any, now)).toEqual(canonicalRow(tb as any, row as any)); // strict: every column + created_at
+    }
     for (const tb of ["task", "competitor_signal", "campaign_exposure", "sales_order", "activity"] as const) expect(await (t.db[tb] as any).all({ voice_log_id: r.result!.voice_log_id })).toHaveLength(0);
   });
 
@@ -162,6 +167,25 @@ describe("fn:debrief-process", () => {
     const spoof = ok(await run(t, "nikos", { utterance: "Café Miltos ok", account_id: IDS.miltos, caller: { user_id: IDS.thanasis } }, deps(empty())));
     expect((await t.db.voice_log.get(spoof.result!.voice_log_id))!.rep_id).toBe(IDS.nikos);
     expect(errCode(await makeHandle(deps(empty()))(t.fnCtx(null, { utterance: "x" }) as never))).toBe("forbidden");
+  });
+
+  it("corrects_voice_log_id: undoes every applied line of the original and re-logs original + fix, no second visit", async () => {
+    const t = kit();
+    const first = ok(await run(t, "nikos", { utterance: J1, account_id: IDS.miltos }, deps(j1Output())));
+    const firstId = first.result!.voice_log_id;
+    const transcripts: string[] = [];
+    const d = deps(j1Output());
+    const extract = d.extract;
+    d.extract = async (input: any, rules: any) => { transcripts.push(String(input.utterance ?? "")); return extract(input, rules); };
+    const fix = ok(await run(t, "nikos", { utterance: "it was 10 kilos, not 12", corrects_voice_log_id: firstId }, d));
+    expect(fix.status).toBe("completed");
+    expect(fix.result!.account.id).toBe(IDS.miltos);
+    expect(transcripts[0]).toContain(" Correction: it was 10 kilos, not 12");
+    const old = await t.db.ai_action.all({ voice_log_id: firstId });
+    expect(old.filter((a) => a.status === "applied").map((a) => a.action_type_code)).toEqual([]);
+    expect(await t.db.task.all({ voice_log_id: firstId })).toHaveLength(0);
+    expect(await t.db.task.all({ voice_log_id: fix.result!.voice_log_id })).toHaveLength(1);
+    expect(errCode(await run(t, "dimitra", { utterance: "fix", corrects_voice_log_id: firstId }, deps(j1Output())))).toBe("forbidden");
   });
 
   it("exactly one of voice_log_id / utterance", async () => {

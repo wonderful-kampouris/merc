@@ -1,0 +1,17 @@
+{
+  "name": "@merc/infra-governance",
+  "private": true,
+  "type": "module",
+  "description": "WP-QA-02: governance safety net for external sends (approval before any Merc Gmail send leaves the platform) and the CI eval gate that blocks demo promotion (REQ-OPS-004).",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "apply": "node --experimental-strip-types --no-warnings src/apply.ts",
+    "eval-gate": "node --experimental-strip-types --no-warnings src/eval-gate.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

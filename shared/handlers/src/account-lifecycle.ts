@@ -8,7 +8,7 @@
 // WP-CORE-03 (shared/autonomy + fn:ai-action-undo) is not available, so the snapshot is written here in the
 // format shared/autonomy/src/snapshot.ts defines ({v:1, rows:[{table,id,row}]}), and undoMarkAccountLost() below
 // is the round-trip the undo engine must perform for this action type.
-import { conflict, defineCron, forbidden, notFound, today, type Db, type FunctionContext, type Impl, type Principal, type Row } from "../../core/src/index";
+import { isAdmin, conflict, defineCron, forbidden, notFound, today, type Db, type FunctionContext, type Impl, type Principal, type Row } from "../../core/src/index";
 import { cronData, inChunks } from "./metrics-rollup";
 
 export const ACTION = "mark_account_lost";
@@ -87,7 +87,7 @@ export const handle = (context: FunctionContext & { params?: unknown }) => defin
 export async function undoMarkAccountLost(db: Db, me: Principal, aiActionId: string, now: number = Date.now()): Promise<{ ai_action_id: string; status: "undone"; restored: { table: string; id: string } }> {
   const action = await db.ai_action.require(aiActionId);
   if (action.action_type_code !== ACTION) throw notFound("not a mark_account_lost action", { ai_action_id: aiActionId });
-  if (me.role !== "admin" && action.on_behalf_of !== me.id) throw forbidden("ai action is outside your scope");
+  if (!isAdmin(me) && action.on_behalf_of !== me.id) throw forbidden("ai action is outside your scope");
   if (action.status !== "applied") throw conflict(`ai action is ${action.status}, not applied`);
   const snap = JSON.parse(action.before_snapshot_json ?? "null") as { v: number; rows: Array<{ table: string; id: string; row: Record<string, unknown> }> } | null;
   const before = snap?.v === SNAPSHOT_VERSION ? snap.rows.find((r) => r.table === "account") : undefined;

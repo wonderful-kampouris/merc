@@ -84,6 +84,17 @@
             "type": "null"
           }
         ]
+      },
+      "corrects_voice_log_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
       }
     },
     "additionalProperties": false
@@ -166,5 +177,5 @@
     "draft_message"
   ],
   "integrations": [],
-  "notes": "Exactly one of voice_log_id / utterance. Target p95 < 20 s. Pushes events result_card.ready."
+  "notes": "Exactly one of voice_log_id / utterance. corrects_voice_log_id (with utterance = the correction words): code undoes every applied line of that completed debrief, then processes its transcript + ' Correction: ' + utterance for the same account, so a fix never creates a second visit. Target p95 < 20 s. Pushes events result_card.ready."
 }

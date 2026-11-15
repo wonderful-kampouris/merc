@@ -1,0 +1,16 @@
+{
+  "name": "@merc/tests-perf",
+  "private": true,
+  "type": "module",
+  "description": "WP-QA-02: performance gates. Debrief p95 from measured dev runs (REQ-NFR-001), function timeouts (REQ-NFR-003), synthetic 50 reps / 5,000 accounts list load (REQ-NFR-006).",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "debrief-p95": "node --experimental-strip-types --no-warnings src/debrief-p95.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "buddy-call-outcome",
+  "description": "Merc fn:buddy-call-outcome: records how an outbound buddy call ended; not answered -> one WhatsApp ping or push + inbox, never a retry (REQ-BUD-015) (contracts/functions/buddy-call-outcome.json). Source: Merc monorepo shared/handlers/src/buddy-call-outcome.ts.",
+  "method": "POST",
+  "path_slug": "buddy-call-outcome",
+  "param_mapping": {}
+}

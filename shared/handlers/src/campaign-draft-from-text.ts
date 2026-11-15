@@ -4,7 +4,7 @@
 // id (accent/case/plural tolerant, unique prefix match) and lists the names it could not resolve in `unresolved`.
 // The draft has the fn:campaign-upsert request shape (status "draft") plus the resolved *_names for display.
 // Writes nothing. If the model is unavailable or fails, a deterministic name scan of the text fills the form instead.
-import { addDays, defineFunction, isAdmin, isDate, MercError, today, visibleTerritoryIds, visibleUserIds, type Impl, type Principal } from "../../core/src/index";
+import { addDays, defineFunction, isAdmin, isDate, MercError, today, visibleTerritoryIds, visibleUserIds, type Impl, type Principal, stripAccents } from "../../core/src/index";
 import { callStructured, type ModelFactory } from "../../llm/src/index";
 
 export interface DraftDeps { model?: ModelFactory; now?: () => number; log?: (m: string) => void }
@@ -12,7 +12,7 @@ interface Cand { id: string; name: string }
 
 /** Lowercase, no accents, alphanumerics only, light English plural stemming. */
 export function tokens(s: string): string[] {
-  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().split(/[^a-z0-9\u0370-\u03ff]+/).filter(Boolean)
+  return stripAccents(s).toLowerCase().split(/[^a-z0-9\u0370-\u03ff]+/).filter(Boolean)
     .map((t) => (t.length > 4 && t.endsWith("ies") ? `${t.slice(0, -3)}y` : t.length > 3 && t.endsWith("s") && !t.endsWith("ss") ? t.slice(0, -1) : t));
 }
 const key = (s: string) => tokens(s).join(" ");

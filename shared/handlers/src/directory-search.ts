@@ -5,7 +5,7 @@
 // Source choice: global variable MERC_PROSPECT_SOURCE = auto | csv | overpass (default auto). auto uses the CSV for
 // list uploads and for areas the seeded list covers (Chalandri, 15231-15234), Overpass everywhere else.
 // Idempotent per search: rows whose external_ref is already in the search are skipped (results cached per search).
-import { globalString, invalid, MercError, type Db, type FunctionContext, type Impl, type PlatformLike, type Principal, type Row } from "../../core/src/index";
+import { globalString, invalid, MercError, type Db, type FunctionContext, type Impl, type PlatformLike, type Principal, type Row, stripAccents } from "../../core/src/index";
 import { defineSystemFunction, orgOfSearch } from "./candidate-get";
 import { normDomain, normName, normPhone } from "./candidate-dedupe";
 import { sourceProblem } from "./dossier-save";
@@ -73,7 +73,7 @@ export function osmSelectors(categories: string[]): string[] {
 const ACCENTS: Record<string, string> = { α: "[αά]", ε: "[εέ]", η: "[ηή]", ι: "[ιίϊΐ]", ο: "[οό]", υ: "[υύϋΰ]", ω: "[ωώ]" };
 /** Accent-insensitive regex for an area name (Greek vowels match with or without tonos). Only letters/digits/space/-. */
 export function areaPattern(area: string): string {
-  const clean = area.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^\p{L}\p{N} -]/gu, " ").trim().replace(/\s+/g, " ");
+  const clean = stripAccents(area.toLowerCase()).replace(/[^a-z0-9\u00c0-\u024f\u0370-\u03ff\u1f00-\u1fff -]/g, " ").trim().replace(/\s+/g, " ");
   let out = "";
   for (const ch of clean) out += ACCENTS[ch] ?? ch;
   return out;

@@ -64,6 +64,8 @@ interface PrincipalBase {
   team_territory_ids: string[];
   /** Union of role permission keys from contracts/app/app.json (row checks still apply). */
   permissions: string[];
+  /** Open demo mode (guest row "open-access"): roles are removed, so scope checks treat the caller as admin. */
+  open_access?: boolean;
 }
 /** A signed-in Merc user (app session or verified buddy-tool claim). */
 export interface UserPrincipal extends PrincipalBase {
@@ -138,10 +140,25 @@ export function rolePermissions(role: RoleCode): string[] {
 
 const ROLES: readonly RoleCode[] = ["rep", "manager", "admin"];
 
+/**
+ * Open demo mode: when the org has an active app_user with wonderful_user_id "open-access", roles are removed.
+ * Every caller holds every permission (row scoping still follows the role) and unknown platform users act as that row.
+ * Without the row, roles apply as specified (REQ-CORE-002/009).
+ */
+export const OPEN_ACCESS_WUID = "open-access";
+async function openAccess(db: ReturnType<typeof createDb>): Promise<boolean> {
+  const g = await db.app_user.findOne({ wonderful_user_id: OPEN_ACCESS_WUID });
+  return !!g && g.status === "active";
+}
+
 export async function resolvePrincipal(api: TablesApi, source: CallerSource): Promise<UserPrincipal> {
   const root = createDb(api);
   let user: Row<"app_user"> | null | undefined;
-  if (source.kind === "wonderful_user") user = await root.app_user.findOne({ wonderful_user_id: source.wonderfulUserId });
+  if (source.kind === "wonderful_user") {
+    user = await root.app_user.findOne({ wonderful_user_id: source.wonderfulUserId });
+    // Open demo mode (roles removed): a platform user with no Merc record acts as the org's guest row (wonderful_user_id "open-access").
+    if (!user) user = await root.app_user.findOne({ wonderful_user_id: OPEN_ACCESS_WUID });
+  }
   else if (source.kind === "app_user") user = await root.app_user.get(source.appUserId);
   else {
     const matches = (await root.app_user.all({ phone: source.number }))
@@ -174,7 +191,8 @@ export async function resolvePrincipal(api: TablesApi, source: CallerSource): Pr
     const teamTerr = (await db.territory_rep.all({ user_id: team_user_ids })).map((r) => r.territory_id);
     team_territory_ids = [...new Set([...managed, ...teamTerr])];
   }
-  return { kind: "user", id: user.id, role, org_id: user.org_id, user, org, manager, territory_ids, team_user_ids, team_territory_ids, permissions: rolePermissions(role) };
+  const open = await openAccess(db);
+  return { kind: "user", id: user.id, role, org_id: user.org_id, user, org, manager, territory_ids, team_user_ids, team_territory_ids, ...(open ? { open_access: true } : {}), permissions: open ? rolePermissions("admin") : rolePermissions(role) };
 }
 
 /**

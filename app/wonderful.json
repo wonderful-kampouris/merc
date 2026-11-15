@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "name": "merc",
+  "name": "Merc Full",
   "slug": "merc",
   "description": "Merc AI field-sales CRM: rep (mobile) and management shells",
   "roles": {
@@ -118,13 +118,13 @@
       },
       {
         "key": "voicelog.create",
-        "resource": "voicelogs",
+        "resource": "voicelog",
         "action": "create",
         "relations": []
       },
       {
         "key": "voicelog.read",
-        "resource": "voicelogs",
+        "resource": "voicelog",
         "action": "read",
         "relations": [
           "owner"
@@ -132,7 +132,7 @@
       },
       {
         "key": "aiaction.read",
-        "resource": "aiactions",
+        "resource": "aiaction",
         "action": "read",
         "relations": [
           "owner",
@@ -141,7 +141,7 @@
       },
       {
         "key": "aiaction.undo",
-        "resource": "aiactions",
+        "resource": "aiaction",
         "action": "undo",
         "relations": [
           "owner"
@@ -302,7 +302,7 @@
       },
       {
         "key": "import.manage",
-        "resource": "imports",
+        "resource": "import",
         "action": "manage",
         "relations": []
       },
@@ -1065,7 +1065,7 @@
     "audience_roles": {
       "anonymous": [],
       "workspace_members": [
-        "rep"
+        "admin"
       ],
       "app_editors": [
         "admin"

@@ -1,0 +1,13 @@
+{
+  "kind": "cron",
+  "name": "buddy-callbacks-due",
+  "description": "Merc fn:buddy-callbacks-due: starts scheduled buddy calls/WhatsApp pings that are due and times out unanswered calls (REQ-BUD-014/015) (contracts/functions/buddy-callbacks-due.json). Source: Merc monorepo shared/handlers/src/buddy-callbacks-due.ts.",
+  "timeout_ms": 300000,
+  "cron_schedules": [
+    {
+      "cron_expression": "*/5 * * * *",
+      "timezone": "Europe/Athens",
+      "enabled": true
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "cron",
+  "name": "debrief-confirm-due",
+  "description": "Merc fn:debrief-confirm-due: sends debrief confirmations and marks unanswered ones no_reply (contracts/functions/debrief-confirm-due.json, REQ-MTG-006/007). Source: Merc monorepo shared/handlers/src/debrief-confirm-due.ts.",
+  "timeout_ms": 300000,
+  "cron_schedules": [
+    {
+      "cron_expression": "* * * * *",
+      "timezone": "Europe/Athens",
+      "enabled": true
+    }
+  ]
+}

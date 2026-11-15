@@ -6,8 +6,8 @@ import { loadToday, TodayUnavailableError } from "./loadToday";
 import { createLocalTodayCache } from "./planCache";
 import TodayView, { type TodayViewState } from "./TodayView";
 
-/** Live polling refetches at most this often (the socket pushes briefing.ready / plan.proposed). */
-const MIN_REFETCH_MS = 60_000;
+/** Today refreshes itself this often even while the socket is open, so a logged meeting shows up within seconds. */
+const REFRESH_MS = 8_000;
 
 const isOnline = (): boolean => (typeof navigator === "undefined" ? true : navigator.onLine !== false);
 
@@ -15,13 +15,14 @@ const isOnline = (): boolean => (typeof navigator === "undefined" ? true : navig
 export default function Today({ screen, client, openLiveSocket, navigate, lang }: ScreenProps) {
   const cache = useMemo(() => createLocalTodayCache(), []);
   const [state, setState] = useState<TodayViewState>({ status: "loading" });
+  const [completing, setCompleting] = useState<ReadonlySet<string>>(new Set());
   const lastFetch = useRef(0);
   const seq = useRef(0);
 
-  const refetch = useCallback(async () => {
+  const refetch = useCallback(async (quiet = false) => {
     const mine = ++seq.current;
     lastFetch.current = Date.now();
-    setState((s) => (s.status === "ready" ? { ...s, refreshing: true } : { status: "loading" }));
+    if (!quiet) setState((s) => (s.status === "ready" ? { ...s, refreshing: true } : { status: "loading" }));
     try {
       const load = await loadToday(client, { cache, online: isOnline(), now: new Date() });
       if (mine === seq.current) setState({ status: "ready", load, refreshing: false });
@@ -36,7 +37,11 @@ export default function Today({ screen, client, openLiveSocket, navigate, lang }
     const onNet = () => void refetch();
     globalThis.addEventListener?.("online", onNet);
     globalThis.addEventListener?.("offline", onNet);
+    const timer = setInterval(() => {
+      if (Date.now() - lastFetch.current >= REFRESH_MS - 500 && !document.hidden) void refetch(true);
+    }, REFRESH_MS);
     return () => {
+      clearInterval(timer);
       globalThis.removeEventListener?.("online", onNet);
       globalThis.removeEventListener?.("offline", onNet);
     };
@@ -46,10 +51,10 @@ export default function Today({ screen, client, openLiveSocket, navigate, lang }
     types: screen.events,
     openSocket: openLiveSocket,
     poll: () => {
-      if (Date.now() - lastFetch.current >= MIN_REFETCH_MS) void refetch();
+      if (Date.now() - lastFetch.current >= REFRESH_MS) void refetch(true);
     },
     onEvent: (e) => {
-      if (e.type === "briefing.ready" || e.type === "plan.proposed") void refetch();
+      void refetch(true);
     },
   });
 
@@ -68,6 +73,21 @@ export default function Today({ screen, client, openLiveSocket, navigate, lang }
       }}
       onRecord={() => navigate("/rep/record")}
       onOpenWeek={() => navigate("/rep/week")}
+      completing={completing}
+      onCompleteTask={(taskId) => {
+        setCompleting((s) => new Set(s).add(taskId));
+        client
+          .call("task-update", { task_id: taskId, status: "done" })
+          .then(() => refetch(true))
+          .catch(() => undefined)
+          .finally(() =>
+            setCompleting((s) => {
+              const n = new Set(s);
+              n.delete(taskId);
+              return n;
+            }),
+          );
+      }}
     />
   );
 }

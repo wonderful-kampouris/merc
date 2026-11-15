@@ -5,7 +5,7 @@ import { createFakeClient } from "./testing/fakeClient";
 import { briefingResult, performanceResult, planResult, todayResult } from "./testing/fixtures";
 
 const NOW = new Date(2026, 10, 15, 8, 0);
-const ok = { "today-get": () => todayResult(), "briefing-get": () => briefingResult(), "visit-plan-get": () => planResult(), "my-performance": () => performanceResult() };
+const ok = { "today-get": () => todayResult(), "briefing-get": () => briefingResult(), "visit-plan-get": () => planResult(), "my-performance": () => performanceResult(), "tasks-list": () => ({ items: [{ id: "6f9e1a52-1111-4111-8111-111111111111", task_id: "6f9e1a52-1111-4111-8111-111111111111", title: "Send technician", status: "open", due_at: "2026-11-19T09:00:00Z", overdue: false, account_id: null, account_name: "Café Miltos" }], page: { page: 1, limit: 20, total: 1 } }) };
 const down = () => {
   throw new Error("Failed to fetch");
 };
@@ -18,7 +18,8 @@ describe("loadToday (REQ-BRF-004 offline plan cache)", () => {
     expect(r.source).toBe("live");
     expect(r.failed).toEqual([]);
     expect(r.data.today.visits).toHaveLength(3);
-    expect(calls.map((c) => c.slug).sort()).toEqual(["briefing-get", "my-performance", "today-get", "visit-plan-get"]);
+    expect(calls.map((c) => c.slug).sort()).toEqual(["briefing-get", "my-performance", "tasks-list", "today-get", "visit-plan-get"]);
+    expect(r.data.tasks?.map((x) => x.title)).toEqual(["Send technician"]);
     for (const c of calls) expect(screen.functions).toContain(c.slug);
     expect(calls.find((c) => c.slug === "my-performance")?.params).toEqual({ period: "week" });
     expect(cache.entry?.data.today.date).toBe("2026-11-15");

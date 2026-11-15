@@ -1,0 +1,17 @@
+{
+  "name": "@merc/infra-monitors",
+  "private": true,
+  "type": "module",
+  "description": "WP-QA-02: platform monitors from contracts/platform/platform.json (REQ-OPS-003) and the merc-watch-* cron functions that back the table-derived ones.",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "build": "node --experimental-strip-types --no-warnings src/build.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

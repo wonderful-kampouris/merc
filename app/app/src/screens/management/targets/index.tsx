@@ -11,6 +11,7 @@ import { errorDetail, errorKey } from "../dashboard/shared/errors";
 import { date, pct } from "../dashboard/shared/format";
 import { Region } from "../dashboard/shared/Region";
 import { useAsync } from "../dashboard/shared/useAsync";
+import RepAvatar, { personOption } from "../../../shell/RepAvatar";
 import messages from "./i18n";
 import { blankForm, byMetric, formFromTarget, knowsScope, listRequest, METRICS, PERIOD_CHOICES, SCOPES, upsertRequest, validate, type PeriodChoice, type TargetForm } from "./logic";
 
@@ -101,12 +102,16 @@ export function TargetsView(props: { items: readonly TargetProgress[]; dir?: Dir
               const f = targetFigures(x, lang);
               const pace = targetPace(x);
               const extra = x as TargetProgress & Record<string, unknown>;
-              const who = dir.name("user", extra.user_id) ?? dir.name("territory", extra.territory_id) ?? (extra.scope === "org" ? t("scope.org") : null);
+              const repName = dir.name("user", extra.user_id);
+              const who = repName ?? dir.name("territory", extra.territory_id) ?? (extra.scope === "org" ? t("scope.org") : null);
               return (
                 <Card.List.Item key={x.target_id}>
                   <Layout.Stack gap="xs">
                     <Layout.Row split>
-                      <Text variant="body-sm">{who ?? t("row.period", { from: date(x.period_start, lang), to: date(x.period_end, lang) })}</Text>
+                      <Layout.Row gap="xs">
+                        {repName ? <RepAvatar name={repName} /> : null}
+                        <Text variant="body-sm">{who ?? t("row.period", { from: date(x.period_start, lang), to: date(x.period_end, lang) })}</Text>
+                      </Layout.Row>
                       <Layout.Row gap="xs">
                         <Badge text={t(`pace.${pace}` as Key)} color={pace === "ahead" ? "green" : pace === "behind" ? "orange" : "red"} size="small" />
                         <Tooltip content={t("row.edit")}>
@@ -178,7 +183,7 @@ function TargetModal(props: { client: MercClient; dir: Directory; initial: Targe
           </ToggleGroup>
         </Layout.Stack>
         {f.scope === "user" ? (
-          <Select aria-label={t("form.user")} placeholder={t("form.user")} value={f.user_id} onChange={(v) => setF({ ...f, user_id: v })} options={dir.reps.map((r) => ({ value: r.id, label: r.name }))} status={touched && !f.user_id ? "error" : undefined} />
+          <Select aria-label={t("form.user")} placeholder={t("form.user")} value={f.user_id} onChange={(v) => setF({ ...f, user_id: v })} options={dir.reps.map((r) => ({ value: r.id, label: r.name }))} renderOption={personOption} renderValue={personOption} status={touched && !f.user_id ? "error" : undefined} />
         ) : null}
         {f.scope === "territory" ? (
           <Select aria-label={t("form.territory")} placeholder={t("form.territory")} value={f.territory_id} onChange={(v) => setF({ ...f, territory_id: v })} options={dir.territories.map((r) => ({ value: r.id, label: r.name }))} status={touched && !f.territory_id ? "error" : undefined} />

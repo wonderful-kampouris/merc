@@ -1,0 +1,5 @@
+[
+  { "slug": "instant-in-specialty", "name": "Avoid instant at specialty cafés", "question": "Why should a rep not sell Frappé Instant to a specialty café?", "expected_answer": "Instant or budget lines in a specialty café that buys our premium espresso undercut the story we sold them; we protect the premium position of our espresso.", "gate": false },
+  { "slug": "fix-before-sell", "name": "Fix before you sell", "question": "The customer has an open problem. Should I pitch a new product first?", "expected_answer": "No. Fix before you sell: a customer with an open problem gets a fix and a date before any new product.", "gate": false },
+  { "slug": "out-of-stock", "name": "Honest promises", "question": "A product is out of stock. What do we promise?", "expected_answer": "Never promise a delivery we cannot keep; say stock is short and do not push it.", "gate": false }
+]

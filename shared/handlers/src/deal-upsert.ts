@@ -1,7 +1,7 @@
 // fn:deal-upsert (contracts/functions/deal-upsert.json, scope account): create a deal or patch one.
 // `fields` is a free object in the contract; only the keys below are accepted, each validated here.
 // Every stage change (including the first stage of a new deal) writes tbl:deal_stage_history.
-import { defineFunction, forbidden, inTeam, invalid, isDate, requireAccount, type Db, type Impl, type Row, type TableRows, type UserPrincipal } from "../../core/src/index";
+import { isAdmin, defineFunction, forbidden, inTeam, invalid, isDate, requireAccount, type Db, type Impl, type Row, type TableRows, type UserPrincipal } from "../../core/src/index";
 
 export const DEAL_FIELDS = ["title", "stage_code", "amount_minor", "expected_close_date", "next_step", "owner_id"] as const;
 export const DEFAULT_STAGE = "new";
@@ -57,7 +57,7 @@ async function requireStage(db: Db, code: string): Promise<Row<"deal_stage">> {
 async function checkOwner(db: Db, me: UserPrincipal, ownerId: string): Promise<void> {
   const u = await db.app_user.get(ownerId);
   if (!u || u.status !== "active") throw invalid("owner_id is not an active user of this organization", { owner_id: ownerId });
-  if (ownerId !== me.id && me.role !== "admin" && !inTeam(me, ownerId)) throw forbidden("owner is outside your scope", { owner_id: ownerId });
+  if (ownerId !== me.id && !isAdmin(me) && !inTeam(me, ownerId)) throw forbidden("owner is outside your scope", { owner_id: ownerId });
 }
 
 export const impl: Impl<"deal-upsert"> = async ({ req, db, me }) => {

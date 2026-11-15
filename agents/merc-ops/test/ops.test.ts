@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { kit, IDS } from "../../../shared/handlers/src/_lib/testkit";
 import { handle } from "../../../shared/handlers/src/summary-data";
-import { FACTS_KEY, factSources, getSummaryData, sendInternalEmail, type OpsCtx } from "../lib/ops";
+import { FACTS_KEY, deliverWhatsApp, factSources, getSummaryData, sendInternalEmail, type OpsCtx } from "../lib/ops";
 // @ts-ignore generated bundle has a .d.ts next to it
 import { bundleText } from "../scripts/bundle-ops.mjs";
 import { readFileSync } from "node:fs";
@@ -59,5 +59,31 @@ describe("merc-ops tools", () => {
 
   it("lib/ops.gen.js is the current bundle", async () => {
     expect(readFileSync(join(__dirname, "../lib/ops.gen.js"), "utf8") === (await bundleText())).toBe(true);
+  });
+});
+
+describe("deliver_whatsapp (WhatsApp relay for Functions)", () => {
+  const LIVE: Record<string, unknown> = { MERC_BUDDY_NUMBER: "+18455133803", MERC_CHANNELS_LIVE: true, MERC_WHATSAPP_CONNECTION: "Merc WA" };
+  it("with no id sends every relayed row once; a second run finds nothing waiting", async () => {
+    const t = kit();
+    const row = await t.db.buddy_call.insert({ user_id: IDS.nikos, channel: "whatsapp", purpose: "callback", status: "started", due_at: new Date().toISOString() } as any);
+    const sent: any[] = [];
+    const c: any = {
+      tables: t.tables,
+      globals: { get: (n: string) => (n in LIVE ? LIVE[n] : null) },
+      secrets: { get: () => null },
+      outbound: { whatsapp: { sendTemplate: (o: any) => { sent.push(o); return "ok"; }, sendInteractive: (o: any) => { sent.push(o); return "ok"; } } },
+    };
+    const first: any = await deliverWhatsApp(c, {});
+    expect(first.waiting).toBe(1);
+    expect(first.delivered[0]).toMatchObject({ buddy_call_id: row.id, status: "sent" });
+    expect(sent).toHaveLength(1);
+    const again: any = await deliverWhatsApp(c, {});
+    expect(again.waiting).toBe(0);
+    expect(sent).toHaveLength(1);
+  });
+  it("rejects a malformed id", async () => {
+    const c: any = { tables: kit().tables, globals: { get: () => null }, secrets: { get: () => null }, outbound: null };
+    expect(((await deliverWhatsApp(c, { buddy_call_id: "nope" })) as any).error.code).toBe("validation_failed");
   });
 });

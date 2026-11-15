@@ -1,7 +1,7 @@
 // fn:accounts-list (contracts/functions/accounts-list.json, REQ-CORE-009): accounts the caller may see, filtered and paged.
 // Scope comes from @merc/core listAccounts (rep: owned + territory, manager: team, admin: all).
 // Also exports the AccountRef builder and name normalisation shared with account-resolve.
-import { defineFunction, listAccounts, type Db, type Impl, type Principal, type Row, type Where } from "../../core/src/index";
+import { defineFunction, listAccounts, type Db, type Impl, type Principal, type Row, type Where, stripAccents } from "../../core/src/index";
 
 /** No threshold is set in metrics.md for "at risk"; Merc uses risk_score >= 50 (reported as a contract gap). */
 export const AT_RISK_MIN_SCORE = 50;
@@ -34,7 +34,7 @@ const GREEK: Record<string, string> = {
 };
 /** Lowercase, strip accents, transliterate Greek, keep letters/digits as space-separated words. */
 export function normalizeName(s: string): string {
-  const base = s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const base = stripAccents(s).toLowerCase();
   return [...base.replace(/ου/g, "ou")].map((ch) => GREEK[ch] ?? ch).join("").replace(/[^a-z0-9]+/g, " ").trim();
 }
 

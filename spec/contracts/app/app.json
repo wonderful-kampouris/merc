@@ -121,13 +121,13 @@
     },
     {
       "key": "voicelog.create",
-      "resource": "voicelogs",
+      "resource": "voicelog",
       "action": "create",
       "relations": []
     },
     {
       "key": "voicelog.read",
-      "resource": "voicelogs",
+      "resource": "voicelog",
       "action": "read",
       "relations": [
         "owner"
@@ -135,7 +135,7 @@
     },
     {
       "key": "aiaction.read",
-      "resource": "aiactions",
+      "resource": "aiaction",
       "action": "read",
       "relations": [
         "owner",
@@ -144,7 +144,7 @@
     },
     {
       "key": "aiaction.undo",
-      "resource": "aiactions",
+      "resource": "aiaction",
       "action": "undo",
       "relations": [
         "owner"
@@ -305,7 +305,7 @@
     },
     {
       "key": "import.manage",
-      "resource": "imports",
+      "resource": "import",
       "action": "manage",
       "relations": []
     },
@@ -473,11 +473,14 @@
           "today-get",
           "briefing-get",
           "visit-plan-get",
-          "my-performance"
+          "my-performance",
+          "tasks-list",
+          "task-update"
         ],
         "events": [
           "briefing.ready",
-          "plan.proposed"
+          "plan.proposed",
+          "result_card.ready"
         ],
         "offline": true
       },

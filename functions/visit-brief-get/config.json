@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "visit-brief-get",
+  "description": "Merc fn:visit-brief-get: the pre-meeting brief for a visit, push/avoid chosen in code (contracts/functions/visit-brief-get.json, REQ-MTG-002/003/008). Source: Merc monorepo shared/handlers/src/visit-brief-get.ts.",
+  "method": "GET",
+  "path_slug": "visit-brief-get",
+  "param_mapping": {}
+}

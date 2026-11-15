@@ -79,6 +79,10 @@
       "send_internal_email": {
         "type": "programmable",
         "config": {}
+      },
+      "deliver_whatsapp": {
+        "type": "programmable",
+        "config": {}
       }
     }
   },

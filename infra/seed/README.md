@@ -16,6 +16,9 @@ pnpm -C infra/seed test && pnpm -C infra/seed typecheck
 - Converges: each table is listed, missing rows are bulk-inserted (200 per call), changed fields are PUT, and identical
   rows are skipped (datetimes are compared as instants). The same demo day twice gives a no-op. A new demo day updates the dates.
 - Self-references (`app_user.manager_id`) are inserted as null, then set once all rows of the table exist.
+- `phones.json` (gitignored, never published; copy `phones.example.json`) maps user keys to real team mobiles for phone/WhatsApp
+  tests (REQ-BUD-013). Listed users get that phone and `phone_channel_enabled=true`; all other seed users get
+  `phone_channel_enabled=false`, so Merc never dials a seed number. `--phones-file` overrides the path.
 - `--reset` deletes **only rows whose key is in the seed**, children first (`bulk-delete` with `in`), then reloads.
   Rows created by the app or other WPs are not touched. A restrict FK from a non-seed row makes that reset step FAIL.
 - `out/last-run.log` is the last run's log.

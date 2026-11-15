@@ -5,7 +5,7 @@
   "cron_schedules": [
     {
       "cron_expression": "*/15 * * * *",
-      "params": {},
+      "timezone": "Europe/Athens",
       "enabled": true
     }
   ],

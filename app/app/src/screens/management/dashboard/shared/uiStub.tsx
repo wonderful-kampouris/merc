@@ -58,4 +58,6 @@ export const Notice = el("Notice");
 export const EmptyState = el("EmptyState");
 export const Tag = el("Tag");
 export const Hr = el("Hr");
+export const Avatar = el("Avatar");
+export const AvatarFallback = el("AvatarFallback", "span");
 export const Descriptions = el("Descriptions");

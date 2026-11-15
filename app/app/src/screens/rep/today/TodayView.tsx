@@ -1,10 +1,11 @@
 import { Alert, Badge, Button, Card, EmptyState, Icon, Layout, Page, Progress, Skeleton, Text } from "@wonderful/ui-base";
-import { ArrowClockwiseIcon, CalendarBlankIcon, CaretRightIcon, MicrophoneIcon, StorefrontIcon, SunHorizonIcon } from "@phosphor-icons/react";
+import { ArrowClockwiseIcon, CalendarBlankIcon, CaretRightIcon, CheckIcon, ListChecksIcon, MicrophoneIcon, StorefrontIcon, SunHorizonIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import type { VisitSummary } from "../../../contracts";
 import { useScreenI18n, type Lang } from "../../../lib/i18n";
 import type { LiveMode } from "../../../lib/live";
 import type { TodayLoad } from "./loadToday";
+import type { TaskItem } from "./planCache";
 import messages from "./i18n";
 import { clampPct, formatDay, formatMoney, formatTargetValue, formatTime, sortStops, summarizeStops } from "./todayModel";
 
@@ -24,6 +25,10 @@ export interface TodayViewProps {
   onOpenAccount: (accountId: string) => void;
   onRecord: () => void;
   onOpenWeek: () => void;
+  /** Mark an open task done (task-update). */
+  onCompleteTask?: (taskId: string) => void;
+  /** Task ids being completed right now. */
+  completing?: ReadonlySet<string>;
 }
 
 const STATUS_COLOR = { planned: "blue", done: "green", skipped: "muted" } as const;
@@ -50,6 +55,40 @@ function StopRow({ v, index, t, onOpen }: { v: VisitSummary; index: number; t: T
           <Layout.Row gap="xs">
             <Badge text={t(`status.${v.status}`)} color={STATUS_COLOR[v.status]} size="small" />
             <Button variant="tertiary" size="small" aria-label={t("openCard")} prefix={<Icon icon={CaretRightIcon} />} onClick={onOpen} />
+          </Layout.Row>
+        }
+      />
+    </Card.List.Item>
+  );
+}
+
+function dueLabel(task: TaskItem, lang: Lang, now: Date, t: T): string | null {
+  if (!task.due_at) return null;
+  const d = new Date(task.due_at);
+  if (Number.isNaN(d.getTime())) return null;
+  const sameDay = d.toDateString() === now.toDateString();
+  const time = d.toLocaleTimeString(lang === "el" ? "el-GR" : "en-GB", { hour: "2-digit", minute: "2-digit" });
+  const day = d.toLocaleDateString(lang === "el" ? "el-GR" : "en-GB", { weekday: "short", day: "numeric", month: "short" });
+  return sameDay ? t("dueToday", { time }) : t("dueOn", { day });
+}
+
+function TaskRow(p: { task: TaskItem; t: T; lang: Lang; now: Date; busy: boolean; onDone?: () => void; onOpen?: () => void }) {
+  const { task, t } = p;
+  const due = dueLabel(task, p.lang, p.now, t);
+  return (
+    <Card.List.Item>
+      <Card.Meta
+        title={task.title}
+        description={[task.account_name, due].filter(Boolean).join(" — ") || undefined}
+        truncateDescription={false}
+        actions={
+          <Layout.Row gap="xs">
+            {task.overdue ? <Badge text={t("overdue")} color="red" size="small" /> : null}
+            {task.is_customer_promise ? <Badge text={t("promise")} color="orange" size="small" /> : null}
+            {p.onDone ? (
+              <Button variant="secondary" size="small" aria-label={t("markDone")} prefix={<Icon icon={CheckIcon} />} loading={p.busy} onClick={p.onDone} />
+            ) : null}
+            {p.onOpen ? <Button variant="tertiary" size="small" aria-label={t("openCard")} prefix={<Icon icon={CaretRightIcon} />} onClick={p.onOpen} /> : null}
           </Layout.Row>
         }
       />
@@ -127,6 +166,7 @@ export default function TodayView(props: TodayViewProps) {
 
   const { load } = state;
   const { today, briefing, performance } = load.data;
+  const tasks = (load.data.tasks ?? []).filter((x) => x.status === "open");
   const stops = sortStops(today.visits);
   const sum = summarizeStops(stops);
   const savedTime = formatTime(load.savedAt, lang, props.now);
@@ -152,7 +192,7 @@ export default function TodayView(props: TodayViewProps) {
         </Page.Section>
       ) : load.failed.length ? (
         <Page.Section>
-          <Alert variant="info" size="compact" description={t("partial", { what: load.failed.map((f) => t(f === "plan" ? "openWeek" : f === "briefing" ? "briefing" : "performance")).join(", ") })} />
+          <Alert variant="info" size="compact" description={t("partial", { what: load.failed.map((f) => t(f === "plan" ? "openWeek" : f === "briefing" ? "briefing" : f === "tasks" ? "tasks" : "performance")).join(", ") })} />
         </Page.Section>
       ) : null}
 
@@ -238,6 +278,38 @@ export default function TodayView(props: TodayViewProps) {
             <Card.Content>
               <Text variant="sm" color="secondary">
                 {t("briefingNone")}
+              </Text>
+            </Card.Content>
+          )}
+        </Card>
+      </Page.Section>
+
+      <Page.Section>
+        <Card withHeaderDivider>
+          <Card.Header
+            icon={<Icon icon={ListChecksIcon} />}
+            title={t("tasks")}
+            description={tasks.length ? t("tasksCount", { n: tasks.length }) : undefined}
+          />
+          {tasks.length ? (
+            <Card.List>
+              {tasks.slice(0, 8).map((task) => (
+                <TaskRow
+                  key={task.task_id}
+                  task={task}
+                  t={t}
+                  lang={lang}
+                  now={props.now}
+                  busy={!!props.completing?.has(task.task_id)}
+                  onDone={props.onCompleteTask ? () => props.onCompleteTask!(task.task_id) : undefined}
+                  onOpen={task.account_id ? () => props.onOpenAccount(task.account_id!) : undefined}
+                />
+              ))}
+            </Card.List>
+          ) : (
+            <Card.Content>
+              <Text variant="sm" color="secondary">
+                {t("tasksNone")}
               </Text>
             </Card.Content>
           )}

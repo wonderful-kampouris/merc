@@ -111,7 +111,6 @@ const useSyncExternalStoreAliases = [
 // `upstreamFixed` is the call-site text expected once the owner fixes it; then the rule is a no-op.
 export const LINKED_SLUG_REWRITES: ReadonlyArray<{ file: RegExp; from: string; to: string; upstreamFixed: string }> = [
   { file: /\/src\/lib\/client\.ts$/, from: "`${appSlug}/${slug}`", to: "slug", upstreamFixed: "invokeFunction(slug" },
-  { file: /\/src\/App\.tsx$/, from: "`merc/merc-live?client=", to: "`merc-live?client=", upstreamFixed: "`merc-live?client=" },
 ];
 
 export function rewriteLinkedSlugs(id: string, code: string): string | null {

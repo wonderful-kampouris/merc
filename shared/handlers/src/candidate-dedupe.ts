@@ -1,7 +1,7 @@
 // fn:candidate-dedupe (contracts/functions/candidate-dedupe.json, REQ-PRS-002). Procedure step.
 // Rules, in order: VAT exact; website domain; phone E.164; normalized name + same postal code (trigram >= 0.85).
 // Each rule is checked against the org's accounts first, then against other live candidates of the org.
-import type { Db, Impl, Principal, Row } from "../../core/src/index";
+import { stripAccents, type Db, type Impl, type Principal, type Row } from "../../core/src/index";
 import { defineSystemFunction, orgOfCandidate, requireCandidate } from "./candidate-get";
 
 export type DedupeRule = "vat" | "website" | "phone" | "name";
@@ -15,7 +15,7 @@ const GREEK: Record<string, string> = {
 };
 /** Lowercase, no accents, Greek transliterated to Latin, punctuation to spaces. "Φούρνος Σταύρου" -> "fournos stayroy". */
 export function normName(s: string | null | undefined): string {
-  const base = String(s ?? "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/&/g, " and ");
+  const base = stripAccents(String(s ?? "").toLowerCase()).replace(/&/g, " and ");
   let out = "";
   for (const ch of base) out += GREEK[ch] ?? ch;
   // Greek "ου" transliterates to "oy" above; fold to "ou" so "Σταύρου" and "Stavrou"-style spellings meet.

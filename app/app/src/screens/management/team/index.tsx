@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { AlertCard, UserRef, VisitSummary } from "../../../contracts";
 import { useScreenI18n } from "../../../lib/i18n";
 import type { ScreenProps } from "../../../lib/screenRegistry";
+import RepAvatar, { personOption } from "../../../shell/RepAvatar";
 import { AssignTask, AssignVisit } from "./AssignForms";
 import messages from "./i18n";
 import { accountOptions, detailRange, humanize, isoDay, kpiEntries, rosterFromTeam, sortAlerts, teamRoster, type RepDetail } from "./logic";
@@ -123,7 +124,7 @@ export default function Team({ client, lang }: ScreenProps) {
           <Layout.Stack gap="xs">
             {team.state === "ready" && team.value.fallback ? <Text variant="sm" color="secondary">{t("roster_fallback", { msg: team.value.fallback })}</Text> : null}
             <Text variant="sm" color="secondary">{t("rep_label")}</Text>
-            <Select aria-label={t("rep_label")} options={roster.map((r) => ({ value: r.id, label: r.full_name }))} value={repId ?? undefined} onChange={(v) => setRepId(String(v))} />
+            <Select aria-label={t("rep_label")} options={roster.map((r) => ({ value: r.id, label: r.full_name }))} renderOption={personOption} renderValue={personOption} value={repId ?? undefined} onChange={(v) => setRepId(String(v))} />
           </Layout.Stack>
         )}
       </Page.Section>
@@ -137,7 +138,7 @@ export default function Team({ client, lang }: ScreenProps) {
           ) : (
             <Layout.Stack gap="md">
               <Card>
-                <Card.Header title={d!.rep.full_name} description={t("kpis")} />
+                <Card.Header icon={<RepAvatar name={d!.rep.full_name} />} title={d!.rep.full_name} description={t("kpis")} />
                 <Card.Content>
                   {kpiEntries(d!.kpis).length ? (
                     <Layout.Grid idealColumns={3}>

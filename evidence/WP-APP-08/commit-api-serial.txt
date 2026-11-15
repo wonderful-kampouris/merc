@@ -26,3 +26,86 @@ candidate-add: already deployed by its builder, skipped
 visit-plan-get: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/b24e10ea-f7e5-41e5-a114-8b66eef4a697/commit": con
 visit-plan-get: try 2 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/b24e10ea-f7e5-41e5-a114-8b66eef4a697/commit": con
 visit-plan-get: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)
+visit-plan-accept: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/e53553cc-d848-4668-a8a5-6b79ab585534/commit": con
+visit-plan-accept: try 2 failed: error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed
+visit-plan-accept: try 3 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/e53553cc-d848-4668-a8a5-6b79ab585534/commit": con
+visit-plan-accept: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+team-list: try 1 failed: error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed
+team-list: try 2 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/3cce1c3a-d9a9-467c-ad55-f4c649f1256d/commit": con
+team-list: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+territories-list: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/c9acd59a-54f4-434e-80e5-2fc389f43888/commit": con
+territories-list: try 2 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/c9acd59a-54f4-434e-80e5-2fc389f43888/commit": con
+territories-list: try 3 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/c9acd59a-54f4-434e-80e5-2fc389f43888/commit": con
+territories-list: try 4 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/c9acd59a-54f4-434e-80e5-2fc389f43888/commit": con
+territories-list: try 5 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/c9acd59a-54f4-434e-80e5-2fc389f43888/commit": con
+territories-list: try 6 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/c9acd59a-54f4-434e-80e5-2fc389f43888/commit": con
+territories-list: try 7 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/c9acd59a-54f4-434e-80e5-2fc389f43888/commit": con
+territories-list: try 8 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/c9acd59a-54f4-434e-80e5-2fc389f43888/commit": con
+dashboard-kpis: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/db0a649f-b9f3-4e36-99d1-0eeaebce44d8/commit": con
+dashboard-kpis: committed {"allowed_ips":[],"created_at":1794730740625,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:dashboard-kpis: KPI set by period, terri
+kpi-drilldown: committed {"allowed_ips":[],"created_at":1794732835388,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:kpi-drilldown (WP-DSH-01). Source: share
+deals-list: committed {"allowed_ips":[],"created_at":1794728914608,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:deals-list: deals of the accounts in the
+rep-detail: committed {"allowed_ips":[],"created_at":1794732909047,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:rep-detail (WP-DSH-01). Source: shared/h
+competitor-signals-list: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+settings-get: committed {"allowed_ips":[],"created_at":1794732129852,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:settings-get: org settings, AI permissio
+tasks-list: committed {"allowed_ips":[],"created_at":1794733315693,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:tasks-list: tasks of the caller (and tea
+account-convert: committed {"allowed_ips":[],"created_at":1794728963699,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:account-convert (contracts/functions/acc
+account-get: already deployed by its builder, skipped
+account-resolve: already deployed by its builder, skipped
+account-upsert: committed {"allowed_ips":[],"created_at":1794729813424,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:account-upsert (contracts/functions/acco
+accounts-list: already deployed by its builder, skipped
+alert-act: already deployed by its builder, skipped
+alerts-list: already deployed by its builder, skipped
+approvals-list: already deployed by its builder, skipped
+assignments-transfer: already deployed by its builder, skipped
+briefing-get: committed {"allowed_ips":[],"created_at":1794728780979,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:briefing-get: the caller's daily briefin
+campaign-draft-from-text: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/d4f04ccd-8030-470d-a070-4ced9d1688a1/commit": con
+campaign-draft-from-text: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+campaign-funnel: already deployed by its builder, skipped
+campaign-upsert: committed {"allowed_ips":[],"created_at":1794730640409,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:campaign-upsert: create or edit a campai
+contact-erase: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+contact-export: committed {"allowed_ips":[],"created_at":1794732465327,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:contact-export: GDPR contact export, hum
+contact-upsert: committed {"allowed_ips":[],"created_at":1794729205199,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:contact-upsert (contracts/functions/cont
+deal-upsert: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+eod-summary: committed {"allowed_ips":[],"created_at":1794729277170,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:eod-summary: end-of-day facts and a \u00
+escalate: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/9c37fca2-d970-463b-aa7d-ff1f4d62cd27/commit": con
+escalate: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+import-confirm: try 1 failed: error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed
+import-confirm: try 2 failed: error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed
+import-confirm: committed {"allowed_ips":[],"created_at":1794732259194,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:import-confirm (contracts/functions/impo
+import-get: committed {"allowed_ips":[],"created_at":1794732047403,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:import-get (contracts/functions/import-g
+my-performance: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/f5a4d47c-eda3-488a-8572-784252ed63c7/commit": con
+my-performance: committed {"allowed_ips":[],"created_at":1794733131610,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:my-performance: the caller's target prog
+order-upsert: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/0203f493-29ca-40f9-ae10-d2465ba1a7ab/commit": con
+order-upsert: committed {"allowed_ips":[],"created_at":1794729983108,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:order-upsert: draft/confirm/cancel a sal
+orders-list: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+problem-update: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/03249689-5229-4d9f-b5fe-ca68b5ff7c72/commit": con
+problem-update: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+product-lookup: try 1 failed: error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed
+product-lookup: try 2 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/db9e541b-33ca-4bda-9f4d-8bd1f4c19190/commit": con
+product-lookup: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)
+settings-update: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/b24b23cd-23e7-4cca-ae9f-0f09ce9f7be1/commit": con
+settings-update: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)
+target-upsert: already deployed by its builder, skipped
+task-assign: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/733931b6-e182-450b-9519-675d018f002e/commit": con
+task-assign: try 2 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/733931b6-e182-450b-9519-675d018f002e/commit": con
+task-assign: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+task-create: try 1 failed: error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed
+task-create: try 2 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/d725899d-c97d-4187-8808-95829d71df70/commit": con
+task-create: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+task-update: try 1 failed: error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed
+task-update: try 2 failed: error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed
+task-update: try 3 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/22dc7dba-24ff-4ccb-a6c2-9a20a9bf565e/commit": con
+task-update: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)
+territory-upsert: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/456e7bd8-87d4-4b76-92e0-c54db91ded61/commit": con
+territory-upsert: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+today-get: already deployed by its builder, skipped
+user-upsert: try 1 failed: error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed
+user-upsert: try 2 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/35f94a1c-9c97-4144-96cb-0b96722bd3a8/commit": con
+user-upsert: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+users-list: already deployed by its builder, skipped
+visit-assign: try 1 failed: error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed
+visit-assign: try 2 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/a4b6dc5b-6b8c-4b95-8a0d-06a8d762eb52/commit": con
+visit-assign: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)
+visit-update: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/a9f6ba2d-462e-4df1-ad3f-9811213b5293/commit": con
+visit-update: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)

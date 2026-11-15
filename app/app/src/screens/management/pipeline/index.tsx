@@ -10,6 +10,7 @@ import { errorDetail, errorKey } from "../dashboard/shared/errors";
 import { date, labelOf, money, num } from "../dashboard/shared/format";
 import { Region } from "../dashboard/shared/Region";
 import { useAsync } from "../dashboard/shared/useAsync";
+import { personOption } from "../../../shell/RepAvatar";
 import messages from "./i18n";
 import {
   applyMove,
@@ -100,6 +101,7 @@ export default function Pipeline({ screen, client, lang }: ScreenProps) {
               value={owner ?? ""}
               onChange={(v) => setOwner(v || null)}
               options={[{ value: "", label: `${t("filter.owner")}: ${t("filter.all")}` }, ...dir.reps.map((r) => ({ value: r.id, label: r.name }))]}
+              renderOption={personOption} renderValue={personOption}
             />
             {client.mock ? <Badge text={t("mock.note")} color="purple" size="small" /> : null}
           </Layout.Row>

@@ -845,6 +845,7 @@ export interface DebriefProcessRequest {
   lat?: number | null;
   lng?: number | null;
   language?: string | null;
+  corrects_voice_log_id?: string | null;
 }
 
 export interface DebriefProcessResponse {

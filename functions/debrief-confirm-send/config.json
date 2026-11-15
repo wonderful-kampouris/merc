@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "debrief-confirm-send",
+  "description": "Merc fn:debrief-confirm-send: sends the rep a short summary of a logged visit to confirm or fix (contracts/functions/debrief-confirm-send.json, REQ-MTG-006). Source: Merc monorepo shared/handlers/src/debrief-confirm-send.ts.",
+  "method": "POST",
+  "path_slug": "debrief-confirm-send",
+  "param_mapping": {}
+}

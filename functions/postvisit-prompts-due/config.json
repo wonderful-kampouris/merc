@@ -1,0 +1,13 @@
+{
+  "kind": "cron",
+  "name": "postvisit-prompts-due",
+  "description": "Merc fn:postvisit-prompts-due: asks the rep how the visit went after its planned end (contracts/functions/postvisit-prompts-due.json, REQ-MTG-005). Source: Merc monorepo shared/handlers/src/postvisit-prompts-due.ts.",
+  "timeout_ms": 300000,
+  "cron_schedules": [
+    {
+      "cron_expression": "*/5 * * * *",
+      "timezone": "Europe/Athens",
+      "enabled": true
+    }
+  ]
+}

@@ -162,8 +162,9 @@ export default function Record({ screen, client, openLiveSocket, lang }: ScreenP
     onEvent: (e) => {
       if (e.type === "result_card.ready") {
         const p = e.payload as { voice_log_id: string; result: ResultCard };
-        if (!itemsRef.current.some((i) => i.voice_log_id === p.voice_log_id)) return;
-        setItems(markReady(itemsRef.current, p.voice_log_id));
+        // Events on rep:{me} are the rep's own debriefs. One logged through the buddy (call, WhatsApp, the voice
+        // widget) is not in the upload queue; show it unless the screen is waiting for a different upload.
+        if (itemsRef.current.some((i) => i.voice_log_id === p.voice_log_id)) setItems(markReady(itemsRef.current, p.voice_log_id));
         if (!waitingFor || waitingFor.id === p.voice_log_id) {
           setCard(p.result);
           setWaitingFor(null);
