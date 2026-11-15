@@ -1,0 +1,75 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "problem",
+    "description": "Customer's open issue",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "due_date",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "resolved_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "voice_log_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.voice_log",
+          "on_delete": "set_null"
+        }
+      }
+    ],
+    "indexes": [
+      {
+        "name": "problem_account_id_status_idx",
+        "columns": [
+          "account_id",
+          "status"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {
+      "status": [
+        "open",
+        "in_progress",
+        "resolved"
+      ]
+    },
+    "notes": {}
+  }
+}

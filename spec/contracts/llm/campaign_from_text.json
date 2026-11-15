@@ -1,0 +1,123 @@
+{
+  "profile": "merc-extract",
+  "used_by": [
+    "campaign-draft-from-text"
+  ],
+  "eval_set": "evals/campaign-text/",
+  "purpose": "Turn 'push product X to bakeries in the North this week' into a campaign form.",
+  "input": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string"
+      },
+      "today": {
+        "type": "string",
+        "format": "date"
+      },
+      "products": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "territories": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "categories": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "reps": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "text",
+      "today",
+      "products",
+      "territories",
+      "categories",
+      "reps"
+    ]
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string"
+      },
+      "message": {
+        "type": "string"
+      },
+      "starts_on": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "ends_on": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "product_names": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "territory_names": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "category_names": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "rep_names": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "title",
+      "message",
+      "product_names",
+      "territory_names",
+      "category_names",
+      "rep_names"
+    ]
+  },
+  "rules": [
+    "Names only from the input lists; others go to the function's `unresolved`."
+  ],
+  "name": "campaign_from_text"
+}

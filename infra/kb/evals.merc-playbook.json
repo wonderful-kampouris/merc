@@ -1,0 +1,4 @@
+[
+  { "slug": "bluebean", "name": "BlueBean objection", "question": "The owner says they are happy with BlueBean Roasters. How do I answer?", "expected_answer": "Do not ask them to switch blindly: offer a 1 kg Espresso Nuovo trial bag side by side for a week; same flavour range, small grind change.", "gate": false },
+  { "slug": "three-arguments", "name": "Pitch rule", "question": "How many arguments should a pitch have?", "expected_answer": "Exactly three arguments, each about the shop.", "gate": false }
+]

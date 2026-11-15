@@ -1,0 +1,35 @@
+Merc
+Rep
+Mock
+Rep
+Manager
+Admin
+ΕΛ
+EN
+Mock data
+Customers
+Mock
+All
+Customers
+Prospects
+At risk
+Café Miltos
+
+Chalandri · 15231 — 0.5 km — Open problem: grinder noise
+
+Customer
+Café Avra
+
+Chalandri · 15232 — 1.2 km — Prospect, pitch ready
+
+Prospect
+Bistro Lofos
+
+Chalandri · 15124 — 2.6 km — No order in 12 days
+
+Customer
+Today
+Customers
+Record
+Approvals
+More

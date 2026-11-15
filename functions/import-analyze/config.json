@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "import-analyze",
+  "description": "Merc fn:import-analyze (contracts/functions/import-analyze.json; callers: procedure; gate: null). Source: Merc monorepo shared/handlers/src/import-analyze.ts.",
+  "method": "POST",
+  "path_slug": "import-analyze",
+  "param_mapping": {}
+}

@@ -1,0 +1,81 @@
+{
+  "slug": "alert-act",
+  "method": "POST",
+  "kind": "http",
+  "gate": "alerts.act",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "alert_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "action": {
+        "type": "string",
+        "enum": [
+          "create_task",
+          "create_draft",
+          "done",
+          "dismiss"
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "alert_id",
+      "action"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "alert": {
+        "$ref": "../_defs.json#/$defs/AlertCard"
+      },
+      "task_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "approval_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "alert"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "alert",
+    "task",
+    "approval"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "owner"
+}

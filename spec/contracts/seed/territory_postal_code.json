@@ -1,0 +1,67 @@
+[
+  {
+    "id": "3280958e-625a-537f-8bd2-19f8ef09b652",
+    "territory_id": "76b55561-9135-5c55-ad43-34661bffd9d9",
+    "postal_code": "15231"
+  },
+  {
+    "id": "ba54667f-ff75-5aed-886f-4d9295458a4b",
+    "territory_id": "76b55561-9135-5c55-ad43-34661bffd9d9",
+    "postal_code": "15232"
+  },
+  {
+    "id": "61724bf3-2cc8-5105-860e-950d0e2c1bc6",
+    "territory_id": "76b55561-9135-5c55-ad43-34661bffd9d9",
+    "postal_code": "15233"
+  },
+  {
+    "id": "dd7b03ae-27ed-52db-8262-456513888206",
+    "territory_id": "76b55561-9135-5c55-ad43-34661bffd9d9",
+    "postal_code": "15234"
+  },
+  {
+    "id": "b58d86eb-9872-5680-aaac-2af76c0a62b8",
+    "territory_id": "76b55561-9135-5c55-ad43-34661bffd9d9",
+    "postal_code": "15124"
+  },
+  {
+    "id": "286d929d-c412-51c3-98f8-e88d06c61ca0",
+    "territory_id": "76b55561-9135-5c55-ad43-34661bffd9d9",
+    "postal_code": "15125"
+  },
+  {
+    "id": "c7f4bef4-a933-5541-80e7-2351ce8ad63c",
+    "territory_id": "76b55561-9135-5c55-ad43-34661bffd9d9",
+    "postal_code": "14561"
+  },
+  {
+    "id": "b56d5bc0-7df0-5a4b-b03d-9816c39e665f",
+    "territory_id": "ab0e35fb-6fcb-5d04-aa2b-36be2cc7372c",
+    "postal_code": "10673"
+  },
+  {
+    "id": "621fa43c-3a04-5e9d-9c8d-4ae3e2a7f863",
+    "territory_id": "ab0e35fb-6fcb-5d04-aa2b-36be2cc7372c",
+    "postal_code": "10674"
+  },
+  {
+    "id": "0f25d555-fb13-564c-8224-08f93d6d0213",
+    "territory_id": "ab0e35fb-6fcb-5d04-aa2b-36be2cc7372c",
+    "postal_code": "12131"
+  },
+  {
+    "id": "24f8209c-7ab5-5d69-bf67-b99d4e8fe0b8",
+    "territory_id": "5963cd69-93fb-53ce-9745-f1d136a46285",
+    "postal_code": "17671"
+  },
+  {
+    "id": "650d549b-27bc-594f-88f4-39a47bd37396",
+    "territory_id": "5963cd69-93fb-53ce-9745-f1d136a46285",
+    "postal_code": "16674"
+  },
+  {
+    "id": "19e8e1db-2c7c-55a8-84fd-9a8216926306",
+    "territory_id": "5963cd69-93fb-53ce-9745-f1d136a46285",
+    "postal_code": "18531"
+  }
+]

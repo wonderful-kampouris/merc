@@ -1,0 +1,9 @@
+{
+  "kind": "http",
+  "name": "briefing-get",
+  "description": "Merc fn:briefing-get: the caller's daily briefing (items + spoken script), generated on demand (contracts/functions/briefing-get.json). Source: Merc monorepo shared/handlers/src/briefing-get.ts.",
+  "method": "GET",
+  "path_slug": "briefing-get",
+  "param_mapping": {},
+  "timeout_ms": 45000
+}

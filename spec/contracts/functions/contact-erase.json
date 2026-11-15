@@ -1,0 +1,50 @@
+{
+  "slug": "contact-erase",
+  "method": "POST",
+  "kind": "http",
+  "gate": "gdpr.manage",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "contact_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "confirm": {
+        "type": "boolean"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "contact_id",
+      "confirm"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "erased": {
+        "type": "boolean"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "erased"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "contact",
+    "audit_event"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Human-only delete. References are set null by FK rules. Never callable by any agent tool."
+}

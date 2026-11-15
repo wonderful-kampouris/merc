@@ -1,0 +1,107 @@
+{
+  "slug": "approval-decide",
+  "method": "POST",
+  "kind": "http",
+  "gate": "discounts.approve",
+  "callers": [
+    "mgmt",
+    "merc-approver",
+    "sms_link"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "approval_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "decision": {
+        "type": "string",
+        "enum": [
+          "approve",
+          "counter",
+          "reject"
+        ]
+      },
+      "approved_pct": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "note": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "via": {
+        "type": "string",
+        "enum": [
+          "app",
+          "phone_call",
+          "sms_link"
+        ]
+      },
+      "link_token": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "approval_id",
+      "decision",
+      "via"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "approval": {
+        "$ref": "../_defs.json#/$defs/ApprovalCard"
+      },
+      "requester_notified": {
+        "type": "boolean"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "approval",
+      "requester_notified"
+    ]
+  },
+  "reads": [
+    "approval",
+    "discount_request",
+    "discount_policy"
+  ],
+  "writes": [
+    "approval",
+    "discount_request",
+    "ai_action",
+    "task"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "counter requires approved_pct < requested_pct. approved_pct must be <= approver's own limit. Pushes approval.decided to the requester (merc-live + SMS).",
+  "scope": "approver"
+}

@@ -1,0 +1,40 @@
+{
+  "slug": "debrief-result-get",
+  "method": "GET",
+  "kind": "http",
+  "gate": "voicelog.read",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "voice_log_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "voice_log_id"
+    ]
+  },
+  "response": {
+    "$ref": "../_defs.json#/$defs/ResultCard"
+  },
+  "reads": [
+    "voice_log",
+    "ai_action",
+    "approval"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "owner"
+}

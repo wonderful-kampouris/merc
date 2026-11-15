@@ -1,0 +1,32 @@
+{
+  "name": "report_call_outcome",
+  "agent": "merc-approver",
+  "function": "manager-call-outcome",
+  "description": "Report that the call ended without a decision. Also fired by the OnVoicemailDetected and OnEnd triggers.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "outcome": {
+        "type": "string",
+        "enum": [
+          "no_answer",
+          "busy",
+          "voicemail",
+          "failed"
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "outcome"
+    ]
+  },
+  "inject": [
+    "call_metadata.manager_call_id",
+    "conversation_id"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/manager-call-outcome.json#/response"
+}

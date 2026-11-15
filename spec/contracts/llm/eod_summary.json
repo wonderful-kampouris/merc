@@ -1,0 +1,67 @@
+{
+  "profile": "merc-write",
+  "used_by": [
+    "eod-summary"
+  ],
+  "eval_set": "evals/eod/",
+  "purpose": "Speak the end-of-day facts briefly.",
+  "input": {
+    "type": "object",
+    "properties": {
+      "language": {
+        "type": "string"
+      },
+      "facts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "value"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "language",
+      "facts"
+    ]
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "spoken_summary": {
+        "type": "string"
+      },
+      "learned": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "spoken_summary"
+    ]
+  },
+  "rules": [
+    "Numbers only from facts.",
+    "<= 45 s."
+  ],
+  "name": "eod_summary"
+}

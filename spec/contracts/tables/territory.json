@@ -1,0 +1,85 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "territory",
+    "description": "Geographic area of responsibility",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "manager_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "default_rep_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "boundary_geojson",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "territory_org_id_idx",
+        "columns": [
+          "org_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "territory_manager_id_idx",
+        "columns": [
+          "manager_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "territory_org_id_name_uq",
+        "columns": [
+          "org_id",
+          "name"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "org",
+    "derived": false,
+    "enums": {},
+    "notes": {
+      "default_rep_id": "receives new prospects"
+    }
+  }
+}

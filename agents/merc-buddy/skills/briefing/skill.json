@@ -1,0 +1,42 @@
+{
+  "name": "briefing",
+  "display_name": "Briefing",
+  "description": "Use when: morning / 'what's my day'.",
+  "prompts": {
+    "skill": "prompt.md"
+  },
+  "tools": {
+    "get_briefing": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "date",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "YYYY-MM-DD"
+        }
+      ],
+      "config": {
+        "timeout": 30000,
+        "is_interruptible": true
+      }
+    },
+    "get_today": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "date",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "YYYY-MM-DD"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": true
+      }
+    }
+  }
+}

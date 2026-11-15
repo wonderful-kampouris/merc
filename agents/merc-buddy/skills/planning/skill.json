@@ -1,0 +1,113 @@
+{
+  "name": "planning",
+  "display_name": "Planning",
+  "description": "Use when: 'move / skip / add' / 'my week'.",
+  "prompts": {
+    "skill": "prompt.md"
+  },
+  "tools": {
+    "get_week_plan": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "week_start",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "YYYY-MM-DD"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": true
+      }
+    },
+    "accept_week_plan": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "plan_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": false
+      }
+    },
+    "update_visit": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "visit_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "action",
+          "type": "enum",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "move",
+            "skip",
+            "add",
+            "reorder",
+            "done"
+          ]
+        },
+        {
+          "name": "date",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "YYYY-MM-DD"
+        },
+        {
+          "name": "position",
+          "type": "number",
+          "required": false,
+          "is_exposed_to_llm": true
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": false
+      }
+    },
+    "get_today": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "date",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "YYYY-MM-DD"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": true
+      }
+    }
+  }
+}

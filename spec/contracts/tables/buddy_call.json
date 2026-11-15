@@ -1,0 +1,133 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "buddy_call",
+    "description": "Outbound calls and WhatsApp pings from merc-buddy to a rep (REQ-BUD-014/015)",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "user_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "channel",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "purpose",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "reason",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "due_at",
+        "type": "datetime",
+        "required": true
+      },
+      {
+        "name": "ref_table",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "ref_id",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "wonderful_conversation_id",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "template_name",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "failure_reason",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "started_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "ended_at",
+        "type": "datetime",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "buddy_call_user_id_idx",
+        "columns": [
+          "user_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "buddy_call_status_due_at_idx",
+        "columns": [
+          "status",
+          "due_at"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "voice",
+    "derived": false,
+    "enums": {
+      "channel": [
+        "call",
+        "whatsapp"
+      ],
+      "purpose": [
+        "callback",
+        "briefing",
+        "approval_decided",
+        "alert",
+        "eod",
+        "pre_visit",
+        "post_visit",
+        "debrief_confirm"
+      ],
+      "status": [
+        "scheduled",
+        "started",
+        "answered",
+        "no_answer",
+        "busy",
+        "voicemail",
+        "sent",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "notes": {}
+  }
+}

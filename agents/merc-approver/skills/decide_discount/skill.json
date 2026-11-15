@@ -1,0 +1,46 @@
+{
+  "name": "decide_discount",
+  "display_name": "Decide discount",
+  "description": "Brief the manager on one discount request, take approve, counter-offer or reject, read it back and record it.",
+  "prompts": { "skill": "prompt.md" },
+  "tools": {
+    "get_approval_brief": {
+      "type": "programmable",
+      "description": "Load the discount request this call is about. Call it first.",
+      "parameters": [],
+      "config": {}
+    },
+    "record_approval_decision": {
+      "type": "programmable",
+      "description": "Record the manager's confirmed decision: approve, counter (with approved_pct) or reject.",
+      "parameters": [
+        { "name": "decision", "type": "string", "required": true, "is_exposed_to_llm": true, "description": "approve, counter or reject" },
+        { "name": "approved_pct", "type": "number", "required": false, "is_exposed_to_llm": true, "description": "Only for counter: the offered percentage" },
+        { "name": "note", "type": "string", "required": false, "is_exposed_to_llm": true, "description": "Optional short reason" }
+      ],
+      "config": {}
+    },
+    "report_call_outcome": {
+      "type": "programmable",
+      "description": "Report that the call ends without a decision (no_answer, busy, voicemail or failed).",
+      "parameters": [
+        { "name": "outcome", "type": "string", "required": true, "is_exposed_to_llm": true, "description": "no_answer, busy, voicemail or failed" }
+      ],
+      "config": {}
+    },
+    "on_voicemail_detected": {
+      "type": "programmable",
+      "description": "Trigger OnVoicemailDetected: leave the safe line, report voicemail, end the call.",
+      "parameters": [
+        { "name": "source", "type": "string", "required": false, "is_exposed_to_llm": false, "description": "Detector that fired" }
+      ],
+      "config": {}
+    },
+    "on_call_end": {
+      "type": "programmable",
+      "description": "Trigger OnEnd: report failed when the call ends without a decision.",
+      "parameters": [],
+      "config": {}
+    }
+  }
+}

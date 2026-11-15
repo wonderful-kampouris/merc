@@ -1,0 +1,112 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "product_guidance",
+    "description": "Company guidance: which product to push or avoid, per account category, and why (REQ-MTG-003)",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "product_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.product",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "category_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.account_category",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "stance",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "reason",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "priority",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "valid_from",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "valid_to",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "active",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "product_guidance_org_id_stance_active_idx",
+        "columns": [
+          "org_id",
+          "stance",
+          "active"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "product_guidance_product_id_idx",
+        "columns": [
+          "product_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "product_guidance_category_id_idx",
+        "columns": [
+          "category_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {
+      "stance": [
+        "push",
+        "avoid"
+      ]
+    },
+    "notes": {
+      "category_id": "Null = every category",
+      "reason": "Short reason the rep can say or act on",
+      "priority": "Higher wins; ties break on product name"
+    }
+  }
+}

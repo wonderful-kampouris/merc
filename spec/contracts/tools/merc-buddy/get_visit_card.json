@@ -1,0 +1,28 @@
+{
+  "name": "get_visit_card",
+  "agent": "merc-buddy",
+  "function": "visit-card-get",
+  "description": "Everything about one customer or prospect before a visit.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [
+    "customers.attach(account_id)"
+  ],
+  "say": "",
+  "returns": "../../functions/visit-card-get.json#/response"
+}

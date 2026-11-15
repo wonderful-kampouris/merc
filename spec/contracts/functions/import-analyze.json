@@ -1,0 +1,62 @@
+{
+  "slug": "import-analyze",
+  "method": "POST",
+  "kind": "http",
+  "gate": null,
+  "callers": [
+    "procedure"
+  ],
+  "timeout_ms": 300000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "import_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "import_id"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "status": {
+        "type": "string"
+      },
+      "rows_total": {
+        "type": "integer"
+      },
+      "issues": {
+        "type": "integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "status",
+      "rows_total",
+      "issues"
+    ]
+  },
+  "reads": [
+    "data_import",
+    "account",
+    "contact",
+    "product"
+  ],
+  "writes": [
+    "data_import",
+    "import_column_mapping",
+    "import_row_issue"
+  ],
+  "errors": [],
+  "llm": [
+    "import_mapping"
+  ],
+  "integrations": [],
+  "notes": "Parse, map columns with confidence, clean phones (E.164) / VAT (EL 9 digits) / addresses, find duplicates, build preview."
+}

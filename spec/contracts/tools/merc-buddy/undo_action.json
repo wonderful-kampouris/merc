@@ -1,0 +1,26 @@
+{
+  "name": "undo_action",
+  "agent": "merc-buddy",
+  "function": "ai-action-undo",
+  "description": "Undo one thing the AI did.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "ai_action_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "ai_action_id"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/ai-action-undo.json#/response"
+}

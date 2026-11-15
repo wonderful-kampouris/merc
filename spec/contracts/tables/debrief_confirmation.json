@@ -1,0 +1,152 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "debrief_confirmation",
+    "description": "Short summary of a logged visit sent to the rep to confirm or fix (REQ-MTG-006/007)",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "voice_log_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.voice_log",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "rep_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "visit_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.visit",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "channel",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "summary_text",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "buddy_call_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.buddy_call",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "reply_text",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "sent_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "replied_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "correction_voice_log_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.voice_log",
+          "on_delete": "set_null"
+        }
+      }
+    ],
+    "indexes": [
+      {
+        "name": "debrief_confirmation_voice_log_id_uq",
+        "columns": [
+          "voice_log_id"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "debrief_confirmation_rep_id_status_idx",
+        "columns": [
+          "rep_id",
+          "status"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "debrief_confirmation_visit_id_idx",
+        "columns": [
+          "visit_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "debrief_confirmation_buddy_call_id_idx",
+        "columns": [
+          "buddy_call_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "debrief_confirmation_correction_voice_log_id_idx",
+        "columns": [
+          "correction_voice_log_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "engagement",
+    "derived": false,
+    "enums": {
+      "channel": [
+        "whatsapp",
+        "app",
+        "call"
+      ],
+      "status": [
+        "pending",
+        "sent",
+        "confirmed",
+        "corrected",
+        "no_reply",
+        "failed"
+      ]
+    },
+    "notes": {
+      "summary_text": "Bullets built in code from the result card lines",
+      "correction_voice_log_id": "The follow-up debrief that carried the correction"
+    }
+  }
+}

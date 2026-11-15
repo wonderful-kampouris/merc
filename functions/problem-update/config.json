@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "problem-update",
+  "description": "Merc fn:problem-update (contracts/functions/problem-update.json). Source: Merc monorepo shared/handlers/src/problem-update.ts.",
+  "method": "POST",
+  "path_slug": "problem-update",
+  "param_mapping": {}
+}

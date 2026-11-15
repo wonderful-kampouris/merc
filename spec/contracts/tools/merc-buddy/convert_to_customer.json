@@ -1,0 +1,26 @@
+{
+  "name": "convert_to_customer",
+  "agent": "merc-buddy",
+  "function": "account-convert",
+  "description": "Prospect became a customer (needs approval).",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/account-convert.json#/response"
+}

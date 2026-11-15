@@ -1,0 +1,77 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "account_metrics",
+    "description": "DERIVED rollup, rebuilt hourly by metrics-rollup",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "avg_order_interval_days",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "last_order_date",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "days_since_last_order",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "last_visit_date",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "risk_score",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "risk_reasons",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "computed_at",
+        "type": "datetime",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "account_metrics_account_id_uq",
+        "columns": [
+          "account_id"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": true,
+    "enums": {},
+    "notes": {
+      "risk_score": "0-100"
+    }
+  }
+}

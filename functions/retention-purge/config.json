@@ -1,0 +1,8 @@
+{
+  "kind": "cron",
+  "name": "retention-purge",
+  "description": "Merc fn:retention-purge: delete stored audio and clear voice_log.audio_ref after organization.recording_retention_days; transcripts are kept (contracts/functions/retention-purge.json, REQ-DEB-011). Source: Merc monorepo shared/handlers/src/retention-purge.ts.",
+  "cron_schedules": [
+    { "cron_expression": "30 2 * * *", "timezone": "Europe/Athens", "params": {}, "enabled": true }
+  ]
+}

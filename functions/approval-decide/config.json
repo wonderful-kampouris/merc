@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "approval-decide",
+  "description": "Merc fn:approval-decide: approve / counter / reject a discount approval and notify the requester (REQ-DSC-003/004/005) (contracts/functions/approval-decide.json). Source: Merc monorepo shared/handlers/src/approval-decide.ts.",
+  "method": "POST",
+  "path_slug": "approval-decide",
+  "param_mapping": {}
+}

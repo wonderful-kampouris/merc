@@ -1,0 +1,30 @@
+/* App-level styles — the app owns its own frame.
+ *
+ * `@wonderful/ui-base/embedded.css` (imported in `src/index.ts`) brings the
+ * design tokens, the Inter face and every component's styling. What it does
+ * not do — deliberately — is decide how your app fills its container. The
+ * library has no idea where it is mounted, and it shouldn't: that is this
+ * file's job.
+ *
+ * Standalone, the local runner mounts into `#root`, so the document and the
+ * root element need a real height for `Page` to fill, and a surface painted
+ * from the design tokens (never a hardcoded color) so the app follows the
+ * active theme.
+ *
+ * Deployed, the app renders as a subtree of the platform host, which owns the
+ * frame — `html`/`body`/`#root` are the host's, not yours, so these rules
+ * simply don't apply there. That is why it is safe to state them here. */
+
+html,
+body,
+#root {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	background: var(--background);
+	color: var(--foreground);
+	font-family: var(--font-sans, "Inter", system-ui, sans-serif);
+	-webkit-font-smoothing: antialiased;
+}

@@ -1,0 +1,118 @@
+{
+  "name": "prospecting",
+  "display_name": "Prospecting",
+  "description": "Use when: 'find bakeries in X' / 'new shop here'.",
+  "prompts": {
+    "skill": "prompt.md"
+  },
+  "tools": {
+    "find_shops": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "area_text",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true
+        },
+        {
+          "name": "category_text",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true
+        }
+      ],
+      "config": {
+        "timeout": 30000,
+        "is_interruptible": false
+      }
+    },
+    "add_candidate": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "business_name",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true
+        },
+        {
+          "name": "location_hint",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true
+        }
+      ],
+      "config": {
+        "timeout": 30000,
+        "is_interruptible": false
+      }
+    },
+    "list_new_shops": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "search_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": true
+      }
+    },
+    "act_on_candidate": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "candidate_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "action",
+          "type": "enum",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "add_to_route",
+            "assign",
+            "dismiss"
+          ]
+        },
+        {
+          "name": "date",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "YYYY-MM-DD"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": false
+      }
+    },
+    "convert_to_customer": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": false
+      }
+    }
+  }
+}

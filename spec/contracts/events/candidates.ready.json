@@ -1,0 +1,33 @@
+{
+  "type": "candidates.ready",
+  "envelope": {
+    "type": "candidates.ready",
+    "at": "date-time",
+    "payload": "see schema"
+  },
+  "payload": {
+    "type": "object",
+    "properties": {
+      "search_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "found": {
+        "type": "integer"
+      },
+      "duplicates": {
+        "type": "integer"
+      },
+      "scored": {
+        "type": "integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "search_id",
+      "found",
+      "duplicates",
+      "scored"
+    ]
+  }
+}

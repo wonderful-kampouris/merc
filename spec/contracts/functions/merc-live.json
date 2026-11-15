@@ -1,0 +1,58 @@
+{
+  "slug": "merc-live",
+  "method": "WS",
+  "kind": "websocket",
+  "gate": null,
+  "callers": [
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "connect_query": {
+        "type": "object",
+        "properties": {
+          "client": {
+            "type": "string",
+            "enum": [
+              "rep",
+              "mgmt"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "client"
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "connect_query"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "channels": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "channels"
+    ]
+  },
+  "reads": [],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "connect: resolve caller -> channels rep:{user_id} and, for managers, team:{user_id}. Messages: contracts/events/*.json."
+}

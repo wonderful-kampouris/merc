@@ -1,0 +1,50 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "campaign_rep",
+    "description": "Target reps",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "campaign_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.campaign",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "user_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "cascade"
+        }
+      }
+    ],
+    "indexes": [
+      {
+        "name": "campaign_rep_campaign_id_user_id_uq",
+        "columns": [
+          "campaign_id",
+          "user_id"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "engagement",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

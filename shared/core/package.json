@@ -1,0 +1,22 @@
+{
+  "name": "@merc/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Merc business-layer core (REQ-CORE-004): typed table repos, me(), role scope, Error mapping, contract validation. Shared by Functions and agent tools.",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "generate": "node --experimental-strip-types --no-warnings scripts/generate.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "bundle-check": "esbuild src/index.ts --bundle --platform=neutral --format=esm --outfile=/tmp/merc-core-bundle.mjs",
+    "publish-lib": "sh scripts/publish-shared-lib.sh"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

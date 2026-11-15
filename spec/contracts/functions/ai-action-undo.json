@@ -1,0 +1,75 @@
+{
+  "slug": "ai-action-undo",
+  "method": "POST",
+  "kind": "http",
+  "gate": "aiaction.undo",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "ai_action_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "ai_action_id"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "ai_action_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "undone"
+        ]
+      },
+      "restored": {
+        "type": "object",
+        "properties": {
+          "table": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "table",
+          "id"
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "ai_action_id",
+      "status",
+      "restored"
+    ]
+  },
+  "reads": [
+    "ai_action"
+  ],
+  "writes": [
+    "ai_action",
+    "*"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Restores before_snapshot exactly; rows created by the action are deleted by the engine (the only delete path, internal rows only).",
+  "scope": "owner"
+}

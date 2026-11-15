@@ -1,0 +1,23 @@
+[
+  {
+    "id": "76b55561-9135-5c55-ad43-34661bffd9d9",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "manager_id": "fa4c7746-c253-5104-a735-7060bfddb756",
+    "default_rep_id": "d72bccf8-f36c-5abf-8d0d-142783f090cd",
+    "name": "North"
+  },
+  {
+    "id": "ab0e35fb-6fcb-5d04-aa2b-36be2cc7372c",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "manager_id": "fa4c7746-c253-5104-a735-7060bfddb756",
+    "default_rep_id": "27f8d8e3-7f84-5b9f-90e1-7d3fab3d9b22",
+    "name": "Center"
+  },
+  {
+    "id": "5963cd69-93fb-53ce-9745-f1d136a46285",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "manager_id": "fa4c7746-c253-5104-a735-7060bfddb756",
+    "default_rep_id": "51f64164-9fae-56a4-a1d2-46b24def92e8",
+    "name": "South"
+  }
+]

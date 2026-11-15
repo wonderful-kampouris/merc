@@ -1,0 +1,50 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "campaign_product",
+    "description": "Products promoted",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "campaign_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.campaign",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "product_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.product",
+          "on_delete": "restrict"
+        }
+      }
+    ],
+    "indexes": [
+      {
+        "name": "campaign_product_campaign_id_product_id_uq",
+        "columns": [
+          "campaign_id",
+          "product_id"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "engagement",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

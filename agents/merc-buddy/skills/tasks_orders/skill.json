@@ -1,0 +1,136 @@
+{
+  "name": "tasks_orders",
+  "display_name": "Tasks Orders",
+  "description": "Use when: reminders, orders.",
+  "prompts": {
+    "skill": "prompt.md"
+  },
+  "tools": {
+    "create_task": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true
+        },
+        {
+          "name": "due_at",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "ISO 8601 date-time"
+        },
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "is_customer_promise",
+          "type": "boolean",
+          "required": false,
+          "is_exposed_to_llm": true
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": false
+      }
+    },
+    "complete_task": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "task_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "open",
+            "done",
+            "cancelled"
+          ]
+        },
+        {
+          "name": "due_at",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "ISO 8601 date-time"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": false
+      }
+    },
+    "draft_order": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "draft",
+            "confirmed",
+            "cancelled"
+          ]
+        },
+        {
+          "name": "lines",
+          "type": "array",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "product_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "quantity": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "product_id",
+              "quantity"
+            ]
+          }
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": false
+      }
+    }
+  }
+}

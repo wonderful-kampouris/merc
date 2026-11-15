@@ -1,0 +1,143 @@
+{
+  "_doc": "Debrief golden set (contracts/llm/debrief_extraction.json eval_set). Each case: utterance, the seeded account it is about (null = unknown customer), checks on what debrief-process applied, and planted hallucinations for the offline run (injected into the model output; code must drop or null 100% of them). Check ops: eq, len, min_len, has (array contains), weekday (ISO weekday of a due date), null. Dates resolve against the run day.",
+  "account_keys": { "miltos": "59b5e454-cc4b-5fab-939b-a50c78e8aa9b" },
+  "ids": {
+    "problem_grinder": "e5198444-d143-5b8d-a174-70391f0aa839",
+    "deal_espresso": "50bce864-2842-50e6-8615-503cf2fe5c6f",
+    "campaign_nuovo": "006021ba-1b63-5646-9d18-85a40098c0c9",
+    "aroma": "94cc0e65-3b44-5d48-b419-32e51aa11446",
+    "bluebean": "8fac56e5-0862-50b1-b242-bb37ac0c98e1",
+    "kafea": "fa5e924c-02e2-59f4-8893-f13189e24ba1",
+    "nuovo": "b28bc378-ec47-55d6-a414-b09ac0dacc3d",
+    "classico": "120d56dc-215d-557d-bbab-43d87e1047c4",
+    "vanilla": "fb2b8f20-27e3-57ac-89c9-01284cf6298d"
+  },
+  "default_plants": [
+    { "path": "tasks", "item": { "title": "Δωρεάν 50 κιλά", "due_at": null, "is_customer_promise": true, "evidence": "θα του στείλω 50 κιλά δωρεάν" } },
+    { "path": "competitor_signals", "item": { "competitor_name": "Aroma Delta", "statement": "40% φθηνότερα", "price_delta_pct": -40, "evidence": "η Aroma Delta δίνει 40% φθηνότερα" } },
+    { "path": "deal_update", "item": { "deal_id": null, "new_deal_title": "Μεγάλη συμφωνία", "stage_code": "won", "amount_minor": 999900, "next_step": null, "expected_close_date": null, "evidence": "κλείσαμε στα 9.999 ευρώ" } },
+    { "path": "contacts", "item": { "existing_contact_id": null, "full_name": "Γιάννης Barista", "role_title": null, "phone": "6999999999", "email": null, "is_decision_maker": false, "evidence": "ο Γιάννης ο barista" } }
+  ],
+  "cases": [
+    { "id": "el-j1", "lang": "el", "tags": ["j1", "full"], "account": "miltos",
+      "utterance": "Ήμουν στο Café Miltos. Ο μύλος κάνει ακόμα θόρυβο, θα στείλουμε τεχνικό. Υποσχέθηκα στον Μίλτο να του φέρω δείγματα Espresso Nuovo την Πέμπτη. Του έδειξα την καμπάνια Espresso Nuovo και του άρεσε. Η Aroma του προσφέρει 15% φθηνότερα. Για τη συμφωνία των 20 κιλών λέει ότι κλείνουμε στα 4.000 ευρώ. Βάλε και μια παραγγελία για δώδεκα κιλά Espresso Nuovo. Στείλε του ένα email να τον ευχαριστήσω.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "problems", "op": "has", "v": { "id": "problem_grinder" } },
+        { "f": "tasks", "op": "has", "v": { "is_customer_promise": true, "weekday": 4 } },
+        { "f": "deal.amount_minor", "op": "eq", "v": 400000 },
+        { "f": "signals", "op": "has", "v": { "competitor": "aroma", "delta": -15 } },
+        { "f": "pitched", "op": "has", "v": "campaign_nuovo" },
+        { "f": "order_lines", "op": "has", "v": { "product": "nuovo", "quantity": 12 } },
+        { "f": "approvals", "op": "has", "v": { "channel": "email" } }
+      ] },
+    { "id": "en-basic", "lang": "en", "tags": ["en"], "account": "miltos",
+      "utterance": "Visited Café Miltos. The grinder is fixed now, no more noise. I promised to bring decaf samples tomorrow. Send him an email to confirm the samples.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "problems", "op": "has", "v": { "id": "problem_grinder", "status": "resolved" } },
+        { "f": "tasks", "op": "has", "v": { "is_customer_promise": true, "days_from_today": 1 } },
+        { "f": "approvals", "op": "has", "v": { "channel": "email" } }
+      ] },
+    { "id": "mixed-stage-viber", "lang": "mixed", "tags": ["mixed"], "account": "miltos",
+      "utterance": "Ήμουν στο Café Miltos, το deal για τα 20 κιλά πάει σε proposal stage, θέλει ένα quote για Espresso Nuovo. Στείλε του το quote στο Viber.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "deal.stage_code", "op": "eq", "v": "proposal" },
+        { "f": "approvals", "op": "has", "v": { "channel": "viber" } },
+        { "f": "order_lines", "op": "len", "v": 0 }
+      ] },
+    { "id": "el-noise", "lang": "el", "tags": ["noise"], "account": "miltos",
+      "utterance": "εεε... λοιπόν... στο Café Miltos... ναι... τίποτα σπουδαίο, ε, απλά ένας καφές, ε, όλα καλά, ναι.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "tasks", "op": "len", "v": 0 },
+        { "f": "signals", "op": "len", "v": 0 },
+        { "f": "order_lines", "op": "len", "v": 0 },
+        { "f": "approvals", "op": "len", "v": 0 },
+        { "f": "deal.amount_minor", "op": "null" }
+      ] },
+    { "id": "el-half-sentence", "lang": "el", "tags": ["half"], "account": "miltos",
+      "utterance": "Στο Café Miltos, του είπα ότι θα του φέρω τα",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "order_lines", "op": "len", "v": 0 },
+        { "f": "deal.amount_minor", "op": "null" },
+        { "f": "approvals", "op": "len", "v": 0 }
+      ] },
+    { "id": "el-unknown-customer", "lang": "el", "tags": ["unknown_customer"], "account": null,
+      "utterance": "Ήμουν σε ένα καινούριο μαγαζί στο Μαρούσι, ενδιαφέρεται για καφέ φίλτρου.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "needs_confirmation" },
+        { "f": "question", "op": "not_null" }
+      ] },
+    { "id": "en-unknown-customer", "lang": "en", "tags": ["unknown_customer", "en"], "account": null,
+      "utterance": "I visited a new bakery today, the owner wants samples of the filter coffee.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "needs_confirmation" }
+      ] },
+    { "id": "el-tempt-quantity", "lang": "el", "tags": ["hallucination"], "account": "miltos",
+      "utterance": "Στο Café Miltos μου είπε ότι θέλει περισσότερο Espresso Classico τον επόμενο μήνα, αλλά δεν είπαμε ποσότητα.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "order_lines", "op": "len", "v": 0 },
+        { "f": "deal.amount_minor", "op": "null" }
+      ] },
+    { "id": "el-tempt-price-delta", "lang": "el", "tags": ["hallucination"], "account": "miltos",
+      "utterance": "Στο Café Miltos, η BlueBean του έκανε καλύτερη προσφορά, δεν ξέρω πόσο φθηνότερα.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "signals", "op": "has", "v": { "competitor": "bluebean", "delta": null } }
+      ] },
+    { "id": "en-competitor", "lang": "en", "tags": ["en", "competitor"], "account": "miltos",
+      "utterance": "At Café Miltos. Kafea Plus offered them 10% off on espresso and Miltos wants us to match it.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "signals", "op": "has", "v": { "competitor": "kafea", "delta": -10 } }
+      ] },
+    { "id": "el-order", "lang": "el", "tags": ["order"], "account": "miltos",
+      "utterance": "Café Miltos: βάλε παραγγελία πέντε κιλά Espresso Classico και δύο λίτρα σιρόπι βανίλια.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "order_lines", "op": "has", "v": { "product": "classico", "quantity": 5 } },
+        { "f": "order_lines", "op": "has", "v": { "product": "vanilla", "quantity": 2 } }
+      ] },
+    { "id": "el-promise-friday", "lang": "el", "tags": ["promise"], "account": "miltos",
+      "utterance": "Στο Café Miltos υποσχέθηκα να περάσω την Παρασκευή να δούμε μαζί τον μύλο.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "tasks", "op": "has", "v": { "is_customer_promise": true, "weekday": 5 } }
+      ] },
+    { "id": "en-no-channel", "lang": "en", "tags": ["en", "grounding"], "account": "miltos",
+      "utterance": "Café Miltos is happy with the new blend. Let Miltos know that the new price list is coming.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "approvals", "op": "len", "v": 0 }
+      ] },
+    { "id": "el-new-contact", "lang": "el", "tags": ["contact"], "account": "miltos",
+      "utterance": "Στο Café Miltos γνώρισα τη νέα υπεύθυνη, την Κατερίνα Δήμου, το τηλέφωνό της είναι 6944123456.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "contacts", "op": "has", "v": { "name_contains": "Κατερίνα", "phone": "6944123456" } }
+      ] },
+    { "id": "el-campaign", "lang": "el", "tags": ["campaign"], "account": "miltos",
+      "utterance": "Στο Café Miltos του παρουσίασα την καμπάνια για το Espresso Nuovo, θα το σκεφτεί.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "pitched", "op": "has", "v": "campaign_nuovo" }
+      ] },
+    { "id": "el-deal-amount", "lang": "el", "tags": ["deal"], "account": "miltos",
+      "utterance": "Café Miltos: η συμφωνία για τα 20 κιλά κλείνει στα 3.500 ευρώ το μήνα, θα υπογράψουμε σύντομα.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "deal.amount_minor", "op": "eq", "v": 350000 }
+      ] },
+    { "id": "mixed-discount", "lang": "mixed", "tags": ["mixed", "hallucination"], "account": "miltos",
+      "utterance": "Ήμουν στο Café Miltos. He said the price is too high, θέλει discount αλλά δεν είπε πόσο.",
+      "checks": [
+        { "f": "status", "op": "eq", "v": "completed" },
+        { "f": "order_lines", "op": "len", "v": 0 },
+        { "f": "approvals", "op": "len", "v": 0 }
+      ] }
+  ]
+}

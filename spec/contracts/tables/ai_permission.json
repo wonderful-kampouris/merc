@@ -1,0 +1,71 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "ai_permission",
+    "description": "Autonomy mode per org x role x action type",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "role_code",
+        "type": "string",
+        "required": true,
+        "reference": {
+          "table": "merc.role",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "action_type_code",
+        "type": "string",
+        "required": true,
+        "reference": {
+          "table": "merc.action_type",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "mode",
+        "type": "string",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "ai_permission_org_id_role_code_action_0f2c69ea_uq",
+        "columns": [
+          "org_id",
+          "role_code",
+          "action_type_code"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "org",
+    "derived": false,
+    "enums": {
+      "mode": [
+        "auto",
+        "ask",
+        "never"
+      ]
+    },
+    "notes": {}
+  }
+}

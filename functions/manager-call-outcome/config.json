@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "manager-call-outcome",
+  "description": "Merc fn:manager-call-outcome: outcome of the merc-approver call; non-answered -> async (REQ-DSC-006) (contracts/functions/manager-call-outcome.json). Source: Merc monorepo shared/handlers/src/manager-call-outcome.ts.",
+  "method": "POST",
+  "path_slug": "manager-call-outcome",
+  "param_mapping": {}
+}

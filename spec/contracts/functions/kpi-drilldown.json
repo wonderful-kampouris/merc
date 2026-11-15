@@ -1,0 +1,117 @@
+{
+  "slug": "kpi-drilldown",
+  "method": "GET",
+  "kind": "http",
+  "gate": "dashboard.read",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "kpi": {
+        "type": "string",
+        "enum": [
+          "at_risk",
+          "new_customers",
+          "pipeline",
+          "stuck_deals",
+          "low_logging",
+          "customers_saved",
+          "lost",
+          "incomplete_accounts",
+          "revenue",
+          "visits",
+          "ai_actions",
+          "approvals",
+          "discounts"
+        ]
+      },
+      "territory_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "rep_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "from": {
+        "type": "string",
+        "format": "date"
+      },
+      "to": {
+        "type": "string",
+        "format": "date"
+      },
+      "page": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "limit": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "kpi",
+      "from",
+      "to"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "page": {
+        "$ref": "../_defs.json#/$defs/Page"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "items",
+      "page"
+    ]
+  },
+  "reads": [],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "dashboard"
+}

@@ -1,0 +1,9 @@
+{
+  "kind": "cron",
+  "name": "alerts-engine",
+  "description": "Merc fn:alerts-engine: hourly evaluation of alert_rule (8 types), dedupe on dedupe_key, push alert.created. Source: shared/handlers/src/alerts-engine.ts",
+  "timeout_ms": 300000,
+  "cron_schedules": [
+    { "cron_expression": "0 * * * *", "timezone": "Europe/Athens", "params": {}, "enabled": true }
+  ]
+}

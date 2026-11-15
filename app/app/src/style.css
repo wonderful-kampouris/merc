@@ -1,0 +1,131 @@
+/* App-level styles — the app owns its own frame.
+ *
+ * `@wonderful/ui-base/embedded.css` (imported in `src/index.ts`) brings the
+ * design tokens, the Inter face and every component's styling. What it does
+ * not do — deliberately — is decide how your app fills its container. The
+ * library has no idea where it is mounted, and it shouldn't: that is this
+ * file's job.
+ *
+ * Standalone, the local runner mounts into `#root`, so the document and the
+ * root element need a real height for `Page` to fill, and a surface painted
+ * from the design tokens (never a hardcoded color) so the app follows the
+ * active theme.
+ *
+ * Deployed, the app renders as a subtree of the platform host, which owns the
+ * frame — `html`/`body`/`#root` are the host's, not yours, so these rules
+ * simply don't apply there. That is why it is safe to state them here. */
+
+html,
+body,
+#root {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	background: var(--background);
+	color: var(--foreground);
+	font-family: var(--font-sans, "Inter", system-ui, sans-serif);
+	-webkit-font-smoothing: antialiased;
+}
+
+/* ---- Merc shells ------------------------------------------------------- */
+.merc-root {
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
+	background: var(--background);
+	color: var(--foreground);
+}
+.merc-topbar {
+	padding: 8px 16px;
+	border-block-end: 1px solid var(--border);
+	background: var(--card, var(--background));
+}
+.merc-pre {
+	display: block;
+	white-space: pre-wrap;
+	word-break: break-word;
+	max-height: 320px;
+	overflow: auto;
+}
+
+/* Rep: phone-first, bottom tab bar that stays in reach of the thumb. */
+.merc-rep {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	min-height: 0;
+}
+.merc-rep__main {
+	flex: 1;
+	min-width: 0;
+	padding-block-end: 8px;
+}
+.merc-tabbar {
+	position: sticky;
+	bottom: 0;
+	z-index: 10;
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: 2px;
+	padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+	border-block-start: 1px solid var(--border);
+	background: var(--card, var(--background));
+}
+.merc-tab {
+	flex-direction: column;
+	height: auto;
+	min-height: 48px;
+	padding-inline: 2px;
+	gap: 2px;
+	font-size: 11px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+@media (min-width: 900px) {
+	.merc-rep__main,
+	.merc-tabbar {
+		max-width: 640px;
+		width: 100%;
+		margin-inline: auto;
+	}
+}
+
+/* Management: desktop side nav; a scrolling row on narrow screens (approvals is mobile). */
+.merc-mgmt {
+	display: grid;
+	grid-template-columns: 220px minmax(0, 1fr);
+	flex: 1;
+	min-height: 0;
+}
+.merc-mgmt__nav {
+	padding: 12px 8px;
+	border-inline-end: 1px solid var(--border);
+}
+.merc-mgmt__link {
+	justify-content: flex-start;
+	width: 100%;
+}
+.merc-mgmt__main {
+	min-width: 0;
+}
+@media (max-width: 720px) {
+	.merc-mgmt {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.merc-mgmt__nav {
+		border-inline-end: 0;
+		border-block-end: 1px solid var(--border);
+		overflow-x: auto;
+		padding: 6px 8px;
+	}
+	.merc-mgmt__nav > * {
+		flex-direction: row;
+	}
+	.merc-mgmt__link {
+		width: auto;
+		white-space: nowrap;
+	}
+}

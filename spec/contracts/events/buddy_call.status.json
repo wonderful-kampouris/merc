@@ -1,0 +1,33 @@
+{
+  "type": "buddy_call.status",
+  "envelope": {
+    "type": "buddy_call.status",
+    "at": "date-time",
+    "payload": "see schema"
+  },
+  "payload": {
+    "type": "object",
+    "properties": {
+      "buddy_call_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "channel": {
+        "type": "string",
+        "enum": [
+          "call",
+          "whatsapp"
+        ]
+      },
+      "status": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "buddy_call_id",
+      "channel",
+      "status"
+    ]
+  }
+}

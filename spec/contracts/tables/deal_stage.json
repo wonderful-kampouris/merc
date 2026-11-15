@@ -1,0 +1,49 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "deal_stage",
+    "description": "Deal pipeline stages",
+    "columns": [
+      {
+        "name": "code",
+        "type": "string",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "sort_order",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "is_closed",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "is_won",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "probability",
+        "type": "number",
+        "required": true
+      }
+    ],
+    "indexes": []
+  },
+  "x": {
+    "domain": "lookup",
+    "derived": false,
+    "enums": {},
+    "notes": {
+      "probability": "0-1, weighted pipeline"
+    }
+  }
+}

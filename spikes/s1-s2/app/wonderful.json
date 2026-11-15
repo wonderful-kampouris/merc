@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "name": "merc-spike-s1s2",
+  "slug": "merc-spike-s1s2",
+  "description": "WP-SPK-01 spike: mobile browser hello world + Chat SDK voice widget"
+}

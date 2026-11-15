@@ -1,0 +1,146 @@
+[
+  {
+    "code": "create_note",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "create note"
+  },
+  {
+    "code": "create_task",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "create task"
+  },
+  {
+    "code": "update_task",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "update task"
+  },
+  {
+    "code": "create_problem",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "create problem"
+  },
+  {
+    "code": "update_problem",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "update problem"
+  },
+  {
+    "code": "create_deal",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "create deal"
+  },
+  {
+    "code": "update_deal",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "update deal"
+  },
+  {
+    "code": "create_competitor_signal",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "create competitor signal"
+  },
+  {
+    "code": "update_account",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "update account"
+  },
+  {
+    "code": "create_contact",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "create contact"
+  },
+  {
+    "code": "update_contact",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "update contact"
+  },
+  {
+    "code": "mark_visit_done",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "mark visit done"
+  },
+  {
+    "code": "log_campaign_pitch",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "log campaign pitch"
+  },
+  {
+    "code": "reschedule_visit",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "reschedule visit"
+  },
+  {
+    "code": "add_candidate",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "add candidate"
+  },
+  {
+    "code": "discount_within_limit",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "discount within limit"
+  },
+  {
+    "code": "mark_account_lost",
+    "action_class": "internal",
+    "default_mode": "auto",
+    "description": "mark account lost"
+  },
+  {
+    "code": "create_draft_order",
+    "action_class": "draft",
+    "default_mode": "auto",
+    "description": "create draft order"
+  },
+  {
+    "code": "send_email",
+    "action_class": "external",
+    "default_mode": "ask",
+    "description": "send email"
+  },
+  {
+    "code": "send_whatsapp",
+    "action_class": "external",
+    "default_mode": "ask",
+    "description": "send whatsapp"
+  },
+  {
+    "code": "send_viber",
+    "action_class": "external",
+    "default_mode": "ask",
+    "description": "send viber"
+  },
+  {
+    "code": "book_meeting",
+    "action_class": "external",
+    "default_mode": "ask",
+    "description": "book meeting"
+  },
+  {
+    "code": "convert_prospect",
+    "action_class": "structural",
+    "default_mode": "ask",
+    "description": "convert prospect"
+  },
+  {
+    "code": "delete_record",
+    "action_class": "destructive",
+    "default_mode": "never",
+    "description": "delete record"
+  }
+]

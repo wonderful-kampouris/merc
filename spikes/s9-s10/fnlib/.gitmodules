@@ -1,0 +1,3 @@
+[submodule "shared_lib"]
+	path = shared_lib
+	url = https://vcs.greece-hackathon.sb.wonderful.ai/git/tenants/c98854f3-3c88-5fc0-b811-dc4593044ebd/workspaces/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/shared_lib.git

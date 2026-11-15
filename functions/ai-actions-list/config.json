@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "ai-actions-list",
+  "description": "Merc fn:ai-actions-list: the AI actions the caller may see as ActionLines (contracts/functions/ai-actions-list.json). Source: Merc monorepo shared/handlers/src/ai-actions-list.ts.",
+  "method": "GET",
+  "path_slug": "ai-actions-list",
+  "param_mapping": {}
+}

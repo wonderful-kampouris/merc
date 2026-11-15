@@ -1,0 +1,78 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "briefing_item",
+    "description": "Ordered items of a briefing",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "briefing_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.briefing",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "position",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "item_type",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "ref_table",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "ref_id",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "display_text",
+        "type": "string",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "briefing_item_briefing_id_position_uq",
+        "columns": [
+          "briefing_id",
+          "position"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "engagement",
+    "derived": false,
+    "enums": {
+      "item_type": [
+        "promise_due",
+        "stop",
+        "at_risk",
+        "new_prospect",
+        "nearby_shop",
+        "campaign",
+        "pending_approval",
+        "target_progress",
+        "decision_received"
+      ]
+    },
+    "notes": {}
+  }
+}

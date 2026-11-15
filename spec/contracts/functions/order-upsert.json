@@ -1,0 +1,109 @@
+{
+  "slug": "order-upsert",
+  "method": "POST",
+  "kind": "http",
+  "gate": "orders.write",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "order_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "confirmed",
+          "cancelled"
+        ]
+      },
+      "lines": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "product_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "quantity": {
+              "type": "number"
+            },
+            "unit_price_minor": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "discount_pct": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "product_id",
+            "quantity"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id",
+      "status",
+      "lines"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "order": {
+        "$ref": "../_defs.json#/$defs/OrderSummary"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "order"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "sales_order",
+    "order_line"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Confirming requires the rep's explicit confirmation (draft -> confirmed). Prices default to list price; discount_pct above the rep limit is rejected unless an approved discount_request exists.",
+  "scope": "account"
+}

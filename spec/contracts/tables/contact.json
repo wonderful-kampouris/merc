@@ -1,0 +1,90 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "contact",
+    "description": "Person at an account",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "full_name",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "role_title",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "phone",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "email",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "is_decision_maker",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "preferred_channel",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "contact_account_id_idx",
+        "columns": [
+          "account_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "contact_email_idx",
+        "columns": [
+          "email"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "contact_phone_idx",
+        "columns": [
+          "phone"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {
+      "preferred_channel": [
+        "email",
+        "phone",
+        "whatsapp",
+        "viber"
+      ]
+    },
+    "notes": {}
+  }
+}

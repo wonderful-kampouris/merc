@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "tasks-list",
+  "description": "Merc fn:tasks-list: tasks of the caller (and team for managers) (contracts/functions/tasks-list.json). Source: Merc monorepo shared/handlers/src/tasks-list.ts.",
+  "method": "GET",
+  "path_slug": "tasks-list",
+  "param_mapping": {}
+}

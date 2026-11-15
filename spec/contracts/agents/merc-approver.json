@@ -1,0 +1,54 @@
+{
+  "type": "conversational",
+  "modality": "voice",
+  "agents_version": "v2",
+  "priority": "P0",
+  "wave": 3,
+  "channels": [
+    "single outbound call via POST /v1/agents/outbound started by fn:discount-request (S7). Campaigns are not installed on the tenant; use a campaign only if that changes."
+  ],
+  "languages": {
+    "default": "el",
+    "also": [
+      "en"
+    ]
+  },
+  "memory": {
+    "enabled": false
+  },
+  "skills": [
+    {
+      "name": "decide_discount",
+      "tools": [
+        "get_approval_brief",
+        "record_approval_decision",
+        "report_call_outcome"
+      ]
+    }
+  ],
+  "behavior": [
+    "Greet the manager by name, say who is asking and why in one sentence (spoken_brief).",
+    "Accept only approve / counter-offer with a % / reject. Read the decision back, record it, end the call.",
+    "Counter-offer must be below the requested % and within the manager's own limit (the function enforces it).",
+    "Voicemail: leave no commercial details; say 'Merc has an approval waiting from <rep> in the app' and report voicemail.",
+    "No other topics; if asked, say the details are in the Merc app."
+  ],
+  "call_rules": {
+    "no_answer": "no outcome within 90 s -> async (lazy check in approval-status / approval-sla-watch), no retry",
+    "busy": "same",
+    "voicemail": "trigger OnVoicemailDetected -> report_call_outcome",
+    "end_without_decision": "trigger OnEnd -> report_call_outcome",
+    "allowed_call_times": "08:00-20:00 org timezone, enforced in fn:discount-request"
+  },
+  "triggers": [
+    "OnVoicemailDetected -> report_call_outcome(voicemail)",
+    "OnEnd without decision -> report_call_outcome(failed)"
+  ],
+  "evals": "evals/merc-approver/",
+  "name": "merc-approver",
+  "tools": [
+    "get_approval_brief",
+    "record_approval_decision",
+    "report_call_outcome"
+  ]
+}

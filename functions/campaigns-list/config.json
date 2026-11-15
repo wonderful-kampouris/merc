@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "campaigns-list",
+  "description": "Merc fn:campaigns-list: campaigns with targeting links; reps see only campaigns that target them (REQ-CMP-002) (contracts/functions/campaigns-list.json). Source: Merc monorepo shared/handlers/src/campaigns-list.ts.",
+  "method": "GET",
+  "path_slug": "campaigns-list",
+  "param_mapping": {}
+}

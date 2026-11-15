@@ -1,0 +1,95 @@
+{
+  "slug": "me",
+  "method": "GET",
+  "kind": "http",
+  "gate": null,
+  "callers": [
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 1,
+  "request": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "user": {
+        "$ref": "../_defs.json#/$defs/UserRef"
+      },
+      "org_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "language": {
+        "type": "string"
+      },
+      "territory_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "manager": {
+        "anyOf": [
+          {
+            "$ref": "../_defs.json#/$defs/UserRef"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "settings": {
+        "type": "object",
+        "properties": {
+          "briefing_time": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "briefing_time",
+          "timezone",
+          "currency"
+        ]
+      },
+      "permissions": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "user",
+      "org_id",
+      "language",
+      "territory_ids",
+      "settings",
+      "permissions"
+    ]
+  },
+  "reads": [
+    "app_user",
+    "territory_rep",
+    "organization",
+    "role"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

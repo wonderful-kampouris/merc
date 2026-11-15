@@ -1,0 +1,99 @@
+{
+  "slug": "deals-list",
+  "method": "GET",
+  "kind": "http",
+  "gate": "deals.read",
+  "callers": [
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "owner_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "stage_code": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "page": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "limit": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "page": {
+        "$ref": "../_defs.json#/$defs/Page"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "items",
+      "page"
+    ]
+  },
+  "reads": [
+    "deal",
+    "deal_stage"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "account"
+}

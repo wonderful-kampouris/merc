@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "merc-spike-gmail-send",
+  "description": "Spike S3: attempt per-user Gmail send from a Function",
+  "method": "POST",
+  "path_slug": "merc-spike-gmail-send",
+  "param_mapping": {}
+}

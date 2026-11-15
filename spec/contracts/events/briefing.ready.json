@@ -1,0 +1,26 @@
+{
+  "type": "briefing.ready",
+  "envelope": {
+    "type": "briefing.ready",
+    "at": "date-time",
+    "payload": "see schema"
+  },
+  "payload": {
+    "type": "object",
+    "properties": {
+      "briefing_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "date": {
+        "type": "string",
+        "format": "date"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "briefing_id",
+      "date"
+    ]
+  }
+}

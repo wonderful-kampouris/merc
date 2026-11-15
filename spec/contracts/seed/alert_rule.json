@@ -1,0 +1,66 @@
+[
+  {
+    "id": "99959f74-45a6-5abe-b7de-9de4876b4bcc",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "alert_type_code": "going_quiet",
+    "threshold_value": 1.5,
+    "window_days": null,
+    "enabled": true
+  },
+  {
+    "id": "618a77bd-0408-5697-8190-b50f6d21237e",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "alert_type_code": "deal_stuck",
+    "threshold_value": 14,
+    "window_days": null,
+    "enabled": true
+  },
+  {
+    "id": "bcfd53f1-b0be-527d-b46a-c2848c47923a",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "alert_type_code": "close_date_passed",
+    "threshold_value": 0,
+    "window_days": null,
+    "enabled": true
+  },
+  {
+    "id": "a374b7de-99dc-566f-a5bf-f89b4aaed37c",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "alert_type_code": "promise_due",
+    "threshold_value": 1,
+    "window_days": null,
+    "enabled": true
+  },
+  {
+    "id": "cd957596-fe9b-5425-9bfc-32c98b2c1130",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "alert_type_code": "competition_wave",
+    "threshold_value": 3,
+    "window_days": 7,
+    "enabled": true
+  },
+  {
+    "id": "76e0cdec-6121-54dc-b188-a3a7292aa7d6",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "alert_type_code": "visit_overdue",
+    "threshold_value": 1.0,
+    "window_days": null,
+    "enabled": true
+  },
+  {
+    "id": "e474d936-6fb4-537a-8c75-d4f1a5dfee9b",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "alert_type_code": "rep_not_logging",
+    "threshold_value": 2,
+    "window_days": null,
+    "enabled": true
+  },
+  {
+    "id": "26847d11-8772-553b-a52b-2d4973c91c9b",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "alert_type_code": "approval_overdue",
+    "threshold_value": 0,
+    "window_days": null,
+    "enabled": true
+  }
+]

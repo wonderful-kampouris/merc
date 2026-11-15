@@ -1,0 +1,50 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "campaign_territory",
+    "description": "Target territories",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "campaign_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.campaign",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "territory_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.territory",
+          "on_delete": "cascade"
+        }
+      }
+    ],
+    "indexes": [
+      {
+        "name": "campaign_territory_campaign_id_territory_id_uq",
+        "columns": [
+          "campaign_id",
+          "territory_id"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "engagement",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "act_on_alert",
+  "agent": "merc-buddy",
+  "function": "alert-act",
+  "description": "Turn an alert into a task or draft, or close it.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "alert_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "action": {
+        "type": "string",
+        "enum": [
+          "create_task",
+          "create_draft",
+          "done",
+          "dismiss"
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "alert_id",
+      "action"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/alert-act.json#/response"
+}

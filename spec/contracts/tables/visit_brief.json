@@ -1,0 +1,216 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "visit_brief",
+    "description": "The pre-meeting brief generated for one visit and how it was delivered (REQ-MTG-001..004)",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "visit_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.visit",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "rep_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "bullets_text",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "spoken_script",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "push_product_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.product",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "push_reason",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "push_guidance_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.product_guidance",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "avoid_product_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.product",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "avoid_reason",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "avoid_guidance_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.product_guidance",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "channel",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "buddy_call_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.buddy_call",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "generated_at",
+        "type": "datetime",
+        "required": true
+      },
+      {
+        "name": "sent_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "rating",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "visit_brief_visit_id_uq",
+        "columns": [
+          "visit_id"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "visit_brief_rep_id_idx",
+        "columns": [
+          "rep_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "visit_brief_account_id_idx",
+        "columns": [
+          "account_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "visit_brief_push_product_id_idx",
+        "columns": [
+          "push_product_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "visit_brief_avoid_product_id_idx",
+        "columns": [
+          "avoid_product_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "visit_brief_push_guidance_id_idx",
+        "columns": [
+          "push_guidance_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "visit_brief_avoid_guidance_id_idx",
+        "columns": [
+          "avoid_guidance_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "visit_brief_buddy_call_id_idx",
+        "columns": [
+          "buddy_call_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "engagement",
+    "derived": false,
+    "enums": {
+      "channel": [
+        "whatsapp",
+        "call",
+        "app"
+      ],
+      "status": [
+        "generated",
+        "sent",
+        "called",
+        "failed",
+        "skipped"
+      ],
+      "rating": [
+        "useful",
+        "not_useful"
+      ]
+    },
+    "notes": {
+      "bullets_text": "Bullets exactly as sent, one per line"
+    }
+  }
+}

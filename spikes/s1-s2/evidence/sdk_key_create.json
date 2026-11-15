@@ -1,0 +1,41 @@
+{
+ "agent_ids": [
+  "3b6867f7-7cf7-4337-a7e2-2a10ce05c5f0"
+ ],
+ "allowed_domains": [
+  "https://app.greece-hackathon.sb.wonderful.ai",
+  "https://default.app.greece-hackathon.sb.wonderful.ai",
+  "http://localhost:5173"
+ ],
+ "attachment_scanning_available": false,
+ "created_at": 1794706454974,
+ "default_handshake_rate_limits": {
+  "admission": {
+   "per_key_origin_per_minute": 120,
+   "per_key_per_minute": 300
+  },
+  "attempt": {
+   "per_key_origin_per_minute": 240,
+   "per_key_per_minute": 600
+  }
+ },
+ "effective_handshake_rate_limits": {
+  "admission": {
+   "per_key_origin_per_minute": 120,
+   "per_key_per_minute": 300
+  },
+  "attempt": {
+   "per_key_origin_per_minute": 240,
+   "per_key_per_minute": 600
+  }
+ },
+ "handshake_rate_limits_override": null,
+ "id": "11b81442-59dd-4489-a2da-a11936907847",
+ "key": "wpk_live__0g...(publishable, see app/app/src/App.tsx)",
+ "mode": "live",
+ "name": "merc-spike-s1s2-key",
+ "require_attachment_scanning": false,
+ "require_captcha": true,
+ "revoked": false,
+ "updated_at": 1794706454974
+}

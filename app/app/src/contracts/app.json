@@ -1,0 +1,675 @@
+{
+  "name": "merc",
+  "relations": [
+    "owner",
+    "territory_member",
+    "team_manager",
+    "approver",
+    "requester"
+  ],
+  "permissions": [
+    {
+      "key": "plan.read",
+      "resource": "plan",
+      "action": "read",
+      "relations": [
+        "owner",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "plan.edit",
+      "resource": "plan",
+      "action": "edit",
+      "relations": [
+        "owner"
+      ]
+    },
+    {
+      "key": "accounts.read",
+      "resource": "accounts",
+      "action": "read",
+      "relations": [
+        "owner",
+        "territory_member",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "accounts.write",
+      "resource": "accounts",
+      "action": "write",
+      "relations": [
+        "owner",
+        "territory_member",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "accounts.convert",
+      "resource": "accounts",
+      "action": "convert",
+      "relations": [
+        "owner"
+      ]
+    },
+    {
+      "key": "deals.read",
+      "resource": "deals",
+      "action": "read",
+      "relations": [
+        "owner",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "deals.write",
+      "resource": "deals",
+      "action": "write",
+      "relations": [
+        "owner",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "orders.read",
+      "resource": "orders",
+      "action": "read",
+      "relations": [
+        "owner",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "orders.write",
+      "resource": "orders",
+      "action": "write",
+      "relations": [
+        "owner"
+      ]
+    },
+    {
+      "key": "tasks.read",
+      "resource": "tasks",
+      "action": "read",
+      "relations": [
+        "owner",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "tasks.create",
+      "resource": "tasks",
+      "action": "create",
+      "relations": []
+    },
+    {
+      "key": "team.read",
+      "resource": "team",
+      "action": "read",
+      "relations": [
+        "team_manager"
+      ]
+    },
+    {
+      "key": "team.assign",
+      "resource": "team",
+      "action": "assign",
+      "relations": [
+        "team_manager"
+      ]
+    },
+    {
+      "key": "voicelog.create",
+      "resource": "voicelogs",
+      "action": "create",
+      "relations": []
+    },
+    {
+      "key": "voicelog.read",
+      "resource": "voicelogs",
+      "action": "read",
+      "relations": [
+        "owner"
+      ]
+    },
+    {
+      "key": "aiaction.read",
+      "resource": "aiactions",
+      "action": "read",
+      "relations": [
+        "owner",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "aiaction.undo",
+      "resource": "aiactions",
+      "action": "undo",
+      "relations": [
+        "owner"
+      ]
+    },
+    {
+      "key": "approvals.read",
+      "resource": "approvals",
+      "action": "read",
+      "relations": [
+        "requester",
+        "approver"
+      ]
+    },
+    {
+      "key": "approvals.decide",
+      "resource": "approvals",
+      "action": "decide",
+      "relations": [
+        "approver"
+      ]
+    },
+    {
+      "key": "discounts.request",
+      "resource": "discounts",
+      "action": "request",
+      "relations": []
+    },
+    {
+      "key": "discounts.approve",
+      "resource": "discounts",
+      "action": "approve",
+      "relations": [
+        "approver",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "alerts.read",
+      "resource": "alerts",
+      "action": "read",
+      "relations": [
+        "owner",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "alerts.act",
+      "resource": "alerts",
+      "action": "act",
+      "relations": [
+        "owner"
+      ]
+    },
+    {
+      "key": "products.read",
+      "resource": "products",
+      "action": "read",
+      "relations": []
+    },
+    {
+      "key": "prospects.search",
+      "resource": "prospects",
+      "action": "search",
+      "relations": []
+    },
+    {
+      "key": "prospects.read",
+      "resource": "prospects",
+      "action": "read",
+      "relations": [
+        "owner",
+        "territory_member",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "prospects.act",
+      "resource": "prospects",
+      "action": "act",
+      "relations": [
+        "owner",
+        "territory_member",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "dashboard.read",
+      "resource": "dashboard",
+      "action": "read",
+      "relations": [
+        "owner",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "territories.read",
+      "resource": "territories",
+      "action": "read",
+      "relations": []
+    },
+    {
+      "key": "territories.manage",
+      "resource": "territories",
+      "action": "manage",
+      "relations": [
+        "team_manager"
+      ]
+    },
+    {
+      "key": "campaigns.read",
+      "resource": "campaigns",
+      "action": "read",
+      "relations": []
+    },
+    {
+      "key": "campaigns.manage",
+      "resource": "campaigns",
+      "action": "manage",
+      "relations": [
+        "team_manager"
+      ]
+    },
+    {
+      "key": "targets.read",
+      "resource": "targets",
+      "action": "read",
+      "relations": [
+        "owner",
+        "team_manager"
+      ]
+    },
+    {
+      "key": "targets.manage",
+      "resource": "targets",
+      "action": "manage",
+      "relations": [
+        "team_manager"
+      ]
+    },
+    {
+      "key": "settings.read",
+      "resource": "settings",
+      "action": "read",
+      "relations": []
+    },
+    {
+      "key": "settings.manage",
+      "resource": "settings",
+      "action": "manage",
+      "relations": []
+    },
+    {
+      "key": "users.manage",
+      "resource": "users",
+      "action": "manage",
+      "relations": []
+    },
+    {
+      "key": "import.manage",
+      "resource": "imports",
+      "action": "manage",
+      "relations": []
+    },
+    {
+      "key": "gdpr.manage",
+      "resource": "gdpr",
+      "action": "manage",
+      "relations": []
+    }
+  ],
+  "roles": {
+    "rep": {
+      "all": [
+        "tasks.create",
+        "voicelog.create",
+        "discounts.request",
+        "products.read",
+        "prospects.search",
+        "territories.read",
+        "campaigns.read"
+      ],
+      "relation": {
+        "owner": [
+          "plan.read",
+          "plan.edit",
+          "accounts.read",
+          "accounts.write",
+          "accounts.convert",
+          "deals.read",
+          "deals.write",
+          "orders.read",
+          "orders.write",
+          "tasks.read",
+          "voicelog.read",
+          "aiaction.read",
+          "aiaction.undo",
+          "alerts.read",
+          "alerts.act",
+          "prospects.read",
+          "prospects.act",
+          "dashboard.read",
+          "targets.read"
+        ],
+        "territory_member": [
+          "accounts.read",
+          "accounts.write",
+          "prospects.read",
+          "prospects.act"
+        ],
+        "requester": [
+          "approvals.read"
+        ],
+        "approver": [
+          "approvals.read",
+          "approvals.decide"
+        ]
+      }
+    },
+    "manager": {
+      "all": [
+        "tasks.create",
+        "voicelog.create",
+        "discounts.request",
+        "products.read",
+        "prospects.search",
+        "territories.read",
+        "campaigns.read",
+        "settings.read"
+      ],
+      "relation": {
+        "team_manager": [
+          "plan.read",
+          "accounts.read",
+          "accounts.write",
+          "deals.read",
+          "deals.write",
+          "orders.read",
+          "tasks.read",
+          "team.read",
+          "team.assign",
+          "aiaction.read",
+          "discounts.approve",
+          "alerts.read",
+          "prospects.read",
+          "prospects.act",
+          "dashboard.read",
+          "territories.manage",
+          "campaigns.manage",
+          "targets.read",
+          "targets.manage"
+        ],
+        "owner": [
+          "plan.read",
+          "plan.edit",
+          "accounts.read",
+          "alerts.read",
+          "alerts.act",
+          "voicelog.read",
+          "aiaction.undo",
+          "orders.write",
+          "accounts.convert"
+        ],
+        "approver": [
+          "approvals.read",
+          "approvals.decide",
+          "discounts.approve"
+        ],
+        "requester": [
+          "approvals.read"
+        ]
+      }
+    },
+    "admin": {
+      "all": [
+        "accounts.convert",
+        "accounts.read",
+        "accounts.write",
+        "aiaction.read",
+        "aiaction.undo",
+        "alerts.act",
+        "alerts.read",
+        "approvals.decide",
+        "approvals.read",
+        "campaigns.manage",
+        "campaigns.read",
+        "dashboard.read",
+        "deals.read",
+        "deals.write",
+        "discounts.approve",
+        "discounts.request",
+        "gdpr.manage",
+        "import.manage",
+        "orders.read",
+        "orders.write",
+        "plan.edit",
+        "plan.read",
+        "products.read",
+        "prospects.act",
+        "prospects.read",
+        "prospects.search",
+        "settings.manage",
+        "settings.read",
+        "targets.manage",
+        "targets.read",
+        "tasks.create",
+        "tasks.read",
+        "team.assign",
+        "team.read",
+        "territories.manage",
+        "territories.read",
+        "users.manage",
+        "voicelog.create",
+        "voicelog.read"
+      ],
+      "relation": {}
+    }
+  },
+  "default_role": "rep",
+  "workspace_admin_role": "admin",
+  "screens": {
+    "rep": {
+      "today": {
+        "route": "/rep/today",
+        "functions": [
+          "today-get",
+          "briefing-get",
+          "visit-plan-get",
+          "my-performance"
+        ],
+        "events": [
+          "briefing.ready",
+          "plan.proposed"
+        ],
+        "offline": true
+      },
+      "customers": {
+        "route": "/rep/customers",
+        "functions": [
+          "accounts-list",
+          "visit-card-get",
+          "account-get",
+          "contact-upsert",
+          "problem-update",
+          "order-upsert"
+        ]
+      },
+      "record": {
+        "route": "/rep/record",
+        "functions": [
+          "voice-log-upload",
+          "debrief-result-get",
+          "ai-action-undo",
+          "merc-chat-token"
+        ],
+        "events": [
+          "result_card.ready",
+          "voice_log.status"
+        ],
+        "offline": true,
+        "voice_widget": "merc-buddy browser voice (Chat SDK)"
+      },
+      "approvals": {
+        "route": "/rep/approvals",
+        "functions": [
+          "approvals-list",
+          "approval-resolve",
+          "approval-status"
+        ],
+        "events": [
+          "approval.created",
+          "approval.decided",
+          "manager_call.status"
+        ]
+      },
+      "alerts": {
+        "route": "/rep/alerts",
+        "functions": [
+          "alerts-list",
+          "alert-act"
+        ],
+        "events": [
+          "alert.created"
+        ]
+      },
+      "new_shops": {
+        "route": "/rep/new-shops",
+        "functions": [
+          "candidates-list",
+          "candidate-act",
+          "prospect-search",
+          "candidate-add"
+        ],
+        "events": [
+          "candidates.ready"
+        ]
+      },
+      "week": {
+        "route": "/rep/week",
+        "functions": [
+          "visit-plan-get",
+          "visit-plan-accept",
+          "visit-update"
+        ]
+      },
+      "ai_log": {
+        "route": "/rep/ai-log",
+        "functions": [
+          "ai-actions-list",
+          "ai-action-undo"
+        ]
+      }
+    },
+    "management": {
+      "dashboard": {
+        "route": "/mgmt/dashboard",
+        "functions": [
+          "dashboard-kpis",
+          "kpi-drilldown",
+          "targets-list",
+          "team-list",
+          "territories-list"
+        ]
+      },
+      "team": {
+        "route": "/mgmt/team",
+        "functions": [
+          "team-list",
+          "rep-detail",
+          "alerts-list",
+          "visit-assign",
+          "task-assign"
+        ]
+      },
+      "approvals": {
+        "route": "/mgmt/approvals",
+        "functions": [
+          "manager-approvals-list",
+          "approval-decide"
+        ],
+        "events": [
+          "approval.created"
+        ],
+        "mobile": true
+      },
+      "pipeline": {
+        "route": "/mgmt/pipeline",
+        "functions": [
+          "accounts-list",
+          "deals-list",
+          "deal-upsert",
+          "account-get",
+          "team-list",
+          "territories-list"
+        ]
+      },
+      "territories": {
+        "route": "/mgmt/territories",
+        "functions": [
+          "territories-list",
+          "territory-upsert",
+          "assignments-transfer"
+        ]
+      },
+      "campaigns": {
+        "route": "/mgmt/campaigns",
+        "functions": [
+          "campaigns-list",
+          "campaign-upsert",
+          "campaign-draft-from-text",
+          "campaign-funnel"
+        ]
+      },
+      "targets": {
+        "route": "/mgmt/targets",
+        "functions": [
+          "targets-list",
+          "target-upsert",
+          "team-list",
+          "territories-list"
+        ]
+      },
+      "competition": {
+        "route": "/mgmt/competition",
+        "functions": [
+          "competitor-signals-list",
+          "team-list",
+          "territories-list"
+        ]
+      },
+      "settings": {
+        "route": "/mgmt/settings",
+        "functions": [
+          "settings-get",
+          "settings-update"
+        ]
+      },
+      "users": {
+        "route": "/mgmt/users",
+        "functions": [
+          "users-list",
+          "user-upsert"
+        ]
+      },
+      "import": {
+        "route": "/mgmt/import",
+        "functions": [
+          "import-start",
+          "import-get",
+          "import-confirm"
+        ]
+      },
+      "gdpr": {
+        "route": "/mgmt/settings/gdpr",
+        "functions": [
+          "contact-export",
+          "contact-erase"
+        ]
+      },
+      "ai_log": {
+        "route": "/mgmt/ai-log",
+        "functions": [
+          "ai-actions-list"
+        ]
+      }
+    }
+  }
+}

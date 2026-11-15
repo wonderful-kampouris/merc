@@ -1,0 +1,26 @@
+{
+  "name": "get_candidate",
+  "agent": "merc-research",
+  "function": "candidate-get",
+  "description": "Load the shop to research.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "candidate_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "candidate_id"
+    ]
+  },
+  "inject": [
+    "task_input"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/candidate-get.json#/response"
+}

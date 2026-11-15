@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "account-upsert",
+  "description": "Merc fn:account-upsert (contracts/functions/account-upsert.json). Source: Merc monorepo shared/handlers/src/account-upsert.ts.",
+  "method": "POST",
+  "path_slug": "account-upsert",
+  "param_mapping": {}
+}

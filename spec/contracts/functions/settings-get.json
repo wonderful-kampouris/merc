@@ -1,0 +1,68 @@
+{
+  "slug": "settings-get",
+  "method": "GET",
+  "kind": "http",
+  "gate": "settings.read",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "organization": {
+        "type": "object"
+      },
+      "ai_permissions": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "alert_rules": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "icp": {
+        "type": "object"
+      },
+      "discount_policies": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "organization",
+      "ai_permissions",
+      "alert_rules",
+      "icp",
+      "discount_policies"
+    ]
+  },
+  "reads": [
+    "organization",
+    "ai_permission",
+    "alert_rule",
+    "icp_criterion",
+    "icp_category",
+    "discount_policy",
+    "account_category"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

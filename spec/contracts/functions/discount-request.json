@@ -1,0 +1,170 @@
+{
+  "slug": "discount-request",
+  "method": "POST",
+  "kind": "http",
+  "gate": "discounts.request",
+  "callers": [
+    "buddy",
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "deal_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "discount_pct": {
+        "type": "number"
+      },
+      "lines": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "product_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "quantity": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "product_id",
+            "quantity"
+          ]
+        }
+      },
+      "justification": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "mode": {
+        "type": "string",
+        "enum": [
+          "live",
+          "async"
+        ]
+      },
+      "voice_log_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "conversation_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id",
+      "discount_pct",
+      "lines",
+      "mode"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "approval_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string"
+      },
+      "mode": {
+        "type": "string",
+        "enum": [
+          "live",
+          "async"
+        ]
+      },
+      "manager_call_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "approver": {
+        "$ref": "../_defs.json#/$defs/UserRef"
+      },
+      "due_at": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "approval_id",
+      "status",
+      "mode",
+      "approver"
+    ]
+  },
+  "reads": [
+    "discount_policy",
+    "app_user",
+    "organization"
+  ],
+  "writes": [
+    "approval",
+    "discount_request",
+    "discount_request_line",
+    "manager_call",
+    "task"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [
+    "outbound_call:merc-approver"
+  ],
+  "notes": "live: POST /v1/agents/outbound {from: merc-approver caller id, to: approver phone, call_purpose: 'merc_approval:<approval_id>'} via service account merc-platform-api (S7). Call hours 08:00-20:00 org time are checked here. If outside hours, manager_call_enabled=false, no caller id, or the start fails -> async. async: due_at = now + approval_sla_minutes, push + inbox to approver, task for requester; SMS only when an SMS sender exists. Stores conversation_id on discount_request for relaying the decision (S8)."
+}

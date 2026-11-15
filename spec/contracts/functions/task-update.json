@@ -1,0 +1,84 @@
+{
+  "slug": "task-update",
+  "method": "POST",
+  "kind": "http",
+  "gate": "tasks.create",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "task_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "open",
+              "done",
+              "cancelled"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "due_at": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "task_id"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "task_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "task_id"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "task"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "owner_or_team"
+}

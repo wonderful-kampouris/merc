@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "territories-list",
+  "description": "Merc fn:territories-list: territories with reps and postal codes (REQ-SET-003) (contracts/functions/territories-list.json). Source: Merc monorepo shared/handlers/src/territories-list.ts.",
+  "method": "GET",
+  "path_slug": "territories-list",
+  "param_mapping": {}
+}

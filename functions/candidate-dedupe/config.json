@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "candidate-dedupe",
+  "description": "Merc fn:candidate-dedupe (contracts/functions/candidate-dedupe.json; callers: procedure; gate: None). Source: Merc monorepo shared/handlers/src/candidate-dedupe.ts.",
+  "method": "POST",
+  "path_slug": "candidate-dedupe",
+  "param_mapping": {}
+}

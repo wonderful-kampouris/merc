@@ -1,0 +1,49 @@
+{
+  "slug": "contact-export",
+  "method": "POST",
+  "kind": "http",
+  "gate": "gdpr.manage",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "contact_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "contact_id"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "export": {
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "export"
+    ]
+  },
+  "reads": [
+    "contact",
+    "activity",
+    "message_approval"
+  ],
+  "writes": [
+    "audit_event"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

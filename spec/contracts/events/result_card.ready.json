@@ -1,0 +1,25 @@
+{
+  "type": "result_card.ready",
+  "envelope": {
+    "type": "result_card.ready",
+    "at": "date-time",
+    "payload": "see schema"
+  },
+  "payload": {
+    "type": "object",
+    "properties": {
+      "voice_log_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "result": {
+        "$ref": "../_defs.json#/$defs/ResultCard"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "voice_log_id",
+      "result"
+    ]
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "discount_request",
+    "description": "Subtype: discount request detail",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "approval_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.approval",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "deal_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.deal",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "policy_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.discount_policy",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "requested_pct",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "policy_limit_pct",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "approved_pct",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "justification",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "voice_log_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.voice_log",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "buddy_conversation_id",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "discount_request_approval_id_uq",
+        "columns": [
+          "approval_id"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "discount_request_account_id_idx",
+        "columns": [
+          "account_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "discount_request_deal_id_idx",
+        "columns": [
+          "deal_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "voice",
+    "derived": false,
+    "enums": {},
+    "notes": {
+      "policy_limit_pct": "snapshot at request time",
+      "buddy_conversation_id": "live buddy conversation to relay the decision into (S8)"
+    }
+  }
+}

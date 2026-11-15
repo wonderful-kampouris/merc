@@ -1,0 +1,1 @@
+{"key":"merc-write","enabled":true,"spec":{"spec_version":1,"description":"Merc: drafts in the rep's style, briefing/eod scripts, pitches. Greek + English.","endpoints":[{"endpoint":"claude-sonnet-5-5@anthropic","thinking_level":"low"},{"endpoint":"claude-sonnet-5-5@vertex","thinking_level":"low"},{"endpoint":"gemini-3.5-flash@vertex","thinking_level":"low"}]}}

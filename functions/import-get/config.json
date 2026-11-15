@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "import-get",
+  "description": "Merc fn:import-get (contracts/functions/import-get.json; callers: mgmt; gate: import.manage). Source: Merc monorepo shared/handlers/src/import-get.ts.",
+  "method": "GET",
+  "path_slug": "import-get",
+  "param_mapping": {}
+}

@@ -1,0 +1,47 @@
+{
+  "slug": "merc-chat-token",
+  "method": "POST",
+  "kind": "http",
+  "gate": "voicelog.create",
+  "callers": [
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "token": {
+        "type": "string"
+      },
+      "expires_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "agent_id": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "token",
+      "expires_at",
+      "agent_id"
+    ]
+  },
+  "reads": [
+    "app_user",
+    "organization"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Resolves the caller with me(), then calls POST /api/v1/jwt/sign (secret MERC_CHAT_API_KEY) with user {id, display_name} and metadata {merc_uid, merc_org, merc_exp, merc_sig = HMAC-SHA256(MERC_INTERNAL_CALL_KEY, 'uid|org|exp')}. The Rep app passes the token to createChat. Buddy tools read the claims from communication.metadata and verify merc_sig (shared/core me.ts). TTL 60 min; the app refreshes."
+}

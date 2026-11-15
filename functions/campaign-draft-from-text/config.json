@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "campaign-draft-from-text",
+  "description": "Merc fn:campaign-draft-from-text: turn a manager's free text into a campaign form with resolved ids and unresolved names (REQ-CMP-001) (contracts/functions/campaign-draft-from-text.json). Source: Merc monorepo shared/handlers/src/campaign-draft-from-text.ts.",
+  "method": "POST",
+  "path_slug": "campaign-draft-from-text",
+  "param_mapping": {}
+}

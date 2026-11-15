@@ -1,0 +1,111 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "deal",
+    "description": "Sales opportunity",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "owner_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "stage_code",
+        "type": "string",
+        "required": true,
+        "reference": {
+          "table": "merc.deal_stage",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "amount_minor",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "expected_close_date",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "next_step",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "last_activity_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "closed_at",
+        "type": "datetime",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "deal_account_id_idx",
+        "columns": [
+          "account_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "deal_owner_id_idx",
+        "columns": [
+          "owner_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "deal_stage_code_last_activity_at_idx",
+        "columns": [
+          "stage_code",
+          "last_activity_at"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "deal_expected_close_date_idx",
+        "columns": [
+          "expected_close_date"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {},
+    "notes": {
+      "last_activity_at": "denormalized cache for deal_stuck; see data model 3NF exceptions"
+    }
+  }
+}

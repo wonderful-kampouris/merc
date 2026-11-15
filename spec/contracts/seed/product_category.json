@@ -1,0 +1,22 @@
+[
+  {
+    "id": "4ca74fe7-cd19-5f10-baa1-2f2d94ce9aac",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "name": "Coffee"
+  },
+  {
+    "id": "228130a1-b9c3-54f9-ac9b-b9ff21723679",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "name": "Bakery supplies"
+  },
+  {
+    "id": "7487ee01-aa04-58a6-b5ed-ba20cf2f499b",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "name": "Beverages"
+  },
+  {
+    "id": "5c1e8c3c-c52a-500c-898a-da21e654cf75",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "name": "Consumables"
+  }
+]

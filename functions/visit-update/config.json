@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "visit-update",
+  "description": "Merc fn:visit-update (contracts/functions/visit-update.json). Source: Merc monorepo shared/handlers/src/visit-update.ts.",
+  "method": "POST",
+  "path_slug": "visit-update",
+  "param_mapping": {}
+}

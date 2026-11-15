@@ -1,0 +1,74 @@
+{
+  "slug": "previsit-briefs-due",
+  "method": "CRON",
+  "kind": "cron",
+  "gate": null,
+  "callers": [
+    "scheduler"
+  ],
+  "timeout_ms": 300000,
+  "priority": "P0",
+  "wave": 4,
+  "request": {
+    "type": "object",
+    "properties": {
+      "dry_run": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "processed": {
+        "type": "integer"
+      },
+      "created": {
+        "type": "integer"
+      },
+      "details": {
+        "anyOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "processed",
+      "created"
+    ]
+  },
+  "reads": [
+    "visit",
+    "app_user",
+    "organization",
+    "visit_brief"
+  ],
+  "writes": [
+    "visit_brief",
+    "buddy_call"
+  ],
+  "errors": [],
+  "llm": [
+    "visit_brief_bullets"
+  ],
+  "integrations": [
+    "outbound_call:merc-buddy",
+    "integration:whatsapp.send_template"
+  ],
+  "notes": "Visits with status planned and planned_start_at within previsit_lead_minutes, no visit_brief yet -> build the brief (visit-brief-get handler) and deliver it on notify_channel through buddy-call-start purpose pre_visit (whatsapp default, call if notify_channel=call). Once per visit; outside call hours only WhatsApp.",
+  "schedule": "*/5 * * * *"
+}

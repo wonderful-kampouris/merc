@@ -1,0 +1,58 @@
+{
+  "slug": "escalate",
+  "method": "POST",
+  "kind": "http",
+  "gate": "tasks.create",
+  "callers": [
+    "buddy",
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "reason": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id",
+      "reason"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "task_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "alert_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "task_id",
+      "alert_id"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "task",
+    "alert"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "account"
+}

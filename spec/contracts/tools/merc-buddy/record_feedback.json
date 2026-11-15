@@ -1,0 +1,74 @@
+{
+  "name": "record_feedback",
+  "agent": "merc-buddy",
+  "function": "feedback-record",
+  "description": "Record the rep's reaction: brief useful or not, debrief summary correct or fixed.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "kind": {
+        "type": "string",
+        "enum": [
+          "brief_useful",
+          "brief_not_useful",
+          "debrief_confirmed",
+          "debrief_corrected"
+        ]
+      },
+      "visit_brief_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "debrief_confirmation_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "detail": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "correction_voice_log_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "kind"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "For a fix: undo the named actions, log the correction with log_visit, then record debrief_corrected with the rep's words.",
+  "returns": "../../functions/feedback-record.json#/response"
+}

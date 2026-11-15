@@ -1,0 +1,12 @@
+{
+  "name": "@merc/procedure-prospecting-pipeline",
+  "private": true,
+  "type": "module",
+  "description": "WP-PRS-02: prospecting-pipeline Procedures (graphs/), deploy + J4 scripts (scripts/), structural tests (test/).",
+  "scripts": {
+    "test": "node --test test/graphs.test.mjs",
+    "plan": "node scripts/deploy.mjs --env dev",
+    "deploy": "node scripts/deploy.mjs --env dev --publish",
+    "j4": "node scripts/j4.mjs --env dev"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@merc/autonomy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Merc autonomy engine (REQ-CORE-005/006): every AI write goes through propose(); the mode comes from ai_permission; undo restores the before snapshot. Used by handlers in shared/handlers.",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

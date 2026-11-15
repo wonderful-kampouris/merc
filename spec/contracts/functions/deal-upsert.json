@@ -1,0 +1,65 @@
+{
+  "slug": "deal-upsert",
+  "method": "POST",
+  "kind": "http",
+  "gate": "deals.write",
+  "callers": [
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "deal_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "fields": {
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id",
+      "fields"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "deal_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "deal_id"
+    ]
+  },
+  "reads": [
+    "deal_stage"
+  ],
+  "writes": [
+    "deal",
+    "deal_stage_history"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "account"
+}

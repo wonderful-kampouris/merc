@@ -1,0 +1,20 @@
+{
+  "type": "approval.created",
+  "envelope": {
+    "type": "approval.created",
+    "at": "date-time",
+    "payload": "see schema"
+  },
+  "payload": {
+    "type": "object",
+    "properties": {
+      "approval": {
+        "$ref": "../_defs.json#/$defs/ApprovalCard"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "approval"
+    ]
+  }
+}

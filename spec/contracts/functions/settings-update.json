@@ -1,0 +1,87 @@
+{
+  "slug": "settings-update",
+  "method": "PUT",
+  "kind": "http",
+  "gate": "settings.manage",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "organization": {
+        "anyOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "ai_permissions": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "alert_rules": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "icp": {
+        "anyOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "discount_policies": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "ai_permissions",
+      "alert_rules",
+      "discount_policies"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "updated": {
+        "type": "boolean"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "updated"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "organization",
+    "ai_permission",
+    "alert_rule",
+    "icp_criterion",
+    "icp_category",
+    "discount_policy",
+    "audit_event"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Partial updates; arrays replace only the listed rows (matched by natural key)."
+}

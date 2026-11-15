@@ -1,0 +1,47 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "postal_area",
+    "description": "Postal code -> city/region (keeps account/candidate in 3NF)",
+    "columns": [
+      {
+        "name": "postal_code",
+        "type": "string",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "city",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "region",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "country_code",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "lat",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "lng",
+        "type": "number",
+        "required": false
+      }
+    ],
+    "indexes": []
+  },
+  "x": {
+    "domain": "lookup",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "icp_criterion",
+    "description": "ICP scoring weights",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "criterion",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "weight",
+        "type": "number",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "icp_criterion_org_id_criterion_uq",
+        "columns": [
+          "org_id",
+          "criterion"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "org",
+    "derived": false,
+    "enums": {
+      "criterion": [
+        "category_fit",
+        "near_route",
+        "size_activity",
+        "replaceable_brands",
+        "reviews_traffic"
+      ]
+    },
+    "notes": {}
+  }
+}

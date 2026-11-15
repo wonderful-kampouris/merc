@@ -1,0 +1,30 @@
+{
+  "name": "get_week_plan",
+  "agent": "merc-buddy",
+  "function": "visit-plan-get",
+  "description": "This week's visit plan.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "week_start": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/visit-plan-get.json#/response"
+}

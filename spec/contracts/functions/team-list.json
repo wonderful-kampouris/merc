@@ -1,0 +1,86 @@
+{
+  "slug": "team-list",
+  "method": "GET",
+  "kind": "http",
+  "gate": "team.read",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "include_inactive": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "user": {
+              "$ref": "../_defs.json#/$defs/UserRef"
+            },
+            "manager_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "territory_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "user",
+            "territory_ids",
+            "status"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "items"
+    ]
+  },
+  "reads": [
+    "app_user",
+    "territory_rep",
+    "territory"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Roster for manager screens: the caller's direct and indirect reports, plus reps of territories they manage. Admin sees everyone.",
+  "scope": "team"
+}

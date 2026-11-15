@@ -1,0 +1,77 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "briefing",
+    "description": "The rep's daily plan",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "rep_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "briefing_date",
+        "type": "date",
+        "required": true
+      },
+      {
+        "name": "script_text",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "delivered_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "delivery_channel",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "briefing_rep_id_briefing_date_uq",
+        "columns": [
+          "rep_id",
+          "briefing_date"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "engagement",
+    "derived": false,
+    "enums": {
+      "status": [
+        "generated",
+        "delivered",
+        "read"
+      ],
+      "delivery_channel": [
+        "screen",
+        "voice",
+        "notification"
+      ]
+    },
+    "notes": {}
+  }
+}

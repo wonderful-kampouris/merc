@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "search-finalize",
+  "description": "Merc fn:search-finalize (contracts/functions/search-finalize.json; callers: procedure; gate: None). Source: Merc monorepo shared/handlers/src/search-finalize.ts.",
+  "method": "POST",
+  "path_slug": "search-finalize",
+  "param_mapping": {}
+}

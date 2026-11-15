@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "approval-status",
+  "description": "Merc fn:approval-status: one approval card for its requester or approver (REQ-DSC-005, REQ-APR-001) (contracts/functions/approval-status.json). Source: Merc monorepo shared/handlers/src/approval-status.ts.",
+  "method": "GET",
+  "path_slug": "approval-status",
+  "param_mapping": {}
+}

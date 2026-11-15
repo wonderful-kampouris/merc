@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "name": "approver_regression",
+  "description": "merc-approver: approve, counter, reject, off-topic, voicemail (REQ-DSC-003, REQ-DSC-008, REQ-APV-002).",
+  "scenario_slugs": [
+    "approve_path",
+    "counter_path",
+    "reject_path",
+    "off_topic_deflected",
+    "voicemail_no_details"
+  ],
+  "max_parallel_evaluations": 3
+}

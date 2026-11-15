@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "merc-spike-libcheck",
+  "description": "WP-SPK-05 spike: import shared_lib from a Function (delete me)",
+  "method": "POST",
+  "path_slug": "merc-spike-libcheck",
+  "param_mapping": {}
+}

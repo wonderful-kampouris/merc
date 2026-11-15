@@ -1,0 +1,56 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "territory_postal_code",
+    "description": "Postal codes covered by a territory",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "territory_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.territory",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "postal_code",
+        "type": "string",
+        "required": true,
+        "reference": {
+          "table": "merc.postal_area",
+          "on_delete": "restrict"
+        }
+      }
+    ],
+    "indexes": [
+      {
+        "name": "territory_postal_code_postal_code_uq",
+        "columns": [
+          "postal_code"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "territory_postal_code_territory_id_idx",
+        "columns": [
+          "territory_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "org",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

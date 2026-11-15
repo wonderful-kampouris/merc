@@ -1,0 +1,72 @@
+{
+  "slug": "alerts-engine",
+  "method": "CRON",
+  "kind": "cron",
+  "gate": null,
+  "callers": [
+    "scheduler"
+  ],
+  "timeout_ms": 300000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "dry_run": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "processed": {
+        "type": "integer"
+      },
+      "created": {
+        "type": "integer"
+      },
+      "details": {
+        "anyOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "processed",
+      "created"
+    ]
+  },
+  "reads": [
+    "account_metrics",
+    "deal",
+    "task",
+    "competitor_signal",
+    "visit",
+    "voice_log",
+    "alert_rule",
+    "alert_type"
+  ],
+  "writes": [
+    "alert"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Evaluate every enabled alert_rule; dedupe by dedupe_key; push alert.created.",
+  "schedule": "0 * * * *"
+}

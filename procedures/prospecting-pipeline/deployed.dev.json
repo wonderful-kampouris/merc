@@ -1,0 +1,10 @@
+{
+  "env": "dev",
+  "workspace": "7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464",
+  "agent_merc_research_id": "1ae2c68f-fccd-4cdd-b590-29d56a73bfb4",
+  "procedures": {
+    "merc-prospecting-dedupe-one": "9c712c99-71d0-49fd-8162-43eff96666e6",
+    "merc-prospecting-research-one": "38bc5fb1-a227-43cc-9265-e0a917ff7f46",
+    "merc-prospecting-pipeline": "910e1d7c-6938-4062-b4c1-7de26e3ec757"
+  }
+}

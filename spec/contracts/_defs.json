@@ -1,0 +1,1573 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "not_found",
+            "forbidden",
+            "validation_failed",
+            "needs_confirmation",
+            "conflict",
+            "upstream_failed",
+            "timeout",
+            "blocked_by_policy"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "message"
+      ]
+    },
+    "AccountRef": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string"
+        },
+        "account_type": {
+          "type": "string",
+          "enum": [
+            "prospect",
+            "customer",
+            "lost"
+          ]
+        },
+        "postal_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "city": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "distance_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "account_type"
+      ]
+    },
+    "ActionLine": {
+      "type": "object",
+      "properties": {
+        "ai_action_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "action_type": {
+          "type": "string"
+        },
+        "action_class": {
+          "type": "string",
+          "enum": [
+            "internal",
+            "draft",
+            "external",
+            "structural",
+            "destructive"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "suggested",
+            "applied",
+            "undone",
+            "rejected"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "target_table": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "target_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "undoable": {
+          "type": "boolean"
+        },
+        "approval_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "ai_action_id",
+        "action_type",
+        "action_class",
+        "status",
+        "summary",
+        "undoable"
+      ]
+    },
+    "MissingField": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "field",
+        "question"
+      ]
+    },
+    "ApprovalCard": {
+      "type": "object",
+      "properties": {
+        "approval_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "customer_message",
+            "discount",
+            "terms",
+            "conversion"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "approved",
+            "countered",
+            "sent",
+            "failed",
+            "rejected",
+            "expired",
+            "escalated"
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "live",
+            "async"
+          ]
+        },
+        "account": {
+          "anyOf": [
+            {
+              "$ref": "../_defs.json#/$defs/AccountRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "requested_by": {
+          "$ref": "../_defs.json#/$defs/UserRef"
+        },
+        "approver": {
+          "$ref": "../_defs.json#/$defs/UserRef"
+        },
+        "preview": {
+          "type": "string"
+        },
+        "channel": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recipient": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "subject": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "body": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "requested_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "policy_limit_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "approved_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "decision_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "due_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "approval_id",
+        "kind",
+        "status",
+        "mode",
+        "requested_by",
+        "approver",
+        "preview",
+        "created_at"
+      ]
+    },
+    "UserRef": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "full_name": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "rep",
+            "manager",
+            "admin"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "full_name",
+        "role"
+      ]
+    },
+    "ResultCard": {
+      "type": "object",
+      "properties": {
+        "voice_log_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "account": {
+          "$ref": "../_defs.json#/$defs/AccountRef"
+        },
+        "lines": {
+          "type": "array",
+          "items": {
+            "$ref": "../_defs.json#/$defs/ActionLine"
+          }
+        },
+        "missing_fields": {
+          "type": "array",
+          "items": {
+            "$ref": "../_defs.json#/$defs/MissingField"
+          }
+        },
+        "pending_approvals": {
+          "type": "array",
+          "items": {
+            "$ref": "../_defs.json#/$defs/ApprovalCard"
+          }
+        },
+        "spoken_summary": {
+          "type": "string"
+        },
+        "processing_ms": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "voice_log_id",
+        "account",
+        "lines",
+        "missing_fields",
+        "pending_approvals",
+        "spoken_summary",
+        "processing_ms"
+      ]
+    },
+    "VisitSummary": {
+      "type": "object",
+      "properties": {
+        "visit_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "account": {
+          "$ref": "../_defs.json#/$defs/AccountRef"
+        },
+        "planned_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "route_position": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "planned",
+            "done",
+            "skipped"
+          ]
+        },
+        "purpose": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lat": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lng": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "visit_id",
+        "account",
+        "planned_date",
+        "status"
+      ]
+    },
+    "BriefingItem": {
+      "type": "object",
+      "properties": {
+        "position": {
+          "type": "integer"
+        },
+        "item_type": {
+          "type": "string"
+        },
+        "display_text": {
+          "type": "string"
+        },
+        "ref_table": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ref_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "position",
+        "item_type",
+        "display_text"
+      ]
+    },
+    "Briefing": {
+      "type": "object",
+      "properties": {
+        "briefing_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "generated",
+            "delivered",
+            "read"
+          ]
+        },
+        "script_text": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "../_defs.json#/$defs/BriefingItem"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "briefing_id",
+        "date",
+        "status",
+        "script_text",
+        "items"
+      ]
+    },
+    "OrderSummary": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "order_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "confirmed",
+            "cancelled"
+          ]
+        },
+        "total_minor": {
+          "type": "integer"
+        },
+        "lines": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "product_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "quantity": {
+                "type": "number"
+              },
+              "unit": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "product_id",
+              "name",
+              "quantity",
+              "unit"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "order_id",
+        "order_date",
+        "status",
+        "total_minor",
+        "lines"
+      ]
+    },
+    "Pitch": {
+      "type": "object",
+      "properties": {
+        "opening_line": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "product_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "why": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "product_id",
+              "name",
+              "why"
+            ]
+          }
+        },
+        "objections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "objection": {
+                "type": "string"
+              },
+              "answer": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "objection",
+              "answer"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "opening_line",
+        "arguments",
+        "products",
+        "objections"
+      ]
+    },
+    "DossierView": {
+      "type": "object",
+      "properties": {
+        "summary": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "price_level": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "low",
+                "mid",
+                "premium"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "fact_type": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "source_url": {
+                "type": "string"
+              },
+              "retrieved_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "fact_type",
+              "value",
+              "source_url",
+              "retrieved_at"
+            ]
+          }
+        },
+        "competitor_brands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "facts",
+        "competitor_brands"
+      ]
+    },
+    "VisitCard": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "customer",
+            "prospect"
+          ]
+        },
+        "account": {
+          "$ref": "../_defs.json#/$defs/AccountRef"
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "contact_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "full_name": {
+                "type": "string"
+              },
+              "role_title": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "is_decision_maker": {
+                "type": "boolean"
+              },
+              "phone": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "contact_id",
+              "full_name",
+              "is_decision_maker"
+            ]
+          }
+        },
+        "open_problems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "problem_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "description": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "due_date": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "problem_id",
+              "description",
+              "status"
+            ]
+          }
+        },
+        "open_tasks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "title": {
+                "type": "string"
+              },
+              "due_at": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "is_customer_promise": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "task_id",
+              "title",
+              "is_customer_promise"
+            ]
+          }
+        },
+        "recent_orders": {
+          "type": "array",
+          "items": {
+            "$ref": "../_defs.json#/$defs/OrderSummary"
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "avg_order_interval_days": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "days_since_last_order": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "risk_score": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "risk_reasons": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "risk_reasons"
+          ]
+        },
+        "alerts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "alert_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "type": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "alert_id",
+              "type",
+              "message"
+            ]
+          }
+        },
+        "suggested_products": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "product_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "why": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "product_id",
+              "name",
+              "why"
+            ]
+          }
+        },
+        "campaigns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "campaign_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "title": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "campaign_id",
+              "title",
+              "message"
+            ]
+          }
+        },
+        "how_to_talk": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dossier": {
+          "anyOf": [
+            {
+              "$ref": "../_defs.json#/$defs/DossierView"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pitch": {
+          "anyOf": [
+            {
+              "$ref": "../_defs.json#/$defs/Pitch"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "spoken_summary": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "account",
+        "contacts",
+        "open_problems",
+        "open_tasks",
+        "recent_orders",
+        "metrics",
+        "alerts",
+        "suggested_products",
+        "campaigns",
+        "spoken_summary"
+      ]
+    },
+    "VisitBrief": {
+      "type": "object",
+      "properties": {
+        "visit_brief_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "visit": {
+          "$ref": "../_defs.json#/$defs/VisitSummary"
+        },
+        "planned_start_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bullets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "ref_table": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "ref_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "text"
+            ]
+          }
+        },
+        "push": {
+          "type": "object",
+          "properties": {
+            "product_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "product_id",
+            "name",
+            "reason"
+          ]
+        },
+        "avoid": {
+          "type": "object",
+          "properties": {
+            "product_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "product_id",
+            "name",
+            "reason"
+          ]
+        },
+        "spoken_script": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "generated",
+            "sent",
+            "called",
+            "failed",
+            "skipped"
+          ]
+        },
+        "channel": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "whatsapp",
+                "call",
+                "app"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "visit_brief_id",
+        "visit",
+        "bullets",
+        "push",
+        "avoid",
+        "spoken_script",
+        "status"
+      ]
+    },
+    "AlertCard": {
+      "type": "object",
+      "properties": {
+        "alert_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "type": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "done",
+            "dismissed"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "account": {
+          "anyOf": [
+            {
+              "$ref": "../_defs.json#/$defs/AccountRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "suggested_action": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "alert_id",
+        "type",
+        "severity",
+        "status",
+        "message",
+        "created_at"
+      ]
+    },
+    "CandidateCard": {
+      "type": "object",
+      "properties": {
+        "candidate_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "business_name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "postal_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "website": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dossier": {
+          "anyOf": [
+            {
+              "$ref": "../_defs.json#/$defs/DossierView"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duplicate_of": {
+          "anyOf": [
+            {
+              "$ref": "../_defs.json#/$defs/AccountRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assigned_rep": {
+          "anyOf": [
+            {
+              "$ref": "../_defs.json#/$defs/UserRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "candidate_id",
+        "business_name",
+        "status",
+        "reasons"
+      ]
+    },
+    "TargetProgress": {
+      "type": "object",
+      "properties": {
+        "target_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "metric": {
+          "type": "string",
+          "enum": [
+            "revenue",
+            "volume",
+            "visits",
+            "new_customers"
+          ]
+        },
+        "period_start": {
+          "type": "string",
+          "format": "date"
+        },
+        "period_end": {
+          "type": "string",
+          "format": "date"
+        },
+        "target_value": {
+          "type": "number"
+        },
+        "actual_value": {
+          "type": "number"
+        },
+        "pct": {
+          "type": "number"
+        },
+        "days_left": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "target_id",
+        "metric",
+        "period_start",
+        "period_end",
+        "target_value",
+        "actual_value",
+        "pct",
+        "days_left"
+      ]
+    },
+    "Page": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "page",
+        "limit",
+        "total"
+      ]
+    },
+    "KpiSet": {
+      "type": "object",
+      "properties": {
+        "visits_per_rep_day": {
+          "type": "number"
+        },
+        "pipeline_by_stage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "stage_code": {
+                "type": "string"
+              },
+              "amount_minor": {
+                "type": "integer"
+              },
+              "count": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "stage_code",
+              "amount_minor",
+              "count"
+            ]
+          }
+        },
+        "weighted_pipeline_minor": {
+          "type": "integer"
+        },
+        "revenue_minor": {
+          "type": "integer"
+        },
+        "new_customers": {
+          "type": "integer"
+        },
+        "at_risk_customers": {
+          "type": "integer"
+        },
+        "at_risk_value_minor": {
+          "type": "integer"
+        },
+        "customers_saved": {
+          "type": "integer"
+        },
+        "lost_customers": {
+          "type": "integer"
+        },
+        "crm_completeness_pct": {
+          "type": "number"
+        },
+        "voice_logs_per_rep_day": {
+          "type": "number"
+        },
+        "voice_logs_within_1h_pct": {
+          "type": "number"
+        },
+        "ai_actions_applied": {
+          "type": "integer"
+        },
+        "ai_actions_undone": {
+          "type": "integer"
+        },
+        "approvals_approved": {
+          "type": "integer"
+        },
+        "approvals_rejected": {
+          "type": "integer"
+        },
+        "discount_requests": {
+          "type": "integer"
+        },
+        "discounts_approved": {
+          "type": "integer"
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "../_defs.json#/$defs/TargetProgress"
+          }
+        },
+        "baseline": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "visits_per_rep_day",
+        "pipeline_by_stage",
+        "weighted_pipeline_minor",
+        "revenue_minor",
+        "new_customers",
+        "at_risk_customers",
+        "at_risk_value_minor",
+        "customers_saved",
+        "lost_customers",
+        "crm_completeness_pct",
+        "voice_logs_per_rep_day",
+        "voice_logs_within_1h_pct",
+        "ai_actions_applied",
+        "ai_actions_undone",
+        "approvals_approved",
+        "approvals_rejected",
+        "discount_requests",
+        "discounts_approved",
+        "targets"
+      ]
+    }
+  }
+}

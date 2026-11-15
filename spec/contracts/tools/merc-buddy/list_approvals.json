@@ -1,0 +1,35 @@
+{
+  "name": "list_approvals",
+  "agent": "merc-buddy",
+  "function": "approvals-list",
+  "description": "Pending 'Shall I send it?' items and discount requests.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "kind": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "customer_message",
+              "discount",
+              "terms",
+              "conversion"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/approvals-list.json#/response"
+}

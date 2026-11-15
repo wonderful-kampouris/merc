@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "account-resolve",
+  "description": "Merc fn:account-resolve (contracts/functions/account-resolve.json). Source: Merc monorepo shared/handlers/src/account-resolve.ts.",
+  "method": "GET",
+  "path_slug": "account-resolve",
+  "param_mapping": {}
+}

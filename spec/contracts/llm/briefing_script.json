@@ -1,0 +1,64 @@
+{
+  "profile": "merc-write",
+  "used_by": [
+    "briefing-get",
+    "briefing-generate"
+  ],
+  "eval_set": "evals/briefing/",
+  "purpose": "Word the deterministic briefing items as a <= 90 s spoken script.",
+  "input": {
+    "type": "object",
+    "properties": {
+      "rep_name": {
+        "type": "string"
+      },
+      "language": {
+        "type": "string"
+      },
+      "date": {
+        "type": "string",
+        "format": "date"
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "$ref": "../_defs.json#/$defs/BriefingItem"
+        }
+      },
+      "max_seconds": {
+        "type": "integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "rep_name",
+      "language",
+      "date",
+      "items",
+      "max_seconds"
+    ]
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "script_text": {
+        "type": "string"
+      },
+      "estimated_seconds": {
+        "type": "integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "script_text",
+      "estimated_seconds"
+    ]
+  },
+  "rules": [
+    "Keep item order.",
+    "Every number in the script appears in an item's display_text.",
+    "No new facts.",
+    "Code checks: numbers subset of items; word count <= 2.3 words/s x max_seconds."
+  ],
+  "name": "briefing_script"
+}

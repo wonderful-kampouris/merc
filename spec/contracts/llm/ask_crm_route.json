@@ -1,0 +1,127 @@
+{
+  "profile": "merc-extract",
+  "used_by": [
+    "ask-crm"
+  ],
+  "eval_set": "evals/ask-crm/",
+  "purpose": "Choose one safe query template and its parameters.",
+  "input": {
+    "type": "object",
+    "properties": {
+      "question": {
+        "type": "string"
+      },
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "today": {
+        "type": "string",
+        "format": "date"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "question",
+      "today"
+    ]
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "template": {
+        "type": "string",
+        "enum": [
+          "last_order",
+          "order_history_product",
+          "open_items",
+          "account_overview",
+          "deal_status",
+          "visit_history",
+          "competitor_mentions",
+          "top_products",
+          "price_of_product",
+          "unknown"
+        ]
+      },
+      "params": {
+        "type": "object",
+        "properties": {
+          "account_hint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "product_hint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "confidence": {
+        "type": "number"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "template",
+      "params",
+      "confidence"
+    ]
+  },
+  "rules": [
+    "unknown when no template fits; the buddy then says it doesn't know."
+  ],
+  "name": "ask_crm_route"
+}

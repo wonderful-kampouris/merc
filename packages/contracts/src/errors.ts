@@ -1,0 +1,19 @@
+import type { ApiError } from "./generated/types.js";
+
+export type ErrorCode = ApiError["code"];
+
+/** Stable HTTP status per Error.code (REQ-CORE-008). */
+export const ERROR_STATUS: Record<ErrorCode, number> = {
+  not_found: 404,
+  forbidden: 403,
+  validation_failed: 422,
+  needs_confirmation: 409,
+  conflict: 409,
+  upstream_failed: 502,
+  timeout: 504,
+  blocked_by_policy: 403,
+};
+
+export function apiError(code: ErrorCode, message: string, details?: Record<string, unknown> | null): { error: ApiError } {
+  return { error: details === undefined ? { code, message } : { code, message, details } };
+}

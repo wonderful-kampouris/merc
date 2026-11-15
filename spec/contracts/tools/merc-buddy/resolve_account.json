@@ -1,0 +1,32 @@
+{
+  "name": "resolve_account",
+  "agent": "merc-buddy",
+  "function": "account-resolve",
+  "description": "Find which customer the rep means. Ask when ambiguous.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "hint": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "inject": [
+    "caller",
+    "device_location?"
+  ],
+  "priority": "P0",
+  "side_effects": [
+    "customers.attach(account.id) when resolved"
+  ],
+  "say": "",
+  "returns": "../../functions/account-resolve.json#/response"
+}

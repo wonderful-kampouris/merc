@@ -1,0 +1,158 @@
+{
+  "nodes": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "title": "One candidate of the search",
+      "x": 0,
+      "y": 100,
+      "config": {
+        "trigger_type": "manual",
+        "programmatic_invocation_enabled": false,
+        "input_schema": {
+          "type": "object",
+          "required": [
+            "candidate"
+          ],
+          "properties": {
+            "candidate": {
+              "type": "object",
+              "description": "A merc.candidate row from the parent table read ({row_id, row})",
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "id": "branch-2",
+      "kind": "branch",
+      "title": "Still new (not a duplicate)?",
+      "x": 300,
+      "y": 100,
+      "config": {
+        "conditions": [
+          {
+            "left": "{{trigger-1.candidate.row.status}}",
+            "op": "==",
+            "right": "new"
+          }
+        ]
+      }
+    },
+    {
+      "id": "agent-3",
+      "kind": "agent",
+      "title": "merc-research: sourced dossier",
+      "x": 600,
+      "y": 0,
+      "config": {
+        "agent_id": "${AGENT_MERC_RESEARCH_ID}",
+        "mode": "wait_for_result",
+        "message": "candidate_research candidate_id={{trigger-1.candidate.row_id}}"
+      }
+    },
+    {
+      "id": "function-4",
+      "kind": "function",
+      "title": "Score (LLM ratings x code weights)",
+      "x": 900,
+      "y": 0,
+      "config": {
+        "slug": "candidate-score",
+        "params": {
+          "candidate_id": "{{trigger-1.candidate.row_id}}"
+        }
+      }
+    },
+    {
+      "id": "return-5",
+      "kind": "return",
+      "title": "Researched + scored",
+      "x": 1200,
+      "y": 0,
+      "config": {
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "candidate_id": {
+              "type": "string"
+            },
+            "researched": {
+              "type": "boolean"
+            },
+            "research_status": {},
+            "score": {}
+          },
+          "required": [
+            "candidate_id",
+            "researched"
+          ],
+          "additionalProperties": false
+        },
+        "output_mappings": {
+          "candidate_id": "{{trigger-1.candidate.row_id}}",
+          "researched": true,
+          "research_status": "{{agent-3.status}}",
+          "score": "{{function-4.score}}"
+        }
+      }
+    },
+    {
+      "id": "return-6",
+      "kind": "return",
+      "title": "Skipped (duplicate)",
+      "x": 600,
+      "y": 250,
+      "config": {
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "candidate_id": {
+              "type": "string"
+            },
+            "researched": {
+              "type": "boolean"
+            },
+            "research_status": {},
+            "score": {}
+          },
+          "required": [
+            "candidate_id",
+            "researched"
+          ],
+          "additionalProperties": false
+        },
+        "output_mappings": {
+          "candidate_id": "{{trigger-1.candidate.row_id}}",
+          "researched": false
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "trigger-1",
+      "to": "branch-2"
+    },
+    {
+      "from": "branch-2",
+      "to": "agent-3",
+      "port": "yes"
+    },
+    {
+      "from": "branch-2",
+      "to": "return-6",
+      "port": "no"
+    },
+    {
+      "from": "agent-3",
+      "to": "function-4"
+    },
+    {
+      "from": "function-4",
+      "to": "return-5"
+    }
+  ]
+}

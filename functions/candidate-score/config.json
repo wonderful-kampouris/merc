@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "candidate-score",
+  "description": "Merc fn:candidate-score (contracts/functions/candidate-score.json; callers: procedure; gate: None). Source: Merc monorepo shared/handlers/src/candidate-score.ts.",
+  "method": "POST",
+  "path_slug": "candidate-score",
+  "param_mapping": {}
+}

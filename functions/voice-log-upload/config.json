@@ -1,0 +1,9 @@
+{
+  "kind": "http",
+  "name": "voice-log-upload",
+  "description": "Merc fn:voice-log-upload: store an app recording as one voice_log (idempotent on idempotency_key), keep the audio in storage, transcribe inline, hand to debrief-process (contracts/functions/voice-log-upload.json, REQ-DEB-001/009). Source: Merc monorepo shared/handlers/src/voice-log-upload.ts.",
+  "method": "POST",
+  "path_slug": "voice-log-upload",
+  "param_mapping": {},
+  "timeout_ms": 60000
+}

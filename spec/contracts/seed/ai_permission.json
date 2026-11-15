@@ -1,0 +1,506 @@
+[
+  {
+    "id": "8e6b6832-5215-5be9-9eb1-7834284aafb2",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "create_note",
+    "mode": "auto"
+  },
+  {
+    "id": "e01d7e6a-457a-5ac9-a9e4-f577515e2bcc",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "create_task",
+    "mode": "auto"
+  },
+  {
+    "id": "f7270506-c770-5933-9acb-a4e1589ae952",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "update_task",
+    "mode": "auto"
+  },
+  {
+    "id": "335a3c7d-fd75-5248-91b3-58315fcae175",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "create_problem",
+    "mode": "auto"
+  },
+  {
+    "id": "7d8f0672-9238-52c8-ad7a-3cbf022aad4e",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "update_problem",
+    "mode": "auto"
+  },
+  {
+    "id": "c93621a3-d74b-58d7-b239-93e7f1c7b0b3",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "create_deal",
+    "mode": "auto"
+  },
+  {
+    "id": "a98b8f35-6138-5709-b149-96d408d8ac6e",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "update_deal",
+    "mode": "auto"
+  },
+  {
+    "id": "7c7a2a3b-070d-5788-b809-2b83443bba4f",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "create_competitor_signal",
+    "mode": "auto"
+  },
+  {
+    "id": "65ad5fa1-014b-59ef-86d9-1c9adea5d67a",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "update_account",
+    "mode": "auto"
+  },
+  {
+    "id": "886a76c4-eebe-51fb-96d2-d27a0bccb0f6",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "create_contact",
+    "mode": "auto"
+  },
+  {
+    "id": "080dd0ee-95d8-5803-8fb3-a30a28f96938",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "update_contact",
+    "mode": "auto"
+  },
+  {
+    "id": "e00d5327-a6e7-5562-9232-be0210b0548d",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "mark_visit_done",
+    "mode": "auto"
+  },
+  {
+    "id": "41230732-09ca-50a3-bc4e-b4c6e6b3f47f",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "log_campaign_pitch",
+    "mode": "auto"
+  },
+  {
+    "id": "92c859ed-9040-57aa-9a5e-6fd1cb048912",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "reschedule_visit",
+    "mode": "auto"
+  },
+  {
+    "id": "ffbd104b-acd8-57c2-acc7-84af4db6b1d7",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "add_candidate",
+    "mode": "auto"
+  },
+  {
+    "id": "9ec43b40-90d2-576a-a37b-a4be332fc67a",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "discount_within_limit",
+    "mode": "auto"
+  },
+  {
+    "id": "31fc91d6-04af-578f-b03c-79254d483bbb",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "mark_account_lost",
+    "mode": "auto"
+  },
+  {
+    "id": "c8cb08f2-2fb0-5014-8538-cce36d8729fe",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "create_draft_order",
+    "mode": "auto"
+  },
+  {
+    "id": "fb15585c-fdcd-5c5c-b3c4-23b6ddf5b150",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "send_email",
+    "mode": "ask"
+  },
+  {
+    "id": "e0dcd08e-c1e9-5008-b3da-dcf18634ddfa",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "send_whatsapp",
+    "mode": "ask"
+  },
+  {
+    "id": "6d842b3e-a184-52c7-a966-49a826f621ec",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "send_viber",
+    "mode": "ask"
+  },
+  {
+    "id": "bfab1821-2721-5f76-b3e3-530fb748b02d",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "book_meeting",
+    "mode": "ask"
+  },
+  {
+    "id": "0fad38a5-5973-55a3-b95c-b960df0f7623",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "convert_prospect",
+    "mode": "ask"
+  },
+  {
+    "id": "98c13eb8-ae06-5c67-b0fa-f83aa930a9c3",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "action_type_code": "delete_record",
+    "mode": "never"
+  },
+  {
+    "id": "21bc201f-a2f7-5b3f-a089-3ca18f86ba01",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "create_note",
+    "mode": "auto"
+  },
+  {
+    "id": "e14de4d8-adfe-56a8-bbd9-d4dfba1cda0c",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "create_task",
+    "mode": "auto"
+  },
+  {
+    "id": "22c30faa-c97d-5db6-854e-27a6e6d88f76",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "update_task",
+    "mode": "auto"
+  },
+  {
+    "id": "d4dd544e-6a82-5c1e-9f5d-0cb35194698a",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "create_problem",
+    "mode": "auto"
+  },
+  {
+    "id": "597e36d4-5ef0-5b2e-b541-0f077a005ccb",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "update_problem",
+    "mode": "auto"
+  },
+  {
+    "id": "b44dc800-39e4-525d-a16d-5af283c3957d",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "create_deal",
+    "mode": "auto"
+  },
+  {
+    "id": "2742bdbc-f632-544e-82c7-45fb86fa0a14",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "update_deal",
+    "mode": "auto"
+  },
+  {
+    "id": "fd412079-0991-514b-8768-6ec289d1233b",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "create_competitor_signal",
+    "mode": "auto"
+  },
+  {
+    "id": "9a1adca3-ac22-579e-94d8-c28f76bf2326",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "update_account",
+    "mode": "auto"
+  },
+  {
+    "id": "5c0acc9e-4e2e-591d-8b01-cdeb92246592",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "create_contact",
+    "mode": "auto"
+  },
+  {
+    "id": "33c656d2-9a11-5fea-8dce-2fa323016805",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "update_contact",
+    "mode": "auto"
+  },
+  {
+    "id": "68d6619f-8e05-5481-9a91-32325c9da71d",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "mark_visit_done",
+    "mode": "auto"
+  },
+  {
+    "id": "280621ba-d250-5f3d-b919-85bb853ae788",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "log_campaign_pitch",
+    "mode": "auto"
+  },
+  {
+    "id": "da4e71b6-46ad-5f43-84c7-7af0dba0893b",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "reschedule_visit",
+    "mode": "auto"
+  },
+  {
+    "id": "7666a87b-fdda-5502-9862-58e9ff2de8fe",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "add_candidate",
+    "mode": "auto"
+  },
+  {
+    "id": "825e3f29-7a7e-5c27-9cc7-8cb1a5ad0b00",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "discount_within_limit",
+    "mode": "auto"
+  },
+  {
+    "id": "65b8b98f-b1a4-56a3-b432-9523d60abee8",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "mark_account_lost",
+    "mode": "auto"
+  },
+  {
+    "id": "2c2e3dd3-8d8b-5f46-932c-d53e53aadab9",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "create_draft_order",
+    "mode": "auto"
+  },
+  {
+    "id": "402d14de-f090-550e-8530-bab4f3297258",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "send_email",
+    "mode": "ask"
+  },
+  {
+    "id": "bdd6e35e-1042-5035-8176-8345c4d60608",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "send_whatsapp",
+    "mode": "ask"
+  },
+  {
+    "id": "6ba60385-1e72-54f3-9568-52d706cddeea",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "send_viber",
+    "mode": "ask"
+  },
+  {
+    "id": "76ed7e38-62a4-5e29-8475-8fba9a614b59",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "book_meeting",
+    "mode": "ask"
+  },
+  {
+    "id": "72c6d96c-bdc9-56f5-a836-0ec503c8304b",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "convert_prospect",
+    "mode": "ask"
+  },
+  {
+    "id": "63255ec7-7a03-594d-992d-5dcfdba85f71",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "action_type_code": "delete_record",
+    "mode": "never"
+  },
+  {
+    "id": "5b17f7da-1089-55b1-9896-16dfae1cef7b",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "create_note",
+    "mode": "auto"
+  },
+  {
+    "id": "88f4c49b-5800-543e-b3b1-625152e20558",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "create_task",
+    "mode": "auto"
+  },
+  {
+    "id": "532ce106-8369-51df-a83d-91082f990401",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "update_task",
+    "mode": "auto"
+  },
+  {
+    "id": "564bd546-5659-54bf-9d36-4b83dae5099b",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "create_problem",
+    "mode": "auto"
+  },
+  {
+    "id": "63201206-a9d2-5b24-a3f4-edb46dd6f6a3",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "update_problem",
+    "mode": "auto"
+  },
+  {
+    "id": "60ec7299-9048-5faf-bc22-22bd059cd293",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "create_deal",
+    "mode": "auto"
+  },
+  {
+    "id": "f8283b74-1e7e-5d40-9bda-918b4b1d8c75",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "update_deal",
+    "mode": "auto"
+  },
+  {
+    "id": "c09eb7b2-4228-5d0a-b5fc-7e3bd95c7ba0",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "create_competitor_signal",
+    "mode": "auto"
+  },
+  {
+    "id": "41b1c324-93f6-5c4b-8520-321fc26200f1",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "update_account",
+    "mode": "auto"
+  },
+  {
+    "id": "e7e14fff-bedd-569a-8a2b-70a50e51b059",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "create_contact",
+    "mode": "auto"
+  },
+  {
+    "id": "4150b15b-3c5b-5331-a07c-b54e945ef836",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "update_contact",
+    "mode": "auto"
+  },
+  {
+    "id": "861875b0-b1d0-5cab-b72e-d60e3125f244",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "mark_visit_done",
+    "mode": "auto"
+  },
+  {
+    "id": "9bb866a3-b276-5c5b-aa0c-636ad58da358",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "log_campaign_pitch",
+    "mode": "auto"
+  },
+  {
+    "id": "a4a18214-837c-54a2-985d-77814bfcadc5",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "reschedule_visit",
+    "mode": "auto"
+  },
+  {
+    "id": "5112e107-d46e-5933-bae0-1bd22f23f7f4",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "add_candidate",
+    "mode": "auto"
+  },
+  {
+    "id": "64d7aa32-b380-557d-95cb-1c7dc2b4072d",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "discount_within_limit",
+    "mode": "auto"
+  },
+  {
+    "id": "276f7fd2-c838-5ae0-961f-a0c402efeae9",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "mark_account_lost",
+    "mode": "auto"
+  },
+  {
+    "id": "db4b4edc-ec83-5e21-a851-e797dc865654",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "create_draft_order",
+    "mode": "auto"
+  },
+  {
+    "id": "da88a1d4-05c1-5c3c-8cda-f0f4df7ba4bf",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "send_email",
+    "mode": "ask"
+  },
+  {
+    "id": "184b3a2c-7875-5dee-a394-981e2587c796",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "send_whatsapp",
+    "mode": "ask"
+  },
+  {
+    "id": "7c2f450b-b66c-5779-9198-d3b7f30215cb",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "send_viber",
+    "mode": "ask"
+  },
+  {
+    "id": "485ab10f-1cd7-519f-823f-a6c31d47c7d7",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "book_meeting",
+    "mode": "ask"
+  },
+  {
+    "id": "22e373bf-8d4a-5dd0-b2d0-651a2b78ae6d",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "convert_prospect",
+    "mode": "ask"
+  },
+  {
+    "id": "90d22867-6733-5af2-8af0-c8e389ab17fe",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "action_type_code": "delete_record",
+    "mode": "never"
+  }
+]

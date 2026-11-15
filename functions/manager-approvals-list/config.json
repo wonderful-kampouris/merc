@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "manager-approvals-list",
+  "description": "Merc fn:manager-approvals-list: the approver's discount approvals inbox (REQ-DSC-009) (contracts/functions/manager-approvals-list.json). Source: Merc monorepo shared/handlers/src/manager-approvals-list.ts.",
+  "method": "GET",
+  "path_slug": "manager-approvals-list",
+  "param_mapping": {}
+}

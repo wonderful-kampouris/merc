@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "discount-check",
+  "description": "Merc fn:discount-check: tier 1 discount limit check (metrics.md#discount-limit), logs discount_within_limit (REQ-DSC-001) (contracts/functions/discount-check.json). Source: Merc monorepo shared/handlers/src/discount-check.ts.",
+  "method": "POST",
+  "path_slug": "discount-check",
+  "param_mapping": {}
+}

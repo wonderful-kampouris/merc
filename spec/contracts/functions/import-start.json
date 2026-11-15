@@ -1,0 +1,92 @@
+{
+  "slug": "import-start",
+  "method": "POST",
+  "kind": "http",
+  "gate": "import.manage",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "data_type": {
+        "type": "string",
+        "enum": [
+          "accounts",
+          "contacts",
+          "orders",
+          "products",
+          "visits"
+        ]
+      },
+      "filename": {
+        "type": "string"
+      },
+      "csv_base64": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "file_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "is_baseline": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "data_type",
+      "filename"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "import_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "import_id",
+      "status"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "data_import"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [
+    "procedure:import-pipeline"
+  ],
+  "notes": ""
+}

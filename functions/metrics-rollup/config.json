@@ -1,0 +1,9 @@
+{
+  "kind": "cron",
+  "name": "metrics-rollup",
+  "description": "Merc fn:metrics-rollup: hourly account_metrics rebuild (usual frequency, risk; contracts/metrics.md). Source: shared/handlers/src/metrics-rollup.ts",
+  "timeout_ms": 300000,
+  "cron_schedules": [
+    { "cron_expression": "15 * * * *", "timezone": "Europe/Athens", "params": {}, "enabled": true }
+  ]
+}

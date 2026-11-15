@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "contact-export",
+  "description": "Merc fn:contact-export: GDPR contact export, human-only, audited (REQ-SET-004) (contracts/functions/contact-export.json). Source: Merc monorepo shared/handlers/src/contact-export.ts.",
+  "method": "POST",
+  "path_slug": "contact-export",
+  "param_mapping": {}
+}

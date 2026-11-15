@@ -1,0 +1,13 @@
+{
+  "kind": "cron",
+  "name": "briefing-generate",
+  "description": "Merc fn:briefing-generate: every 15 min, one briefing per active rep per day once the org-local briefing_time has passed; pushes briefing.ready (contracts/functions/briefing-generate.json). Source: Merc monorepo shared/handlers/src/briefing-generate.ts.",
+  "cron_schedules": [
+    {
+      "cron_expression": "*/15 * * * *",
+      "params": {},
+      "enabled": true
+    }
+  ],
+  "timeout_ms": 300000
+}

@@ -1,0 +1,42 @@
+{
+  "type": "backoffice",
+  "agents_version": "v2",
+  "priority": "P1",
+  "wave": 3,
+  "triggers": [
+    {
+      "type": "webhook",
+      "task_type": "weekly_summary"
+    },
+    {
+      "type": "webhook",
+      "task_type": "monthly_report"
+    }
+  ],
+  "skills": [
+    {
+      "name": "weekly_summary",
+      "tools": [
+        "get_summary_data",
+        "send_internal_email"
+      ]
+    },
+    {
+      "name": "monthly_report",
+      "tools": [
+        "get_summary_data",
+        "send_internal_email"
+      ]
+    }
+  ],
+  "behavior": [
+    "Numbers only from get_summary_data facts.",
+    "Weekly: what closed, what got stuck, what's coming.",
+    "Monthly: before/after baseline, completeness, new customers, customers saved."
+  ],
+  "name": "merc-ops",
+  "tools": [
+    "get_summary_data",
+    "send_internal_email"
+  ]
+}

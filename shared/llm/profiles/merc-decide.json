@@ -1,0 +1,1 @@
+{"key":"merc-decide","enabled":true,"spec":{"spec_version":1,"description":"Merc: Decision model for criterion ratings (candidate scoring) and yes/no gates.","endpoints":[{"endpoint":"gpt-6-luna-decisions@openai"},{"endpoint":"jev-latest@typesafe"},{"endpoint":"gpt-5.4-mini@openai","thinking_level":"none"}]}}

@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "alert-act",
+  "description": "Merc fn:alert-act: act on an alert (create_task, create_draft, done, dismiss). Source: shared/handlers/src/alert-act.ts",
+  "method": "POST",
+  "path_slug": "alert-act",
+  "param_mapping": {}
+}

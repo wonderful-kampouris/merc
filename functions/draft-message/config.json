@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "draft-message",
+  "description": "Merc fn:draft-message: internal: draft a customer message in the rep's style as a pending approval, never sends (REQ-DEB-005) (contracts/functions/draft-message.json). Source: Merc monorepo shared/handlers/src/draft-message.ts.",
+  "method": "POST",
+  "path_slug": "draft-message",
+  "param_mapping": {}
+}

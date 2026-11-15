@@ -1,0 +1,129 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "rep_feedback",
+    "description": "Every rep reaction to a brief or a debrief summary; the learning signal (REQ-MTG-007/008)",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "rep_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "kind",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "visit_brief_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.visit_brief",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "debrief_confirmation_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.debrief_confirmation",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "product_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.product",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "detail",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "exported_to_evals",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "rep_feedback_rep_id_idx",
+        "columns": [
+          "rep_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "rep_feedback_account_id_kind_idx",
+        "columns": [
+          "account_id",
+          "kind"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "rep_feedback_visit_brief_id_idx",
+        "columns": [
+          "visit_brief_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "rep_feedback_debrief_confirmation_id_idx",
+        "columns": [
+          "debrief_confirmation_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "rep_feedback_product_id_idx",
+        "columns": [
+          "product_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "engagement",
+    "derived": false,
+    "enums": {
+      "kind": [
+        "brief_useful",
+        "brief_not_useful",
+        "debrief_confirmed",
+        "debrief_corrected"
+      ]
+    },
+    "notes": {
+      "product_id": "The push product of the brief, copied for the not-repeat rule",
+      "detail": "What the rep said was wrong, verbatim"
+    }
+  }
+}

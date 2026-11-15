@@ -1,0 +1,4 @@
+changes:
+   app/vite.config.ts | 38 ++++++++++++++++++++++++++++++++++++++
+   1 file changed, 38 insertions(+)
+pushed ac33afb to dev main

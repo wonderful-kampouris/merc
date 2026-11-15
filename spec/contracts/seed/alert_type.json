@@ -1,0 +1,50 @@
+[
+  {
+    "code": "going_quiet",
+    "default_severity": "high",
+    "suggested_action": "Visit or call",
+    "description": "going quiet"
+  },
+  {
+    "code": "deal_stuck",
+    "default_severity": "medium",
+    "suggested_action": "Follow-up email",
+    "description": "deal stuck"
+  },
+  {
+    "code": "close_date_passed",
+    "default_severity": "medium",
+    "suggested_action": "Update or close the deal",
+    "description": "close date passed"
+  },
+  {
+    "code": "promise_due",
+    "default_severity": "high",
+    "suggested_action": "Reminder + draft",
+    "description": "promise due"
+  },
+  {
+    "code": "competition_wave",
+    "default_severity": "high",
+    "suggested_action": "Notify the manager",
+    "description": "competition wave"
+  },
+  {
+    "code": "visit_overdue",
+    "default_severity": "medium",
+    "suggested_action": "Plan a visit",
+    "description": "visit overdue"
+  },
+  {
+    "code": "rep_not_logging",
+    "default_severity": "medium",
+    "suggested_action": "Check in with the rep",
+    "description": "rep not logging"
+  },
+  {
+    "code": "approval_overdue",
+    "default_severity": "high",
+    "suggested_action": "Decide the request",
+    "description": "approval overdue"
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "kind": "cron",
+  "name": "kpi-rollup",
+  "description": "Merc fn:kpi-rollup: nightly kpi_daily row per rep for yesterday (contracts/metrics.md, REQ-DSH-001/004). Source: shared/handlers/src/kpi-rollup.ts",
+  "timeout_ms": 300000,
+  "cron_schedules": [
+    { "cron_expression": "5 0 * * *", "timezone": "Europe/Athens", "params": {}, "enabled": true }
+  ]
+}

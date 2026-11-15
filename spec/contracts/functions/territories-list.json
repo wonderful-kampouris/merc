@@ -1,0 +1,42 @@
+{
+  "slug": "territories-list",
+  "method": "GET",
+  "kind": "http",
+  "gate": "territories.read",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "items"
+    ]
+  },
+  "reads": [
+    "territory",
+    "territory_rep",
+    "territory_postal_code"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

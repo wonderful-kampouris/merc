@@ -1,0 +1,106 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "prospect_search",
+    "description": "A prospecting run",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "requested_by",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "category_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.account_category",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "area_text",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "origin",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "found_count",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "duplicate_count",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "procedure_run_id",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "prospect_search_org_id_idx",
+        "columns": [
+          "org_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "prospect_search_requested_by_idx",
+        "columns": [
+          "requested_by"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "prospecting",
+    "derived": false,
+    "enums": {
+      "origin": [
+        "manual",
+        "route",
+        "list_upload",
+        "single_add"
+      ],
+      "status": [
+        "running",
+        "done",
+        "failed"
+      ]
+    },
+    "notes": {}
+  }
+}

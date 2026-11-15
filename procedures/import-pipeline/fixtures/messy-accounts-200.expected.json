@@ -1,0 +1,46 @@
+[
+  {
+    "row": 10,
+    "issue": "invalid_vat"
+  },
+  {
+    "row": 16,
+    "issue": "invalid_phone"
+  },
+  {
+    "row": 24,
+    "issue": "invalid_address"
+  },
+  {
+    "row": 33,
+    "issue": "missing_required"
+  },
+  {
+    "row": 43,
+    "issue": "duplicate"
+  },
+  {
+    "row": 44,
+    "issue": "duplicate"
+  },
+  {
+    "row": 63,
+    "issue": "duplicate"
+  },
+  {
+    "row": 80,
+    "issue": "invalid_vat"
+  },
+  {
+    "row": 117,
+    "issue": "invalid_phone"
+  },
+  {
+    "row": 134,
+    "issue": "missing_required"
+  },
+  {
+    "row": 154,
+    "issue": "invalid_phone"
+  }
+]

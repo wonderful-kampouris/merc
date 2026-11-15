@@ -1,0 +1,30 @@
+{
+  "name": "get_today",
+  "agent": "merc-buddy",
+  "function": "today-get",
+  "description": "Today's stops in order with the reason for each.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "date": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/today-get.json#/response"
+}

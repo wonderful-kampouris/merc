@@ -1,0 +1,67 @@
+{
+  "slug": "visit-assign",
+  "method": "POST",
+  "kind": "http",
+  "gate": "team.assign",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "rep_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "date": {
+        "type": "string",
+        "format": "date"
+      },
+      "purpose": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "rep_id",
+      "account_id",
+      "date"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "visit": {
+        "$ref": "../_defs.json#/$defs/VisitSummary"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "visit"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "visit",
+    "visit_change"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "team"
+}

@@ -1,0 +1,110 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "discount_policy",
+    "description": "Discount limits; most specific active rule wins",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "role_code",
+        "type": "string",
+        "required": false,
+        "reference": {
+          "table": "merc.role",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "user_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "product_category_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.product_category",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "account_category_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.account_category",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "max_discount_pct",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "valid_from",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "valid_to",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "active",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "discount_policy_org_id_role_code_idx",
+        "columns": [
+          "org_id",
+          "role_code"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "discount_policy_user_id_idx",
+        "columns": [
+          "user_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "discount_policy_active_idx",
+        "columns": [
+          "active"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "voice",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

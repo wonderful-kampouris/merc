@@ -1,0 +1,16 @@
+provisioned alert-act POST
+provisioned approval-decide POST
+FAILED approval-resolve: error: create function: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions": context deadline exceeded (Client.Timeout exceeded while awaiting headers) 
+FAILED approvals-list: error: create function: request failed (412): publish function to git: functions publish conflicted: precondition failed 
+FAILED candidate-act: error: create function: request failed (412): publish function to git: functions publish conflicted: precondition failed 
+FAILED candidates-list: error: create function: request failed (412): publish function to git: functions publish conflicted: precondition failed 
+FAILED competitor-signals-list: error: create function: request failed (412): publish function to git: functions publish conflicted: precondition failed 
+provisioned discount-request POST
+FAILED kpi-drilldown: error: create function: request failed (409): slug "kpi-drilldown" method GET: function with this slug and method already exists 
+provisioned manager-approvals-list GET
+provisioned my-performance GET
+provisioned problem-update POST
+FAILED rep-detail: error: create function: request failed (409): slug "rep-detail" method GET: function with this slug and method already exists 
+provisioned task-assign POST
+FAILED tasks-list: error: create function: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions": context deadline exceeded (Client.Timeout exceeded while awaiting headers) 
+FAILED visit-assign: error: create function: request failed (412): publish function to git: functions publish conflicted: precondition failed 

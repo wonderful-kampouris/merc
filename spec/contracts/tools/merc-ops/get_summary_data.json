@@ -1,0 +1,42 @@
+{
+  "name": "get_summary_data",
+  "agent": "merc-ops",
+  "function": "summary-data",
+  "description": "Facts for the weekly/monthly summary.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "kind": {
+        "type": "string",
+        "enum": [
+          "weekly",
+          "monthly"
+        ]
+      },
+      "scope_user_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "from": {
+        "type": "string",
+        "format": "date"
+      },
+      "to": {
+        "type": "string",
+        "format": "date"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "kind",
+      "scope_user_id",
+      "from",
+      "to"
+    ]
+  },
+  "inject": [],
+  "priority": "P1",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/summary-data.json#/response"
+}

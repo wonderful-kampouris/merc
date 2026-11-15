@@ -1,0 +1,8 @@
+{"name":"merc_spike_child","schema":"merc_spike","description":"WP-SPK-05 spike child (delete me)",
+ "columns":[{"name":"id","type":"auto_uuid","required":true,"primary_key":true},
+            {"name":"parent_id","type":"auto_uuid","required":true,"reference":{"table":"merc_spike.merc_spike_parent","on_delete":"restrict"}},
+            {"name":"note","type":"string","required":false},
+            {"name":"amount_minor","type":"number","required":false},
+            {"name":"happened_at","type":"datetime","required":false}],
+ "indexes":[{"name":"merc_spike_child_parent_id_idx","columns":["parent_id"]},
+            {"name":"merc_spike_child_parent_note_uq","columns":["parent_id","note"],"unique":true,"type":"btree"}]}

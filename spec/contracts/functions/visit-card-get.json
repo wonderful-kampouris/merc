@@ -1,0 +1,54 @@
+{
+  "slug": "visit-card-get",
+  "method": "GET",
+  "kind": "http",
+  "gate": "accounts.read",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 40000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id"
+    ]
+  },
+  "response": {
+    "$ref": "../_defs.json#/$defs/VisitCard"
+  },
+  "reads": [
+    "account",
+    "contact",
+    "problem",
+    "task",
+    "sales_order",
+    "order_line",
+    "account_metrics",
+    "alert",
+    "campaign",
+    "campaign_product",
+    "dossier",
+    "dossier_fact",
+    "product"
+  ],
+  "writes": [
+    "campaign_exposure"
+  ],
+  "errors": [],
+  "llm": [
+    "visit_card_pitch"
+  ],
+  "integrations": [],
+  "notes": "",
+  "scope": "account"
+}

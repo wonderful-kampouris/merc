@@ -1,0 +1,30 @@
+{
+  "name": "list_new_shops",
+  "agent": "merc-buddy",
+  "function": "candidates-list",
+  "description": "Scored new shops.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "search_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/candidates-list.json#/response"
+}

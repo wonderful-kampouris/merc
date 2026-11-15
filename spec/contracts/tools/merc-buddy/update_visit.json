@@ -1,0 +1,85 @@
+{
+  "name": "update_visit",
+  "agent": "merc-buddy",
+  "function": "visit-update",
+  "description": "Move, skip, add, reorder or complete a visit.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "visit_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "action": {
+        "type": "string",
+        "enum": [
+          "move",
+          "skip",
+          "add",
+          "reorder",
+          "done"
+        ]
+      },
+      "date": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "position": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "reason": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "action"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/visit-update.json#/response"
+}

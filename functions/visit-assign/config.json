@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "visit-assign",
+  "description": "Merc fn:visit-assign (contracts/functions/visit-assign.json). Source: Merc monorepo shared/handlers/src/visit-assign.ts.",
+  "method": "POST",
+  "path_slug": "visit-assign",
+  "param_mapping": {}
+}

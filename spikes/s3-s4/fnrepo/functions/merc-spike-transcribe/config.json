@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "merc-spike-transcribe",
+  "description": "Spike S4: transcribe an uploaded audio clip via inline-audio LLM",
+  "method": "POST",
+  "path_slug": "merc-spike-transcribe",
+  "param_mapping": {}
+}

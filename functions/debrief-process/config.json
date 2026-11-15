@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "debrief-process",
+  "description": "Merc fn:debrief-process: rep debrief -> grounded extraction -> internal actions + follow-up approval -> ResultCard (contracts/functions/debrief-process.json). Source: Merc monorepo shared/handlers/src/debrief-process.ts.",
+  "method": "POST",
+  "path_slug": "debrief-process",
+  "param_mapping": {}
+}

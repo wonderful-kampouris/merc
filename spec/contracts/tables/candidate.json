@@ -1,0 +1,169 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "candidate",
+    "description": "A shop found by prospecting",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "search_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.prospect_search",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "business_name",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "vat_number",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "street",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "postal_code",
+        "type": "string",
+        "required": false,
+        "reference": {
+          "table": "merc.postal_area",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "lat",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "lng",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "phone",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "website",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "external_source",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "external_ref",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "matched_account_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "converted_account_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "assigned_rep_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "set_null"
+        }
+      }
+    ],
+    "indexes": [
+      {
+        "name": "candidate_search_id_idx",
+        "columns": [
+          "search_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "candidate_status_idx",
+        "columns": [
+          "status"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "candidate_vat_number_idx",
+        "columns": [
+          "vat_number"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "candidate_website_idx",
+        "columns": [
+          "website"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "candidate_assigned_rep_id_idx",
+        "columns": [
+          "assigned_rep_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "prospecting",
+    "derived": false,
+    "enums": {
+      "external_source": [
+        "registry",
+        "directory",
+        "csv",
+        "rep"
+      ],
+      "status": [
+        "new",
+        "duplicate",
+        "researched",
+        "scored",
+        "added",
+        "dismissed",
+        "failed"
+      ]
+    },
+    "notes": {}
+  }
+}

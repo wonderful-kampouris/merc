@@ -1,0 +1,64 @@
+{
+  "name": "approvals",
+  "display_name": "Approvals",
+  "description": "Use when: 'yes send it' / 'what's pending'.",
+  "prompts": {
+    "skill": "prompt.md"
+  },
+  "tools": {
+    "list_approvals": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "kind",
+          "type": "enum",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "customer_message",
+            "discount",
+            "terms",
+            "conversion"
+          ]
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": true
+      }
+    },
+    "resolve_approval": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "approval_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "decision",
+          "type": "enum",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "approve",
+            "edit_approve",
+            "reject"
+          ]
+        },
+        {
+          "name": "final_body",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true
+        }
+      ],
+      "config": {
+        "timeout": 30000,
+        "is_interruptible": false
+      }
+    }
+  }
+}

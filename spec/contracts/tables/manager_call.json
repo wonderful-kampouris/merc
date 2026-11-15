@@ -1,0 +1,83 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "manager_call",
+    "description": "Live outbound call attempts to the approver",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "approval_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.approval",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "callee_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "attempt_no",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "wonderful_conversation_id",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "outcome",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "started_at",
+        "type": "datetime",
+        "required": true
+      },
+      {
+        "name": "ended_at",
+        "type": "datetime",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "manager_call_approval_id_idx",
+        "columns": [
+          "approval_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "voice",
+    "derived": false,
+    "enums": {
+      "outcome": [
+        "queued",
+        "ringing",
+        "answered",
+        "no_answer",
+        "busy",
+        "voicemail",
+        "failed"
+      ]
+    },
+    "notes": {}
+  }
+}

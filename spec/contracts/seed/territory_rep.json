@@ -1,0 +1,22 @@
+[
+  {
+    "id": "5c1e80df-8854-5041-b78b-25622aaacff9",
+    "territory_id": "76b55561-9135-5c55-ad43-34661bffd9d9",
+    "user_id": "d72bccf8-f36c-5abf-8d0d-142783f090cd"
+  },
+  {
+    "id": "252b6e28-da44-53e6-a591-a8a743b20e08",
+    "territory_id": "76b55561-9135-5c55-ad43-34661bffd9d9",
+    "user_id": "a3ecd990-28ac-57dd-9d89-c5e5afb1f68c"
+  },
+  {
+    "id": "928d7613-c4ee-5c50-98d5-3d44765a8664",
+    "territory_id": "ab0e35fb-6fcb-5d04-aa2b-36be2cc7372c",
+    "user_id": "27f8d8e3-7f84-5b9f-90e1-7d3fab3d9b22"
+  },
+  {
+    "id": "6e88dbe7-a730-59bd-b909-9a36a54bcca3",
+    "territory_id": "5963cd69-93fb-53ce-9745-f1d136a46285",
+    "user_id": "51f64164-9fae-56a4-a1d2-46b24def92e8"
+  }
+]

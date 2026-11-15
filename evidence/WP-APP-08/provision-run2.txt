@@ -1,0 +1,7 @@
+exists approval-resolve
+provisioned approvals-list GET
+FAILED candidate-act: error: create function: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions": context deadline exceeded (Client.Timeout exceeded while awaiting headers) 
+FAILED candidates-list: error: create function: request failed (412): publish function to git: functions publish conflicted: precondition failed 
+exists competitor-signals-list
+exists tasks-list
+provisioned visit-assign POST

@@ -1,0 +1,116 @@
+{
+  "slug": "approver-brief",
+  "method": "GET",
+  "kind": "http",
+  "gate": null,
+  "callers": [
+    "merc-approver"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "approval_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "approval_id"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "approval_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "callee": {
+        "$ref": "../_defs.json#/$defs/UserRef"
+      },
+      "requester": {
+        "$ref": "../_defs.json#/$defs/UserRef"
+      },
+      "account": {
+        "$ref": "../_defs.json#/$defs/AccountRef"
+      },
+      "requested_pct": {
+        "type": "number"
+      },
+      "policy_limit_pct": {
+        "type": "number"
+      },
+      "approver_limit_pct": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "lines": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "quantity": {
+              "type": "number"
+            },
+            "unit": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "quantity",
+            "unit"
+          ]
+        }
+      },
+      "context_facts": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "spoken_brief": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "approval_id",
+      "callee",
+      "requester",
+      "account",
+      "requested_pct",
+      "policy_limit_pct",
+      "lines",
+      "context_facts",
+      "spoken_brief"
+    ]
+  },
+  "reads": [
+    "approval",
+    "discount_request",
+    "discount_request_line",
+    "account_metrics",
+    "competitor_signal",
+    "sales_order"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "spoken_brief is one sentence built from rows only (no LLM numbers)."
+}

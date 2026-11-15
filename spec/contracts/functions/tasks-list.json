@@ -1,0 +1,104 @@
+{
+  "slug": "tasks-list",
+  "method": "GET",
+  "kind": "http",
+  "gate": "tasks.read",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "status": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "open",
+              "done",
+              "cancelled"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "owner_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "due_before": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "page": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "limit": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "page": {
+        "$ref": "../_defs.json#/$defs/Page"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "items",
+      "page"
+    ]
+  },
+  "reads": [
+    "task"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "owner_or_team"
+}

@@ -1,0 +1,35 @@
+{
+  "name": "add_candidate",
+  "agent": "merc-buddy",
+  "function": "candidate-add",
+  "description": "Add a shop the rep spotted.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "business_name": {
+        "type": "string"
+      },
+      "location_hint": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "business_name"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P1",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/candidate-add.json#/response"
+}

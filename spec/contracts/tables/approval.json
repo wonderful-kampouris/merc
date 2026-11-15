@@ -1,0 +1,157 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "approval",
+    "description": "Supertype: anything waiting for a human decision",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "ai_action_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.ai_action",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "kind",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "requested_by",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "approver_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "mode",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "decided_by",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "decided_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "decision_note",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "decided_via",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "due_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "expires_at",
+        "type": "datetime",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "approval_ai_action_id_uq",
+        "columns": [
+          "ai_action_id"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "approval_approver_id_status_due_at_idx",
+        "columns": [
+          "approver_id",
+          "status",
+          "due_at"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "approval_kind_idx",
+        "columns": [
+          "kind"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "approval_requested_by_idx",
+        "columns": [
+          "requested_by"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "voice",
+    "derived": false,
+    "enums": {
+      "kind": [
+        "customer_message",
+        "discount",
+        "terms",
+        "conversion"
+      ],
+      "mode": [
+        "live",
+        "async"
+      ],
+      "status": [
+        "pending",
+        "approved",
+        "countered",
+        "sent",
+        "failed",
+        "rejected",
+        "expired",
+        "escalated"
+      ],
+      "decided_via": [
+        "app",
+        "voice_buddy",
+        "phone_call",
+        "sms_link"
+      ]
+    },
+    "notes": {}
+  }
+}

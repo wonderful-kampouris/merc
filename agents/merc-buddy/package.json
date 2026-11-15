@@ -1,0 +1,23 @@
+{
+  "name": "merc-buddy",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.32.1",
+  "dependencies": {
+    "@wonderful/shared-lib": "file:./shared_lib"
+  },
+  "devDependencies": {
+    "@wonderful/test": "^0.1.12",
+    "@wonderful/types": "^0.1.27",
+    "esbuild": "^0.28.0",
+    "vitest": "^4.1.4",
+    "typescript": "^5.7.2"
+  },
+  "scripts": {
+    "build-lib": "node --experimental-strip-types --no-warnings scripts/build-lib.ts",
+    "gen": "node --experimental-strip-types --no-warnings scripts/gen-tools.ts",
+    "build": "pnpm gen && pnpm build-lib",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}

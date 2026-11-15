@@ -1,0 +1,6 @@
+staging 61 folders: account-convert account-get account-resolve account-upsert accounts-list alert-act alerts-list approval-decide approval-resolve approval-status approvals-list assignments-transfer briefing-get campaign-draft-from-text campaign-funnel campaign-upsert candidate-act candidate-add candidates-list competitor-signals-list contact-erase contact-export contact-upsert dashboard-kpis deal-upsert deals-list debrief-result-get discount-check discount-request eod-summary escalate import-confirm import-get kpi-drilldown manager-approvals-list my-performance order-upsert orders-list problem-update product-lookup prospect-search rep-detail settings-get settings-update target-upsert task-assign task-create task-update tasks-list team-list territories-list territory-upsert today-get user-upsert users-list visit-assign visit-card-get visit-plan-accept visit-plan-get visit-update voice-log-upload
+ 129 files changed, 295151 insertions(+), 252 deletions(-)
+attempt 1: fatal: the remote end hung up unexpectedly
+attempt 2: fatal: the remote end hung up unexpectedly
+attempt 3: fatal: the remote end hung up unexpectedly
+attempt 4: fatal: the remote end hung up unexpectedly

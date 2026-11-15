@@ -1,0 +1,44 @@
+NAME                      TYPE      REF                                   RELATIONSHIP  REQUIRED  ALLOWED ROLES  REQUIRED PERMISSIONS
+me                        function  98076dfa-fd0d-4e08-9dc0-6d7ed484a643  linked        yes                      
+merc-chat-token           function  43c84bc3-801f-4544-8eab-c7c8929bf07f  linked        yes                      voicelog.create
+merc-live                 function  7293adf4-732f-4dbd-8e26-655b05f33568  linked        yes                      
+briefing-get              function  604b692b-8ee4-433a-a89f-c2eff4723c0b  linked        yes                      plan.read
+product-lookup            function  db9e541b-33ca-4bda-9f4d-8bd1f4c19190  linked        yes                      products.read
+visit-plan-get            function  b24e10ea-f7e5-41e5-a114-8b66eef4a697  linked        yes                      plan.read
+visit-update              function  a9f6ba2d-462e-4df1-ad3f-9811213b5293  linked        yes                      plan.edit
+visit-card-get            function  98cc4f09-d9ea-4eb8-912d-a5d0c6f2d833  linked        yes                      accounts.read
+today-get                 function  90a6728b-40b4-42a5-b39a-aa40dc7bc1ef  linked        yes                      plan.read
+eod-summary               function  3bed5141-f694-452d-bd6f-4c82d1176bac  linked        yes                      plan.read
+voice-log-upload          function  7b37c23b-054f-4a85-8896-4412eca015f2  linked        yes                      voicelog.create
+accounts-list             function  89be761a-6ea5-4ffd-a4b0-962f974bf31a  linked        yes                      accounts.read
+account-get               function  4a60133a-ceeb-4b38-86e5-4479f172d44e  linked        yes                      accounts.read
+account-resolve           function  9b7f54cb-c56b-43fe-9b06-1c74d66cf01f  linked        yes                      accounts.read
+account-convert           function  c46eb57e-a3d6-454b-a999-caed26dc8099  linked        yes                      accounts.convert
+contact-upsert            function  e2f64294-9cd0-4bbc-869e-09f06cd13697  linked        yes                      accounts.write
+deal-upsert               function  882fa330-5e08-448f-b332-7475c50136af  linked        yes                      deals.write
+deals-list                function  1953178b-e8c5-4c51-a0b8-24831cb864b8  linked        yes                      deals.read
+task-create               function  d725899d-c97d-4187-8808-95829d71df70  linked        yes                      tasks.create
+task-update               function  22dc7dba-24ff-4ccb-a6c2-9a20a9bf565e  linked        yes                      tasks.create
+escalate                  function  9c37fca2-d970-463b-aa7d-ff1f4d62cd27  linked        yes                      tasks.create
+visit-plan-accept         function  e53553cc-d848-4668-a8a5-6b79ab585534  linked        yes                      plan.edit
+account-upsert            function  d11f450c-38da-4485-9bd8-5a8851f0cbfe  linked        yes                      accounts.write
+alerts-list               function  58809563-36da-476e-92f9-b589e5b7f78b  linked        yes                      alerts.read
+approval-status           function  2320c6a0-bc21-4aab-9400-a3dbc7b6f4e6  linked        yes                      approvals.read
+campaigns-list            function  62930ef6-a016-48aa-a6be-b79b6fc4fb85  linked        yes                      campaigns.read
+candidate-add             function  38b0af1a-2d1d-4fc2-aa9c-36698b5d2199  linked        yes                      prospects.search
+debrief-result-get        function  efb1d334-94a3-4941-ae48-8c75729aa0c6  linked        yes                      voicelog.read
+discount-check            function  3b1945bb-c43b-4501-bdea-c9a9ac31fe99  linked        yes                      discounts.request
+order-upsert              function  0203f493-29ca-40f9-ae10-d2465ba1a7ab  linked        yes                      orders.write
+orders-list               function  f2b0f608-3e6b-4051-853f-192373a55224  linked        yes                      orders.read
+prospect-search           function  3f13905e-1e8b-41e0-94cb-6680444fe78f  linked        yes                      prospects.search
+target-upsert             function  bbe4c5df-70b3-4c4e-850c-f61d9b3fdd56  linked        yes                      targets.manage
+targets-list              function  7f5ef776-6eb3-452e-8629-31aea4849d4d  linked        yes                      targets.read
+campaign-draft-from-text  function  d4f04ccd-8030-470d-a070-4ced9d1688a1  linked        yes                      campaigns.manage
+campaign-upsert           function  73bba551-5fc3-4abe-a4de-01a161cbf616  linked        yes                      campaigns.manage
+dashboard-kpis            function  db0a649f-b9f3-4e36-99d1-0eeaebce44d8  linked        yes                      dashboard.read
+team-list                 function  3cce1c3a-d9a9-467c-ad55-f4c649f1256d  linked        yes                      team.read
+users-list                function  b504ea7e-e6ed-46e1-a7d0-63cd46a8b85b  linked        yes                      users.manage
+territories-list          function  c9acd59a-54f4-434e-80e5-2fc389f43888  linked        yes                      territories.read
+campaign-funnel           function  c119e613-0711-4091-a1e1-8604b7335748  linked        yes                      campaigns.read
+import-start              function  204124fc-9288-4e26-941b-50b95a581ff7  linked        yes                      import.manage
+territory-upsert          function  456e7bd8-87d4-4b76-92e0-c54db91ded61  linked        yes                      territories.manage

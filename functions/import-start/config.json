@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "import-start",
+  "description": "Merc fn:import-start (contracts/functions/import-start.json; callers: mgmt; gate: import.manage). Source: Merc monorepo shared/handlers/src/import-start.ts.",
+  "method": "POST",
+  "path_slug": "import-start",
+  "param_mapping": {}
+}

@@ -1,0 +1,88 @@
+{
+  "slug": "debrief-confirm-send",
+  "method": "POST",
+  "kind": "http",
+  "gate": "voicelog.create",
+  "callers": [
+    "buddy",
+    "internal"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 4,
+  "request": {
+    "type": "object",
+    "properties": {
+      "voice_log_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "channel": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "whatsapp",
+              "app"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "voice_log_id"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "debrief_confirmation_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "sent",
+          "confirmed",
+          "corrected",
+          "no_reply",
+          "failed"
+        ]
+      },
+      "summary_text": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "debrief_confirmation_id",
+      "status",
+      "summary_text"
+    ]
+  },
+  "reads": [
+    "voice_log",
+    "ai_action",
+    "visit",
+    "app_user",
+    "debrief_confirmation"
+  ],
+  "writes": [
+    "debrief_confirmation",
+    "buddy_call"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [
+    "integration:whatsapp.send_template",
+    "integration:whatsapp.send_text"
+  ],
+  "notes": "Idempotent on voice_log_id. Summary = at most 6 bullets built in code from the applied ai_action summaries of the voice log, plus pending approvals. No LLM. Channel defaults to whatsapp when the rep has phone_channel_enabled, else app (push + result card). Sends through buddy-call-start purpose debrief_confirm.",
+  "scope": "owner"
+}

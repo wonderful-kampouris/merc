@@ -1,0 +1,113 @@
+{
+  "profile": "merc-extract",
+  "used_by": [
+    "merc-research"
+  ],
+  "eval_set": "evals/merc-research/",
+  "purpose": "Extract dossier facts from scraped pages.",
+  "input": {
+    "type": "object",
+    "properties": {
+      "business_name": {
+        "type": "string"
+      },
+      "pages": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string"
+            },
+            "markdown": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "url",
+            "markdown"
+          ]
+        }
+      },
+      "known_competitors": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "business_name",
+      "pages",
+      "known_competitors"
+    ]
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "summary": {
+        "type": "string"
+      },
+      "price_level": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "low",
+              "mid",
+              "premium"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "facts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "fact_type": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            },
+            "source_url": {
+              "type": "string"
+            },
+            "competitor_name": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "fact_type",
+            "value",
+            "source_url"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "summary",
+      "facts"
+    ]
+  },
+  "rules": [
+    "source_url must be one of the input page urls.",
+    "No facts from outside the pages."
+  ],
+  "name": "research_dossier"
+}

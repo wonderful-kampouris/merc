@@ -1,0 +1,28 @@
+{
+  "name": "@merc/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Typed Merc contracts: generated TS types, JSON-schema validators and mock handlers from spec/contracts.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "files": ["dist"],
+  "scripts": {
+    "generate": "tsx scripts/generate.ts",
+    "build": "pnpm run generate && tsc -p tsconfig.json",
+    "regen": "python3 -I ../../spec/_build/build.py && pnpm run build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

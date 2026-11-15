@@ -1,0 +1,26 @@
+{
+  "name": "get_debrief_result",
+  "agent": "merc-buddy",
+  "function": "debrief-result-get",
+  "description": "Re-read the result of a logged visit.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "voice_log_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "voice_log_id"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/debrief-result-get.json#/response"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "prepare_visit",
+  "display_name": "Prepare Visit",
+  "description": "Use when: 'tell me about X' / arriving.",
+  "prompts": {
+    "skill": "prompt.md"
+  },
+  "tools": {
+    "resolve_account": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "hint",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": true
+      }
+    },
+    "get_visit_card": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 30000,
+        "is_interruptible": true
+      }
+    }
+  }
+}

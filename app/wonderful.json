@@ -1,0 +1,1075 @@
+{
+  "schema_version": 1,
+  "name": "merc",
+  "slug": "merc",
+  "description": "Merc AI field-sales CRM: rep (mobile) and management shells",
+  "roles": {
+    "permissions": [
+      {
+        "key": "plan.read",
+        "resource": "plan",
+        "action": "read",
+        "relations": [
+          "owner",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "plan.edit",
+        "resource": "plan",
+        "action": "edit",
+        "relations": [
+          "owner"
+        ]
+      },
+      {
+        "key": "accounts.read",
+        "resource": "accounts",
+        "action": "read",
+        "relations": [
+          "owner",
+          "territory_member",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "accounts.write",
+        "resource": "accounts",
+        "action": "write",
+        "relations": [
+          "owner",
+          "territory_member",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "accounts.convert",
+        "resource": "accounts",
+        "action": "convert",
+        "relations": [
+          "owner"
+        ]
+      },
+      {
+        "key": "deals.read",
+        "resource": "deals",
+        "action": "read",
+        "relations": [
+          "owner",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "deals.write",
+        "resource": "deals",
+        "action": "write",
+        "relations": [
+          "owner",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "orders.read",
+        "resource": "orders",
+        "action": "read",
+        "relations": [
+          "owner",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "orders.write",
+        "resource": "orders",
+        "action": "write",
+        "relations": [
+          "owner"
+        ]
+      },
+      {
+        "key": "tasks.read",
+        "resource": "tasks",
+        "action": "read",
+        "relations": [
+          "owner",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "tasks.create",
+        "resource": "tasks",
+        "action": "create",
+        "relations": []
+      },
+      {
+        "key": "team.read",
+        "resource": "team",
+        "action": "read",
+        "relations": [
+          "team_manager"
+        ]
+      },
+      {
+        "key": "team.assign",
+        "resource": "team",
+        "action": "assign",
+        "relations": [
+          "team_manager"
+        ]
+      },
+      {
+        "key": "voicelog.create",
+        "resource": "voicelogs",
+        "action": "create",
+        "relations": []
+      },
+      {
+        "key": "voicelog.read",
+        "resource": "voicelogs",
+        "action": "read",
+        "relations": [
+          "owner"
+        ]
+      },
+      {
+        "key": "aiaction.read",
+        "resource": "aiactions",
+        "action": "read",
+        "relations": [
+          "owner",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "aiaction.undo",
+        "resource": "aiactions",
+        "action": "undo",
+        "relations": [
+          "owner"
+        ]
+      },
+      {
+        "key": "approvals.read",
+        "resource": "approvals",
+        "action": "read",
+        "relations": [
+          "requester",
+          "approver"
+        ]
+      },
+      {
+        "key": "approvals.decide",
+        "resource": "approvals",
+        "action": "decide",
+        "relations": [
+          "approver"
+        ]
+      },
+      {
+        "key": "discounts.request",
+        "resource": "discounts",
+        "action": "request",
+        "relations": []
+      },
+      {
+        "key": "discounts.approve",
+        "resource": "discounts",
+        "action": "approve",
+        "relations": [
+          "approver",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "alerts.read",
+        "resource": "alerts",
+        "action": "read",
+        "relations": [
+          "owner",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "alerts.act",
+        "resource": "alerts",
+        "action": "act",
+        "relations": [
+          "owner"
+        ]
+      },
+      {
+        "key": "products.read",
+        "resource": "products",
+        "action": "read",
+        "relations": []
+      },
+      {
+        "key": "prospects.search",
+        "resource": "prospects",
+        "action": "search",
+        "relations": []
+      },
+      {
+        "key": "prospects.read",
+        "resource": "prospects",
+        "action": "read",
+        "relations": [
+          "owner",
+          "territory_member",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "prospects.act",
+        "resource": "prospects",
+        "action": "act",
+        "relations": [
+          "owner",
+          "territory_member",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "dashboard.read",
+        "resource": "dashboard",
+        "action": "read",
+        "relations": [
+          "owner",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "territories.read",
+        "resource": "territories",
+        "action": "read",
+        "relations": []
+      },
+      {
+        "key": "territories.manage",
+        "resource": "territories",
+        "action": "manage",
+        "relations": [
+          "team_manager"
+        ]
+      },
+      {
+        "key": "campaigns.read",
+        "resource": "campaigns",
+        "action": "read",
+        "relations": []
+      },
+      {
+        "key": "campaigns.manage",
+        "resource": "campaigns",
+        "action": "manage",
+        "relations": [
+          "team_manager"
+        ]
+      },
+      {
+        "key": "targets.read",
+        "resource": "targets",
+        "action": "read",
+        "relations": [
+          "owner",
+          "team_manager"
+        ]
+      },
+      {
+        "key": "targets.manage",
+        "resource": "targets",
+        "action": "manage",
+        "relations": [
+          "team_manager"
+        ]
+      },
+      {
+        "key": "settings.read",
+        "resource": "settings",
+        "action": "read",
+        "relations": []
+      },
+      {
+        "key": "settings.manage",
+        "resource": "settings",
+        "action": "manage",
+        "relations": []
+      },
+      {
+        "key": "users.manage",
+        "resource": "users",
+        "action": "manage",
+        "relations": []
+      },
+      {
+        "key": "import.manage",
+        "resource": "imports",
+        "action": "manage",
+        "relations": []
+      },
+      {
+        "key": "gdpr.manage",
+        "resource": "gdpr",
+        "action": "manage",
+        "relations": []
+      }
+    ],
+    "roles": [
+      {
+        "name": "rep",
+        "permission_grants": [
+          {
+            "permission": "tasks.create",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "voicelog.create",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "discounts.request",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "products.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "prospects.search",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "territories.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "campaigns.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "plan.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "plan.edit",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "accounts.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "accounts.write",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "accounts.convert",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "deals.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "deals.write",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "orders.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "orders.write",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "tasks.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "voicelog.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "aiaction.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "aiaction.undo",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "alerts.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "alerts.act",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "prospects.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "prospects.act",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "dashboard.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "targets.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "accounts.read",
+            "scope": {
+              "type": "relation",
+              "relation": "territory_member"
+            }
+          },
+          {
+            "permission": "accounts.write",
+            "scope": {
+              "type": "relation",
+              "relation": "territory_member"
+            }
+          },
+          {
+            "permission": "prospects.read",
+            "scope": {
+              "type": "relation",
+              "relation": "territory_member"
+            }
+          },
+          {
+            "permission": "prospects.act",
+            "scope": {
+              "type": "relation",
+              "relation": "territory_member"
+            }
+          },
+          {
+            "permission": "approvals.read",
+            "scope": {
+              "type": "relation",
+              "relation": "requester"
+            }
+          },
+          {
+            "permission": "approvals.read",
+            "scope": {
+              "type": "relation",
+              "relation": "approver"
+            }
+          },
+          {
+            "permission": "approvals.decide",
+            "scope": {
+              "type": "relation",
+              "relation": "approver"
+            }
+          }
+        ]
+      },
+      {
+        "name": "manager",
+        "permission_grants": [
+          {
+            "permission": "tasks.create",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "voicelog.create",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "discounts.request",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "products.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "prospects.search",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "territories.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "campaigns.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "settings.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "plan.read",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "accounts.read",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "accounts.write",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "deals.read",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "deals.write",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "orders.read",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "tasks.read",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "team.read",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "team.assign",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "aiaction.read",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "discounts.approve",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "alerts.read",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "prospects.read",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "prospects.act",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "dashboard.read",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "territories.manage",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "campaigns.manage",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "targets.read",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "targets.manage",
+            "scope": {
+              "type": "relation",
+              "relation": "team_manager"
+            }
+          },
+          {
+            "permission": "plan.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "plan.edit",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "accounts.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "alerts.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "alerts.act",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "voicelog.read",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "aiaction.undo",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "orders.write",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "accounts.convert",
+            "scope": {
+              "type": "relation",
+              "relation": "owner"
+            }
+          },
+          {
+            "permission": "approvals.read",
+            "scope": {
+              "type": "relation",
+              "relation": "approver"
+            }
+          },
+          {
+            "permission": "approvals.decide",
+            "scope": {
+              "type": "relation",
+              "relation": "approver"
+            }
+          },
+          {
+            "permission": "discounts.approve",
+            "scope": {
+              "type": "relation",
+              "relation": "approver"
+            }
+          },
+          {
+            "permission": "approvals.read",
+            "scope": {
+              "type": "relation",
+              "relation": "requester"
+            }
+          }
+        ]
+      },
+      {
+        "name": "admin",
+        "permission_grants": [
+          {
+            "permission": "accounts.convert",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "accounts.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "accounts.write",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "aiaction.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "aiaction.undo",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "alerts.act",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "alerts.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "approvals.decide",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "approvals.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "campaigns.manage",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "campaigns.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "dashboard.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "deals.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "deals.write",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "discounts.approve",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "discounts.request",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "gdpr.manage",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "import.manage",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "orders.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "orders.write",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "plan.edit",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "plan.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "products.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "prospects.act",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "prospects.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "prospects.search",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "settings.manage",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "settings.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "targets.manage",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "targets.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "tasks.create",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "tasks.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "team.assign",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "team.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "territories.manage",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "territories.read",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "users.manage",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "voicelog.create",
+            "scope": {
+              "type": "all"
+            }
+          },
+          {
+            "permission": "voicelog.read",
+            "scope": {
+              "type": "all"
+            }
+          }
+        ]
+      }
+    ],
+    "default_role": "rep",
+    "workspace_admin_role": "admin",
+    "audience_roles": {
+      "anonymous": [],
+      "workspace_members": [
+        "rep"
+      ],
+      "app_editors": [
+        "admin"
+      ]
+    }
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "3dc72c78-33d8-5ca3-8cf4-3b32d7a4b203",
+    "account_id": "53164ee9-e983-5bef-8ff7-983ccb9f619f",
+    "competitor_id": "94cc0e65-3b44-5d48-b419-32e51aa11446",
+    "reported_by": "d72bccf8-f36c-5abf-8d0d-142783f090cd",
+    "statement": "Aroma Delta offered 15% lower",
+    "price_delta_pct": -15,
+    "observed_at": "@D-3@10:00"
+  },
+  {
+    "id": "f75b9437-9726-5605-b97d-25b2e033fb50",
+    "account_id": "02f3bae9-645d-5881-82ae-1708e9ec138e",
+    "competitor_id": "94cc0e65-3b44-5d48-b419-32e51aa11446",
+    "reported_by": "d72bccf8-f36c-5abf-8d0d-142783f090cd",
+    "statement": "Aroma Delta offered 20% lower",
+    "price_delta_pct": -20,
+    "observed_at": "@D-5@10:00"
+  },
+  {
+    "id": "0b870fea-b00a-5d49-a578-94ff4d109841",
+    "account_id": "4446eb8f-3f25-5d71-8db9-2db029df9d14",
+    "competitor_id": "94cc0e65-3b44-5d48-b419-32e51aa11446",
+    "reported_by": "a3ecd990-28ac-57dd-9d89-c5e5afb1f68c",
+    "statement": "Aroma Delta offered 12% lower",
+    "price_delta_pct": -12,
+    "observed_at": "@D-2@10:00"
+  },
+  {
+    "id": "9e18bcb3-c3fd-53f3-8ef2-7f363846f04c",
+    "account_id": "4cfe45a4-9761-5595-adb2-c1af5a6f2329",
+    "competitor_id": "8fac56e5-0862-50b1-b242-bb37ac0c98e1",
+    "reported_by": "27f8d8e3-7f84-5b9f-90e1-7d3fab3d9b22",
+    "statement": "BlueBean Roasters offered 10% lower",
+    "price_delta_pct": -10,
+    "observed_at": "@D-8@10:00"
+  }
+]

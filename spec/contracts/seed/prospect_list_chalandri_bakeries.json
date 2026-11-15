@@ -1,0 +1,164 @@
+[
+  {
+    "business_name": "Artos Chalandriou",
+    "vat_number": "800039595",
+    "website": null,
+    "phone": null,
+    "postal_code": "15231",
+    "external_source": "csv",
+    "expected": "duplicate:vat"
+  },
+  {
+    "business_name": "Zymi Bakery",
+    "vat_number": null,
+    "website": "https://zymi.example.gr",
+    "phone": null,
+    "postal_code": "15232",
+    "external_source": "csv",
+    "expected": "duplicate:website"
+  },
+  {
+    "business_name": "Pita & Psomi",
+    "vat_number": null,
+    "website": null,
+    "phone": "+302106000959",
+    "postal_code": "15233",
+    "external_source": "csv",
+    "expected": "duplicate:phone"
+  },
+  {
+    "business_name": "FOURNOS STAVROU",
+    "vat_number": null,
+    "website": null,
+    "phone": null,
+    "postal_code": "15234",
+    "external_source": "csv",
+    "expected": "duplicate:name"
+  },
+  {
+    "business_name": "Glykia Gonia Bakery",
+    "vat_number": "800071271",
+    "website": null,
+    "phone": null,
+    "postal_code": "15231",
+    "external_source": "csv",
+    "expected": "duplicate:vat"
+  },
+  {
+    "business_name": "Fournos Agia Paraskevi",
+    "vat_number": "900000000",
+    "website": "https://fournosagiaparaskevi.example.gr",
+    "phone": "+302106800000",
+    "postal_code": "15231",
+    "external_source": "csv",
+    "expected": "new"
+  },
+  {
+    "business_name": "Psomi tis Geitonias",
+    "vat_number": "900000101",
+    "website": "https://psomitisgeitonias.example.gr",
+    "phone": "+302106800031",
+    "postal_code": "15232",
+    "external_source": "csv",
+    "expected": "new"
+  },
+  {
+    "business_name": "Bakery Elia",
+    "vat_number": "900000202",
+    "website": "https://bakeryelia.example.gr",
+    "phone": "+302106800062",
+    "postal_code": "15233",
+    "external_source": "csv",
+    "expected": "new"
+  },
+  {
+    "business_name": "Oven 15233",
+    "vat_number": "900000303",
+    "website": "https://oven15233.example.gr",
+    "phone": "+302106800093",
+    "postal_code": "15234",
+    "external_source": "csv",
+    "expected": "new"
+  },
+  {
+    "business_name": "Mylos Bread Co",
+    "vat_number": "900000404",
+    "website": null,
+    "phone": "+302106800124",
+    "postal_code": "15231",
+    "external_source": "csv",
+    "expected": "new"
+  },
+  {
+    "business_name": "Prozymi Artisan",
+    "vat_number": "900000505",
+    "website": "https://prozymiartisan.example.gr",
+    "phone": "+302106800155",
+    "postal_code": "15232",
+    "external_source": "csv",
+    "expected": "new"
+  },
+  {
+    "business_name": "Koulouri Corner",
+    "vat_number": "900000606",
+    "website": "https://koulouricorner.example.gr",
+    "phone": "+302106800186",
+    "postal_code": "15233",
+    "external_source": "csv",
+    "expected": "new"
+  },
+  {
+    "business_name": "Fournos Melissia",
+    "vat_number": "900000707",
+    "website": "https://fournosmelissia.example.gr",
+    "phone": "+302106800217",
+    "postal_code": "15234",
+    "external_source": "csv",
+    "expected": "new"
+  },
+  {
+    "business_name": "Sitari Bakehouse",
+    "vat_number": "900000808",
+    "website": "https://sitaribakehouse.example.gr",
+    "phone": "+302106800248",
+    "postal_code": "15231",
+    "external_source": "csv",
+    "expected": "new"
+  },
+  {
+    "business_name": "Chalandri Sourdough",
+    "vat_number": "900000909",
+    "website": null,
+    "phone": "+302106800279",
+    "postal_code": "15232",
+    "external_source": "csv",
+    "expected": "new"
+  },
+  {
+    "business_name": "Bougatsa Thessaloniki Chalandri",
+    "vat_number": "900001010",
+    "website": "https://bougatsathessalonikichalandri.example.gr",
+    "phone": "+302106800310",
+    "postal_code": "15233",
+    "external_source": "csv",
+    "expected": "new"
+  },
+  {
+    "business_name": "Glykes Stigmes Patisserie",
+    "vat_number": "900001111",
+    "website": "https://glykesstigmespatisserie.example.gr",
+    "phone": "+302106800341",
+    "postal_code": "15234",
+    "external_source": "csv",
+    "expected": "new"
+  },
+  {
+    "business_name": "Ble Fournos",
+    "vat_number": "900001212",
+    "website": "https://blefournos.example.gr",
+    "phone": "+302106800372",
+    "postal_code": "15231",
+    "external_source": "csv",
+    "expected": "new"
+  }
+]

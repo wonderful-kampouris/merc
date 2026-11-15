@@ -1,0 +1,61 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "import_column_mapping",
+    "description": "Detected column mapping",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "import_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.data_import",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "source_column",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "target_field",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "confidence",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "confirmed",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "import_column_mapping_import_id_source_column_uq",
+        "columns": [
+          "import_id",
+          "source_column"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "import",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

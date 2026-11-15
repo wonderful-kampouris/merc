@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "name": "research_missing_candidate_id",
+  "description": "A task without a candidate_id fails cleanly without saving anything. Runs the real tools against eval fixture rows on dev (search 710670fe 'merc-research eval fixtures'; tool mocks need the FeatureBackofficeEvalTaskFlow flag, which is off).",
+  "channel": "backoffice",
+  "eval_type": "backoffice_eval",
+  "instructions": {
+    "mode": "turn_based",
+    "turns": [],
+    "backoffice_task": {
+      "task_input": "candidate_research for the new bakery in Chalandri",
+      "expected_behavior": "Does not call save_dossier and does not invent a candidate id. Ends the task with status failed (or explains it cannot proceed) because the task has no candidate_id."
+    }
+  }
+}

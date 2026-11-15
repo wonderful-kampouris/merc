@@ -1,0 +1,57 @@
+{
+  "name": "create_task",
+  "agent": "merc-buddy",
+  "function": "task-create",
+  "description": "Create a reminder/task.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string"
+      },
+      "due_at": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "is_customer_promise": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "title"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/task-create.json#/response"
+}

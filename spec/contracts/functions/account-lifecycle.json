@@ -1,0 +1,67 @@
+{
+  "slug": "account-lifecycle",
+  "method": "CRON",
+  "kind": "cron",
+  "gate": null,
+  "callers": [
+    "scheduler"
+  ],
+  "timeout_ms": 300000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "dry_run": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "processed": {
+        "type": "integer"
+      },
+      "created": {
+        "type": "integer"
+      },
+      "details": {
+        "anyOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "processed",
+      "created"
+    ]
+  },
+  "reads": [
+    "account_metrics",
+    "organization"
+  ],
+  "writes": [
+    "account",
+    "ai_action"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Customers past the lost rule -> lost via ai_action mark_account_lost (internal, undo).",
+  "schedule": "45 2 * * *"
+}

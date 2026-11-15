@@ -1,0 +1,4 @@
+{"name":"merc_spike_parent","schema":"merc_spike","description":"WP-SPK-05 spike parent (delete me)",
+ "columns":[{"name":"id","type":"auto_uuid","required":true,"primary_key":true},
+            {"name":"code","type":"string","required":true}],
+ "indexes":[{"name":"merc_spike_parent_code_uq","columns":["code"],"unique":true}]}

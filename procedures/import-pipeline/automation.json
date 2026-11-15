@@ -1,0 +1,106 @@
+{
+  "nodes": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "title": "Import uploaded (started by fn:import-start via context.automations.invoke)",
+      "x": 0,
+      "y": 0,
+      "config": {
+        "trigger_type": "manual",
+        "programmatic_invocation_enabled": true,
+        "input_schema": {
+          "type": "object",
+          "required": [
+            "import_id"
+          ],
+          "properties": {
+            "import_id": {
+              "type": "string",
+              "description": "data_import.id created by fn:import-start"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "id": "function-2",
+      "kind": "function",
+      "title": "Analyze: map columns, clean rows, report issues",
+      "x": 300,
+      "y": 0,
+      "config": {
+        "slug": "import-analyze",
+        "params": {
+          "import_id": "{{trigger-1.import_id}}"
+        }
+      }
+    },
+    {
+      "id": "branch-3",
+      "kind": "branch",
+      "title": "Preview ready?",
+      "x": 600,
+      "y": 0,
+      "config": {
+        "conditions": [
+          {
+            "left": "{{function-2.status}}",
+            "op": "==",
+            "right": "preview"
+          }
+        ]
+      }
+    },
+    {
+      "id": "wait-4",
+      "kind": "wait",
+      "title": "Wait for the admin to confirm (72 h)",
+      "x": 900,
+      "y": 0,
+      "config": {
+        "mode": "condition",
+        "table_name": "merc.data_import",
+        "row_id": "{{trigger-1.import_id}}",
+        "field": "status",
+        "op": "==",
+        "value": "confirmed",
+        "poll_interval_ms": 15000,
+        "timeout_ms": 259200000
+      }
+    },
+    {
+      "id": "function-5",
+      "kind": "function",
+      "title": "Apply: write clean rows",
+      "x": 1200,
+      "y": 0,
+      "config": {
+        "slug": "import-apply",
+        "params": {
+          "import_id": "{{trigger-1.import_id}}"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "trigger-1",
+      "to": "function-2"
+    },
+    {
+      "from": "function-2",
+      "to": "branch-3"
+    },
+    {
+      "from": "branch-3",
+      "to": "wait-4",
+      "port": "yes"
+    },
+    {
+      "from": "wait-4",
+      "to": "function-5"
+    }
+  ]
+}

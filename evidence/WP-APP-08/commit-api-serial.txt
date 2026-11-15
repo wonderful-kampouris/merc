@@ -1,0 +1,28 @@
+visit-card-get: committed {"allowed_ips":[],"created_at":1794728585062,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:visit-card-get: the visit card for a cus
+voice-log-upload: committed {"allowed_ips":[],"created_at":1794728487274,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:voice-log-upload: store an app recording
+debrief-result-get: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/efb1d334-94a3-4941-ae48-8c75729aa0c6/commit": con
+debrief-result-get: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)
+approval-resolve: already deployed by its builder, skipped
+approval-status: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/2320c6a0-bc21-4aab-9400-a3dbc7b6f4e6/commit": con
+approval-status: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)
+discount-request: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/b8d41531-2ea3-4a32-94c7-556e30291eb4/commit": con
+discount-request: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+discount-check: try 1 failed: error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed
+discount-check: try 2 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/3b1945bb-c43b-4501-bdea-c9a9ac31fe99/commit": con
+discount-check: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)
+manager-approvals-list: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/ed70123a-fd7e-41e7-9724-62d1648308e5/commit": con
+manager-approvals-list: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)
+approval-decide: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/e604625d-f0b6-4816-9d0b-da4b6eaf1b68/commit": con
+approval-decide: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)
+candidates-list: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/9c920467-c468-4f7c-b8c3-4018b952ad4b/commit": con
+candidates-list: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)
+candidate-act: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/cbe6db2e-5555-4ef1-bebb-e58e52638ceb/commit": con
+candidate-act: try 2 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/cbe6db2e-5555-4ef1-bebb-e58e52638ceb/commit": con
+candidate-act: try 3 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/cbe6db2e-5555-4ef1-bebb-e58e52638ceb/commit": con
+candidate-act: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+prospect-search: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/3f13905e-1e8b-41e0-94cb-6680444fe78f/commit": con
+prospect-search: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)
+candidate-add: already deployed by its builder, skipped
+visit-plan-get: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/b24e10ea-f7e5-41e5-a114-8b66eef4a697/commit": con
+visit-plan-get: try 2 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/b24e10ea-f7e5-41e5-a114-8b66eef4a697/commit": con
+visit-plan-get: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)

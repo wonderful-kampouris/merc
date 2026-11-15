@@ -1,0 +1,65 @@
+{
+  "slug": "approvals-expire",
+  "method": "CRON",
+  "kind": "cron",
+  "gate": null,
+  "callers": [
+    "scheduler"
+  ],
+  "timeout_ms": 300000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "dry_run": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "processed": {
+        "type": "integer"
+      },
+      "created": {
+        "type": "integer"
+      },
+      "details": {
+        "anyOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "processed",
+      "created"
+    ]
+  },
+  "reads": [
+    "approval"
+  ],
+  "writes": [
+    "approval"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "customer_message approvals pending > approval_expiry_hours -> expired.",
+  "schedule": "0 * * * *"
+}

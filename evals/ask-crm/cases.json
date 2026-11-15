@@ -1,0 +1,28 @@
+{
+  "_doc": "Eval set for contracts/llm/ask_crm_route.json (fn:ask-crm, REQ-CRD-004). Each case: the question (Greek default, English supported), the template the router must pick, and the hints it must extract (null = not required). `seed_fact` is the value fn:ask-crm must return on the demo seed for that question (demo day 2026-11-16, caller nikos). `keyword: true` marks phrasings the code fallback router must also get right. Off-template questions must route to unknown, so the buddy says it doesn't know.",
+  "caller": "nikos",
+  "demo_day": "2026-11-16",
+  "cases": [
+    { "id": "last-order-en", "lang": "en", "question": "When did Lofos last order?", "template": "last_order", "account_hint": "Lofos", "seed_fact": "2026-11-04", "keyword": true },
+    { "id": "last-order-el", "lang": "el", "question": "Πότε έκανε τελευταία παραγγελία το Bistro Lofos;", "template": "last_order", "account_hint": "Lofos", "seed_fact": "2026-11-04", "keyword": true },
+    { "id": "last-order-miltos-en", "lang": "en", "question": "What was Café Miltos's last order?", "template": "last_order", "account_hint": "Miltos", "seed_fact": "2026-11-10", "keyword": true },
+    { "id": "price-en", "lang": "en", "question": "How much is Espresso Nuovo?", "template": "price_of_product", "product_hint": "Espresso Nuovo", "seed_fact": "21.50", "keyword": true },
+    { "id": "price-el", "lang": "el", "question": "Πόσο κάνει το Espresso Nuovo;", "template": "price_of_product", "product_hint": "Espresso Nuovo", "seed_fact": "21.50", "keyword": true },
+    { "id": "price-sku-en", "lang": "en", "question": "What's the price of the Greek Coffee 500g?", "template": "price_of_product", "product_hint": "Greek Coffee", "seed_fact": "6.90", "keyword": true },
+    { "id": "open-items-en", "lang": "en", "question": "What's still pending with Bistro Lofos?", "template": "open_items", "account_hint": "Lofos", "keyword": true },
+    { "id": "open-items-el", "lang": "el", "question": "Τι εκκρεμεί με το Lofos;", "template": "open_items", "account_hint": "Lofos", "keyword": true },
+    { "id": "deal-en", "lang": "en", "question": "Where are we on the Lofos deal?", "template": "deal_status", "account_hint": "Lofos", "keyword": true },
+    { "id": "visits-en", "lang": "en", "question": "When did I visit Lofos?", "template": "visit_history", "account_hint": "Lofos", "keyword": true },
+    { "id": "visits-el", "lang": "el", "question": "Πότε ήταν η τελευταία επίσκεψη στο Lofos;", "template": "visit_history", "account_hint": "Lofos", "keyword": true },
+    { "id": "competitor-en", "lang": "en", "question": "Any competitor mentions in my area lately?", "template": "competitor_mentions", "keyword": true },
+    { "id": "competitor-el", "lang": "el", "question": "Τι λένε για τους ανταγωνιστές;", "template": "competitor_mentions", "keyword": true },
+    { "id": "top-products-en", "lang": "en", "question": "What are the top products Miltos buys?", "template": "top_products", "account_hint": "Miltos", "keyword": true },
+    { "id": "overview-en", "lang": "en", "question": "Give me an overview of Café Miltos.", "template": "account_overview", "account_hint": "Miltos" },
+    { "id": "overview-el", "lang": "el", "question": "Πες μου για το Café Miltos.", "template": "account_overview", "account_hint": "Miltos" },
+    { "id": "history-product-en", "lang": "en", "question": "How much Espresso Nuovo did Lofos order since September?", "template": "order_history_product", "account_hint": "Lofos", "product_hint": "Espresso Nuovo" },
+    { "id": "off-weather-en", "lang": "en", "question": "What's the weather in Athens tomorrow?", "template": "unknown", "keyword": true },
+    { "id": "off-ceo-el", "lang": "el", "question": "Πόσα βγάζει ο CEO της Aroma;", "template": "unknown" },
+    { "id": "off-predict-en", "lang": "en", "question": "Will Lofos sign the deal next week?", "template": "unknown" },
+    { "id": "off-gossip-el", "lang": "el", "question": "Είναι παντρεμένος ο ιδιοκτήτης του Lofos;", "template": "unknown", "keyword": true }
+  ]
+}

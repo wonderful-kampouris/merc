@@ -1,0 +1,104 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "campaign_exposure",
+    "description": "Funnel events: shown, pitched, ordered",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "campaign_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.campaign",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "rep_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "stage",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "voice_log_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.voice_log",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "order_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.sales_order",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "evidence_quote",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "occurred_at",
+        "type": "datetime",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "campaign_exposure_campaign_id_stage_idx",
+        "columns": [
+          "campaign_id",
+          "stage"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "campaign_exposure_account_id_idx",
+        "columns": [
+          "account_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "engagement",
+    "derived": false,
+    "enums": {
+      "stage": [
+        "shown",
+        "pitched",
+        "ordered"
+      ]
+    },
+    "notes": {}
+  }
+}

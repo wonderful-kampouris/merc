@@ -1,0 +1,72 @@
+{
+  "slug": "postvisit-prompts-due",
+  "method": "CRON",
+  "kind": "cron",
+  "gate": null,
+  "callers": [
+    "scheduler"
+  ],
+  "timeout_ms": 300000,
+  "priority": "P0",
+  "wave": 4,
+  "request": {
+    "type": "object",
+    "properties": {
+      "dry_run": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "processed": {
+        "type": "integer"
+      },
+      "created": {
+        "type": "integer"
+      },
+      "details": {
+        "anyOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "processed",
+      "created"
+    ]
+  },
+  "reads": [
+    "visit",
+    "voice_log",
+    "buddy_call",
+    "app_user",
+    "organization"
+  ],
+  "writes": [
+    "buddy_call"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [
+    "outbound_call:merc-buddy",
+    "integration:whatsapp.send_template"
+  ],
+  "notes": "Visits whose planned_start_at + planned_duration_min + postvisit_prompt_minutes has passed, still planned, with no voice_log for the visit and no post_visit buddy_call -> one buddy-call-start purpose post_visit. Never records the customer conversation.",
+  "schedule": "*/5 * * * *"
+}

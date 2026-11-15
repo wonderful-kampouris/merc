@@ -1,0 +1,51 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "account_category",
+    "description": "Shop categories (bakery, cafe...)",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "default_visit_frequency_days",
+        "type": "number",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "account_category_org_id_name_uq",
+        "columns": [
+          "org_id",
+          "name"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "org",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

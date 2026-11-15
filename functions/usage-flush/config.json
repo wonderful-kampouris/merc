@@ -1,0 +1,8 @@
+{
+  "kind": "cron",
+  "name": "usage-flush",
+  "description": "Merc fn:usage-flush: recount usage per user per local day into usage_event (contracts/functions/usage-flush.json, REQ-SET-005). Source: Merc monorepo shared/handlers/src/usage-flush.ts.",
+  "cron_schedules": [
+    { "cron_expression": "*/30 * * * *", "timezone": "Europe/Athens", "params": {}, "enabled": true }
+  ]
+}

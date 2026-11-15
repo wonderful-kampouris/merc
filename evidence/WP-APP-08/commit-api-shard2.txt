@@ -1,0 +1,12 @@
+account-get: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/4a60133a-ceeb-4b38-86e5-4479f172d44e/commit": con
+account-get: committed {"allowed_ips":[],"created_at":1794728739825,"created_by":"d2835589-5502-4f71-a803-5cba4bb9bed6","description":"Merc fn:account-get (contracts/functions/account
+accounts-list: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/89be761a-6ea5-4ffd-a4b0-962f974bf31a/commit": con
+accounts-list: landed despite error (error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5)
+approval-decide: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/e604625d-f0b6-4816-9d0b-da4b6eaf1b68/commit": con
+approval-decide: try 2 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/e604625d-f0b6-4816-9d0b-da4b6eaf1b68/commit": con
+approval-decide: try 3 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/e604625d-f0b6-4816-9d0b-da4b6eaf1b68/commit": con
+approval-decide: try 4 failed: error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed
+approvals-list: try 1 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/fa56b34b-d787-4950-9884-8a61b48bf4b1/commit": con
+approvals-list: try 2 failed: error: call post: Post "https://default.api.greece-hackathon.sb.wonderful.ai/api/workspace/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/v1/wonderful-functions/fa56b34b-d787-4950-9884-8a61b48bf4b1/commit": con
+approvals-list: landed despite error (error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed)
+campaign-draft-from-text: try 1 failed: error: call post: request failed (412): commit to main: functions publish conflicted: precondition failed

@@ -1,0 +1,35 @@
+{
+  "type": "voice_log.status",
+  "envelope": {
+    "type": "voice_log.status",
+    "at": "date-time",
+    "payload": "see schema"
+  },
+  "payload": {
+    "type": "object",
+    "properties": {
+      "voice_log_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string"
+      },
+      "error": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "voice_log_id",
+      "status"
+    ]
+  }
+}

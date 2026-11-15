@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "dashboard-kpis",
+  "description": "Merc fn:dashboard-kpis: KPI set by period, territory and rep with before/after baseline (REQ-DSH-001/004) (contracts/functions/dashboard-kpis.json). Source: shared/handlers/src/dashboard-kpis.ts",
+  "method": "GET",
+  "path_slug": "dashboard-kpis",
+  "param_mapping": {}
+}

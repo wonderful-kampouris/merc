@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "deal-upsert",
+  "description": "Merc fn:deal-upsert: create or update a deal; stage changes write deal_stage_history (contracts/functions/deal-upsert.json). Source: Merc monorepo shared/handlers/src/deal-upsert.ts.",
+  "method": "POST",
+  "path_slug": "deal-upsert",
+  "param_mapping": {}
+}

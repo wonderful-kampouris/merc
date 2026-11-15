@@ -1,0 +1,4 @@
+attached territories-list (c9acd59a-54f4-434e-80e5-2fc389f43888) gate=territories.read
+
+app-callable in contracts: 69; newly attached: 1; not deployed on dev: 29
+not deployed: ai-action-undo, ai-actions-list, alert-act, approval-decide, approval-resolve, approvals-list, assignments-transfer, campaign-funnel, candidate-act, candidates-list, competitor-signals-list, contact-erase, contact-export, discount-request, import-confirm, import-get, import-start, kpi-drilldown, manager-approvals-list, my-performance, problem-update, rep-detail, settings-get, settings-update, task-assign, tasks-list, territory-upsert, user-upsert, visit-assign

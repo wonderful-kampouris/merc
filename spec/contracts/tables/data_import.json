@@ -1,0 +1,111 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "data_import",
+    "description": "File upload job",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "uploaded_by",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "data_type",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "file_ref",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "rows_total",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "rows_imported",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "rows_with_issues",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "is_baseline",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "confirmed_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "procedure_run_id",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "data_import_org_id_status_idx",
+        "columns": [
+          "org_id",
+          "status"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "import",
+    "derived": false,
+    "enums": {
+      "data_type": [
+        "accounts",
+        "contacts",
+        "orders",
+        "products",
+        "visits"
+      ],
+      "status": [
+        "uploaded",
+        "mapping",
+        "preview",
+        "confirmed",
+        "importing",
+        "imported",
+        "failed"
+      ]
+    },
+    "notes": {}
+  }
+}

@@ -1,0 +1,14 @@
+plan:
+  env:        dev
+  profile:    hackathon
+  workspace:  7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464
+  component:  app merc
+  source:     /Users/stefanos.k/Documents/genai/app
+  target:     https://vcs.greece-hackathon.sb.wonderful.ai/git/workspaces/7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464/apps/5f2c1084-5d8f-4ba0-b5e3-c7cb6ae1bc31.git
+  clone:      /Users/stefanos.k/Documents/genai/infra/deploy/.cache/dev/app-merc
+  branch:     main
+  mode:       push
+changes:
+   app/vite.config.ts | 19 ++++++++++++++-----
+   1 file changed, 14 insertions(+), 5 deletions(-)
+pushed 1161113 to dev main

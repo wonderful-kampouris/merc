@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "debrief-result-get",
+  "description": "Merc fn:debrief-result-get: the ResultCard of one voice log (contracts/functions/debrief-result-get.json). Source: Merc monorepo shared/handlers/src/debrief-result-get.ts.",
+  "method": "GET",
+  "path_slug": "debrief-result-get",
+  "param_mapping": {}
+}

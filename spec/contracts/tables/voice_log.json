@@ -1,0 +1,143 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "voice_log",
+    "description": "Recording / utterance + transcript + processing state",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "rep_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "visit_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.visit",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "capture_mode",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "wonderful_conversation_id",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "language",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "audio_ref",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "transcript",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "idempotency_key",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "recorded_at",
+        "type": "datetime",
+        "required": true
+      },
+      {
+        "name": "processed_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "processing_ms",
+        "type": "number",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "voice_log_rep_id_status_idx",
+        "columns": [
+          "rep_id",
+          "status"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "voice_log_idempotency_key_uq",
+        "columns": [
+          "idempotency_key"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "voice_log_account_id_idx",
+        "columns": [
+          "account_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "voice",
+    "derived": false,
+    "enums": {
+      "capture_mode": [
+        "live_buddy",
+        "offline_recording",
+        "typed"
+      ],
+      "status": [
+        "offline",
+        "uploaded",
+        "transcribing",
+        "processing",
+        "needs_confirmation",
+        "completed",
+        "failed"
+      ]
+    },
+    "notes": {}
+  }
+}

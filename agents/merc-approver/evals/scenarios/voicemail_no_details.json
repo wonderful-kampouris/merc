@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "name": "voicemail_no_details",
+  "description": "The call reaches a voicemail greeting; no commercial details may be said.",
+  "channel": "chat",
+  "eval_type": "chat_eval",
+  "instructions": {
+    "mode": "turn_based",
+    "turns": [
+      {
+        "user_message": "Καλέσατε τον τηλεφωνητή της Ελένης Γεωργίου. Αφήστε το μήνυμά σας μετά τον ήχο.",
+        "tool_mocks": [
+          {
+            "tool_name": "report_call_outcome",
+            "expected_input": {
+              "outcome": "voicemail"
+            },
+            "mock_output": {
+              "approval_id": "3f1d2a9e-1111-4c2b-9a51-7d1b2c3d4e5f",
+              "fallback": "async",
+              "say": "Γεια σας, εδώ Merc. Σας περιμένει ένα αίτημα έγκρισης από Νίκος Παπαδόπουλος στην εφαρμογή Merc. Ευχαριστώ."
+            },
+            "side_effects": {},
+            "enabled": true
+          }
+        ],
+        "agent_response": "Leaves only a short message that Merc has an approval waiting in the Merc app (it may name the rep). Says no percentage, no customer name, no product and no amount."
+      }
+    ],
+    "conversation_prompt": "The agent's words never contain a percentage, the customer's name, a product or an amount. It reports the voicemail outcome."
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "escalate_to_manager",
+  "agent": "merc-buddy",
+  "function": "escalate",
+  "description": "Escalate a customer issue to the manager.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "reason": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id",
+      "reason"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P1",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/escalate.json#/response"
+}

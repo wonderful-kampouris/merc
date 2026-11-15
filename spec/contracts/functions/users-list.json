@@ -1,0 +1,41 @@
+{
+  "slug": "users-list",
+  "method": "GET",
+  "kind": "http",
+  "gate": "users.manage",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "items"
+    ]
+  },
+  "reads": [
+    "app_user",
+    "role"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

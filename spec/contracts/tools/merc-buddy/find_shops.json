@@ -1,0 +1,37 @@
+{
+  "name": "find_shops",
+  "agent": "merc-buddy",
+  "function": "prospect-search",
+  "description": "Find new shops in an area and category.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "area_text": {
+        "type": "string"
+      },
+      "category_text": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "area_text"
+    ]
+  },
+  "inject": [
+    "caller",
+    "origin=manual",
+    "device_location?"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "Say results arrive in a few minutes.",
+  "returns": "../../functions/prospect-search.json#/response"
+}

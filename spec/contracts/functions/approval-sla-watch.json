@@ -1,0 +1,69 @@
+{
+  "slug": "approval-sla-watch",
+  "method": "CRON",
+  "kind": "cron",
+  "gate": null,
+  "callers": [
+    "scheduler"
+  ],
+  "timeout_ms": 300000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "dry_run": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "processed": {
+        "type": "integer"
+      },
+      "created": {
+        "type": "integer"
+      },
+      "details": {
+        "anyOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "processed",
+      "created"
+    ]
+  },
+  "reads": [
+    "approval",
+    "app_user"
+  ],
+  "writes": [
+    "approval",
+    "alert"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [
+    "sms"
+  ],
+  "notes": "Async discount approvals past due_at -> escalated to approver's manager or admin; SMS both sides.",
+  "schedule": "*/5 * * * *"
+}

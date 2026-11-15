@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "product-lookup",
+  "description": "Merc fn:product-lookup: catalog price, unit, availability and active campaigns (contracts/functions/product-lookup.json, REQ-CRD-005). Source: Merc monorepo shared/handlers/src/product-lookup.ts.",
+  "method": "GET",
+  "path_slug": "product-lookup",
+  "param_mapping": {}
+}

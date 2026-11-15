@@ -1,0 +1,103 @@
+{
+  "slug": "product-lookup",
+  "method": "GET",
+  "kind": "http",
+  "gate": "products.read",
+  "callers": [
+    "buddy",
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "query"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "product_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "sku": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "list_price_minor": {
+              "type": "integer"
+            },
+            "category": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "active_campaigns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "stock": {
+              "type": "string",
+              "enum": [
+                "unknown",
+                "in_stock",
+                "out_of_stock"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "product_id",
+            "sku",
+            "name",
+            "unit",
+            "list_price_minor",
+            "active_campaigns",
+            "stock"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "items"
+    ]
+  },
+  "reads": [
+    "product",
+    "product_category",
+    "campaign_product",
+    "campaign"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

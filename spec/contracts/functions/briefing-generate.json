@@ -1,0 +1,75 @@
+{
+  "slug": "briefing-generate",
+  "method": "CRON",
+  "kind": "cron",
+  "gate": null,
+  "callers": [
+    "scheduler"
+  ],
+  "timeout_ms": 300000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "dry_run": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "processed": {
+        "type": "integer"
+      },
+      "created": {
+        "type": "integer"
+      },
+      "details": {
+        "anyOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "processed",
+      "created"
+    ]
+  },
+  "reads": [
+    "organization",
+    "visit",
+    "task",
+    "account_metrics",
+    "candidate",
+    "campaign",
+    "approval",
+    "sales_target"
+  ],
+  "writes": [
+    "briefing",
+    "briefing_item"
+  ],
+  "errors": [],
+  "llm": [
+    "briefing_script"
+  ],
+  "integrations": [],
+  "notes": "For reps whose local time >= briefing_time and no briefing today. Push briefing.ready.",
+  "schedule": "*/15 * * * *"
+}

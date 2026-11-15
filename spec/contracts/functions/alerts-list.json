@@ -1,0 +1,98 @@
+{
+  "slug": "alerts-list",
+  "method": "GET",
+  "kind": "http",
+  "gate": "alerts.read",
+  "callers": [
+    "app",
+    "buddy",
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "status": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "open",
+              "done",
+              "dismissed"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "scope": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "mine",
+              "team"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "page": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "limit": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "$ref": "../_defs.json#/$defs/AlertCard"
+        }
+      },
+      "page": {
+        "$ref": "../_defs.json#/$defs/Page"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "items",
+      "page"
+    ]
+  },
+  "reads": [
+    "alert",
+    "alert_type"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "owner_or_team"
+}

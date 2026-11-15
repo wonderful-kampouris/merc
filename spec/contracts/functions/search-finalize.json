@@ -1,0 +1,55 @@
+{
+  "slug": "search-finalize",
+  "method": "POST",
+  "kind": "http",
+  "gate": null,
+  "callers": [
+    "procedure"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "search_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "search_id"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "found": {
+        "type": "integer"
+      },
+      "duplicates": {
+        "type": "integer"
+      },
+      "scored": {
+        "type": "integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "found",
+      "duplicates",
+      "scored"
+    ]
+  },
+  "reads": [
+    "candidate"
+  ],
+  "writes": [
+    "prospect_search"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Pushes candidates.ready to the requester."
+}

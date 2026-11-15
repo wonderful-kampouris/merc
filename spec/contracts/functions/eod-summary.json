@@ -1,0 +1,107 @@
+{
+  "slug": "eod-summary",
+  "method": "GET",
+  "kind": "http",
+  "gate": "plan.read",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "date": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "date": {
+        "type": "string",
+        "format": "date"
+      },
+      "visits_done": {
+        "type": "integer"
+      },
+      "offers_sent": {
+        "type": "integer"
+      },
+      "new_customers": {
+        "type": "integer"
+      },
+      "pending": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "tomorrow_start_with": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "learned": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "target_progress": {
+        "type": "array",
+        "items": {
+          "$ref": "../_defs.json#/$defs/TargetProgress"
+        }
+      },
+      "spoken_summary": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "date",
+      "visits_done",
+      "offers_sent",
+      "new_customers",
+      "pending",
+      "target_progress",
+      "spoken_summary"
+    ]
+  },
+  "reads": [
+    "visit",
+    "activity",
+    "approval",
+    "task",
+    "sales_target"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [
+    "eod_summary"
+  ],
+  "integrations": [],
+  "notes": ""
+}

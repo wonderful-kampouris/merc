@@ -1,0 +1,108 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "sales_target",
+    "description": "Targets; exactly one scope: org (both null), territory or user",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "territory_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.territory",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "user_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "metric",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "period_start",
+        "type": "date",
+        "required": true
+      },
+      {
+        "name": "period_end",
+        "type": "date",
+        "required": true
+      },
+      {
+        "name": "target_value",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "set_by",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      }
+    ],
+    "indexes": [
+      {
+        "name": "sales_target_user_id_idx",
+        "columns": [
+          "user_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "sales_target_territory_id_idx",
+        "columns": [
+          "territory_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "sales_target_period_start_period_end_idx",
+        "columns": [
+          "period_start",
+          "period_end"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "planning",
+    "derived": false,
+    "enums": {
+      "metric": [
+        "revenue",
+        "volume",
+        "visits",
+        "new_customers"
+      ]
+    },
+    "notes": {}
+  }
+}

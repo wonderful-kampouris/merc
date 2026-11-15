@@ -1,0 +1,6 @@
+{
+  "kind": "cron",
+  "name": "approvals-expire",
+  "description": "Merc fn:approvals-expire: hourly, pending customer_message approvals older than approval_expiry_hours become expired (REQ-APR-003, contracts/functions/approvals-expire.json). Source: Merc monorepo shared/handlers/src/approvals-expire.ts.",
+  "cron_schedules": [{ "cron_expression": "0 * * * *", "params": {}, "enabled": true }]
+}

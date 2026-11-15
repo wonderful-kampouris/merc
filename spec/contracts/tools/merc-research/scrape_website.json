@@ -1,0 +1,23 @@
+{
+  "name": "scrape_website",
+  "agent": "merc-research",
+  "function": "integration:firecrawl.scrape",
+  "description": "Read a public business website (menu, catalog, brands, prices).",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "url"
+    ]
+  },
+  "inject": [],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": null
+}

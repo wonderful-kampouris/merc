@@ -1,0 +1,50 @@
+business_name,vat_number,website,phone,postal_code,external_source,external_ref
+Artos Chalandriou,800039595,,,15231,csv,
+Zymi Bakery,,https://zymi.example.gr,,15232,csv,
+Pita & Psomi,,,+302106000959,15233,csv,
+FOURNOS STAVROU,,,,15234,csv,
+Glykia Gonia Bakery,800071271,,,15231,csv,
+Fournos Agia Paraskevi,900000000,https://fournosagiaparaskevi.example.gr,+302106800000,15231,csv,
+Psomi tis Geitonias,900000101,https://psomitisgeitonias.example.gr,+302106800031,15232,csv,
+Bakery Elia,900000202,https://bakeryelia.example.gr,+302106800062,15233,csv,
+Oven 15233,900000303,https://oven15233.example.gr,+302106800093,15234,csv,
+Mylos Bread Co,900000404,,+302106800124,15231,csv,
+Prozymi Artisan,900000505,https://prozymiartisan.example.gr,+302106800155,15232,csv,
+Koulouri Corner,900000606,https://koulouricorner.example.gr,+302106800186,15233,csv,
+Fournos Melissia,900000707,https://fournosmelissia.example.gr,+302106800217,15234,csv,
+Sitari Bakehouse,900000808,https://sitaribakehouse.example.gr,+302106800248,15231,csv,
+Chalandri Sourdough,900000909,,+302106800279,15232,csv,
+Bougatsa Thessaloniki Chalandri,900001010,https://bougatsathessalonikichalandri.example.gr,+302106800310,15233,csv,
+Glykes Stigmes Patisserie,900001111,https://glykesstigmespatisserie.example.gr,+302106800341,15234,csv,
+Ble Fournos,900001212,https://blefournos.example.gr,+302106800372,15231,csv,
+The Bakers,,,,,directory,node/4038846918
+Βενέτη,,,,,directory,node/4264054890
+Κουλουράδες,,,,,directory,node/4334474789
+Γκεκας,,,,,directory,node/4433708690
+Σοφία,,,,,directory,node/4728880523
+Βενέτη,,,,,directory,node/4746030751
+Nirvana corner,,,,,directory,node/5466899302
+Απολλώνιον,,,,,directory,node/5488607136
+Τάσσης,,,,,directory,node/5522095121
+Martini,,,,,directory,node/5604548835
+Βενέτη,,,,,directory,node/5604590372
+Ο πειρασμός,,,,,directory,node/6544236768
+Γκέκας,,,,,directory,node/6767293248
+Paul,,,,,directory,node/6767495649
+D.Stergiou,,,,,directory,node/6823020361
+Bread Factory,,https://www.breadfactory.gr,+30 210 6748 538,15231,directory,node/6823054073
+Φούρνος Δ.Κώτσης,,http://www.artopoiitis.gr/,+30 21 0680 0881,15234,directory,node/7686536060
+Κλεοπάτρα,,,+30 2106893052,,directory,node/11156588456
+ΦούρνοςΧαλανδρίου,,,,,directory,node/11753871299
+Bread B.C.,,,,,directory,node/12208369833
+Bakery Κατσούλας,,,,15233,directory,node/12595583401
+Max Perry,,,,,directory,node/12659956253
+All about Lemon,,,,,directory,node/12659958716
+D. STERGIOU,,,,,directory,node/12717276175
+Απολλώνιον,,,,,directory,node/13042694507
+Γκικοντη,,,,,directory,node/13084169494
+Ο Αρτοποιητής,,,,,directory,node/13153041229
+M,,,,,directory,node/13996833283
+Βερίκιος,,,,,directory,node/14182926121
+Bakery City,,,,15231,directory,way/462655937
+Απολλώνιον,,https://apollonion-bakery.gr/,,15232,directory,way/1367192681

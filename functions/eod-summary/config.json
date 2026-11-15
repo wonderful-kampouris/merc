@@ -1,0 +1,9 @@
+{
+  "kind": "http",
+  "name": "eod-summary",
+  "description": "Merc fn:eod-summary: end-of-day facts and a <= 45 s spoken summary (contracts/functions/eod-summary.json). Source: Merc monorepo shared/handlers/src/eod-summary.ts.",
+  "method": "GET",
+  "path_slug": "eod-summary",
+  "param_mapping": {},
+  "timeout_ms": 30000
+}

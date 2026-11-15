@@ -1,0 +1,85 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "dossier_fact",
+    "description": "One researched fact with its source",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "dossier_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.dossier",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "fact_type",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "competitor_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.competitor",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "source_url",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "retrieved_at",
+        "type": "datetime",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "dossier_fact_dossier_id_idx",
+        "columns": [
+          "dossier_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "dossier_fact_fact_type_idx",
+        "columns": [
+          "fact_type"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "prospecting",
+    "derived": false,
+    "enums": {
+      "fact_type": [
+        "product",
+        "brand",
+        "price",
+        "review_theme",
+        "catalog_item",
+        "opening_hours",
+        "size_signal"
+      ]
+    },
+    "notes": {}
+  }
+}

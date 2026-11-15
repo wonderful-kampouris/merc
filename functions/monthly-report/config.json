@@ -1,0 +1,9 @@
+{
+  "kind": "cron",
+  "name": "monthly-report",
+  "description": "Merc fn:monthly-report: 1st of the month 07:00 creates one merc-ops monthly_report task per admin (REQ-DSH-005). Source: shared/handlers/src/monthly-report.ts",
+  "timeout_ms": 300000,
+  "cron_schedules": [
+    { "cron_expression": "0 7 1 * *", "timezone": "Europe/Athens", "params": {}, "enabled": true }
+  ]
+}

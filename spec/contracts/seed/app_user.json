@@ -1,0 +1,80 @@
+[
+  {
+    "id": "bcc2830f-a618-5ab1-bb5c-46707c21a9e6",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "wonderful_user_id": "@wuid:thanasis",
+    "role_code": "admin",
+    "manager_id": null,
+    "full_name": "Thanasis Kyriakou",
+    "email": "thanasis@merc-demo.example",
+    "phone": "+306900000001",
+    "preferred_language": "el",
+    "voice_enabled": true,
+    "status": "active"
+  },
+  {
+    "id": "fa4c7746-c253-5104-a735-7060bfddb756",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "wonderful_user_id": "@wuid:eleni",
+    "role_code": "manager",
+    "manager_id": "bcc2830f-a618-5ab1-bb5c-46707c21a9e6",
+    "full_name": "Eleni Markou",
+    "email": "eleni@merc-demo.example",
+    "phone": "+306900000002",
+    "preferred_language": "el",
+    "voice_enabled": true,
+    "status": "active"
+  },
+  {
+    "id": "d72bccf8-f36c-5abf-8d0d-142783f090cd",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "wonderful_user_id": "@wuid:nikos",
+    "role_code": "rep",
+    "manager_id": "fa4c7746-c253-5104-a735-7060bfddb756",
+    "full_name": "Nikos Alexiou",
+    "email": "nikos@merc-demo.example",
+    "phone": "+306900000003",
+    "preferred_language": "el",
+    "voice_enabled": true,
+    "status": "active"
+  },
+  {
+    "id": "a3ecd990-28ac-57dd-9d89-c5e5afb1f68c",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "wonderful_user_id": "@wuid:dimitra",
+    "role_code": "rep",
+    "manager_id": "fa4c7746-c253-5104-a735-7060bfddb756",
+    "full_name": "Dimitra Pappa",
+    "email": "dimitra@merc-demo.example",
+    "phone": "+306900000004",
+    "preferred_language": "el",
+    "voice_enabled": true,
+    "status": "active"
+  },
+  {
+    "id": "27f8d8e3-7f84-5b9f-90e1-7d3fab3d9b22",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "wonderful_user_id": "@wuid:maria",
+    "role_code": "rep",
+    "manager_id": "fa4c7746-c253-5104-a735-7060bfddb756",
+    "full_name": "Maria Ioannou",
+    "email": "maria@merc-demo.example",
+    "phone": "+306900000005",
+    "preferred_language": "el",
+    "voice_enabled": true,
+    "status": "active"
+  },
+  {
+    "id": "51f64164-9fae-56a4-a1d2-46b24def92e8",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "wonderful_user_id": "@wuid:giorgos",
+    "role_code": "rep",
+    "manager_id": "fa4c7746-c253-5104-a735-7060bfddb756",
+    "full_name": "Giorgos Lazarou",
+    "email": "giorgos@merc-demo.example",
+    "phone": "+306900000006",
+    "preferred_language": "el",
+    "voice_enabled": true,
+    "status": "active"
+  }
+]

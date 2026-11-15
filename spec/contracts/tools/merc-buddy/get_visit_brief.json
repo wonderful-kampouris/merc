@@ -1,0 +1,41 @@
+{
+  "name": "get_visit_brief",
+  "agent": "merc-buddy",
+  "function": "visit-brief-get",
+  "description": "The pre-meeting brief for a visit: bullets, one product to push and one to avoid, each with a reason.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "visit_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "On a call read spoken_script as is. On WhatsApp send the bullets as is. Never add numbers or products.",
+  "returns": "../../functions/visit-brief-get.json#/response"
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "visit-plan-get",
+  "description": "Merc fn:visit-plan-get (contracts/functions/visit-plan-get.json). Source: Merc monorepo shared/handlers/src/visit-plan-get.ts.",
+  "method": "GET",
+  "path_slug": "visit-plan-get",
+  "param_mapping": {}
+}

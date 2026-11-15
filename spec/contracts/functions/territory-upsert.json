@@ -1,0 +1,106 @@
+{
+  "slug": "territory-upsert",
+  "method": "POST",
+  "kind": "http",
+  "gate": "territories.manage",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "territory_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "name": {
+        "type": "string"
+      },
+      "manager_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "default_rep_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "postal_codes": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "rep_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "boundary_geojson": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "name",
+      "postal_codes",
+      "rep_ids"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "territory_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "territory_id"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "territory",
+    "territory_rep",
+    "territory_postal_code",
+    "audit_event"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

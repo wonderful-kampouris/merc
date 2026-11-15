@@ -1,0 +1,121 @@
+{
+  "slug": "ai-actions-list",
+  "method": "GET",
+  "kind": "http",
+  "gate": "aiaction.read",
+  "callers": [
+    "app",
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "voice_log_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "status": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "from": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "to": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "page": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "limit": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "$ref": "../_defs.json#/$defs/ActionLine"
+        }
+      },
+      "page": {
+        "$ref": "../_defs.json#/$defs/Page"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "items",
+      "page"
+    ]
+  },
+  "reads": [
+    "ai_action"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "owner_or_team"
+}

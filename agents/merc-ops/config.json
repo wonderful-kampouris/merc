@@ -1,0 +1,133 @@
+{
+  "profile": {
+    "version": "1.0",
+    "name": "merc-ops",
+    "display_name": "Merc Ops",
+    "description": "Merc ops backoffice agent: weekly summary (managers, admins) and monthly report (admins), numbers only from fn:summary-data (REQ-DSH-005).",
+    "mode": "backoffice",
+    "locale": "en-US",
+    "timezone": "Europe/Athens",
+    "gender": "female"
+  },
+  "behavior": {
+    "routing": {
+      "mode": "automated"
+    },
+    "channels": {
+      "task": {
+        "async_timeout_minutes": 15
+      }
+    },
+    "attachments": {
+      "enabled": true,
+      "upload_to_s3": true,
+      "max_per_conversation": 0,
+      "max_file_size_mb": 0,
+      "max_extracted_text_chars": 0,
+      "ocr_provider": "gemini",
+      "ocr_options": {
+        "model": "gemini-3.5-flash-lite",
+        "temperature": 0.1
+      }
+    },
+    "guardrails": {
+      "pii": {
+        "policies": [],
+        "beep_padding_start_ms": 0,
+        "beep_padding_end_ms": 0,
+        "batch_verifier_max_retries": 0,
+        "pii_masking_thinking_budget": 0
+      },
+      "governance_enabled": false,
+      "automated_issues_enabled": true
+    },
+    "privacy": {
+      "call_recording": {
+        "disabled": false,
+        "require_consent": false,
+        "upload_transcript": false
+      },
+      "data_retention": {
+        "enabled": false
+      }
+    },
+    "sandbox": {
+      "cache_directory_enabled": false,
+      "web_search_enabled": false,
+      "ai_analyst_enabled": false,
+      "coding_agent_enabled": false,
+      "demo_fast_mode_enabled": false
+    },
+    "internal": {
+      "compact_context": true,
+      "use_dynamic_announcements": true,
+      "use_structured_dynamic_announcement_prompt": true,
+      "prompts": {
+        "dynamic_announcement": {}
+      }
+    },
+    "capabilities": {
+      "disable_json_diacritics": false,
+      "disable_hours_and_numbers_diacritics": false
+    },
+    "tool_overrides": {},
+    "global_tools": {
+      "get_summary_data": {
+        "type": "programmable",
+        "config": {}
+      },
+      "send_internal_email": {
+        "type": "programmable",
+        "config": {}
+      }
+    }
+  },
+  "ai": {
+    "llm": {
+      "voice": {
+        "providers": {
+          "openai": {
+            "model": "gpt-realtime-1.5",
+            "top_p": 0
+          },
+          "wonderful-fr": {
+            "model": "gemma-4-31b",
+            "top_p": 0
+          }
+        },
+        "priority": [
+          "wonderful-fr",
+          "openai"
+        ],
+        "failure_threshold": 3
+      },
+      "chat": {
+        "providers": {
+          "wonderful-fr": {
+            "model": "gemma-4-31b",
+            "top_p": 0
+          }
+        },
+        "priority": [
+          "wonderful-fr"
+        ],
+        "failure_threshold": 3,
+        "enabled": false
+      }
+    }
+  },
+  "prompts": {
+    "agent": "base.md",
+    "summary": "summary.md",
+    "tags": "tags.md",
+    "skip_turn": {},
+    "read_directive": "internal_prompts/read_directive.md",
+    "memory": {}
+  },
+  "a2a": {
+    "server": {
+      "internal_enabled": true,
+      "enabled": false
+    }
+  }
+}

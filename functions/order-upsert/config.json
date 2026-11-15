@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "order-upsert",
+  "description": "Merc fn:order-upsert: draft/confirm/cancel a sales order (REQ-DEB-010: drafts stay drafts until confirmed) (contracts/functions/order-upsert.json). Source: Merc monorepo shared/handlers/src/order-upsert.ts.",
+  "method": "POST",
+  "path_slug": "order-upsert",
+  "param_mapping": {}
+}

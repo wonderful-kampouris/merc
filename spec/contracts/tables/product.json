@@ -1,0 +1,97 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "product",
+    "description": "What the organization sells",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "category_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.product_category",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "sku",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "unit",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "list_price_minor",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "active",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "product_org_id_sku_uq",
+        "columns": [
+          "org_id",
+          "sku"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "product_name_gin",
+        "columns": [
+          "name"
+        ],
+        "type": "gin"
+      },
+      {
+        "name": "product_category_id_idx",
+        "columns": [
+          "category_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {
+      "unit": [
+        "kg",
+        "piece",
+        "box",
+        "litre",
+        "pack"
+      ]
+    },
+    "notes": {}
+  }
+}

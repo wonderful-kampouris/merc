@@ -1,0 +1,51 @@
+{
+  "slug": "campaign-draft-from-text",
+  "method": "POST",
+  "kind": "http",
+  "gate": "campaigns.manage",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "text"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "draft": {
+        "type": "object"
+      },
+      "unresolved": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "draft",
+      "unresolved"
+    ]
+  },
+  "reads": [],
+  "writes": [],
+  "errors": [],
+  "llm": [
+    "campaign_from_text"
+  ],
+  "integrations": [],
+  "notes": ""
+}

@@ -1,0 +1,37 @@
+{
+  "name": "report_buddy_call_outcome",
+  "agent": "merc-buddy",
+  "function": "buddy-call-outcome",
+  "description": "Trigger-only: record how an outbound buddy call ended.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "buddy_call_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "outcome": {
+        "type": "string",
+        "enum": [
+          "answered",
+          "no_answer",
+          "busy",
+          "voicemail",
+          "failed"
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "buddy_call_id",
+      "outcome"
+    ]
+  },
+  "inject": [
+    "conversation_id"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/buddy-call-outcome.json#/response"
+}

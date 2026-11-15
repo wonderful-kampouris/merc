@@ -1,0 +1,74 @@
+{
+  "slug": "approval-resolve",
+  "method": "POST",
+  "kind": "http",
+  "gate": "approvals.decide",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "approval_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "decision": {
+        "type": "string",
+        "enum": [
+          "approve",
+          "edit_approve",
+          "reject"
+        ]
+      },
+      "final_body": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "approval_id",
+      "decision"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "approval": {
+        "$ref": "../_defs.json#/$defs/ApprovalCard"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "approval"
+    ]
+  },
+  "reads": [
+    "approval",
+    "message_approval",
+    "channel"
+  ],
+  "writes": [
+    "approval",
+    "message_approval",
+    "ai_action"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [
+    "integration:gmail.google_workspace_gmail_message_send"
+  ],
+  "notes": "For kind customer_message / conversion. Approve sends synchronously via message-send in the caller's (rep's) identity (S3/OPEN-03). Failed sends keep status failed with failure_reason; the rep can retry by approving again.",
+  "scope": "approver"
+}

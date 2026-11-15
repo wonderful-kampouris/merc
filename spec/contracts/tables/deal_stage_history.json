@@ -1,0 +1,80 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "deal_stage_history",
+    "description": "Stage transitions",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "deal_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.deal",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "from_stage_code",
+        "type": "string",
+        "required": false,
+        "reference": {
+          "table": "merc.deal_stage",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "to_stage_code",
+        "type": "string",
+        "required": true,
+        "reference": {
+          "table": "merc.deal_stage",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "changed_by",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "ai_action_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.ai_action",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "changed_at",
+        "type": "datetime",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "deal_stage_history_deal_id_idx",
+        "columns": [
+          "deal_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

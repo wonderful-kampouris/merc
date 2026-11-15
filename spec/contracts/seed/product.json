@@ -1,0 +1,202 @@
+[
+  {
+    "id": "120d56dc-215d-557d-bbab-43d87e1047c4",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "4ca74fe7-cd19-5f10-baa1-2f2d94ce9aac",
+    "sku": "ESP-CL-1",
+    "name": "Espresso Classico 1kg",
+    "unit": "kg",
+    "list_price_minor": 1890,
+    "active": true
+  },
+  {
+    "id": "b28bc378-ec47-55d6-a414-b09ac0dacc3d",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "4ca74fe7-cd19-5f10-baa1-2f2d94ce9aac",
+    "sku": "ESP-NEW-1",
+    "name": "Espresso Nuovo Blend 1kg",
+    "unit": "kg",
+    "list_price_minor": 2150,
+    "active": true
+  },
+  {
+    "id": "e309442c-0c3b-5cef-9395-98919bae50b8",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "4ca74fe7-cd19-5f10-baa1-2f2d94ce9aac",
+    "sku": "ESP-DEC-1",
+    "name": "Espresso Decaf 1kg",
+    "unit": "kg",
+    "list_price_minor": 2240,
+    "active": true
+  },
+  {
+    "id": "58f7bbcb-55ea-5072-9209-b5d7e92a6fc3",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "4ca74fe7-cd19-5f10-baa1-2f2d94ce9aac",
+    "sku": "FIL-1",
+    "name": "Filter Coffee 1kg",
+    "unit": "kg",
+    "list_price_minor": 1490,
+    "active": true
+  },
+  {
+    "id": "c7315d48-b662-5b31-b8dd-d3a950eb6928",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "4ca74fe7-cd19-5f10-baa1-2f2d94ce9aac",
+    "sku": "GRK-500",
+    "name": "Greek Coffee 500g",
+    "unit": "pack",
+    "list_price_minor": 690,
+    "active": true
+  },
+  {
+    "id": "49df0bbb-3efc-5c7f-98e6-5e8e241addba",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "4ca74fe7-cd19-5f10-baa1-2f2d94ce9aac",
+    "sku": "FRP-1",
+    "name": "Frappé Instant 1kg",
+    "unit": "kg",
+    "list_price_minor": 1590,
+    "active": true
+  },
+  {
+    "id": "f95e0b6b-9dc7-58e5-8ca3-c1e4ba509909",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "7487ee01-aa04-58a6-b5ed-ba20cf2f499b",
+    "sku": "CHO-1",
+    "name": "Hot Chocolate 1kg",
+    "unit": "kg",
+    "list_price_minor": 1290,
+    "active": true
+  },
+  {
+    "id": "d03b50e1-6bc8-5a10-93f0-2c9949689bc3",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "7487ee01-aa04-58a6-b5ed-ba20cf2f499b",
+    "sku": "TEA-50",
+    "name": "Tea Selection 50pcs",
+    "unit": "box",
+    "list_price_minor": 790,
+    "active": true
+  },
+  {
+    "id": "fb2b8f20-27e3-57ac-89c9-01284cf6298d",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "7487ee01-aa04-58a6-b5ed-ba20cf2f499b",
+    "sku": "SYR-VAN",
+    "name": "Vanilla Syrup 1L",
+    "unit": "litre",
+    "list_price_minor": 890,
+    "active": true
+  },
+  {
+    "id": "f6f8b199-a891-5c9d-80c7-7b93dee6c300",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "7487ee01-aa04-58a6-b5ed-ba20cf2f499b",
+    "sku": "SYR-CAR",
+    "name": "Caramel Syrup 1L",
+    "unit": "litre",
+    "list_price_minor": 890,
+    "active": true
+  },
+  {
+    "id": "41aad187-06aa-591a-9638-3a8396116985",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "7487ee01-aa04-58a6-b5ed-ba20cf2f499b",
+    "sku": "MLK-PLT",
+    "name": "Plant Milk Barista 1L",
+    "unit": "litre",
+    "list_price_minor": 320,
+    "active": true
+  },
+  {
+    "id": "13945850-a84e-5577-ade0-14a8f5a320e4",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "228130a1-b9c3-54f9-ac9b-b9ff21723679",
+    "sku": "FLR-25",
+    "name": "Bread Flour 25kg",
+    "unit": "kg",
+    "list_price_minor": 2450,
+    "active": true
+  },
+  {
+    "id": "2917c8ec-2753-5b44-a070-c3ee21fae505",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "228130a1-b9c3-54f9-ac9b-b9ff21723679",
+    "sku": "YST-500",
+    "name": "Dry Yeast 500g",
+    "unit": "pack",
+    "list_price_minor": 410,
+    "active": true
+  },
+  {
+    "id": "d5594fed-6b54-5829-b11b-4ab94b437c17",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "228130a1-b9c3-54f9-ac9b-b9ff21723679",
+    "sku": "BTR-2",
+    "name": "Pastry Butter 2kg",
+    "unit": "kg",
+    "list_price_minor": 1680,
+    "active": true
+  },
+  {
+    "id": "0d0c8e24-5183-5069-9075-f4020e4f1be1",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "228130a1-b9c3-54f9-ac9b-b9ff21723679",
+    "sku": "SES-1",
+    "name": "Sesame 1kg",
+    "unit": "kg",
+    "list_price_minor": 540,
+    "active": true
+  },
+  {
+    "id": "0bae599f-9383-52f7-9b84-2e530d2166c7",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "5c1e8c3c-c52a-500c-898a-da21e654cf75",
+    "sku": "CUP-8",
+    "name": "Paper Cups 8oz x1000",
+    "unit": "box",
+    "list_price_minor": 3900,
+    "active": true
+  },
+  {
+    "id": "5cf159c7-1842-535c-b338-0c07accd82ed",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "5c1e8c3c-c52a-500c-898a-da21e654cf75",
+    "sku": "CUP-12",
+    "name": "Paper Cups 12oz x1000",
+    "unit": "box",
+    "list_price_minor": 4600,
+    "active": true
+  },
+  {
+    "id": "3f4ffbcb-1331-5a02-9d16-85c275ab8312",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "5c1e8c3c-c52a-500c-898a-da21e654cf75",
+    "sku": "LID-1000",
+    "name": "Lids x1000",
+    "unit": "box",
+    "list_price_minor": 1900,
+    "active": true
+  },
+  {
+    "id": "51b794e7-ce7e-5522-a68b-4f6b2d3a8eeb",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "5c1e8c3c-c52a-500c-898a-da21e654cf75",
+    "sku": "SUG-ST",
+    "name": "Sugar Sticks x1000",
+    "unit": "box",
+    "list_price_minor": 1250,
+    "active": true
+  },
+  {
+    "id": "e3409e43-5c09-5a97-aa3f-6046bcf27981",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "category_id": "5c1e8c3c-c52a-500c-898a-da21e654cf75",
+    "sku": "NAP-1",
+    "name": "Napkins x2000",
+    "unit": "box",
+    "list_price_minor": 1100,
+    "active": true
+  }
+]

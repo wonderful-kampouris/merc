@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "merc-llm-hello",
+  "description": "WP-CORE-02: hello-world structured LLM call via shared/llm (debrief_extraction on merc-extract)",
+  "method": "POST",
+  "path_slug": "merc-llm-hello",
+  "param_mapping": {}
+}

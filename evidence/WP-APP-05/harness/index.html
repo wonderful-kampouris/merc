@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="el">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Merc · WP-APP-05 screens (mock)</title>
+    <script>
+      // ?lang=en|el sets the app's stored language before it mounts (Greek stays the default).
+      const l = new URLSearchParams(location.search).get("lang");
+      if (l === "en" || l === "el") localStorage.setItem("merc.lang", l);
+    </script>
+    <script>
+      // Runner SDK shim bootstrap. Mock mode (?mock=1) answers every call from the contract mocks, so the
+      // proxy is never used; role comes from ?role= (mock-only override).
+      window.__WONDERFUL_RUNNER__ = {
+        proxyPrefix: "/__runner",
+        context: {
+          tenantId: "local", workspaceId: "local", userId: "wuid-eleni", userName: "Eleni Markou",
+          appRole: "manager", appRoles: ["manager"], theme: "light", apiBaseUrl: "http://127.0.0.1:5189",
+        },
+      };
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/@fs/Users/stefanos.k/Documents/genai/app/app/dev/main.tsx"></script>
+  </body>
+</html>

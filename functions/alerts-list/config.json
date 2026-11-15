@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "alerts-list",
+  "description": "Merc fn:alerts-list: the caller's (or team's) alerts as AlertCards (contracts/functions/alerts-list.json). Source: shared/handlers/src/alerts-list.ts",
+  "method": "GET",
+  "path_slug": "alerts-list",
+  "param_mapping": {}
+}

@@ -1,0 +1,117 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "organization",
+    "description": "The customer company (one per workspace)",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "default_language",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "timezone",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "currency",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "plan",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "briefing_time",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "approval_expiry_hours",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "approval_sla_minutes",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "manager_call_enabled",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "recording_retention_days",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "icp_min_score",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "visits_per_day",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "lost_after_multiplier",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "baseline_start",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "go_live_date",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "wonderful_workspace_id",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "previsit_lead_minutes",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "postvisit_prompt_minutes",
+        "type": "number",
+        "required": false
+      }
+    ],
+    "indexes": []
+  },
+  "x": {
+    "domain": "org",
+    "derived": false,
+    "enums": {},
+    "notes": {
+      "default_language": "el | en",
+      "briefing_time": "HH:MM local",
+      "previsit_lead_minutes": "Minutes before a visit's planned start when Merc sends the pre-meeting brief (REQ-MTG-001); default 30",
+      "postvisit_prompt_minutes": "Minutes after a visit's planned end before Merc asks how it went (REQ-MTG-005); default 10"
+    }
+  }
+}

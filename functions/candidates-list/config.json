@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "candidates-list",
+  "description": "Merc fn:candidates-list (contracts/functions/candidates-list.json; callers: app, buddy; gate: prospects.read). Source: Merc monorepo shared/handlers/src/candidates-list.ts.",
+  "method": "GET",
+  "path_slug": "candidates-list",
+  "param_mapping": {}
+}

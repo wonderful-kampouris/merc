@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "team-list",
+  "description": "Merc fn:team-list: the manager's roster: reports and reps of managed territories (admin: everyone) (contracts/functions/team-list.json). Source: shared/handlers/src/team-list.ts",
+  "method": "GET",
+  "path_slug": "team-list",
+  "param_mapping": {}
+}

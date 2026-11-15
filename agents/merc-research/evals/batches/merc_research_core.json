@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "name": "merc_research_core",
+  "description": "merc-research core behavior (REQ-PRS-003, REQ-PRS-005). Threshold: 4/4 pass.",
+  "scenario_slugs": [
+    "research_website_shop",
+    "research_no_website_registry_only",
+    "research_refuses_maps_and_reviews",
+    "research_missing_candidate_id"
+  ]
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "f4769c9a-edad-5ad8-8a96-342d5679c928",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "product_id": "b28bc378-ec47-55d6-a414-b09ac0dacc3d",
+    "category_id": "5a1d91e1-bd02-5226-ba0c-74b19254ab62",
+    "stance": "push",
+    "reason": "Product of the month; forgiving on worn grinders, so it fixes shots at busy cafés",
+    "priority": 30,
+    "valid_from": "@D-30",
+    "valid_to": null,
+    "active": true
+  },
+  {
+    "id": "cf9b7b0b-4511-5706-be5a-5c190ef20422",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "product_id": "41aad187-06aa-591a-9638-3a8396116985",
+    "category_id": "5a1d91e1-bd02-5226-ba0c-74b19254ab62",
+    "stance": "push",
+    "reason": "Plant milk demand is rising at cafés; pairs with the espresso order",
+    "priority": 20,
+    "valid_from": "@D-30",
+    "valid_to": null,
+    "active": true
+  },
+  {
+    "id": "611e72aa-6497-5cdd-b134-d6ed9910c5e1",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "product_id": "fb2b8f20-27e3-57ac-89c9-01284cf6298d",
+    "category_id": "5a1d91e1-bd02-5226-ba0c-74b19254ab62",
+    "stance": "push",
+    "reason": "Easy add-on for cafés already buying our espresso",
+    "priority": 10,
+    "valid_from": "@D-30",
+    "valid_to": null,
+    "active": true
+  },
+  {
+    "id": "f31128b4-74b6-5c2d-a21b-6a6e22408e26",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "product_id": "f95e0b6b-9dc7-58e5-8ca3-c1e4ba509909",
+    "category_id": "5a1d91e1-bd02-5226-ba0c-74b19254ab62",
+    "stance": "push",
+    "reason": "Winter seller at cafés from November; a new line with no new equipment",
+    "priority": 15,
+    "valid_from": "@D-30",
+    "valid_to": null,
+    "active": true
+  },
+  {
+    "id": "48155d2a-a85f-5a74-aa04-5a94d64ff50a",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "product_id": "e309442c-0c3b-5cef-9395-98919bae50b8",
+    "category_id": null,
+    "stance": "avoid",
+    "reason": "Out of stock until next week; do not promise a delivery date",
+    "priority": 15,
+    "valid_from": "@D-30",
+    "valid_to": "@D+6",
+    "active": true
+  },
+  {
+    "id": "c248ff6b-b8e3-5313-8d96-23077adef376",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "product_id": "49df0bbb-3efc-5c7f-98e6-5e8e241addba",
+    "category_id": "5a1d91e1-bd02-5226-ba0c-74b19254ab62",
+    "stance": "avoid",
+    "reason": "Specialty cafés see instant frappé as off-brand; it undercuts our premium espresso story",
+    "priority": 20,
+    "valid_from": "@D-30",
+    "valid_to": null,
+    "active": true
+  },
+  {
+    "id": "6769b37e-c877-5934-9f08-0acc828d3e62",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "product_id": "13945850-a84e-5577-ade0-14a8f5a320e4",
+    "category_id": "10169ea8-bbde-567f-93b2-d5686ea70ef4",
+    "stance": "push",
+    "reason": "Core bakery staple; win the flour and the rest of the order follows",
+    "priority": 30,
+    "valid_from": "@D-30",
+    "valid_to": null,
+    "active": true
+  },
+  {
+    "id": "ff614880-f17f-5721-9d60-235cf82b24d3",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "product_id": "5cf159c7-1842-535c-b338-0c07accd82ed",
+    "category_id": "10169ea8-bbde-567f-93b2-d5686ea70ef4",
+    "stance": "avoid",
+    "reason": "Low margin for bakeries; offer it only if they ask",
+    "priority": 10,
+    "valid_from": "@D-30",
+    "valid_to": null,
+    "active": true
+  }
+]

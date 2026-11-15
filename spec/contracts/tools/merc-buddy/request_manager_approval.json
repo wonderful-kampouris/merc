@@ -1,0 +1,81 @@
+{
+  "name": "request_manager_approval",
+  "agent": "merc-buddy",
+  "function": "discount-request",
+  "description": "Ask the manager to approve a discount above the limit. mode=live calls the manager now.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "discount_pct": {
+        "type": "number"
+      },
+      "lines": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "product_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "quantity": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "product_id",
+            "quantity"
+          ]
+        }
+      },
+      "justification": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "mode": {
+        "type": "string",
+        "enum": [
+          "live",
+          "async"
+        ]
+      },
+      "deal_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id",
+      "discount_pct",
+      "lines",
+      "mode"
+    ]
+  },
+  "inject": [
+    "caller",
+    "conversation_id"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "Say you are calling the manager and the rep can keep talking to the customer.",
+  "returns": "../../functions/discount-request.json#/response"
+}

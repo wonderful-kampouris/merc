@@ -1,0 +1,68 @@
+{
+  "slug": "import-get",
+  "method": "GET",
+  "kind": "http",
+  "gate": "import.manage",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "import_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "import_id"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "import": {
+        "type": "object"
+      },
+      "mapping": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "issues": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "preview_rows": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "import",
+      "mapping",
+      "issues",
+      "preview_rows"
+    ]
+  },
+  "reads": [
+    "data_import",
+    "import_column_mapping",
+    "import_row_issue"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

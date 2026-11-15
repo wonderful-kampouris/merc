@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "discount-request",
+  "description": "Merc fn:discount-request: tier 2/3 discount approval: one outbound call to the approver or async with SLA (REQ-DSC-002/006, REQ-APV-003) (contracts/functions/discount-request.json). Source: Merc monorepo shared/handlers/src/discount-request.ts.",
+  "method": "POST",
+  "path_slug": "discount-request",
+  "param_mapping": {}
+}

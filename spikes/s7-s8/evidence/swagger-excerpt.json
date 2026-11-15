@@ -1,0 +1,235 @@
+{
+ "/api/v1/agents/outbound": {
+  "post": {
+   "consumes": [
+    "application/json"
+   ],
+   "description": "Start an outbound call using the configured telephony provider\n\n**Required permissions**\n- `agents:edit` (workspace)\n- `agents:edit` (workspace)",
+   "parameters": [
+    {
+     "description": "Outbound call request",
+     "in": "body",
+     "name": "request",
+     "required": true,
+     "schema": {
+      "$ref": "#/definitions/shared_types.OutboundCallRequest"
+     }
+    }
+   ],
+   "produces": [
+    "application/json"
+   ],
+   "responses": {
+    "200": {
+     "description": "Call initiated successfully",
+     "schema": {
+      "additionalProperties": true,
+      "type": "object"
+     }
+    },
+    "400": {
+     "description": "Invalid request",
+     "schema": {
+      "$ref": "#/definitions/response.ErrorWrapper"
+     }
+    },
+    "502": {
+     "description": "Telephony provider could not initiate the call",
+     "schema": {
+      "$ref": "#/definitions/response.ErrorWrapper"
+     }
+    },
+    "503": {
+     "description": "Outbound telephony unavailable",
+     "schema": {
+      "$ref": "#/definitions/response.ErrorWrapper"
+     }
+    }
+   },
+   "security": [
+    {
+     "APIKeyAuth": []
+    }
+   ],
+   "summary": "Initiate outbound call",
+   "tags": [
+    "Agents"
+   ],
+   "x-required-permissions": [
+    {
+     "match": "all",
+     "permissions": [
+      {
+       "permission": "agents:edit",
+       "scope": "workspace"
+      }
+     ]
+    },
+    {
+     "match": "all",
+     "permissions": [
+      {
+       "permission": "agents:edit",
+       "scope": "workspace"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "/api/v1/communications/{id}/external-events": {
+  "post": {
+   "consumes": [
+    "application/json"
+   ],
+   "description": "Durably accepts an idempotent external context event for a live voice or chat communication.\n\n**Required permissions**\n- `communications:edit` (workspace)",
+   "parameters": [
+    {
+     "description": "Communication ID",
+     "in": "path",
+     "name": "id",
+     "required": true,
+     "type": "string"
+    },
+    {
+     "description": "External event",
+     "in": "body",
+     "name": "request",
+     "required": true,
+     "schema": {
+      "$ref": "#/definitions/components_communications_api.createExternalEventRequest"
+     }
+    }
+   ],
+   "produces": [
+    "application/json"
+   ],
+   "responses": {
+    "202": {
+     "description": "Accepted",
+     "schema": {
+      "$ref": "#/definitions/components_communications_api.ExternalEventResponse"
+     }
+    },
+    "400": {
+     "description": "Bad Request",
+     "schema": {
+      "$ref": "#/definitions/response.ErrorWrapper"
+     }
+    },
+    "401": {
+     "description": "Unauthorized",
+     "schema": {
+      "$ref": "#/definitions/response.ErrorWrapper"
+     }
+    },
+    "403": {
+     "description": "Forbidden",
+     "schema": {
+      "$ref": "#/definitions/response.ErrorWrapper"
+     }
+    },
+    "404": {
+     "description": "Not Found",
+     "schema": {
+      "$ref": "#/definitions/response.ErrorWrapper"
+     }
+    },
+    "409": {
+     "description": "Conflict",
+     "schema": {
+      "$ref": "#/definitions/response.ErrorWrapper"
+     }
+    },
+    "413": {
+     "description": "Request Entity Too Large",
+     "schema": {
+      "$ref": "#/definitions/response.ErrorWrapper"
+     }
+    },
+    "422": {
+     "description": "Unprocessable Entity",
+     "schema": {
+      "$ref": "#/definitions/response.ErrorWrapper"
+     }
+    }
+   },
+   "security": [
+    {
+     "APIKeyAuth": []
+    }
+   ],
+   "summary": "Send an authenticated external event to a communication",
+   "tags": [
+    "communications"
+   ],
+   "x-required-permissions": [
+    {
+     "match": "all",
+     "permissions": [
+      {
+       "permission": "communications:edit",
+       "scope": "workspace"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "defs": {
+  "shared_types.OutboundCallRequest": {
+   "properties": {
+    "answer_timeout_after_progress_seconds": {
+     "example": 30,
+     "maximum": 120,
+     "minimum": 1,
+     "type": "integer"
+    },
+    "call_purpose": {
+     "type": "string"
+    },
+    "communication_id": {
+     "type": "string"
+    },
+    "from": {
+     "type": "string"
+    },
+    "to": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "call_purpose",
+    "from",
+    "to"
+   ],
+   "type": "object"
+  },
+  "components_communications_api.createExternalEventRequest": {
+   "properties": {
+    "event_id": {
+     "type": "string"
+    },
+    "interrupt_current_turn": {
+     "type": "boolean"
+    },
+    "message": {
+     "type": "string"
+    },
+    "metadata": {
+     "items": {
+      "type": "integer"
+     },
+     "type": "array"
+    },
+    "trigger_turn": {
+     "type": "boolean"
+    },
+    "type": {
+     "type": "string"
+    }
+   },
+   "type": "object"
+  }
+ }
+}

@@ -1,0 +1,67 @@
+{
+  "name": "draft_order",
+  "agent": "merc-buddy",
+  "function": "order-upsert",
+  "description": "Create or confirm a draft order. Confirm only after the rep says yes.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "order_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "confirmed",
+          "cancelled"
+        ]
+      },
+      "lines": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "product_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "quantity": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "product_id",
+            "quantity"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id",
+      "status",
+      "lines"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/order-upsert.json#/response"
+}

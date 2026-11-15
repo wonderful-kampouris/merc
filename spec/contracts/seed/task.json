@@ -1,0 +1,23 @@
+[
+  {
+    "id": "8573da3a-e392-5b66-948b-44c1fb43852d",
+    "account_id": "24d14591-c8c2-5885-819a-c5e997f6cad0",
+    "owner_id": "d72bccf8-f36c-5abf-8d0d-142783f090cd",
+    "deal_id": "6d23a7e3-98a9-5fd7-ba72-87823114e62a",
+    "title": "Bistro Lofos offer expires - follow up",
+    "is_customer_promise": true,
+    "due_at": "@D+1@12:00",
+    "status": "open",
+    "source": "human"
+  },
+  {
+    "id": "db3f3061-cb2f-5515-803a-03ea98b2a60d",
+    "account_id": "0610c44c-149d-5163-a097-65381aa877f7",
+    "owner_id": "d72bccf8-f36c-5abf-8d0d-142783f090cd",
+    "title": "Call about delivery",
+    "is_customer_promise": false,
+    "due_at": "@D@16:00",
+    "status": "open",
+    "source": "human"
+  }
+]

@@ -1,0 +1,76 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "account_assignment_history",
+    "description": "Ownership transfers",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "from_rep_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "to_rep_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "transferred_by",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "transferred_at",
+        "type": "datetime",
+        "required": true
+      },
+      {
+        "name": "reason",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "account_assignment_history_account_id_idx",
+        "columns": [
+          "account_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@merc/live",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Merc live push helper (REQ-CORE-011): channel names rep:{id} / team:{id}, merc-live event envelopes validated against contracts/events, push via context.api /v1/function-sockets/messages (logged no-op without a service account).",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "name": "Delta Foods & Coffee (demo)",
+    "default_language": "el",
+    "timezone": "Europe/Athens",
+    "currency": "EUR",
+    "plan": "pilot",
+    "briefing_time": "07:45",
+    "approval_expiry_hours": 48,
+    "approval_sla_minutes": 60,
+    "manager_call_enabled": true,
+    "recording_retention_days": 30,
+    "icp_min_score": 60,
+    "visits_per_day": 6,
+    "lost_after_multiplier": 3,
+    "baseline_start": "@D-120",
+    "go_live_date": "@D-30",
+    "previsit_lead_minutes": 30,
+    "postvisit_prompt_minutes": 10
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "type": "debrief_confirmation.status",
+  "envelope": {
+    "type": "debrief_confirmation.status",
+    "at": "date-time",
+    "payload": "see schema"
+  },
+  "payload": {
+    "type": "object",
+    "properties": {
+      "debrief_confirmation_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "voice_log_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "debrief_confirmation_id",
+      "voice_log_id",
+      "status"
+    ]
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "slug": "my-performance",
+  "method": "GET",
+  "kind": "http",
+  "gate": "plan.read",
+  "callers": [
+    "buddy",
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "period": {
+        "type": "string",
+        "enum": [
+          "week",
+          "month",
+          "custom"
+        ]
+      },
+      "from": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "to": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "period"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "targets": {
+        "type": "array",
+        "items": {
+          "$ref": "../_defs.json#/$defs/TargetProgress"
+        }
+      },
+      "visits_done": {
+        "type": "integer"
+      },
+      "revenue_minor": {
+        "type": "integer"
+      },
+      "new_customers": {
+        "type": "integer"
+      },
+      "spoken_summary": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "targets",
+      "visits_done",
+      "revenue_minor",
+      "new_customers",
+      "spoken_summary"
+    ]
+  },
+  "reads": [
+    "sales_target",
+    "kpi_daily",
+    "sales_order",
+    "visit"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

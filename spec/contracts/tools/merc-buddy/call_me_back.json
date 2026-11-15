@@ -1,0 +1,90 @@
+{
+  "name": "call_me_back",
+  "agent": "merc-buddy",
+  "function": "buddy-call-start",
+  "description": "Call or WhatsApp the rep back later or now ('call me at 5', 'ping me when Eleni decides').",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "channel": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "call",
+              "whatsapp"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "purpose": {
+        "type": "string",
+        "enum": [
+          "callback",
+          "briefing",
+          "approval_decided",
+          "alert",
+          "eod",
+          "pre_visit",
+          "post_visit",
+          "debrief_confirm"
+        ]
+      },
+      "reason": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "at": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "ref_table": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "ref_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "purpose"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "Confirm the time and channel back in one sentence.",
+  "returns": "../../functions/buddy-call-start.json#/response"
+}

@@ -1,0 +1,120 @@
+{
+  "slug": "voice-log-upload",
+  "method": "POST",
+  "kind": "http",
+  "gate": "voicelog.create",
+  "callers": [
+    "app"
+  ],
+  "timeout_ms": 60000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "idempotency_key": {
+        "type": "string"
+      },
+      "recorded_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "visit_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "audio_base64": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "audio_mime": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "transcript": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "language": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "idempotency_key",
+      "recorded_at"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "voice_log_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string"
+      },
+      "duplicate": {
+        "type": "boolean"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "voice_log_id",
+      "status",
+      "duplicate"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "voice_log"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Body <= 1 MB (platform limit). Same idempotency_key returns the existing voice_log (duplicate=true). Triggers transcription (OPEN-04) then debrief-process."
+}

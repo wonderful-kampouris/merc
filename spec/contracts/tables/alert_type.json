@@ -1,0 +1,43 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "alert_type",
+    "description": "Alert kinds",
+    "columns": [
+      {
+        "name": "code",
+        "type": "string",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "default_severity",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "suggested_action",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": []
+  },
+  "x": {
+    "domain": "lookup",
+    "derived": false,
+    "enums": {
+      "default_severity": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "notes": {}
+  }
+}

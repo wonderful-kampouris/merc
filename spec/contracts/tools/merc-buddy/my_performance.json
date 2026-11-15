@@ -1,0 +1,30 @@
+{
+  "name": "my_performance",
+  "agent": "merc-buddy",
+  "function": "my-performance",
+  "description": "How the rep is doing against targets.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "period": {
+        "type": "string",
+        "enum": [
+          "week",
+          "month",
+          "custom"
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "period"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/my-performance.json#/response"
+}

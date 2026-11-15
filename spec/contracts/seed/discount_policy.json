@@ -1,0 +1,42 @@
+[
+  {
+    "id": "fb6c6bb9-1b34-5770-9250-0637213b1127",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "user_id": null,
+    "product_category_id": null,
+    "account_category_id": null,
+    "max_discount_pct": 3,
+    "active": true
+  },
+  {
+    "id": "730bf31a-9572-500c-ab95-124ee00e8156",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "rep",
+    "user_id": null,
+    "product_category_id": "228130a1-b9c3-54f9-ac9b-b9ff21723679",
+    "account_category_id": "10169ea8-bbde-567f-93b2-d5686ea70ef4",
+    "max_discount_pct": 5,
+    "active": true
+  },
+  {
+    "id": "9431190d-3f0c-55dd-8058-4ca71a191aaf",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "manager",
+    "user_id": null,
+    "product_category_id": null,
+    "account_category_id": null,
+    "max_discount_pct": 10,
+    "active": true
+  },
+  {
+    "id": "f95b1dd7-5ad7-5833-aa5d-7eb51b24dc25",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "role_code": "admin",
+    "user_id": null,
+    "product_category_id": null,
+    "account_category_id": null,
+    "max_discount_pct": 100,
+    "active": true
+  }
+]

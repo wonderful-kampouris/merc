@@ -1,0 +1,80 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "campaign",
+    "description": "Manager instruction to reps",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "created_by",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "message",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "starts_on",
+        "type": "date",
+        "required": true
+      },
+      {
+        "name": "ends_on",
+        "type": "date",
+        "required": true
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "campaign_org_id_status_idx",
+        "columns": [
+          "org_id",
+          "status"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "engagement",
+    "derived": false,
+    "enums": {
+      "status": [
+        "draft",
+        "active",
+        "ended"
+      ]
+    },
+    "notes": {}
+  }
+}

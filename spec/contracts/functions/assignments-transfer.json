@@ -1,0 +1,82 @@
+{
+  "slug": "assignments-transfer",
+  "method": "POST",
+  "kind": "http",
+  "gate": "territories.manage",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "from_rep_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "to_rep_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "account_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "all_accounts": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "reason": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "from_rep_id",
+      "to_rep_id",
+      "account_ids"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "moved": {
+        "type": "integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "moved"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "account",
+    "account_assignment_history",
+    "visit",
+    "task",
+    "audit_event"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Moves open visits/tasks too. Customer memory follows automatically (keyed by account.id)."
+}

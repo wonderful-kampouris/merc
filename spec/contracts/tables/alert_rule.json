@@ -1,0 +1,65 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "alert_rule",
+    "description": "Admin-tunable alert thresholds",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "alert_type_code",
+        "type": "string",
+        "required": true,
+        "reference": {
+          "table": "merc.alert_type",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "threshold_value",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "window_days",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "enabled",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "alert_rule_org_id_alert_type_code_uq",
+        "columns": [
+          "org_id",
+          "alert_type_code"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "org",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

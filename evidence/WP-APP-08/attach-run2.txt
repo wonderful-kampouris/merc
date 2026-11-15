@@ -1,0 +1,8 @@
+attached campaign-draft-from-text (d4f04ccd-8030-470d-a070-4ced9d1688a1) gate=campaigns.manage
+attached campaign-upsert (73bba551-5fc3-4abe-a4de-01a161cbf616) gate=campaigns.manage
+attached dashboard-kpis (db0a649f-b9f3-4e36-99d1-0eeaebce44d8) gate=dashboard.read
+attached team-list (3cce1c3a-d9a9-467c-ad55-f4c649f1256d) gate=team.read
+attached users-list (b504ea7e-e6ed-46e1-a7d0-63cd46a8b85b) gate=users.manage
+
+app-callable in contracts: 69; newly attached: 5; not deployed on dev: 30
+not deployed: ai-action-undo, ai-actions-list, alert-act, approval-decide, approval-resolve, approvals-list, assignments-transfer, campaign-funnel, candidate-act, candidates-list, competitor-signals-list, contact-erase, contact-export, discount-request, import-confirm, import-get, import-start, kpi-drilldown, manager-approvals-list, my-performance, problem-update, rep-detail, settings-get, settings-update, task-assign, tasks-list, territories-list, territory-upsert, user-upsert, visit-assign

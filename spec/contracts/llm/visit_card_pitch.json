@@ -1,0 +1,156 @@
+{
+  "profile": "merc-write",
+  "used_by": [
+    "visit-card-get"
+  ],
+  "eval_set": "evals/visit-card/",
+  "purpose": "Pitch, objections and 'how to talk to them' for a visit card.",
+  "input": {
+    "type": "object",
+    "properties": {
+      "account": {
+        "$ref": "../_defs.json#/$defs/AccountRef"
+      },
+      "kind": {
+        "type": "string",
+        "enum": [
+          "customer",
+          "prospect"
+        ]
+      },
+      "dossier": {
+        "anyOf": [
+          {
+            "$ref": "../_defs.json#/$defs/DossierView"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "history_facts": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "memory_snippets": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "products": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "product_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "product_id",
+            "name"
+          ]
+        }
+      },
+      "campaigns": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "campaign_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "title": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "campaign_id",
+            "title"
+          ]
+        }
+      },
+      "playbook_snippets": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account",
+      "kind",
+      "history_facts",
+      "memory_snippets",
+      "products",
+      "campaigns",
+      "playbook_snippets"
+    ]
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "pitch": {
+        "anyOf": [
+          {
+            "$ref": "../_defs.json#/$defs/Pitch"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "how_to_talk": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "suggested_products": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "product_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "why": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "product_id",
+            "why"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "suggested_products"
+    ]
+  },
+  "rules": [
+    "Exactly 3 arguments.",
+    "Products only from the input list.",
+    "Objections grounded in dossier/playbook."
+  ],
+  "name": "visit_card_pitch"
+}

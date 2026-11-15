@@ -1,0 +1,58 @@
+{
+  "slug": "import-apply",
+  "method": "POST",
+  "kind": "http",
+  "gate": null,
+  "callers": [
+    "procedure"
+  ],
+  "timeout_ms": 300000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "import_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "import_id"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "rows_imported": {
+        "type": "integer"
+      },
+      "rows_with_issues": {
+        "type": "integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "rows_imported",
+      "rows_with_issues"
+    ]
+  },
+  "reads": [
+    "data_import",
+    "import_column_mapping"
+  ],
+  "writes": [
+    "account",
+    "contact",
+    "sales_order",
+    "order_line",
+    "product",
+    "visit",
+    "data_import"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

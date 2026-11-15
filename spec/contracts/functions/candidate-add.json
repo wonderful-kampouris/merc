@@ -1,0 +1,94 @@
+{
+  "slug": "candidate-add",
+  "method": "POST",
+  "kind": "http",
+  "gate": "prospects.search",
+  "callers": [
+    "buddy",
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "business_name": {
+        "type": "string"
+      },
+      "location_hint": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "website": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "phone": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "business_name"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "candidate_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "search_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "duplicate_of": {
+        "anyOf": [
+          {
+            "$ref": "../_defs.json#/$defs/AccountRef"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "candidate_id",
+      "search_id"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "prospect_search",
+    "candidate"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [
+    "procedure:prospecting-pipeline"
+  ],
+  "notes": ""
+}

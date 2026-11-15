@@ -1,0 +1,225 @@
+{
+  "type": "conversational",
+  "modality": "voice",
+  "agents_version": "v2",
+  "priority": "P0",
+  "wave": 3,
+  "channels": [
+    "browser_voice (Chat SDK modalities=[voice]) embedded in Rep App",
+    "phone_inbound: the rep calls the Merc number (Wonderful SIP customer number on a Twilio Elastic SIP trunk, routed to merc-buddy)",
+    "phone_outbound: merc-buddy calls the rep (fn:buddy-call-start -> POST /v1/agents/outbound, from = MERC_BUDDY_NUMBER)",
+    "whatsapp: the rep messages the Merc WhatsApp number (assigned to merc-buddy; if a voice agent cannot hold a WhatsApp number, to the chat twin merc-buddy-chat with the same skills and tools)"
+  ],
+  "channel_identity": "browser: signed Chat SDK token (REQ-BUD-002). phone/WhatsApp: tool code reads context.metadata.communication.fromNumber (inbound) or toNumber (outbound), normalizes to E.164 and matches exactly one active app_user.phone with phone_channel_enabled. No match -> say Merc does not know this number and end. Never from what the caller says.",
+  "channel_rules": [
+    "Phone: answer in at most 2 sentences; never read long lists; offer to WhatsApp the details.",
+    "Phone/WhatsApp: external actions (send a customer email, approve a discount) need a spoken/typed read-back + 'yes' (REQ-APR-002) as in the app.",
+    "Inbound greeting uses the rep's first name and today's first stop (get_today).",
+    "Outbound: open with why Merc is calling (call_purpose), then continue as a normal buddy session.",
+    "Inbound or app: if a visit starts within 60 min, offer its brief first (get_visit_brief).",
+    "Outbound pre_visit: read the brief's spoken_script, then ask if anything is unclear. Outbound post_visit: ask how it went, then run the debrief skill.",
+    "WhatsApp quick replies: 'Call me' -> call_me_back purpose pre_visit now; Useful / Not useful -> record_feedback; Correct -> record_feedback debrief_confirmed; Fix -> ask what is wrong, then the fix flow.",
+    "After a debrief on a call, send_debrief_confirmation and say it is coming on WhatsApp.",
+    "Merc never records or listens to the customer meeting. It only hears the rep, before and after."
+  ],
+  "triggers": [
+    "OnVoicemailDetected (outbound) -> report_buddy_call_outcome(voicemail)",
+    "OnEnd (outbound, not answered) -> report_buddy_call_outcome(no_answer)"
+  ],
+  "languages": {
+    "default": "el",
+    "also": [
+      "en"
+    ],
+    "rule": "Answer in the language the rep speaks; never translate proper names."
+  },
+  "identity": "Rep identity injected by the Rep App into the session (OPEN-08). Never asked from the rep, never taken from model output.",
+  "memory": {
+    "enabled": true,
+    "identification": "manual: ctx.customers.attach(account.id) in resolve_account / get_visit_card / log_visit",
+    "access": "all agents' memories for the customer",
+    "strategy": [
+      "recent",
+      "relevant"
+    ],
+    "instructions": {
+      "extract": "Preferences, how to talk to them, commitments, objections, family/staff names, ordering habits. Never prices or quantities (those live in tables).",
+      "use": "Use memories for tone and context only; numbers always come from tools."
+    }
+  },
+  "skills": [
+    {
+      "name": "briefing",
+      "trigger": "morning / 'what's my day'",
+      "tools": [
+        "get_briefing",
+        "get_today"
+      ]
+    },
+    {
+      "name": "debrief",
+      "trigger": "rep describes a visit",
+      "tools": [
+        "resolve_account",
+        "log_visit",
+        "get_debrief_result",
+        "undo_action",
+        "resolve_approval"
+      ]
+    },
+    {
+      "name": "prepare_visit",
+      "trigger": "'tell me about X' / arriving",
+      "tools": [
+        "resolve_account",
+        "get_visit_card"
+      ]
+    },
+    {
+      "name": "approvals",
+      "trigger": "'yes send it' / 'what's pending'",
+      "tools": [
+        "list_approvals",
+        "resolve_approval"
+      ]
+    },
+    {
+      "name": "discount",
+      "trigger": "customer asks for a discount",
+      "tools": [
+        "check_discount_limit",
+        "request_manager_approval",
+        "get_approval_status"
+      ]
+    },
+    {
+      "name": "planning",
+      "trigger": "'move / skip / add' / 'my week'",
+      "tools": [
+        "get_week_plan",
+        "accept_week_plan",
+        "update_visit",
+        "get_today"
+      ]
+    },
+    {
+      "name": "ask",
+      "trigger": "factual questions",
+      "tools": [
+        "ask_crm",
+        "product_lookup",
+        "my_performance",
+        "list_alerts",
+        "act_on_alert"
+      ]
+    },
+    {
+      "name": "tasks_orders",
+      "trigger": "reminders, orders",
+      "tools": [
+        "create_task",
+        "complete_task",
+        "draft_order"
+      ]
+    },
+    {
+      "name": "prospecting",
+      "trigger": "'find bakeries in X' / 'new shop here'",
+      "tools": [
+        "find_shops",
+        "add_candidate",
+        "list_new_shops",
+        "act_on_candidate",
+        "convert_to_customer"
+      ]
+    },
+    {
+      "name": "end_of_day",
+      "trigger": "evening / 'wrap up'",
+      "tools": [
+        "end_of_day"
+      ],
+      "priority": "P1"
+    },
+    {
+      "name": "pitch_rehearsal",
+      "trigger": "'play the owner'",
+      "tools": [
+        "get_visit_card"
+      ],
+      "priority": "P1",
+      "behavior": "Role-play the prospect's owner using the card's objections; after 2 minutes give 3 feedback points."
+    },
+    {
+      "name": "escalation",
+      "trigger": "'tell my manager'",
+      "tools": [
+        "escalate_to_manager"
+      ],
+      "priority": "P1"
+    },
+    {
+      "name": "meeting_loop",
+      "trigger": "pre-meeting brief, 'call me' from the WhatsApp brief, 'how did it go', confirm or fix the summary",
+      "tools": [
+        "get_visit_brief",
+        "call_me_back",
+        "log_visit",
+        "send_debrief_confirmation",
+        "record_feedback",
+        "undo_action",
+        "get_debrief_result"
+      ]
+    },
+    {
+      "name": "reach_me",
+      "trigger": "'call me at 5' / 'ping me on WhatsApp when it's approved'",
+      "tools": [
+        "call_me_back",
+        "report_buddy_call_outcome"
+      ]
+    }
+  ],
+  "rules": [
+    "REQ-BUD-*"
+  ],
+  "evals": "evals/merc-buddy/",
+  "name": "merc-buddy",
+  "tools": [
+    "accept_week_plan",
+    "act_on_alert",
+    "act_on_candidate",
+    "add_candidate",
+    "ask_crm",
+    "call_me_back",
+    "check_discount_limit",
+    "complete_task",
+    "convert_to_customer",
+    "create_task",
+    "draft_order",
+    "end_of_day",
+    "escalate_to_manager",
+    "find_shops",
+    "get_approval_status",
+    "get_briefing",
+    "get_debrief_result",
+    "get_today",
+    "get_visit_brief",
+    "get_visit_card",
+    "get_week_plan",
+    "list_alerts",
+    "list_approvals",
+    "list_new_shops",
+    "log_visit",
+    "my_performance",
+    "product_lookup",
+    "record_feedback",
+    "report_buddy_call_outcome",
+    "request_manager_approval",
+    "resolve_account",
+    "resolve_approval",
+    "send_debrief_confirmation",
+    "undo_action",
+    "update_visit"
+  ]
+}

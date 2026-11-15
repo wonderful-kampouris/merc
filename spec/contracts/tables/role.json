@@ -1,0 +1,27 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "role",
+    "description": "App roles",
+    "columns": [
+      {
+        "name": "code",
+        "type": "string",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true
+      }
+    ],
+    "indexes": []
+  },
+  "x": {
+    "domain": "lookup",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

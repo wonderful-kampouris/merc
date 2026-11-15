@@ -1,0 +1,50 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "campaign_category",
+    "description": "Target account categories",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "campaign_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.campaign",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "category_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.account_category",
+          "on_delete": "cascade"
+        }
+      }
+    ],
+    "indexes": [
+      {
+        "name": "campaign_category_campaign_id_category_id_uq",
+        "columns": [
+          "campaign_id",
+          "category_id"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "engagement",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

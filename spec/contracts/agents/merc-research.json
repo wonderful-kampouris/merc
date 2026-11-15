@@ -1,0 +1,38 @@
+{
+  "type": "backoffice",
+  "agents_version": "v2",
+  "priority": "P0",
+  "wave": 3,
+  "triggers": [
+    {
+      "type": "webhook",
+      "task_type": "candidate_research",
+      "from": "procedure prospecting-pipeline"
+    }
+  ],
+  "skills": [
+    {
+      "name": "research_shop",
+      "tools": [
+        "get_candidate",
+        "scrape_website",
+        "lookup_company",
+        "save_dossier"
+      ]
+    }
+  ],
+  "behavior": [
+    "Only the shop's own public website and official registries/directories. Never maps or review platforms scraping.",
+    "Every fact keeps source_url and retrieved_at.",
+    "Complete the task without approval (internal data).",
+    "No website -> save a dossier with registry facts only and summary 'no website'."
+  ],
+  "evals": "evals/merc-research/",
+  "name": "merc-research",
+  "tools": [
+    "get_candidate",
+    "lookup_company",
+    "save_dossier",
+    "scrape_website"
+  ]
+}

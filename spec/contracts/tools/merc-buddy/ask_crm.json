@@ -1,0 +1,36 @@
+{
+  "name": "ask_crm",
+  "agent": "merc-buddy",
+  "function": "ask-crm",
+  "description": "Answer a factual question about customers, orders, deals from the CRM.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "question": {
+        "type": "string"
+      },
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "question"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "Answer only with the returned facts. If no_data, say you don't know.",
+  "returns": "../../functions/ask-crm.json#/response"
+}

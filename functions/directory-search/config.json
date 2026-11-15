@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "directory-search",
+  "description": "Merc fn:directory-search (contracts/functions/directory-search.json; callers: procedure; gate: None). Source: Merc monorepo shared/handlers/src/directory-search.ts.",
+  "method": "POST",
+  "path_slug": "directory-search",
+  "param_mapping": {}
+}

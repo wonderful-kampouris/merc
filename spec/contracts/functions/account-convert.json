@@ -1,0 +1,53 @@
+{
+  "slug": "account-convert",
+  "method": "POST",
+  "kind": "http",
+  "gate": "accounts.convert",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "approval_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "approval_id",
+      "status"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "ai_action",
+    "approval"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Structural action: always creates an approval unless ai_permission says otherwise.",
+  "scope": "account"
+}

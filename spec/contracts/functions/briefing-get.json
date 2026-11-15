@@ -1,0 +1,57 @@
+{
+  "slug": "briefing-get",
+  "method": "GET",
+  "kind": "http",
+  "gate": "plan.read",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 45000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "date": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "regenerate": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "$ref": "../_defs.json#/$defs/Briefing"
+  },
+  "reads": [
+    "briefing",
+    "briefing_item"
+  ],
+  "writes": [
+    "briefing",
+    "briefing_item"
+  ],
+  "errors": [],
+  "llm": [
+    "briefing_script"
+  ],
+  "integrations": [],
+  "notes": ""
+}

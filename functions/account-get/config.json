@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "account-get",
+  "description": "Merc fn:account-get (contracts/functions/account-get.json). Source: Merc monorepo shared/handlers/src/account-get.ts.",
+  "method": "GET",
+  "path_slug": "account-get",
+  "param_mapping": {}
+}

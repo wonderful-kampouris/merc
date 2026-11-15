@@ -1,0 +1,39 @@
+{
+  "name": "log_visit",
+  "agent": "merc-buddy",
+  "function": "debrief-process",
+  "description": "Log what happened in a visit from the rep's own words. Pass the words verbatim, never paraphrase.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "utterance": {
+        "type": "string"
+      },
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "utterance"
+    ]
+  },
+  "inject": [
+    "caller",
+    "conversation_id",
+    "device_location?",
+    "language"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "Read spoken_summary, then ask each missing_fields question, then offer pending approvals.",
+  "returns": "../../functions/debrief-process.json#/response"
+}

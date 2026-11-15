@@ -1,0 +1,105 @@
+{
+  "slug": "feedback-record",
+  "method": "POST",
+  "kind": "http",
+  "gate": "voicelog.create",
+  "callers": [
+    "buddy",
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 4,
+  "request": {
+    "type": "object",
+    "properties": {
+      "kind": {
+        "type": "string",
+        "enum": [
+          "brief_useful",
+          "brief_not_useful",
+          "debrief_confirmed",
+          "debrief_corrected"
+        ]
+      },
+      "visit_brief_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "debrief_confirmation_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "detail": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "correction_voice_log_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "kind"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "feedback_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "feedback_id",
+      "status"
+    ]
+  },
+  "reads": [
+    "visit_brief",
+    "debrief_confirmation"
+  ],
+  "writes": [
+    "rep_feedback",
+    "visit_brief",
+    "debrief_confirmation"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "brief_* needs visit_brief_id and sets visit_brief.rating; debrief_* needs debrief_confirmation_id and sets its status. debrief_corrected stores detail verbatim and links correction_voice_log_id when the buddy logged the fix as a new debrief. Only the owner rep.",
+  "scope": "owner"
+}

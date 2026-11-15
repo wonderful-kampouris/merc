@@ -1,0 +1,26 @@
+{
+  "name": "pitch_rehearsal",
+  "display_name": "Pitch Rehearsal",
+  "description": "Use when: 'play the owner'. Role-play the prospect's owner using the card's objections; after 2 minutes give 3 feedback points.",
+  "prompts": {
+    "skill": "prompt.md"
+  },
+  "tools": {
+    "get_visit_card": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 30000,
+        "is_interruptible": true
+      }
+    }
+  }
+}

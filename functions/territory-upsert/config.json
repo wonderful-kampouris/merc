@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "territory-upsert",
+  "description": "Merc fn:territory-upsert: create or edit a territory, audited (REQ-SET-003, REQ-CORE-010) (contracts/functions/territory-upsert.json). Source: Merc monorepo shared/handlers/src/territory-upsert.ts.",
+  "method": "POST",
+  "path_slug": "territory-upsert",
+  "param_mapping": {}
+}

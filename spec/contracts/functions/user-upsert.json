@@ -1,0 +1,120 @@
+{
+  "slug": "user-upsert",
+  "method": "POST",
+  "kind": "http",
+  "gate": "users.manage",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "email": {
+        "type": "string"
+      },
+      "full_name": {
+        "type": "string"
+      },
+      "role_code": {
+        "type": "string",
+        "enum": [
+          "rep",
+          "manager",
+          "admin"
+        ]
+      },
+      "manager_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "phone": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "territory_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "status": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "active",
+              "left"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "email",
+      "full_name",
+      "role_code",
+      "territory_ids"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "user_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "invited": {
+        "type": "boolean"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "user_id",
+      "invited"
+    ]
+  },
+  "reads": [
+    "role"
+  ],
+  "writes": [
+    "app_user",
+    "territory_rep",
+    "audit_event"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

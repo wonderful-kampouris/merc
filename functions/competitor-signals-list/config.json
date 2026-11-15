@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "competitor-signals-list",
+  "description": "Merc fn:competitor-signals-list: competitor signals by competitor, territory and time (REQ-DSH-006) (contracts/functions/competitor-signals-list.json). Source: shared/handlers/src/competitor-signals-list.ts",
+  "method": "GET",
+  "path_slug": "competitor-signals-list",
+  "param_mapping": {}
+}

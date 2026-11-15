@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "name": "research_no_website_registry_only",
+  "description": "Shop without a website: no scraping, registry-only dossier with summary 'no website'. Runs the real tools against eval fixture rows on dev (search 710670fe 'merc-research eval fixtures'; tool mocks need the FeatureBackofficeEvalTaskFlow flag, which is off).",
+  "channel": "backoffice",
+  "eval_type": "backoffice_eval",
+  "instructions": {
+    "mode": "turn_based",
+    "turns": [],
+    "backoffice_task": {
+      "task_input": "candidate_research candidate_id=4efbb923-1b01-45e3-88f1-295dfab149c8",
+      "expected_behavior": "Calls get_candidate, does NOT call scrape_website (the shop has no website), tries lookup_company with the VAT number 801234567, and when the registry is blocked still calls save_dossier once with no invented facts and a summary that says 'no website'. Finishes the task as completed."
+    }
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "code": "rep",
+    "name": "Sales rep"
+  },
+  {
+    "code": "manager",
+    "name": "Sales manager"
+  },
+  {
+    "code": "admin",
+    "name": "Admin / CEO"
+  }
+]

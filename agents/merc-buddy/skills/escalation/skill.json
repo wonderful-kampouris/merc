@@ -1,0 +1,32 @@
+{
+  "name": "escalation",
+  "display_name": "Escalation",
+  "description": "Use when: 'tell my manager'.",
+  "prompts": {
+    "skill": "prompt.md"
+  },
+  "tools": {
+    "escalate_to_manager": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true
+        }
+      ],
+      "config": {
+        "timeout": 30000,
+        "is_interruptible": false
+      }
+    }
+  }
+}

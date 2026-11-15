@@ -1,0 +1,66 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "usage_event",
+    "description": "Daily usage per user (pricing / cost)",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "user_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "day",
+        "type": "date",
+        "required": true
+      },
+      {
+        "name": "kind",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "quantity",
+        "type": "number",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "usage_event_user_id_day_kind_uq",
+        "columns": [
+          "user_id",
+          "day",
+          "kind"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "rollup",
+    "derived": false,
+    "enums": {
+      "kind": [
+        "voice_minutes",
+        "llm_calls",
+        "research_runs",
+        "sms",
+        "outbound_call_minutes",
+        "emails_sent"
+      ]
+    },
+    "notes": {}
+  }
+}

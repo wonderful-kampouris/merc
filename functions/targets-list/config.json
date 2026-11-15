@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "targets-list",
+  "description": "Merc fn:targets-list: sales targets the caller may see with progress (contracts/functions/targets-list.json, REQ-TGT-002). Source: Merc monorepo shared/handlers/src/targets-list.ts.",
+  "method": "GET",
+  "path_slug": "targets-list",
+  "param_mapping": {}
+}

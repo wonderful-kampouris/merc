@@ -1,0 +1,16 @@
+{
+  "_doc": "Single source of workspace ids for deploy.sh. No secrets here (REQ-OPS-005): credentials come from the wful profile and the git credential helper.",
+  "dev": {
+    "profile": "hackathon",
+    "workspace": "7b52cbc0-4e7d-5fc4-a2df-a76f5ecae464",
+    "vcs": "https://vcs.greece-hackathon.sb.wonderful.ai/git",
+    "branch": "main"
+  },
+  "demo": {
+    "profile": "hackathon",
+    "workspace": "",
+    "vcs": "https://vcs.greece-hackathon.sb.wonderful.ai/git",
+    "branch": "main",
+    "_todo": "Fill workspace with the demo workspace id once it exists (WP-DEMO-01). deploy.sh refuses demo while it is empty or equal to dev."
+  }
+}

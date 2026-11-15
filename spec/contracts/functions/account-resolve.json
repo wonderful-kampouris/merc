@@ -1,0 +1,94 @@
+{
+  "slug": "account-resolve",
+  "method": "GET",
+  "kind": "http",
+  "gate": "accounts.read",
+  "callers": [
+    "buddy",
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "hint": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "lat": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "lng": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "status": {
+        "type": "string",
+        "enum": [
+          "resolved",
+          "ambiguous",
+          "not_found"
+        ]
+      },
+      "account": {
+        "anyOf": [
+          {
+            "$ref": "../_defs.json#/$defs/AccountRef"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "candidates": {
+        "type": "array",
+        "items": {
+          "$ref": "../_defs.json#/$defs/AccountRef"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "status",
+      "candidates"
+    ]
+  },
+  "reads": [
+    "account",
+    "visit",
+    "postal_area"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Order of evidence: exact/fuzzy name in rep scope -> today's scheduled visits -> nearest (lat/lng, never stored).",
+  "scope": "account"
+}

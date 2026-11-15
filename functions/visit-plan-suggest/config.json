@@ -1,0 +1,9 @@
+{
+  "kind": "cron",
+  "name": "visit-plan-suggest",
+  "description": "Merc fn:visit-plan-suggest (contracts/functions/visit-plan-suggest.json): Sunday 18:00 Athens, next week's visit plan per rep. Source: Merc monorepo shared/handlers/src/visit-plan-suggest.ts.",
+  "timeout_ms": 300000,
+  "cron_schedules": [
+    { "cron_expression": "0 18 * * 0", "timezone": "Europe/Athens", "params": {}, "enabled": true }
+  ]
+}

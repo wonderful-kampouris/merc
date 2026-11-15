@@ -1,0 +1,65 @@
+{
+  "slug": "targets-list",
+  "method": "GET",
+  "kind": "http",
+  "gate": "targets.read",
+  "callers": [
+    "mgmt",
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "period_start": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "rep_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "$ref": "../_defs.json#/$defs/TargetProgress"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "items"
+    ]
+  },
+  "reads": [
+    "sales_target"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "owner_or_team"
+}

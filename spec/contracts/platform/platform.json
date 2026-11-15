@@ -1,0 +1,185 @@
+{
+  "integrations": {
+    "gmail": {
+      "hub": "Integration Hub connector google_workspace",
+      "identity": "per-user (needs the rep's identity: app session or buddy tool)",
+      "actions": [
+        "google_workspace_gmail_message_send"
+      ],
+      "input": "{to:[email], subject, body, cc?, bcc?, html?}",
+      "priority": "P0"
+    },
+    "outlook": {
+      "hub": "Integration Hub connector microsoft_graph",
+      "identity": "per-user",
+      "actions": [
+        "send_mail"
+      ],
+      "priority": "P1"
+    },
+    "google-calendar": {
+      "hub": "Integration Hub curated",
+      "identity": "per-user",
+      "actions": [
+        "list_events"
+      ],
+      "priority": "P1"
+    },
+    "firecrawl": {
+      "hub": "fetch + markdown conversion; Firecrawl only when secret FIRECRAWL_API_KEY exists (optional)",
+      "identity": "service",
+      "actions": [
+        "scrape"
+      ],
+      "secret": "FIRECRAWL_API_KEY",
+      "priority": "P0"
+    },
+    "business-directory": {
+      "hub": "function fetch: OpenStreetMap Overpass (no auth, ODbL, attribution) as 'directory'; GEMI Open Data (header api_key = secret DIRECTORY_API_KEY, ODC-BY) as 'registry'; seeded CSV fallback",
+      "identity": "service",
+      "actions": [
+        "search",
+        "company"
+      ],
+      "priority": "P0"
+    },
+    "sms": {
+      "builtin": "context.telephony.sendSms",
+      "priority": "P1",
+      "note": "No SMS-capable number in the tenant yet (S7). Fallback is push + inbox + task."
+    },
+    "outbound-calls": {
+      "builtin": "POST /v1/agents/outbound from fn:discount-request (merc-approver) and fn:buddy-call-start (merc-buddy); needs a caller id on an outbound SIP trunk attached to merc-approver and service account merc-platform-api (agents:edit, communications:edit)",
+      "priority": "P0",
+      "open": "OPEN-07"
+    },
+    "email-internal": {
+      "builtin": "context.email",
+      "priority": "P1"
+    },
+    "whatsapp": {
+      "builtin": "WhatsApp Business channel (Meta Embedded Signup, set up by the team in FSM); inbound number assigned to merc-buddy. Outbound pings: context.outbound.whatsapp.sendTemplate (template merc_buddy_ping, el+en) from fn:buddy-call-start / buddy-call-outcome; free text only inside the 24 h window",
+      "identity": "service (the Merc WhatsApp number)",
+      "actions": [
+        "send_template",
+        "send_text"
+      ],
+      "priority": "P0",
+      "templates": {
+        "merc_buddy_ping": "generic ping (REQ-BUD-015)",
+        "merc_previsit_brief": "pre-meeting bullets; quick replies Call me / Useful / Not useful (REQ-MTG-001)",
+        "merc_debrief_confirm": "debrief summary; quick replies Correct / Fix / Brief did not help (REQ-MTG-006)"
+      },
+      "open": "OPEN-19, OPEN-21",
+      "note": "Customer-facing WhatsApp drafts (follow_up.channel=whatsapp) stay copy-to-clipboard; only rep<->buddy uses this number."
+    },
+    "telephony": {
+      "builtin": "Wonderful SIP <-> Twilio Elastic SIP trunk (docs/guides/telephony-whatsapp.md). One customer number = MERC_BUDDY_NUMBER: inbound route -> merc-buddy, outbound caller id for merc-buddy and merc-approver",
+      "priority": "P0",
+      "open": "OPEN-07"
+    }
+  },
+  "model_profiles": {
+    "merc-extract": {
+      "use": "structured extraction (debrief, import mapping, ask-crm routing, campaign text)",
+      "needs": [
+        "structured_output",
+        "greek"
+      ]
+    },
+    "merc-write": {
+      "use": "drafts, briefing/eod scripts, pitches",
+      "needs": [
+        "greek",
+        "style_imitation"
+      ]
+    },
+    "merc-decide": {
+      "use": "Decision model: criterion ratings for scoring, yes/no gates",
+      "needs": [
+        "decision_model"
+      ]
+    },
+    "merc-transcribe": {
+      "use": "inline audio transcription in voice-log-upload (S4: gemini-2.5-flash, 39 s Greek in 2.1 s)",
+      "needs": [
+        "audio_input",
+        "greek"
+      ],
+      "note": "CLI create returned 500 in the tenant; create in the UI"
+    }
+  },
+  "service_accounts": {
+    "merc-platform-api": {
+      "scopes": [
+        "agents:edit",
+        "communications:edit"
+      ],
+      "used_by": [
+        "discount-request",
+        "approval-decide",
+        "merc-live",
+        "buddy-call-start",
+        "buddy-callbacks-due",
+        "previsit-briefs-due",
+        "postvisit-prompts-due",
+        "debrief-confirm-due"
+      ]
+    }
+  },
+  "chat_sdk_keys": {
+    "merc-buddy": {
+      "allowed_domains": [
+        "https://app.<env>.sb.wonderful.ai",
+        "https://default.app.<env>.sb.wonderful.ai"
+      ],
+      "require_captcha": false,
+      "auth": "signed user token from fn:merc-chat-token",
+      "created_via": "POST /api/v1/web-chat/agents/{agent_id}/key"
+    }
+  },
+  "globals": {
+    "MERC_BUDDY_NUMBER": "E.164 Merc customer number (inbound to merc-buddy, outbound caller id)",
+    "MERC_WHATSAPP_CONNECTION": "Name of the WhatsApp connection to send templates through (connectionName)"
+  },
+  "knowledge_bases": {
+    "merc-catalog": {
+      "content": "Product sheets, pairing suggestions, why-it-fits notes",
+      "used_by": [
+        "visit-card-get",
+        "merc-buddy"
+      ]
+    },
+    "merc-playbook": {
+      "content": "Sales playbook, objection library, ICP description, pitch examples",
+      "used_by": [
+        "visit-card-get",
+        "merc-buddy"
+      ]
+    },
+    "merc-company": {
+      "content": "Company profile: who we are, values, positioning, how we sell, what we never do; the why behind product_guidance rows (REQ-MTG-003)",
+      "used_by": [
+        "visit-brief-get",
+        "visit-card-get",
+        "merc-buddy"
+      ]
+    }
+  },
+  "secrets": [
+    "FIRECRAWL_API_KEY (optional)",
+    "DIRECTORY_API_KEY",
+    "MERC_LINK_SIGNING_KEY",
+    "MERC_INTERNAL_CALL_KEY",
+    "MERC_CHAT_API_KEY"
+  ],
+  "monitors": {
+    "debrief-latency": "p95 debrief-process duration > 20 s over 15 min",
+    "function-errors": "any merc function error rate > 5% over 15 min",
+    "voice-log-failures": "voice_log status=failed > 3 per hour",
+    "approval-sla-breach": "approvals escalated > 0 per day (info)",
+    "message-send-failures": "message-send failed > 0 per hour",
+    "previsit-brief-missed": "planned visit started with no visit_brief sent > 0 per day (REQ-MTG-001)",
+    "debrief-confirm-latency": "debrief_confirmation sent_at - voice_log processed_at p95 > 60 s over 1 h (REQ-MTG-006)"
+  }
+}

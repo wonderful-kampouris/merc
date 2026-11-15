@@ -1,0 +1,128 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "kpi_daily",
+    "description": "DERIVED daily rollup per rep (dashboards)",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "rep_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "day",
+        "type": "date",
+        "required": true
+      },
+      {
+        "name": "visits_done",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "voice_logs",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "voice_logs_within_1h",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "new_customers",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "ai_actions_applied",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "ai_actions_undone",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "approvals_approved",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "approvals_rejected",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "pipeline_amount_minor",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "weighted_pipeline_minor",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "revenue_minor",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "crm_completeness_pct",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "customers_saved",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "discount_requests",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "discounts_approved",
+        "type": "number",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "kpi_daily_rep_id_day_uq",
+        "columns": [
+          "rep_id",
+          "day"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "kpi_daily_day_idx",
+        "columns": [
+          "day"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "rollup",
+    "derived": true,
+    "enums": {},
+    "notes": {}
+  }
+}

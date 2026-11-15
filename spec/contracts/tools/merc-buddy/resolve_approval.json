@@ -1,0 +1,45 @@
+{
+  "name": "resolve_approval",
+  "agent": "merc-buddy",
+  "function": "approval-resolve",
+  "description": "Approve, edit-and-approve or reject a customer message.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "approval_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "decision": {
+        "type": "string",
+        "enum": [
+          "approve",
+          "edit_approve",
+          "reject"
+        ]
+      },
+      "final_body": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "approval_id",
+      "decision"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "Always read back recipient + first line before approving.",
+  "returns": "../../functions/approval-resolve.json#/response"
+}

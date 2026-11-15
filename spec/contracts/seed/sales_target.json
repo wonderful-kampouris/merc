@@ -1,0 +1,46 @@
+[
+  {
+    "id": "df8b5251-0f66-5a22-8012-06619f78afaf",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "territory_id": null,
+    "user_id": "d72bccf8-f36c-5abf-8d0d-142783f090cd",
+    "metric": "revenue",
+    "period_start": "@MONTH_START",
+    "period_end": "@MONTH_END",
+    "target_value": 1800000,
+    "set_by": "fa4c7746-c253-5104-a735-7060bfddb756"
+  },
+  {
+    "id": "a9aaac32-e868-50ce-b2cb-e0b784ab9aa0",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "territory_id": null,
+    "user_id": "d72bccf8-f36c-5abf-8d0d-142783f090cd",
+    "metric": "visits",
+    "period_start": "@MONTH_START",
+    "period_end": "@MONTH_END",
+    "target_value": 110,
+    "set_by": "fa4c7746-c253-5104-a735-7060bfddb756"
+  },
+  {
+    "id": "b7fe47bd-bf80-5196-bd9e-0699251809ce",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "territory_id": "76b55561-9135-5c55-ad43-34661bffd9d9",
+    "user_id": null,
+    "metric": "revenue",
+    "period_start": "@MONTH_START",
+    "period_end": "@MONTH_END",
+    "target_value": 12000000,
+    "set_by": "fa4c7746-c253-5104-a735-7060bfddb756"
+  },
+  {
+    "id": "99b82695-5adf-5bcb-a49b-ce55198c57f4",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "territory_id": null,
+    "user_id": null,
+    "metric": "revenue",
+    "period_start": "@MONTH_START",
+    "period_end": "@MONTH_END",
+    "target_value": 30000000,
+    "set_by": "fa4c7746-c253-5104-a735-7060bfddb756"
+  }
+]

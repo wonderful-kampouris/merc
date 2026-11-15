@@ -1,0 +1,91 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "audit_event",
+    "description": "Human admin actions (GDPR, settings, transfers)",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "actor_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "action",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "target_table",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "target_id",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "detail",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "occurred_at",
+        "type": "datetime",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "audit_event_target_table_target_id_idx",
+        "columns": [
+          "target_table",
+          "target_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "audit_event_actor_id_idx",
+        "columns": [
+          "actor_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "governance",
+    "derived": false,
+    "enums": {
+      "action": [
+        "contact_export",
+        "contact_erase",
+        "settings_change",
+        "bulk_transfer",
+        "target_change",
+        "permission_change",
+        "user_change"
+      ]
+    },
+    "notes": {}
+  }
+}

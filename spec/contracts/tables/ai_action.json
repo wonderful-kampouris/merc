@@ -1,0 +1,159 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "ai_action",
+    "description": "Everything the AI did or proposed; undo source",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "on_behalf_of",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "agent",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "action_type_code",
+        "type": "string",
+        "required": true,
+        "reference": {
+          "table": "merc.action_type",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "target_table",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "target_id",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "voice_log_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.voice_log",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "reason",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "payload_json",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "before_snapshot_json",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "after_snapshot_json",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "applied_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "undone_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "undone_by",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "set_null"
+        }
+      }
+    ],
+    "indexes": [
+      {
+        "name": "ai_action_voice_log_id_idx",
+        "columns": [
+          "voice_log_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "ai_action_on_behalf_of_status_idx",
+        "columns": [
+          "on_behalf_of",
+          "status"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "ai_action_target_id_idx",
+        "columns": [
+          "target_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "voice",
+    "derived": false,
+    "enums": {
+      "agent": [
+        "debrief",
+        "briefing",
+        "alerts",
+        "email",
+        "import",
+        "planner",
+        "lifecycle",
+        "discount",
+        "buddy",
+        "research"
+      ],
+      "status": [
+        "suggested",
+        "applied",
+        "undone",
+        "rejected"
+      ]
+    },
+    "notes": {}
+  }
+}

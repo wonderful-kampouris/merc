@@ -1,0 +1,52 @@
+{
+  "name": "record_approval_decision",
+  "agent": "merc-approver",
+  "function": "approval-decide",
+  "description": "Record the manager's decision.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "decision": {
+        "type": "string",
+        "enum": [
+          "approve",
+          "counter",
+          "reject"
+        ]
+      },
+      "approved_pct": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "note": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "decision"
+    ]
+  },
+  "inject": [
+    "call_metadata.approval_id",
+    "via=phone_call",
+    "callee"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "Read the decision back before ending.",
+  "returns": "../../functions/approval-decide.json#/response"
+}

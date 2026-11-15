@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "visit-card-get",
+  "description": "Merc fn:visit-card-get: the visit card for a customer or prospect (contracts/functions/visit-card-get.json). Source: Merc monorepo shared/handlers/src/visit-card-get.ts.",
+  "method": "GET",
+  "path_slug": "visit-card-get",
+  "param_mapping": {}
+}

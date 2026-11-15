@@ -1,0 +1,58 @@
+{
+  "slug": "import-confirm",
+  "method": "POST",
+  "kind": "http",
+  "gate": "import.manage",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "import_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "mapping_overrides": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "import_id",
+      "mapping_overrides"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "import_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "import_id",
+      "status"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "data_import",
+    "import_column_mapping"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

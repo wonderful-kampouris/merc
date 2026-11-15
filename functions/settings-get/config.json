@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "settings-get",
+  "description": "Merc fn:settings-get: org settings, AI permissions, alert rules, ICP and discount policies (REQ-SET-001) (contracts/functions/settings-get.json). Source: Merc monorepo shared/handlers/src/settings-get.ts.",
+  "method": "GET",
+  "path_slug": "settings-get",
+  "param_mapping": {}
+}

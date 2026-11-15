@@ -1,0 +1,9 @@
+{
+  "kind": "cron",
+  "name": "account-lifecycle",
+  "description": "Merc fn:account-lifecycle: nightly, customers past the lost rule become lost via an undoable ai_action. Source: shared/handlers/src/account-lifecycle.ts",
+  "timeout_ms": 300000,
+  "cron_schedules": [
+    { "cron_expression": "45 2 * * *", "timezone": "Europe/Athens", "params": {}, "enabled": true }
+  ]
+}

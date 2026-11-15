@@ -1,0 +1,99 @@
+Merc
+Rep
+Mock
+Rep
+Manager
+Admin
+ΕΛ
+EN
+Mock data
+Café Miltos
+Mock
+Customer
+Back to list
+Summary
+~10 s
+Listen
+
+Café Miltos orders 12 kg of Espresso Classico every two weeks. The grinder problem is still open; the technician visit is promised for Tuesday.
+
+How to talk to them
+
+Miltos is direct; start with the grinder fix, then the order.
+
+Order rhythm and risk
+Risk: Low · 10
+Orders every
+14 days
+Since last order
+6 days
+Usual order: 12 kg Espresso Classico 1kg
+Open problem older than 7 days
+Alerts
+Grinder problem open for 8 days
+Open problems
+
+Grinder is making noise
+
+Open
+Due 17 Nov
+In progress
+Resolved
+Tasks
+Bring the grinder technician
+
+Due 17 Nov
+
+Promise to customer
+Recent orders
+
+9 Nov · €234
+
+Confirmed
+12 kg Espresso Classico 1kg
+Repeat as draft
+
+26 Oct · €234
+
+Confirmed
+12 kg Espresso Classico 1kg
+
+12 Oct · €195
+
+Confirmed
+10 kg Espresso Classico 1kg
+Suggested products
+Espresso Nuovo Blend 1kg
+
+Campaign this week, fits their espresso volume
+
+Campaigns
+Espresso Nuovo to cafés
+
+Offer a 1kg trial bag.
+
+Contacts
+Add contact
+Miltos Papadakis
+
+Owner · +306901000000
+
+Decision maker
+Account details
+Phone
++302106000000
+Email
+info@miltos.example.gr
+Address
+Odos Café 10, 15231
+Website
+https://miltos.example.gr
+Espresso 20kg monthly
+
+negotiation · €3,800
+
+Today
+Customers
+Record
+Approvals
+More

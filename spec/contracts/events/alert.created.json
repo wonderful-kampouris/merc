@@ -1,0 +1,20 @@
+{
+  "type": "alert.created",
+  "envelope": {
+    "type": "alert.created",
+    "at": "date-time",
+    "payload": "see schema"
+  },
+  "payload": {
+    "type": "object",
+    "properties": {
+      "alert": {
+        "$ref": "../_defs.json#/$defs/AlertCard"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "alert"
+    ]
+  }
+}

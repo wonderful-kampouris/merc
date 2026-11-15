@@ -1,0 +1,110 @@
+{
+  "slug": "draft-message",
+  "method": "POST",
+  "kind": "http",
+  "gate": null,
+  "callers": [
+    "internal"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "contact_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "intent": {
+        "type": "string"
+      },
+      "channel": {
+        "type": "string",
+        "enum": [
+          "email",
+          "whatsapp",
+          "viber"
+        ]
+      },
+      "context": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "on_behalf_of": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "voice_log_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id",
+      "intent",
+      "channel",
+      "on_behalf_of"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "approval_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "ai_action_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "approval_id",
+      "ai_action_id"
+    ]
+  },
+  "reads": [
+    "account",
+    "contact",
+    "activity",
+    "channel"
+  ],
+  "writes": [
+    "ai_action",
+    "approval",
+    "message_approval"
+  ],
+  "errors": [],
+  "llm": [
+    "draft_message"
+  ],
+  "integrations": [],
+  "notes": "Internal only (called by debrief-process, alert-act). Never sends."
+}

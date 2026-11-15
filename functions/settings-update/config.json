@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "settings-update",
+  "description": "Merc fn:settings-update: partial admin settings update, audited (REQ-SET-001, REQ-CORE-010) (contracts/functions/settings-update.json). Source: Merc monorepo shared/handlers/src/settings-update.ts.",
+  "method": "PUT",
+  "path_slug": "settings-update",
+  "param_mapping": {}
+}

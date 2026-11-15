@@ -1,0 +1,124 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "activity",
+    "description": "Anything that happened: visit, call, email, message, note",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "actor_user_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "contact_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.contact",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "visit_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.visit",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "voice_log_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.voice_log",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "activity_type",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "source",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "body",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "occurred_at",
+        "type": "datetime",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "activity_account_id_occurred_at_idx",
+        "columns": [
+          "account_id",
+          "occurred_at"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "activity_actor_user_id_idx",
+        "columns": [
+          "actor_user_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "activity_voice_log_id_idx",
+        "columns": [
+          "voice_log_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {
+      "activity_type": [
+        "visit",
+        "call",
+        "email",
+        "message",
+        "note",
+        "rehearsal"
+      ],
+      "source": [
+        "human",
+        "ai",
+        "connection"
+      ]
+    },
+    "notes": {}
+  }
+}

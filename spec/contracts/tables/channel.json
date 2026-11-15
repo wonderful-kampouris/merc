@@ -1,0 +1,32 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "channel",
+    "description": "Outbound channels to customers",
+    "columns": [
+      {
+        "name": "code",
+        "type": "string",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "requires_provider_approval",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "indexes": []
+  },
+  "x": {
+    "domain": "lookup",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

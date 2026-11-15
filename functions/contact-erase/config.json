@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "contact-erase",
+  "description": "Merc fn:contact-erase: GDPR contact erase, human-only, audited (REQ-SET-004) (contracts/functions/contact-erase.json). Source: Merc monorepo shared/handlers/src/contact-erase.ts.",
+  "method": "POST",
+  "path_slug": "contact-erase",
+  "param_mapping": {}
+}

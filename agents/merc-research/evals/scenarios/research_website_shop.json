@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "name": "research_website_shop",
+  "description": "Shop with a website: reads its own site, saves a dossier where every fact cites a breadbc.gr URL, completes without approval. Runs the real tools against eval fixture rows on dev (search 710670fe 'merc-research eval fixtures'; tool mocks need the FeatureBackofficeEvalTaskFlow flag, which is off).",
+  "channel": "backoffice",
+  "eval_type": "backoffice_eval",
+  "instructions": {
+    "mode": "turn_based",
+    "turns": [],
+    "backoffice_task": {
+      "task_input": "candidate_research candidate_id=bc3dd5fd-de8b-4c9c-a6d0-51c4c8acf578",
+      "expected_behavior": "Calls get_candidate with the candidate_id from the task, reads https://breadbc.gr/ with scrape_website (only that site), calls save_dossier exactly once with facts taken from the page (for example sourdough bread and its product categories), each fact with a source_url on breadbc.gr, and finishes the task as completed without asking for approval. It does not invent prices."
+    }
+  }
+}

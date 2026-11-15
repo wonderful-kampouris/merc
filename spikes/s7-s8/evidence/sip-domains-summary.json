@@ -1,0 +1,64 @@
+[
+ {
+  "name": "gamma",
+  "is_sip_trunk": false,
+  "numbers": [
+   "+19402028612"
+  ]
+ },
+ {
+  "name": "alpha",
+  "is_sip_trunk": false,
+  "numbers": [
+   "+15736793429",
+   "+14067328443",
+   "+12193019262"
+  ]
+ },
+ {
+  "name": "omega-us-outbound",
+  "is_sip_trunk": true,
+  "numbers": [
+   "+19365490675"
+  ]
+ },
+ {
+  "name": "omega-zadarma-outbound",
+  "is_sip_trunk": true,
+  "numbers": [
+   "+302100140931"
+  ]
+ },
+ {
+  "name": "gamma-hackathon",
+  "is_sip_trunk": true,
+  "numbers": [
+   "+19402028612"
+  ]
+ },
+ {
+  "name": "alpha-hackathon",
+  "is_sip_trunk": true,
+  "numbers": [
+   "+15736793429",
+   "+14067328443",
+   "+12193019262",
+   "+16602435201"
+  ]
+ },
+ {
+  "name": "omega-zadarma-inbound",
+  "is_sip_trunk": false,
+  "numbers": [
+   "+302100140931",
+   "+19365490675"
+  ]
+ },
+ {
+  "name": "omega",
+  "is_sip_trunk": false,
+  "numbers": [
+   "+19365490675"
+  ]
+ }
+]

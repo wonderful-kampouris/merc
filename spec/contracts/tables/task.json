@@ -1,0 +1,110 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "task",
+    "description": "Something to be done",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "owner_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "deal_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.deal",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "is_customer_promise",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "due_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "source",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "voice_log_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.voice_log",
+          "on_delete": "set_null"
+        }
+      }
+    ],
+    "indexes": [
+      {
+        "name": "task_owner_id_status_due_at_idx",
+        "columns": [
+          "owner_id",
+          "status",
+          "due_at"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "task_account_id_idx",
+        "columns": [
+          "account_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {
+      "status": [
+        "open",
+        "done",
+        "cancelled"
+      ],
+      "source": [
+        "human",
+        "ai"
+      ]
+    },
+    "notes": {}
+  }
+}

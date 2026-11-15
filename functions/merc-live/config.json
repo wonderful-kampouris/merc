@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "merc-live",
+  "description": "Merc fn:merc-live: WebSocket channels rep:{id} / team:{id} for live result cards, approvals, alerts (contracts/functions/merc-live.json, REQ-CORE-011). Source: Merc monorepo shared/handlers/src/merc-live.ts.",
+  "method": "SOCKET",
+  "path_slug": "merc-live",
+  "param_mapping": {}
+}

@@ -1,0 +1,18 @@
+{
+  "name": "get_approval_brief",
+  "agent": "merc-approver",
+  "function": "approver-brief",
+  "description": "Load the request this call is about. Call first.",
+  "parameters": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+  },
+  "inject": [
+    "call_metadata.approval_id"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "Say spoken_brief, then ask: approve, counter-offer, or reject?",
+  "returns": "../../functions/approver-brief.json#/response"
+}

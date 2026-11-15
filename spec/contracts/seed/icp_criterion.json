@@ -1,0 +1,32 @@
+[
+  {
+    "id": "2182cced-ce25-51eb-bcb9-0918d0af493d",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "criterion": "category_fit",
+    "weight": 3
+  },
+  {
+    "id": "0c8fde34-95ac-5c9a-a9fb-7e8e6d93e7f2",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "criterion": "near_route",
+    "weight": 2
+  },
+  {
+    "id": "0f08d4c2-ed9c-5153-b881-dbf520a1d718",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "criterion": "size_activity",
+    "weight": 2
+  },
+  {
+    "id": "e6d4fcca-d27c-5abb-8f31-4507a957180a",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "criterion": "replaceable_brands",
+    "weight": 2
+  },
+  {
+    "id": "55971cab-4857-58e7-8f2f-ad56c12819de",
+    "org_id": "97ee94d2-794c-5d47-923d-5616221c9835",
+    "criterion": "reviews_traffic",
+    "weight": 1
+  }
+]

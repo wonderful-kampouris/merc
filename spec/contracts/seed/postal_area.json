@@ -1,0 +1,106 @@
+[
+  {
+    "postal_code": "15231",
+    "city": "Chalandri",
+    "region": "North",
+    "country_code": "GR",
+    "lat": 38.0216,
+    "lng": 23.7985
+  },
+  {
+    "postal_code": "15232",
+    "city": "Chalandri",
+    "region": "North",
+    "country_code": "GR",
+    "lat": 38.0251,
+    "lng": 23.8034
+  },
+  {
+    "postal_code": "15233",
+    "city": "Chalandri",
+    "region": "North",
+    "country_code": "GR",
+    "lat": 38.0302,
+    "lng": 23.801
+  },
+  {
+    "postal_code": "15234",
+    "city": "Chalandri",
+    "region": "North",
+    "country_code": "GR",
+    "lat": 38.019,
+    "lng": 23.8102
+  },
+  {
+    "postal_code": "15124",
+    "city": "Marousi",
+    "region": "North",
+    "country_code": "GR",
+    "lat": 38.05,
+    "lng": 23.807
+  },
+  {
+    "postal_code": "15125",
+    "city": "Marousi",
+    "region": "North",
+    "country_code": "GR",
+    "lat": 38.044,
+    "lng": 23.796
+  },
+  {
+    "postal_code": "14561",
+    "city": "Kifisia",
+    "region": "North",
+    "country_code": "GR",
+    "lat": 38.074,
+    "lng": 23.811
+  },
+  {
+    "postal_code": "10673",
+    "city": "Kolonaki",
+    "region": "Center",
+    "country_code": "GR",
+    "lat": 37.978,
+    "lng": 23.744
+  },
+  {
+    "postal_code": "10674",
+    "city": "Kolonaki",
+    "region": "Center",
+    "country_code": "GR",
+    "lat": 37.98,
+    "lng": 23.741
+  },
+  {
+    "postal_code": "12131",
+    "city": "Peristeri",
+    "region": "Center",
+    "country_code": "GR",
+    "lat": 38.013,
+    "lng": 23.691
+  },
+  {
+    "postal_code": "17671",
+    "city": "Kallithea",
+    "region": "South",
+    "country_code": "GR",
+    "lat": 37.955,
+    "lng": 23.702
+  },
+  {
+    "postal_code": "16674",
+    "city": "Glyfada",
+    "region": "South",
+    "country_code": "GR",
+    "lat": 37.865,
+    "lng": 23.753
+  },
+  {
+    "postal_code": "18531",
+    "city": "Piraeus",
+    "region": "South",
+    "country_code": "GR",
+    "lat": 37.942,
+    "lng": 23.647
+  }
+]

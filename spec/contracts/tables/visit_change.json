@@ -1,0 +1,87 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "visit_change",
+    "description": "History of moves/skips/adds",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "visit_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.visit",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "changed_by",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "change_type",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "from_date",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "to_date",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "reason",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "via",
+        "type": "string",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "visit_change_visit_id_idx",
+        "columns": [
+          "visit_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "planning",
+    "derived": false,
+    "enums": {
+      "change_type": [
+        "moved",
+        "skipped",
+        "added",
+        "reordered",
+        "assigned"
+      ],
+      "via": [
+        "app",
+        "buddy",
+        "manager",
+        "planner"
+      ]
+    },
+    "notes": {}
+  }
+}

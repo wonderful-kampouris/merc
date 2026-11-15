@@ -1,0 +1,56 @@
+[
+  {
+    "id": "df53db3d-42c6-58b6-8e4b-93127fc1a13f",
+    "dossier_id": "b52c6470-46d7-5b89-825d-e9e72ca6f67c",
+    "fact_type": "product",
+    "value": "Freddo espresso, cappuccino, filter V60",
+    "competitor_id": null,
+    "source_url": "https://cafeavra.example.gr/menu",
+    "retrieved_at": "@D-2@09:00"
+  },
+  {
+    "id": "7df353b1-e298-5f91-93c9-79d0931eda31",
+    "dossier_id": "b52c6470-46d7-5b89-825d-e9e72ca6f67c",
+    "fact_type": "brand",
+    "value": "BlueBean Roasters espresso",
+    "competitor_id": "8fac56e5-0862-50b1-b242-bb37ac0c98e1",
+    "source_url": "https://cafeavra.example.gr/menu",
+    "retrieved_at": "@D-2@09:00"
+  },
+  {
+    "id": "0c9cca50-5308-5717-b6de-4421417729b6",
+    "dossier_id": "b52c6470-46d7-5b89-825d-e9e72ca6f67c",
+    "fact_type": "price",
+    "value": "Espresso 2.20 EUR, freddo 3.40 EUR",
+    "competitor_id": null,
+    "source_url": "https://cafeavra.example.gr/menu",
+    "retrieved_at": "@D-2@09:00"
+  },
+  {
+    "id": "7c5f6536-15a6-5f5a-8537-c44a103f8fe1",
+    "dossier_id": "b52c6470-46d7-5b89-825d-e9e72ca6f67c",
+    "fact_type": "opening_hours",
+    "value": "07:30-20:00 daily",
+    "competitor_id": null,
+    "source_url": "https://cafeavra.example.gr/menu",
+    "retrieved_at": "@D-2@09:00"
+  },
+  {
+    "id": "685e7340-cb73-55f3-9278-e555219c97bf",
+    "dossier_id": "b52c6470-46d7-5b89-825d-e9e72ca6f67c",
+    "fact_type": "review_theme",
+    "value": "Customers praise brunch, mention slow coffee at peak",
+    "competitor_id": null,
+    "source_url": "https://cafeavra.example.gr/menu",
+    "retrieved_at": "@D-2@09:00"
+  },
+  {
+    "id": "633dcad1-6da0-5e2c-9fb5-789cc1f01157",
+    "dossier_id": "b52c6470-46d7-5b89-825d-e9e72ca6f67c",
+    "fact_type": "size_signal",
+    "value": "Two baristas, 60 seats",
+    "competitor_id": null,
+    "source_url": "https://cafeavra.example.gr/menu",
+    "retrieved_at": "@D-2@09:00"
+  }
+]

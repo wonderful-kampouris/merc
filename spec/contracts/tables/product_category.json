@@ -1,0 +1,46 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "product_category",
+    "description": "Product categories",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "product_category_org_id_name_uq",
+        "columns": [
+          "org_id",
+          "name"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

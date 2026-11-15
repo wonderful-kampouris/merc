@@ -1,0 +1,25 @@
+{
+  "name": "product_lookup",
+  "agent": "merc-buddy",
+  "function": "product-lookup",
+  "description": "Product price, unit and active campaigns.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "query"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/product-lookup.json#/response"
+}

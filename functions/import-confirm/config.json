@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "import-confirm",
+  "description": "Merc fn:import-confirm (contracts/functions/import-confirm.json; callers: mgmt; gate: import.manage). Source: Merc monorepo shared/handlers/src/import-confirm.ts.",
+  "method": "POST",
+  "path_slug": "import-confirm",
+  "param_mapping": {}
+}

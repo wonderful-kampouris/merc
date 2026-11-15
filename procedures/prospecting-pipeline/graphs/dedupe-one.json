@@ -1,0 +1,13 @@
+{
+  "nodes": [
+    {"id": "trigger-1", "kind": "trigger", "title": "One candidate", "x": 0, "y": 0, "config": {
+      "trigger_type": "manual", "programmatic_invocation_enabled": false,
+      "input_schema": {"type": "object", "required": ["candidate"], "properties": {"candidate": {"type": "object", "description": "A merc.candidate row from the parent table read ({row_id, row})", "additionalProperties": true}}, "additionalProperties": false}}},
+    {"id": "function-2", "kind": "function", "title": "Dedupe (VAT, website, phone, name+postal)", "x": 300, "y": 0, "config": {
+      "slug": "candidate-dedupe", "params": {"candidate_id": "{{trigger-1.candidate.row_id}}"}}},
+    {"id": "return-3", "kind": "return", "title": "Duplicate?", "x": 600, "y": 0, "config": {
+      "output_schema": {"type": "object", "properties": {"candidate_id": {"type": "string"}, "duplicate": {}, "rule": {}}, "required": ["candidate_id"], "additionalProperties": false},
+      "output_mappings": {"candidate_id": "{{trigger-1.candidate.row_id}}", "duplicate": "{{function-2.duplicate}}", "rule": "{{function-2.rule}}"}}}
+  ],
+  "edges": [{"from": "trigger-1", "to": "function-2"}, {"from": "function-2", "to": "return-3"}]
+}

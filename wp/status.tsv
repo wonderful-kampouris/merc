@@ -1,0 +1,56 @@
+# id	status	owner	evidence
+WP-SPK-01	done	wf_c3cd7afc-da8	docs/spikes/S1-S2.md · live phone audio = human step
+WP-SPK-02	partial	wf_c3cd7afc-da8	docs/spikes/S3-S4.md · S4 proven; Gmail send waits on OAuth
+WP-SPK-03	done	wf_c3cd7afc-da8	docs/spikes/S5-S6.md
+WP-SPK-04	partial	wf_c3cd7afc-da8	docs/spikes/S7-S8.md · no campaigns, no caller id, no SMS
+WP-SPK-05	done	wf_c3cd7afc-da8	docs/spikes/S9-S10.md
+WP-QA-01	done	wf_c3cd7afc-da8	verifier pass · packages/contracts
+WP-OPS-01	done	wf_c3cd7afc-da8	verifier pass · docs/spikes/repo-layout.md
+WP-CORE-02	done	wf_c3cd7afc-da8	verifier pass · 3 model profiles on dev
+WP-INF-01	done	wf_c3cd7afc-da8	verifier pass · 64 tables, 148 FKs, 112 indexes on dev
+WP-INF-02	done	wf_c3cd7afc-da8	verifier pass · 2704 seed rows on dev, Lofos = 12 days
+WP-CORE-01	done	wf_c3cd7afc-da8	verifier pass · 27 tests · shared_lib branch merc-core
+WP-APP-01	partial	wf_c3cd7afc-da8	verifier partial · app merc on dev; phone screenshots = human step
+WP-QA-01b	building	wave 1b+2 workflow	
+WP-CORE-01b	building	wave 1b+2 workflow	
+WP-INF-03	building	wave 1b+2 workflow	
+WP-OPS-01b	building	wave 1b+2 workflow	
+WP-APP-01b	building	wave 1b+2 workflow	
+WP-CORE-03	building	wave 1b+2 workflow	
+WP-LIVE-01	building	wave 1b+2 workflow	
+WP-CRM-01	building	wave 1b+2 workflow	
+WP-CRM-02	building	wave 1b+2 workflow	
+WP-DEB-01	building	wave 1b+2 workflow	
+WP-DEB-02	building	wave 1b+2 workflow	
+WP-APR-01	building	wave 1b+2 workflow	
+WP-DSC-01	building	wave 1b+2 workflow	
+WP-CRD-01	building	wave 1b+2 workflow	
+WP-CRD-02	building	wave 1b+2 workflow	
+WP-BRF-01	building	wave 1b+2 workflow	
+WP-ALR-01	building	wave 1b+2 workflow	
+WP-PLN-01	building	wave 1b+2 workflow	
+WP-PRS-01	building	wave 1b+2 workflow	
+WP-APP-02	in_review	screens wf_b984050f-fd0	evidence/WP-APP-02/ · built+tests+phone shots (mock) · live check in WP-APP-08
+WP-APP-03	in_review	screens wf_b984050f-fd0	evidence/WP-APP-03/ · built · buddy widget needs merc-chat-token (added to app.json) · live in WP-APP-08
+WP-APP-04	in_review	screens wf_b984050f-fd0	evidence/WP-APP-04/ · built+tests+shots (mock) · live in WP-APP-08
+WP-APP-05	in_review	screens wf_b984050f-fd0	evidence/WP-APP-05/ · built · team roster via new fn team-list (WP-DSH-01)
+WP-APP-06	in_review	screens wf_b984050f-fd0	evidence/WP-APP-06/ · built · kpi-drilldown enum extended
+WP-APP-07	in_review	screens wf_b984050f-fd0	evidence/WP-APP-07/ · built+tests+shots (mock) · live in WP-APP-08
+WP-BUD-01	building	wave 3 workflow	
+WP-APV-01	building	wave 3 workflow	
+WP-PRS-02	building	wave 3 workflow	
+WP-DSH-01	building	wave 3 workflow	
+WP-TGT-01	building	wave 3 workflow	
+WP-CMP-01	building	wave 3 workflow	
+WP-SET-01	building	wave 3 workflow	
+WP-IMP-01	building	wave 3 workflow	
+WP-OPS-02	building	wave 3 workflow	
+WP-APP-09	building	wave 3 workflow	
+WP-BUD-02	building	wave 3 workflow	
+WP-APP-08	building	wave 3 workflow	
+WP-BUD-03	building	wave 4 wf_b113d915-c6d	
+WP-DEMO-01	building	wave 4 wf_b113d915-c6d	
+WP-E2E-05	building	wave 4 wf_b113d915-c6d	
+WP-MTG-01	building	wave 4 wf_b113d915-c6d	
+WP-MTG-02	building	wave 4 wf_b113d915-c6d	
+WP-QA-02	building	wave 4 wf_b113d915-c6d	

@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "my-performance",
+  "description": "Merc fn:my-performance: the caller's target progress and period numbers (contracts/functions/my-performance.json, REQ-TGT-002). Source: Merc monorepo shared/handlers/src/my-performance.ts.",
+  "method": "GET",
+  "path_slug": "my-performance",
+  "param_mapping": {}
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "prospect-search",
+  "description": "Merc fn:prospect-search (contracts/functions/prospect-search.json; callers: app, buddy; gate: prospects.search). Source: Merc monorepo shared/handlers/src/prospect-search.ts.",
+  "method": "POST",
+  "path_slug": "prospect-search",
+  "param_mapping": {}
+}

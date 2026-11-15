@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "visit-plan-accept",
+  "description": "Merc fn:visit-plan-accept (contracts/functions/visit-plan-accept.json). Source: Merc monorepo shared/handlers/src/visit-plan-accept.ts.",
+  "method": "POST",
+  "path_slug": "visit-plan-accept",
+  "param_mapping": {}
+}

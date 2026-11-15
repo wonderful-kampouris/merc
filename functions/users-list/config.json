@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "users-list",
+  "description": "Merc fn:users-list: org users with roles, managers and territories (REQ-SET-002) (contracts/functions/users-list.json). Source: Merc monorepo shared/handlers/src/users-list.ts.",
+  "method": "GET",
+  "path_slug": "users-list",
+  "param_mapping": {}
+}

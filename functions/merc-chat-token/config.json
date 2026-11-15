@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "merc-chat-token",
+  "description": "Merc fn:merc-chat-token: Chat SDK signed user token with HMAC-signed Merc identity claims (contracts/functions/merc-chat-token.json). Source: Merc monorepo shared/handlers/src/merc-chat-token.ts.",
+  "method": "POST",
+  "path_slug": "merc-chat-token",
+  "param_mapping": {}
+}

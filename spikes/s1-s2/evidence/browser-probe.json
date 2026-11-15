@@ -1,0 +1,24 @@
+{
+ "handshake_with_captcha": {
+  "POST /api/v1/web-chat/handshake": 428,
+  "console": "[Cloudflare Turnstile] Error: 600010"
+ },
+ "handshake_without_captcha": {
+  "POST /api/v1/web-chat/handshake": 200,
+  "GET /api/v1/web-chat/config?agent_id=3b6867f7-...": 200,
+  "connection": "connected",
+  "voice": {
+   "muted": false,
+   "status": "idle"
+  }
+ },
+ "page": {
+  "origin": "https://default.app.greece-hackathon.sb.wonderful.ai",
+  "path": "/app-view/",
+  "inIframe": false,
+  "secure": true,
+  "permissionsPolicyMic": true,
+  "mediaDevices": true,
+  "micPerm_automation_browser": "denied"
+ }
+}

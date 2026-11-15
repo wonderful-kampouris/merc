@@ -1,0 +1,50 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "icp_category",
+    "description": "Target categories for prospecting",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "category_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.account_category",
+          "on_delete": "cascade"
+        }
+      }
+    ],
+    "indexes": [
+      {
+        "name": "icp_category_org_id_category_id_uq",
+        "columns": [
+          "org_id",
+          "category_id"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "org",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

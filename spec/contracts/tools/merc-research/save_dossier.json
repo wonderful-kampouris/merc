@@ -1,0 +1,85 @@
+{
+  "name": "save_dossier",
+  "agent": "merc-research",
+  "function": "dossier-save",
+  "description": "Save the dossier; every fact needs its source_url.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "candidate_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "summary": {
+        "type": "string"
+      },
+      "price_level": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "low",
+              "mid",
+              "premium"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "facts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "fact_type": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            },
+            "source_url": {
+              "type": "string"
+            },
+            "competitor_name": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "fact_type",
+            "value",
+            "source_url"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "summary",
+      "facts"
+    ]
+  },
+  "inject": [
+    "task_id"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/dossier-save.json#/response"
+}

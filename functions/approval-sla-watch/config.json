@@ -1,0 +1,13 @@
+{
+  "kind": "cron",
+  "name": "approval-sla-watch",
+  "description": "Merc fn:approval-sla-watch: escalates overdue async discount approvals and times out unanswered approver calls (contracts/functions/approval-sla-watch.json, REQ-DSC-006/007). Source: Merc monorepo shared/handlers/src/approval-sla-watch.ts.",
+  "timeout_ms": 300000,
+  "cron_schedules": [
+    {
+      "cron_expression": "*/5 * * * *",
+      "timezone": "Europe/Athens",
+      "enabled": true
+    }
+  ]
+}

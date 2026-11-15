@@ -1,0 +1,27 @@
+[
+  {
+    "code": "email",
+    "name": "Email",
+    "requires_provider_approval": false
+  },
+  {
+    "code": "whatsapp",
+    "name": "WhatsApp",
+    "requires_provider_approval": true
+  },
+  {
+    "code": "viber",
+    "name": "Viber",
+    "requires_provider_approval": true
+  },
+  {
+    "code": "call",
+    "name": "Phone call",
+    "requires_provider_approval": false
+  },
+  {
+    "code": "meeting",
+    "name": "Meeting",
+    "requires_provider_approval": false
+  }
+]

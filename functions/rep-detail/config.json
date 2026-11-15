@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "rep-detail",
+  "description": "Merc fn:rep-detail: one rep's activity, logging discipline, pipeline, debrief results and open alerts (REQ-DSH-003) (contracts/functions/rep-detail.json). Source: shared/handlers/src/rep-detail.ts",
+  "method": "GET",
+  "path_slug": "rep-detail",
+  "param_mapping": {}
+}

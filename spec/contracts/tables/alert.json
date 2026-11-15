@@ -1,0 +1,145 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "alert",
+    "description": "Notifications with a suggested action",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "alert_type_code",
+        "type": "string",
+        "required": true,
+        "reference": {
+          "table": "merc.alert_type",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "recipient_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "deal_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.deal",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "task_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.task",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "territory_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.territory",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "competitor_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.competitor",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "severity",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "dedupe_key",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "message",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "resolved_at",
+        "type": "datetime",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "alert_dedupe_key_uq",
+        "columns": [
+          "dedupe_key"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "alert_recipient_id_status_idx",
+        "columns": [
+          "recipient_id",
+          "status"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "alert_account_id_idx",
+        "columns": [
+          "account_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "engagement",
+    "derived": false,
+    "enums": {
+      "severity": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "status": [
+        "open",
+        "done",
+        "dismissed"
+      ]
+    },
+    "notes": {}
+  }
+}

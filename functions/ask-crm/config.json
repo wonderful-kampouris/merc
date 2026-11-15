@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "ask-crm",
+  "description": "Merc fn:ask-crm: factual CRM questions through safe query templates; the LLM only routes (contracts/functions/ask-crm.json, REQ-CRD-004). Source: Merc monorepo shared/handlers/src/ask-crm.ts.",
+  "method": "GET",
+  "path_slug": "ask-crm",
+  "param_mapping": {}
+}

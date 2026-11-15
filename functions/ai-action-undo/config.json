@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "ai-action-undo",
+  "description": "Merc fn:ai-action-undo: undo one applied AI action (restore the before snapshot, delete rows it created) (contracts/functions/ai-action-undo.json). Source: Merc monorepo shared/handlers/src/ai-action-undo.ts.",
+  "method": "POST",
+  "path_slug": "ai-action-undo",
+  "param_mapping": {}
+}

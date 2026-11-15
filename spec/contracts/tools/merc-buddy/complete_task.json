@@ -1,0 +1,52 @@
+{
+  "name": "complete_task",
+  "agent": "merc-buddy",
+  "function": "task-update",
+  "description": "Mark a task done or change its date.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "task_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "open",
+              "done",
+              "cancelled"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "due_at": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "task_id"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/task-update.json#/response"
+}

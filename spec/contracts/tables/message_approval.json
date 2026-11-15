@@ -1,0 +1,93 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "message_approval",
+    "description": "Subtype: customer-facing message detail",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "approval_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.approval",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "channel_code",
+        "type": "string",
+        "required": true,
+        "reference": {
+          "table": "merc.channel",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "contact_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.contact",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "recipient_address",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "subject",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "draft_body",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "final_body",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "sent_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "external_message_id",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "failure_reason",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "message_approval_approval_id_uq",
+        "columns": [
+          "approval_id"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "voice",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

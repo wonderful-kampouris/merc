@@ -1,0 +1,46 @@
+{
+  "name": "act_on_candidate",
+  "agent": "merc-buddy",
+  "function": "candidate-act",
+  "description": "Add a new shop to the route, assign or dismiss it.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "candidate_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "action": {
+        "type": "string",
+        "enum": [
+          "add_to_route",
+          "assign",
+          "dismiss"
+        ]
+      },
+      "date": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "candidate_id",
+      "action"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/candidate-act.json#/response"
+}

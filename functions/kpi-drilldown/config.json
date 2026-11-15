@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "kpi-drilldown",
+  "description": "Merc fn:kpi-drilldown: the records behind one dashboard KPI (REQ-DSH-002) (contracts/functions/kpi-drilldown.json). Source: shared/handlers/src/kpi-drilldown.ts",
+  "method": "GET",
+  "path_slug": "kpi-drilldown",
+  "param_mapping": {}
+}

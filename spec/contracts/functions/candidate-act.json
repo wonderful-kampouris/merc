@@ -1,0 +1,102 @@
+{
+  "slug": "candidate-act",
+  "method": "POST",
+  "kind": "http",
+  "gate": "prospects.act",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "candidate_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "action": {
+        "type": "string",
+        "enum": [
+          "add_to_route",
+          "assign",
+          "dismiss"
+        ]
+      },
+      "rep_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "date": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "candidate_id",
+      "action"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "candidate": {
+        "$ref": "../_defs.json#/$defs/CandidateCard"
+      },
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "visit_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "candidate"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "candidate",
+    "account",
+    "visit",
+    "dossier"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "add_to_route creates account(type=prospect, source=prospecting), moves the dossier to it, creates a visit. assign defaults to territory.default_rep_id."
+}

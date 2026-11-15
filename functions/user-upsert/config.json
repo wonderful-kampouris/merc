@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "user-upsert",
+  "description": "Merc fn:user-upsert: invite or edit a user, audited (REQ-SET-002, REQ-CORE-010) (contracts/functions/user-upsert.json). Source: Merc monorepo shared/handlers/src/user-upsert.ts.",
+  "method": "POST",
+  "path_slug": "user-upsert",
+  "param_mapping": {}
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "campaign-upsert",
+  "description": "Merc fn:campaign-upsert: create or edit a campaign and its product, territory, category and rep targets (REQ-CMP-002) (contracts/functions/campaign-upsert.json). Source: Merc monorepo shared/handlers/src/campaign-upsert.ts.",
+  "method": "POST",
+  "path_slug": "campaign-upsert",
+  "param_mapping": {}
+}

@@ -1,0 +1,50 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "action_type",
+    "description": "Every kind of AI action and its autonomy class",
+    "columns": [
+      {
+        "name": "code",
+        "type": "string",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "action_class",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "default_mode",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": []
+  },
+  "x": {
+    "domain": "lookup",
+    "derived": false,
+    "enums": {
+      "action_class": [
+        "internal",
+        "draft",
+        "external",
+        "structural",
+        "destructive"
+      ],
+      "default_mode": [
+        "auto",
+        "ask",
+        "never"
+      ]
+    },
+    "notes": {}
+  }
+}

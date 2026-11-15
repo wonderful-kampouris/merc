@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "dossier-save",
+  "description": "Merc fn:dossier-save (contracts/functions/dossier-save.json; callers: merc-research; gate: None). Source: Merc monorepo shared/handlers/src/dossier-save.ts.",
+  "method": "POST",
+  "path_slug": "dossier-save",
+  "param_mapping": {}
+}

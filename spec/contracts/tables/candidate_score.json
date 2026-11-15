@@ -1,0 +1,56 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "candidate_score",
+    "description": "ICP score",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "candidate_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.candidate",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "score",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "model_profile",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "scored_at",
+        "type": "datetime",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "candidate_score_candidate_id_idx",
+        "columns": [
+          "candidate_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "prospecting",
+    "derived": false,
+    "enums": {},
+    "notes": {
+      "score": "0-100"
+    }
+  }
+}

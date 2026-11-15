@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "approver-brief",
+  "description": "Merc fn:approver-brief: one-sentence approval brief built from rows for merc-approver (REQ-DSC-003) (contracts/functions/approver-brief.json). Source: Merc monorepo shared/handlers/src/approver-brief.ts.",
+  "method": "GET",
+  "path_slug": "approver-brief",
+  "param_mapping": {}
+}

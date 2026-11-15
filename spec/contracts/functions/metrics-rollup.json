@@ -1,0 +1,68 @@
+{
+  "slug": "metrics-rollup",
+  "method": "CRON",
+  "kind": "cron",
+  "gate": null,
+  "callers": [
+    "scheduler"
+  ],
+  "timeout_ms": 300000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "dry_run": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "processed": {
+        "type": "integer"
+      },
+      "created": {
+        "type": "integer"
+      },
+      "details": {
+        "anyOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "processed",
+      "created"
+    ]
+  },
+  "reads": [
+    "sales_order",
+    "visit",
+    "problem",
+    "competitor_signal"
+  ],
+  "writes": [
+    "account_metrics"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Recompute account_metrics for all accounts (metrics.md#usual-frequency, #risk).",
+  "schedule": "15 * * * *"
+}

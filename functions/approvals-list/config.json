@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "approvals-list",
+  "description": "Merc fn:approvals-list: the caller's approvals as ApprovalCards (REQ-APR-001) (contracts/functions/approvals-list.json). Source: Merc monorepo shared/handlers/src/approvals-list.ts.",
+  "method": "GET",
+  "path_slug": "approvals-list",
+  "param_mapping": {}
+}

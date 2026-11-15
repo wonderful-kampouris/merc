@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "merc_spike outbound probe (S7/S8, no dialing)",
+  "description": "WP-SPK-04 dry-run: validates outbound + external-events paths without dialing",
+  "method": "POST",
+  "path_slug": "merc-spike-outbound-probe",
+  "param_mapping": {}
+}

@@ -1,0 +1,30 @@
+{
+  "type": "visit_brief.ready",
+  "envelope": {
+    "type": "visit_brief.ready",
+    "at": "date-time",
+    "payload": "see schema"
+  },
+  "payload": {
+    "type": "object",
+    "properties": {
+      "visit_brief_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "visit_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "account": {
+        "$ref": "../_defs.json#/$defs/AccountRef"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "visit_brief_id",
+      "visit_id",
+      "account"
+    ]
+  }
+}

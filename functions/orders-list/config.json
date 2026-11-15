@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "orders-list",
+  "description": "Merc fn:orders-list: orders of the accounts in the caller's scope as OrderSummary (contracts/functions/orders-list.json). Source: Merc monorepo shared/handlers/src/orders-list.ts.",
+  "method": "GET",
+  "path_slug": "orders-list",
+  "param_mapping": {}
+}

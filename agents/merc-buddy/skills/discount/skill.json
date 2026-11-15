@@ -1,0 +1,126 @@
+{
+  "name": "discount",
+  "display_name": "Discount",
+  "description": "Use when: customer asks for a discount.",
+  "prompts": {
+    "skill": "prompt.md"
+  },
+  "tools": {
+    "check_discount_limit": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "discount_pct",
+          "type": "number",
+          "required": true,
+          "is_exposed_to_llm": true
+        },
+        {
+          "name": "product_ids",
+          "type": "array",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": false
+      }
+    },
+    "request_manager_approval": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "discount_pct",
+          "type": "number",
+          "required": true,
+          "is_exposed_to_llm": true
+        },
+        {
+          "name": "lines",
+          "type": "array",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "product_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "quantity": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "product_id",
+              "quantity"
+            ]
+          }
+        },
+        {
+          "name": "justification",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true
+        },
+        {
+          "name": "mode",
+          "type": "enum",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "live",
+            "async"
+          ]
+        },
+        {
+          "name": "deal_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 30000,
+        "is_interruptible": false
+      }
+    },
+    "get_approval_status": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "approval_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": true
+      }
+    }
+  }
+}

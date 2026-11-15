@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "task-create",
+  "description": "Merc fn:task-create: create a task owned by the caller (contracts/functions/task-create.json). Source: Merc monorepo shared/handlers/src/task-create.ts.",
+  "method": "POST",
+  "path_slug": "task-create",
+  "param_mapping": {}
+}

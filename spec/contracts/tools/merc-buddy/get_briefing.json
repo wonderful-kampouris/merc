@@ -1,0 +1,30 @@
+{
+  "name": "get_briefing",
+  "agent": "merc-buddy",
+  "function": "briefing-get",
+  "description": "The morning briefing script. Read script_text as is.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "date": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "Read the script; do not add numbers.",
+  "returns": "../../functions/briefing-get.json#/response"
+}

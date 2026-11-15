@@ -1,0 +1,115 @@
+{
+  "slug": "campaign-upsert",
+  "method": "POST",
+  "kind": "http",
+  "gate": "campaigns.manage",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "campaign_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": {
+        "type": "string"
+      },
+      "message": {
+        "type": "string"
+      },
+      "starts_on": {
+        "type": "string",
+        "format": "date"
+      },
+      "ends_on": {
+        "type": "string",
+        "format": "date"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "active",
+          "ended"
+        ]
+      },
+      "product_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "territory_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "category_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "rep_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "title",
+      "message",
+      "starts_on",
+      "ends_on",
+      "status",
+      "product_ids",
+      "territory_ids",
+      "category_ids",
+      "rep_ids"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "campaign_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "campaign_id"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "campaign",
+    "campaign_product",
+    "campaign_territory",
+    "campaign_category",
+    "campaign_rep"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

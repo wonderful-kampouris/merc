@@ -1,0 +1,113 @@
+{
+  "profile": "merc-decide",
+  "used_by": [
+    "candidate-score"
+  ],
+  "eval_set": "evals/scoring/",
+  "purpose": "Rate each ICP criterion 0-1 with a reason; code computes score = 100 x sum(weight x rating) / sum(weight).",
+  "input": {
+    "type": "object",
+    "properties": {
+      "dossier": {
+        "$ref": "../_defs.json#/$defs/DossierView"
+      },
+      "category": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "icp": {
+        "type": "object",
+        "properties": {
+          "target_categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "criteria": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "criterion": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "criterion",
+                "weight"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "target_categories",
+          "criteria"
+        ]
+      },
+      "distance_to_route_m": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "dossier",
+      "icp"
+    ]
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "ratings": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "criterion": {
+              "type": "string"
+            },
+            "rating": {
+              "type": "number"
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "criterion",
+            "rating",
+            "reason"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "ratings"
+    ]
+  },
+  "rules": [
+    "near_route rating is computed by code from distance, not by the model.",
+    "Top 3 reasons by weight x rating are stored."
+  ],
+  "name": "candidate_score"
+}

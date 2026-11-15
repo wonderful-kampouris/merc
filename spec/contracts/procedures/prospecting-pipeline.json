@@ -1,0 +1,59 @@
+{
+  "trigger": {
+    "type": "webhook",
+    "payload": {
+      "search_id": "uuid"
+    }
+  },
+  "priority": "P0",
+  "wave": 3,
+  "steps": [
+    {
+      "id": "search",
+      "type": "function",
+      "function": "directory-search"
+    },
+    {
+      "id": "each",
+      "type": "for_each",
+      "over": "candidates of search_id with status=new",
+      "steps": [
+        {
+          "id": "dedupe",
+          "type": "function",
+          "function": "candidate-dedupe"
+        },
+        {
+          "id": "if_dup",
+          "type": "if",
+          "condition": "dedupe.duplicate == false",
+          "then": [
+            {
+              "id": "research",
+              "type": "agent_task",
+              "agent": "merc-research",
+              "task_type": "candidate_research",
+              "input": {
+                "candidate_id": "{{candidate_id}}"
+              },
+              "timeout_minutes": 5,
+              "on_timeout": "mark candidate failed"
+            },
+            {
+              "id": "score",
+              "type": "function",
+              "function": "candidate-score"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "finalize",
+      "type": "function",
+      "function": "search-finalize"
+    }
+  ],
+  "notes": "Procedures are beta: fallback is a function chain driven by a cron (documented in SPEC PRS).",
+  "name": "prospecting-pipeline"
+}

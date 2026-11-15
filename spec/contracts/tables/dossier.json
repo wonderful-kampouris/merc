@@ -1,0 +1,83 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "dossier",
+    "description": "Research dossier (exactly one of candidate_id / account_id)",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "candidate_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.candidate",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "summary",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "price_level",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "researched_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "research_task_id",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "dossier_candidate_id_uq",
+        "columns": [
+          "candidate_id"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "dossier_account_id_uq",
+        "columns": [
+          "account_id"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "prospecting",
+    "derived": false,
+    "enums": {
+      "price_level": [
+        "low",
+        "mid",
+        "premium"
+      ]
+    },
+    "notes": {}
+  }
+}

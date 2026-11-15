@@ -1,0 +1,77 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "order_line",
+    "description": "Order lines (unit comes from product)",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "order_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.sales_order",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "line_no",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "product_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.product",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "quantity",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "unit_price_minor",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "discount_pct",
+        "type": "number",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "order_line_order_id_line_no_uq",
+        "columns": [
+          "order_id",
+          "line_no"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "order_line_product_id_idx",
+        "columns": [
+          "product_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

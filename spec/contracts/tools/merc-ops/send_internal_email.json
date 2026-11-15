@@ -1,0 +1,31 @@
+{
+  "name": "send_internal_email",
+  "agent": "merc-ops",
+  "function": "builtin:context.email",
+  "description": "Email the summary to the manager/CEO (internal, no approval needed).",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "to": {
+        "type": "string"
+      },
+      "subject": {
+        "type": "string"
+      },
+      "body": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "to",
+      "subject",
+      "body"
+    ]
+  },
+  "inject": [],
+  "priority": "P1",
+  "side_effects": [],
+  "say": "",
+  "returns": null
+}

@@ -1,0 +1,38 @@
+{
+  "name": "check_discount_limit",
+  "agent": "merc-buddy",
+  "function": "discount-check",
+  "description": "Is this discount within the rep's limit?",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "discount_pct": {
+        "type": "number"
+      },
+      "product_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id",
+      "discount_pct",
+      "product_ids"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/discount-check.json#/response"
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "me",
+  "description": "Merc fn:me: the caller's Merc identity (contracts/functions/me.json). Source: Merc monorepo shared/handlers/src/me.ts.",
+  "method": "GET",
+  "path_slug": "me",
+  "param_mapping": {}
+}

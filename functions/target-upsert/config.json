@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "target-upsert",
+  "description": "Merc fn:target-upsert: create or edit a sales target for a rep, territory or org; overlaps rejected (contracts/functions/target-upsert.json, REQ-TGT-001). Source: Merc monorepo shared/handlers/src/target-upsert.ts.",
+  "method": "POST",
+  "path_slug": "target-upsert",
+  "param_mapping": {}
+}

@@ -1,0 +1,56 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "candidate_score_reason",
+    "description": "Up to 3 reasons per score",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "score_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.candidate_score",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "rank",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "criterion",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "reason",
+        "type": "string",
+        "required": true
+      }
+    ],
+    "indexes": [
+      {
+        "name": "candidate_score_reason_score_id_rank_uq",
+        "columns": [
+          "score_id",
+          "rank"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "prospecting",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

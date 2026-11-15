@@ -1,0 +1,78 @@
+{
+  "slug": "manager-call-outcome",
+  "method": "POST",
+  "kind": "http",
+  "gate": null,
+  "callers": [
+    "internal",
+    "merc-approver"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "manager_call_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "outcome": {
+        "type": "string",
+        "enum": [
+          "answered",
+          "no_answer",
+          "busy",
+          "voicemail",
+          "failed"
+        ]
+      },
+      "conversation_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "manager_call_id",
+      "outcome"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "approval_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "fallback": {
+        "type": "string",
+        "enum": [
+          "none",
+          "async"
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "approval_id",
+      "fallback"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "manager_call",
+    "approval",
+    "task"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Called by merc-approver triggers OnVoicemailDetected / OnEnd (no decision recorded), and lazily by approval-status / approval-sla-watch when a live call has no outcome after 90 s. Non-answered outcome switches the approval to async."
+}

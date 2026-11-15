@@ -1,0 +1,1 @@
+Summarize the approval call in one or two sentences: which request (rep and customer), the manager's decision (approved, counter-offer with %, rejected, or none) and whether it was recorded. Write in English.

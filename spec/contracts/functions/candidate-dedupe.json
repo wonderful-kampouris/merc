@@ -1,0 +1,80 @@
+{
+  "slug": "candidate-dedupe",
+  "method": "POST",
+  "kind": "http",
+  "gate": null,
+  "callers": [
+    "procedure"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "candidate_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "candidate_id"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "duplicate": {
+        "type": "boolean"
+      },
+      "matched_account_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "matched_candidate_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "rule": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "duplicate"
+    ]
+  },
+  "reads": [
+    "candidate",
+    "account"
+  ],
+  "writes": [
+    "candidate"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Rules in order: VAT exact; website domain; phone E.164; normalized name + postal code (trigram >= 0.85)."
+}

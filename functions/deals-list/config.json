@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "deals-list",
+  "description": "Merc fn:deals-list: deals of the accounts in the caller's scope, with stage and names (contracts/functions/deals-list.json). Source: Merc monorepo shared/handlers/src/deals-list.ts.",
+  "method": "GET",
+  "path_slug": "deals-list",
+  "param_mapping": {}
+}

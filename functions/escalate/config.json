@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "escalate",
+  "description": "Merc fn:escalate: tell my manager: task + alert for the caller's manager (REQ-BUD-011) (contracts/functions/escalate.json). Source: Merc monorepo shared/handlers/src/escalate.ts.",
+  "method": "POST",
+  "path_slug": "escalate",
+  "param_mapping": {}
+}

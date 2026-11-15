@@ -1,0 +1,47 @@
+{
+  "slug": "directory-search",
+  "method": "POST",
+  "kind": "http",
+  "gate": null,
+  "callers": [
+    "procedure"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "search_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "search_id"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "candidates_created": {
+        "type": "integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "candidates_created"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "candidate"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [
+    "integration:business-directory.search"
+  ],
+  "notes": "Source decided by spike S5 (OPEN-05). CSV fallback reads contracts/seed/prospect_list_*.json."
+}

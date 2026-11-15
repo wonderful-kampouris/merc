@@ -1,0 +1,152 @@
+{
+  "nodes": [
+    {
+      "id": "trigger-1",
+      "kind": "trigger",
+      "title": "Started by fn:prospect-search (context.automations.invoke)",
+      "x": 0,
+      "y": 0,
+      "config": {
+        "trigger_type": "manual",
+        "programmatic_invocation_enabled": true,
+        "input_schema": {
+          "type": "object",
+          "required": [
+            "search_id"
+          ],
+          "properties": {
+            "search_id": {
+              "type": "string",
+              "description": "merc.prospect_search id"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "id": "function-2",
+      "kind": "function",
+      "title": "Directory search (CSV / OSM)",
+      "x": 300,
+      "y": 0,
+      "config": {
+        "slug": "directory-search",
+        "params": {
+          "search_id": "{{trigger-1.search_id}}"
+        }
+      }
+    },
+    {
+      "id": "table-3",
+      "kind": "table",
+      "title": "Candidates of the search",
+      "x": 600,
+      "y": 0,
+      "config": {
+        "table_name": "merc.candidate",
+        "operation": "read",
+        "filter": {
+          "column": "search_id",
+          "op": "==",
+          "value": "{{trigger-1.search_id}}"
+        },
+        "limit": 100
+      }
+    },
+    {
+      "id": "for_each-4",
+      "kind": "for_each",
+      "title": "Dedupe each (serial)",
+      "x": 900,
+      "y": 0,
+      "config": {
+        "items": "{{table-3.rows}}",
+        "procedure_id": "${CHILD_DEDUPE_ID}",
+        "item_input": "candidate",
+        "inputs": {},
+        "max_items": 100,
+        "max_concurrency": 1,
+        "retry": {
+          "max_attempts": 2,
+          "backoff_ms": 1000
+        }
+      }
+    },
+    {
+      "id": "table-5",
+      "kind": "table",
+      "title": "Candidates after dedupe",
+      "x": 1200,
+      "y": 0,
+      "config": {
+        "table_name": "merc.candidate",
+        "operation": "read",
+        "filter": {
+          "column": "search_id",
+          "op": "==",
+          "value": "{{trigger-1.search_id}}"
+        },
+        "limit": 100
+      }
+    },
+    {
+      "id": "for_each-6",
+      "kind": "for_each",
+      "title": "Research + score each (parallel)",
+      "x": 1500,
+      "y": 0,
+      "config": {
+        "items": "{{table-5.rows}}",
+        "procedure_id": "${CHILD_RESEARCH_ID}",
+        "item_input": "candidate",
+        "inputs": {},
+        "max_items": 100,
+        "max_concurrency": 16,
+        "retry": {
+          "max_attempts": 2,
+          "backoff_ms": 2000
+        }
+      }
+    },
+    {
+      "id": "function-7",
+      "kind": "function",
+      "title": "Finalize + push candidates.ready",
+      "x": 1800,
+      "y": 0,
+      "config": {
+        "slug": "search-finalize",
+        "params": {
+          "search_id": "{{trigger-1.search_id}}"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "trigger-1",
+      "to": "function-2"
+    },
+    {
+      "from": "function-2",
+      "to": "table-3"
+    },
+    {
+      "from": "table-3",
+      "to": "for_each-4"
+    },
+    {
+      "from": "for_each-4",
+      "to": "table-5"
+    },
+    {
+      "from": "table-5",
+      "to": "for_each-6"
+    },
+    {
+      "from": "for_each-6",
+      "to": "function-7"
+    }
+  ]
+}

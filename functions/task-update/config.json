@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "task-update",
+  "description": "Merc fn:task-update: update a task's status, due date or title (owner or team) (contracts/functions/task-update.json). Source: Merc monorepo shared/handlers/src/task-update.ts.",
+  "method": "POST",
+  "path_slug": "task-update",
+  "param_mapping": {}
+}

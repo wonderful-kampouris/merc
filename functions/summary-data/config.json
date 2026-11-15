@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "summary-data",
+  "description": "Merc fn:summary-data (GET): deterministic facts for the merc-ops weekly summary / monthly report (REQ-DSH-005). Source: shared/handlers/src/summary-data.ts",
+  "method": "GET",
+  "path_slug": "summary-data",
+  "param_mapping": {}
+}

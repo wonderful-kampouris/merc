@@ -1,0 +1,26 @@
+{
+  "name": "get_approval_status",
+  "agent": "merc-buddy",
+  "function": "approval-status",
+  "description": "Check whether the manager has decided.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "approval_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "approval_id"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "Re-check at most every 20 s while the rep waits; stop after 3 minutes and say they'll be notified.",
+  "returns": "../../functions/approval-status.json#/response"
+}

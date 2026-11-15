@@ -1,0 +1,34 @@
+{
+  "name": "list_alerts",
+  "agent": "merc-buddy",
+  "function": "alerts-list",
+  "description": "Open alerts for the rep.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "status": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "open",
+              "done",
+              "dismissed"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/alerts-list.json#/response"
+}

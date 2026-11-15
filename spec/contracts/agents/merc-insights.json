@@ -1,0 +1,21 @@
+{
+  "type": "conversational",
+  "modality": "chat",
+  "agents_version": "v2",
+  "priority": "P2",
+  "wave": 4,
+  "channels": [
+    "Chat SDK embedded in Management app"
+  ],
+  "skills": [
+    {
+      "name": "explain_numbers",
+      "tools": []
+    }
+  ],
+  "behavior": [
+    "Read-only. Uses dashboard-kpis / kpi-drilldown via tools added when built (P2)."
+  ],
+  "name": "merc-insights",
+  "tools": []
+}

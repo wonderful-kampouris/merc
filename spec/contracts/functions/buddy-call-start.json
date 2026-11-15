@@ -1,0 +1,141 @@
+{
+  "slug": "buddy-call-start",
+  "method": "POST",
+  "kind": "http",
+  "gate": "voicelog.create",
+  "callers": [
+    "buddy",
+    "app",
+    "internal"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "channel": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "call",
+              "whatsapp"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "purpose": {
+        "type": "string",
+        "enum": [
+          "callback",
+          "briefing",
+          "approval_decided",
+          "alert",
+          "eod",
+          "pre_visit",
+          "post_visit",
+          "debrief_confirm"
+        ]
+      },
+      "reason": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "at": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "ref_table": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "ref_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "purpose"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "buddy_call_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "scheduled",
+          "started",
+          "sent",
+          "failed"
+        ]
+      },
+      "due_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "channel": {
+        "type": "string",
+        "enum": [
+          "call",
+          "whatsapp"
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "buddy_call_id",
+      "status",
+      "due_at",
+      "channel"
+    ]
+  },
+  "reads": [
+    "app_user",
+    "organization"
+  ],
+  "writes": [
+    "buddy_call"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [
+    "outbound_call:merc-buddy",
+    "integration:whatsapp.send_template"
+  ],
+  "notes": "Target is always the caller's own app_user.phone (never a request field). channel defaults to app_user.notify_channel (app -> call). at in the future -> status scheduled (buddy-callbacks-due starts it). Now: call -> POST /v1/agents/outbound {from: global MERC_BUDDY_NUMBER, to: phone, call_purpose: 'merc_buddy:<buddy_call_id>:<purpose>'} via service account merc-platform-api; whatsapp -> template merc_buddy_ping (free text only inside whatsapp_window_until). Call hours 07:30-21:00 org time; outside -> scheduled for the next allowed slot. Idempotent on (user, purpose, ref_id) for 10 min. Meeting loop (REQ-MTG-*): pre_visit (ref visit_brief) -> WhatsApp template merc_previsit_brief with the brief bullets and quick replies Call me / Useful / Not useful, or a call that reads spoken_script; post_visit (ref visit) -> 'How did it go at <account>?'; debrief_confirm (ref debrief_confirmation) -> template merc_debrief_confirm with quick replies Correct / Fix / Brief did not help. Inside whatsapp_window_until send the same content as an interactive free-form message instead of a template."
+}

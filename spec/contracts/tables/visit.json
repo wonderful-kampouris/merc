@@ -1,0 +1,145 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "visit",
+    "description": "Planned or completed visit",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "rep_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "plan_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.visit_plan",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "origin",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "planned_date",
+        "type": "date",
+        "required": true
+      },
+      {
+        "name": "route_position",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "purpose",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "outcome",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "planned_start_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "planned_duration_min",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "skip_reason",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "started_at",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "completed_at",
+        "type": "datetime",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "visit_rep_id_planned_date_route_position_idx",
+        "columns": [
+          "rep_id",
+          "planned_date",
+          "route_position"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "visit_account_id_idx",
+        "columns": [
+          "account_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "visit_plan_id_idx",
+        "columns": [
+          "plan_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {
+      "origin": [
+        "plan",
+        "manual",
+        "buddy",
+        "manager",
+        "calendar",
+        "alert"
+      ],
+      "status": [
+        "planned",
+        "done",
+        "skipped"
+      ]
+    },
+    "notes": {
+      "planned_start_at": "Planned meeting start; drives the pre-meeting brief and the post-visit prompt (REQ-MTG-001/005)",
+      "planned_duration_min": "Planned meeting length; default 30"
+    }
+  }
+}

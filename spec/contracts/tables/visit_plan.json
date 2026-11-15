@@ -1,0 +1,62 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "visit_plan",
+    "description": "Weekly suggested plan per rep",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "rep_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "week_start",
+        "type": "date",
+        "required": true
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "accepted_at",
+        "type": "datetime",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "visit_plan_rep_id_week_start_uq",
+        "columns": [
+          "rep_id",
+          "week_start"
+        ],
+        "type": "btree",
+        "unique": true
+      }
+    ]
+  },
+  "x": {
+    "domain": "planning",
+    "derived": false,
+    "enums": {
+      "status": [
+        "proposed",
+        "accepted",
+        "edited"
+      ]
+    },
+    "notes": {}
+  }
+}

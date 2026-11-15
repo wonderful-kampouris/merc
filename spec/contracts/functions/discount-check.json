@@ -1,0 +1,105 @@
+{
+  "slug": "discount-check",
+  "method": "POST",
+  "kind": "http",
+  "gate": "discounts.request",
+  "callers": [
+    "buddy",
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "account_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "discount_pct": {
+        "type": "number"
+      },
+      "product_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "account_id",
+      "discount_pct",
+      "product_ids"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "allowed": {
+        "type": "boolean"
+      },
+      "limit_pct": {
+        "type": "number"
+      },
+      "policy_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "approver": {
+        "anyOf": [
+          {
+            "$ref": "../_defs.json#/$defs/UserRef"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "manager_call_available": {
+        "type": "boolean"
+      },
+      "ai_action_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "allowed",
+      "limit_pct",
+      "manager_call_available"
+    ]
+  },
+  "reads": [
+    "discount_policy",
+    "account",
+    "product",
+    "app_user",
+    "account_category"
+  ],
+  "writes": [
+    "ai_action"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Resolution order in metrics.md#discount-limit. allowed=true writes ai_action discount_within_limit (internal log).",
+  "scope": "account"
+}

@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "name": "counter_path",
+  "description": "Manager counter-offers 6% on an 8% request.",
+  "channel": "chat",
+  "eval_type": "chat_eval",
+  "instructions": {
+    "mode": "turn_based",
+    "turns": [
+      {
+        "user_message": "Ναι, παρακαλώ;",
+        "tool_mocks": [
+          {
+            "tool_name": "get_approval_brief",
+            "expected_input": {},
+            "mock_output": {
+              "approval_id": "3f1d2a9e-1111-4c2b-9a51-7d1b2c3d4e5f",
+              "callee": {
+                "id": "e1",
+                "full_name": "Ελένη Γεωργίου",
+                "role": "manager"
+              },
+              "requester": {
+                "id": "n1",
+                "full_name": "Νίκος Παπαδόπουλος",
+                "role": "rep"
+              },
+              "account": {
+                "id": "a1",
+                "name": "Καφέ Μίλτος",
+                "account_type": "customer",
+                "postal_code": "54622"
+              },
+              "requested_pct": 8,
+              "policy_limit_pct": 3,
+              "approver_limit_pct": 10,
+              "lines": [
+                {
+                  "name": "Espresso Blend 1kg",
+                  "quantity": 20,
+                  "unit": "kg"
+                }
+              ],
+              "context_facts": [
+                "Justification: Competitor offers 10%",
+                "Last order 2026-11-04 (12 days ago)"
+              ],
+              "spoken_brief": "Νίκος Παπαδόπουλος ζητά έκπτωση 8% για Καφέ Μίλτος σε 20 κιλά Espresso Blend 1kg, ενώ το όριό του είναι 3%.",
+              "already_decided": false,
+              "status": "pending"
+            },
+            "side_effects": {},
+            "enabled": true
+          }
+        ],
+        "agent_response": "Greets Eleni by name and says in one sentence that Nikos asks for 8% for Kafe Miltos (above his 3% limit), then asks whether she approves, counter-offers or rejects. In Greek."
+      },
+      {
+        "user_message": "Όχι οκτώ. Δώσε του έξι τοις εκατό.",
+        "agent_response": "Reads back a counter-offer of 6% instead of 8% and asks for confirmation. Does not record yet."
+      },
+      {
+        "user_message": "Ναι.",
+        "tool_mocks": [
+          {
+            "tool_name": "record_approval_decision",
+            "expected_input": {
+              "decision": "counter",
+              "approved_pct": 6,
+              "note": {
+                "$ignore": true
+              }
+            },
+            "mock_output": {
+              "approval": {
+                "id": "3f1d2a9e-1111-4c2b-9a51-7d1b2c3d4e5f",
+                "kind": "discount",
+                "status": "countered",
+                "mode": "live",
+                "approved_pct": 6
+              },
+              "requester_notified": true
+            },
+            "side_effects": {},
+            "enabled": true
+          }
+        ],
+        "agent_response": "Tells the manager the 6% counter-offer is done or that the rep is being told about it, and says goodbye."
+      }
+    ],
+    "conversation_prompt": "The agent records counter with approved_pct 6 only after confirmation. No other decision is recorded."
+  }
+}

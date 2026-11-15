@@ -1,0 +1,106 @@
+{
+  "profile": "merc-write",
+  "used_by": [
+    "draft-message"
+  ],
+  "eval_set": "evals/draft-message/",
+  "purpose": "Write a customer message in the rep's own style.",
+  "input": {
+    "type": "object",
+    "properties": {
+      "intent": {
+        "type": "string"
+      },
+      "channel": {
+        "type": "string",
+        "enum": [
+          "email",
+          "whatsapp",
+          "viber"
+        ]
+      },
+      "language": {
+        "type": "string"
+      },
+      "rep_name": {
+        "type": "string"
+      },
+      "rep_style_samples": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "account_name": {
+        "type": "string"
+      },
+      "contact_name": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "facts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "value"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "intent",
+      "channel",
+      "language",
+      "rep_name",
+      "rep_style_samples",
+      "account_name",
+      "facts"
+    ]
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "subject": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "body": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "body"
+    ]
+  },
+  "rules": [
+    "Only facts from `facts`; no invented prices, dates or quantities.",
+    "Signed as the rep.",
+    "<= 120 words."
+  ],
+  "name": "draft_message"
+}

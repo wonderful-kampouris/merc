@@ -1,0 +1,63 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "import_row_issue",
+    "description": "Row-level problems found",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "import_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.data_import",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "row_no",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "issue_type",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "detail",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "import_row_issue_import_id_idx",
+        "columns": [
+          "import_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "import",
+    "derived": false,
+    "enums": {
+      "issue_type": [
+        "duplicate",
+        "invalid_vat",
+        "invalid_phone",
+        "invalid_address",
+        "missing_required",
+        "unknown_reference"
+      ]
+    },
+    "notes": {}
+  }
+}

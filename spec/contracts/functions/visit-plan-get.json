@@ -1,0 +1,104 @@
+{
+  "slug": "visit-plan-get",
+  "method": "GET",
+  "kind": "http",
+  "gate": "plan.read",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "week_start": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "rep_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "plan_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "week_start": {
+        "type": "string",
+        "format": "date"
+      },
+      "status": {
+        "type": "string"
+      },
+      "days": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "format": "date"
+            },
+            "visits": {
+              "type": "array",
+              "items": {
+                "$ref": "../_defs.json#/$defs/VisitSummary"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "date",
+            "visits"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "week_start",
+      "status",
+      "days"
+    ]
+  },
+  "reads": [
+    "visit_plan",
+    "visit",
+    "account"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "owner_or_team"
+}

@@ -1,0 +1,115 @@
+{
+  "name": "ask",
+  "display_name": "Ask",
+  "description": "Use when: factual questions.",
+  "prompts": {
+    "skill": "prompt.md"
+  },
+  "tools": {
+    "ask_crm": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "question",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true
+        },
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        }
+      ],
+      "config": {
+        "timeout": 30000,
+        "is_interruptible": true
+      }
+    },
+    "product_lookup": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "query",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": true
+      }
+    },
+    "my_performance": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "period",
+          "type": "enum",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "week",
+            "month",
+            "custom"
+          ]
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": true
+      }
+    },
+    "list_alerts": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "status",
+          "type": "enum",
+          "required": false,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "open",
+            "done",
+            "dismissed"
+          ]
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": true
+      }
+    },
+    "act_on_alert": {
+      "type": "programmable",
+      "parameters": [
+        {
+          "name": "alert_id",
+          "type": "string",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "description": "UUID taken from an earlier tool result"
+        },
+        {
+          "name": "action",
+          "type": "enum",
+          "required": true,
+          "is_exposed_to_llm": true,
+          "enum_values": [
+            "create_task",
+            "create_draft",
+            "done",
+            "dismiss"
+          ]
+        }
+      ],
+      "config": {
+        "timeout": 12000,
+        "is_interruptible": false
+      }
+    }
+  }
+}

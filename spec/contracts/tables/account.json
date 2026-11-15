@@ -1,0 +1,199 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "account",
+    "description": "Shop / business: prospect, customer or lost",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "account_type",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "category_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.account_category",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "vat_number",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "street",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "postal_code",
+        "type": "string",
+        "required": false,
+        "reference": {
+          "table": "merc.postal_area",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "lat",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "lng",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "phone",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "email",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "website",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "territory_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.territory",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "owner_rep_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "source",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "customer_since",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "visit_frequency_days",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "external_ref",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "account_owner_rep_id_idx",
+        "columns": [
+          "owner_rep_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "account_territory_id_idx",
+        "columns": [
+          "territory_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "account_org_id_vat_number_uq",
+        "columns": [
+          "org_id",
+          "vat_number"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "account_postal_code_idx",
+        "columns": [
+          "postal_code"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "account_account_type_idx",
+        "columns": [
+          "account_type"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "account_name_gin",
+        "columns": [
+          "name"
+        ],
+        "type": "gin"
+      },
+      {
+        "name": "account_external_ref_idx",
+        "columns": [
+          "external_ref"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {
+      "account_type": [
+        "prospect",
+        "customer",
+        "lost"
+      ],
+      "source": [
+        "manual",
+        "import",
+        "prospecting",
+        "erp"
+      ]
+    },
+    "notes": {
+      "visit_frequency_days": "overrides category default",
+      "external_ref": "ERP code"
+    }
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "app_user",
+    "description": "Rep / manager / admin",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "org_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.organization",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "wonderful_user_id",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "role_code",
+        "type": "string",
+        "required": true,
+        "reference": {
+          "table": "merc.role",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "manager_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "full_name",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "email",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "phone",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "preferred_language",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "voice_enabled",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "phone_channel_enabled",
+        "type": "boolean",
+        "required": false
+      },
+      {
+        "name": "notify_channel",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "whatsapp_window_until",
+        "type": "datetime",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "app_user_wonderful_user_id_uq",
+        "columns": [
+          "wonderful_user_id"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "app_user_org_id_idx",
+        "columns": [
+          "org_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "app_user_manager_id_idx",
+        "columns": [
+          "manager_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "app_user_email_idx",
+        "columns": [
+          "email"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "app_user_phone_idx",
+        "columns": [
+          "phone"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "org",
+    "derived": false,
+    "enums": {
+      "status": [
+        "active",
+        "left"
+      ],
+      "notify_channel": [
+        "app",
+        "whatsapp",
+        "call"
+      ]
+    },
+    "notes": {
+      "phone": "E.164. Also the rep's identity on phone/WhatsApp channels (REQ-BUD-013)",
+      "phone_channel_enabled": "Allow calling/messaging the buddy from this number; default true when phone is set",
+      "notify_channel": "How the buddy reaches the rep first; default app",
+      "whatsapp_window_until": "End of the 24 h WhatsApp session window (last inbound message + 24 h)"
+    }
+  }
+}

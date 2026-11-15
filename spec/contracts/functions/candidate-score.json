@@ -1,0 +1,76 @@
+{
+  "slug": "candidate-score",
+  "method": "POST",
+  "kind": "http",
+  "gate": null,
+  "callers": [
+    "procedure"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "candidate_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "candidate_id"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "score": {
+        "type": "number"
+      },
+      "reasons": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "criterion": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "criterion",
+            "reason"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "score",
+      "reasons"
+    ]
+  },
+  "reads": [
+    "candidate",
+    "dossier",
+    "dossier_fact",
+    "icp_criterion",
+    "icp_category",
+    "visit"
+  ],
+  "writes": [
+    "candidate_score",
+    "candidate_score_reason",
+    "candidate"
+  ],
+  "errors": [],
+  "llm": [
+    "candidate_score"
+  ],
+  "integrations": [],
+  "notes": ""
+}

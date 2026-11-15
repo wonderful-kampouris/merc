@@ -1,0 +1,98 @@
+{
+  "slug": "ask-crm",
+  "method": "GET",
+  "kind": "http",
+  "gate": "accounts.read",
+  "callers": [
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "question": {
+        "type": "string"
+      },
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "question"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "template": {
+        "type": "string"
+      },
+      "params": {
+        "type": "object"
+      },
+      "facts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "value",
+            "source"
+          ]
+        }
+      },
+      "no_data": {
+        "type": "boolean"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "template",
+      "params",
+      "facts",
+      "no_data"
+    ]
+  },
+  "reads": [
+    "account",
+    "sales_order",
+    "order_line",
+    "product",
+    "task",
+    "problem",
+    "deal",
+    "visit",
+    "competitor_signal"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [
+    "ask_crm_route"
+  ],
+  "integrations": [],
+  "notes": "LLM only selects a template + params (contracts/llm/ask_crm_route.json). Values come from queries. The buddy phrases the answer.",
+  "scope": "account"
+}

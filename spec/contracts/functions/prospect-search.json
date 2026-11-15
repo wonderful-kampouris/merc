@@ -1,0 +1,82 @@
+{
+  "slug": "prospect-search",
+  "method": "POST",
+  "kind": "http",
+  "gate": "prospects.search",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "area_text": {
+        "type": "string"
+      },
+      "category_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "category_text": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "origin": {
+        "type": "string",
+        "enum": [
+          "manual",
+          "route",
+          "list_upload"
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "area_text",
+      "origin"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "search_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "status": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "search_id",
+      "status"
+    ]
+  },
+  "reads": [],
+  "writes": [
+    "prospect_search"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [
+    "procedure:prospecting-pipeline"
+  ],
+  "notes": ""
+}

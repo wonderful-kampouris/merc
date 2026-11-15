@@ -1,0 +1,67 @@
+{
+  "slug": "summary-data",
+  "method": "GET",
+  "kind": "http",
+  "gate": null,
+  "callers": [
+    "merc-ops"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "kind": {
+        "type": "string",
+        "enum": [
+          "weekly",
+          "monthly"
+        ]
+      },
+      "scope_user_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "from": {
+        "type": "string",
+        "format": "date"
+      },
+      "to": {
+        "type": "string",
+        "format": "date"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "kind",
+      "scope_user_id",
+      "from",
+      "to"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "facts": {
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "facts"
+    ]
+  },
+  "reads": [
+    "kpi_daily",
+    "deal",
+    "alert",
+    "sales_target",
+    "organization"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}

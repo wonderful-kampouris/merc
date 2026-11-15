@@ -1,0 +1,99 @@
+{
+  "profile": "merc-extract",
+  "used_by": [
+    "import-analyze"
+  ],
+  "eval_set": "evals/import/",
+  "purpose": "Map arbitrary spreadsheet columns to Merc fields.",
+  "input": {
+    "type": "object",
+    "properties": {
+      "data_type": {
+        "type": "string"
+      },
+      "headers": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "sample_rows": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "target_fields": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "field": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "field",
+            "description"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "data_type",
+      "headers",
+      "sample_rows",
+      "target_fields"
+    ]
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "mappings": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "source_column": {
+              "type": "string"
+            },
+            "target_field": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "confidence": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "source_column",
+            "confidence"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "mappings"
+    ]
+  },
+  "rules": [
+    "target_field null when unsure (confidence < 0.6 is shown for confirmation)."
+  ],
+  "name": "import_mapping"
+}

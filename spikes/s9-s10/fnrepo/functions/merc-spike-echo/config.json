@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "merc-spike-echo",
+  "description": "WP-SPK-05 spike: nested body + identity echo (delete me)",
+  "method": "POST",
+  "path_slug": "merc-spike-echo",
+  "param_mapping": {}
+}

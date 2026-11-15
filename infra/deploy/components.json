@@ -1,0 +1,21 @@
+{
+  "_doc": "How a monorepo folder maps to a platform repo. Component names: fn:<slug>, agent:<slug>, app[:<slug>]. {name} is the part after the colon.",
+  "function": {
+    "src": "functions/{name}",
+    "repo": "{vcs}/workspaces/{workspace}/functions.git",
+    "subdir": "functions/{name}",
+    "note": "Shared workspace functions repo; only functions/<slug>/ is replaced, repo-mates are untouched."
+  },
+  "agent": {
+    "src": "agents/{name}",
+    "clone": "wful agents clone",
+    "subdir": ""
+  },
+  "app": {
+    "src": "app",
+    "default_name": "merc",
+    "repo": "{vcs}/workspaces/{workspace}/apps/{app_id}.git",
+    "subdir": ""
+  },
+  "sync_excludes": [".git", "node_modules", "dist", ".agents", ".wonderful", ".claude", ".env", ".env.*"]
+}

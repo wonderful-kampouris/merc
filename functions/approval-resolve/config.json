@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "approval-resolve",
+  "description": "Merc fn:approval-resolve: approve, edit-and-approve or reject a customer message; approve sends synchronously in the rep's identity (REQ-APR-001/002) (contracts/functions/approval-resolve.json). Source: Merc monorepo shared/handlers/src/approval-resolve.ts.",
+  "method": "POST",
+  "path_slug": "approval-resolve",
+  "param_mapping": {}
+}

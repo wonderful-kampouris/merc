@@ -1,0 +1,188 @@
+{
+  "profile": "merc-write",
+  "used_by": [
+    "visit-brief-get",
+    "previsit-briefs-due"
+  ],
+  "eval_set": "evals/visit-brief/",
+  "purpose": "Word the pre-meeting brief: at most 6 bullets for WhatsApp and a short spoken script for a call.",
+  "input": {
+    "type": "object",
+    "properties": {
+      "language": {
+        "type": "string"
+      },
+      "rep_first_name": {
+        "type": "string"
+      },
+      "account": {
+        "$ref": "../_defs.json#/$defs/AccountRef"
+      },
+      "visit_reason": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "facts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            },
+            "ref_table": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "ref_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "value"
+          ]
+        }
+      },
+      "push": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "product_id",
+          "name",
+          "reason"
+        ]
+      },
+      "avoid": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "product_id",
+          "name",
+          "reason"
+        ]
+      },
+      "company_values": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "how_to_talk_snippets": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "max_bullets": {
+        "type": "integer"
+      },
+      "max_seconds": {
+        "type": "integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "language",
+      "rep_first_name",
+      "account",
+      "facts",
+      "push",
+      "avoid",
+      "company_values",
+      "how_to_talk_snippets",
+      "max_bullets",
+      "max_seconds"
+    ]
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "bullets": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "fact_labels": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "text",
+            "fact_labels"
+          ]
+        }
+      },
+      "spoken_script": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "bullets",
+      "spoken_script"
+    ]
+  },
+  "rules": [
+    "Order: why this visit, open problem or promise, orders vs usual, push with its reason, avoid with its reason, how to talk to them.",
+    "Name only the push and avoid products given; never swap or add a product.",
+    "Every number in a bullet or the script appears in a fact value. Code checks it and drops the bullet otherwise.",
+    "Company values shape tone and the framing of the push, never add facts.",
+    "At most max_bullets bullets of at most 15 words; script <= 2.3 words/s x max_seconds."
+  ],
+  "name": "visit_brief_bullets"
+}

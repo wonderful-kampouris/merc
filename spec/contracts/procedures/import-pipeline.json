@@ -1,0 +1,30 @@
+{
+  "trigger": {
+    "type": "webhook",
+    "payload": {
+      "import_id": "uuid"
+    }
+  },
+  "priority": "P1",
+  "wave": 3,
+  "steps": [
+    {
+      "id": "analyze",
+      "type": "function",
+      "function": "import-analyze"
+    },
+    {
+      "id": "wait_confirm",
+      "type": "wait_table_condition",
+      "table": "data_import",
+      "condition": "status == 'confirmed'",
+      "timeout_hours": 72
+    },
+    {
+      "id": "apply",
+      "type": "function",
+      "function": "import-apply"
+    }
+  ],
+  "name": "import-pipeline"
+}

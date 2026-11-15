@@ -1,0 +1,15 @@
+{
+  "schema_version": "1",
+  "steps": [
+    { "id": "upload-1",  "stage": "source",    "type": "source.upload",      "title": "Uploads", "config": {} },
+    { "id": "convert-1", "stage": "ingest",    "type": "ingest.convert",     "title": "Convert", "config": {} },
+    { "id": "chunk-1",   "stage": "structure", "type": "structure.chunk",    "title": "Chunk",   "config": { "chunk_size": 800, "overlap": 160 } },
+    { "id": "store-1",   "stage": "store",     "type": "store.custom_table", "title": "Store",   "config": {} }
+  ],
+  "edges": [
+    { "from": "upload-1",  "to": "convert-1" },
+    { "from": "convert-1", "to": "chunk-1" },
+    { "from": "chunk-1",   "to": "store-1" }
+  ],
+  "retrieval": { "mode": "semantic", "top_k": 4 }
+}

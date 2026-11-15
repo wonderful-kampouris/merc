@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "task-assign",
+  "description": "Merc fn:task-assign (contracts/functions/task-assign.json). Source: Merc monorepo shared/handlers/src/task-assign.ts.",
+  "method": "POST",
+  "path_slug": "task-assign",
+  "param_mapping": {}
+}

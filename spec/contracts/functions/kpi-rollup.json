@@ -1,0 +1,73 @@
+{
+  "slug": "kpi-rollup",
+  "method": "CRON",
+  "kind": "cron",
+  "gate": null,
+  "callers": [
+    "scheduler"
+  ],
+  "timeout_ms": 300000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "dry_run": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "processed": {
+        "type": "integer"
+      },
+      "created": {
+        "type": "integer"
+      },
+      "details": {
+        "anyOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "processed",
+      "created"
+    ]
+  },
+  "reads": [
+    "visit",
+    "voice_log",
+    "account",
+    "ai_action",
+    "approval",
+    "deal",
+    "sales_order",
+    "alert",
+    "discount_request"
+  ],
+  "writes": [
+    "kpi_daily"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Yesterday per rep (metrics.md).",
+  "schedule": "5 0 * * *"
+}

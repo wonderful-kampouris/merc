@@ -1,0 +1,9 @@
+{
+  "kind": "cron",
+  "name": "weekly-summary",
+  "description": "Merc fn:weekly-summary: Monday 07:00 creates one merc-ops weekly_summary task per manager and admin (REQ-DSH-005). Source: shared/handlers/src/weekly-summary.ts",
+  "timeout_ms": 300000,
+  "cron_schedules": [
+    { "cron_expression": "0 7 * * 1", "timezone": "Europe/Athens", "params": {}, "enabled": true }
+  ]
+}

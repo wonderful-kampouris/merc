@@ -1,0 +1,4 @@
+[
+  { "slug": "nuovo-why", "name": "Why Espresso Nuovo fits", "question": "Why does Espresso Nuovo Blend fit a specialty café?", "expected_answer": "A 90% arabica, lighter roast with caramel and red-fruit notes that gives specialty-leaning cafés a premium story; the campaign offers a 1 kg trial bag.", "gate": false },
+  { "slug": "cups-pairing", "name": "Pairing with cups", "question": "What should I suggest when a café orders coffee without cups?", "expected_answer": "Suggest Paper Cups 8oz and Lids.", "gate": false }
+]

@@ -1,0 +1,120 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "sales_order",
+    "description": "Actual or draft order",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "account_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.account",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "deal_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.deal",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "rep_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "restrict"
+        }
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "source",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "order_date",
+        "type": "date",
+        "required": true
+      },
+      {
+        "name": "voice_log_id",
+        "type": "auto_uuid",
+        "required": false,
+        "reference": {
+          "table": "merc.voice_log",
+          "on_delete": "set_null"
+        }
+      },
+      {
+        "name": "external_ref",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "indexes": [
+      {
+        "name": "sales_order_account_id_order_date_idx",
+        "columns": [
+          "account_id",
+          "order_date"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "sales_order_rep_id_idx",
+        "columns": [
+          "rep_id"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "sales_order_status_idx",
+        "columns": [
+          "status"
+        ],
+        "type": "btree"
+      },
+      {
+        "name": "sales_order_deal_id_idx",
+        "columns": [
+          "deal_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "crm",
+    "derived": false,
+    "enums": {
+      "status": [
+        "draft",
+        "confirmed",
+        "cancelled"
+      ],
+      "source": [
+        "manual",
+        "voice",
+        "erp",
+        "import"
+      ]
+    },
+    "notes": {}
+  }
+}

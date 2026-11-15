@@ -1,0 +1,26 @@
+{
+  "name": "accept_week_plan",
+  "agent": "merc-buddy",
+  "function": "visit-plan-accept",
+  "description": "Accept the proposed week plan.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "plan_id": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "plan_id"
+    ]
+  },
+  "inject": [
+    "caller"
+  ],
+  "priority": "P0",
+  "side_effects": [],
+  "say": "",
+  "returns": "../../functions/visit-plan-accept.json#/response"
+}

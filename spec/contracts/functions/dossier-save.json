@@ -1,0 +1,138 @@
+{
+  "slug": "dossier-save",
+  "method": "POST",
+  "kind": "http",
+  "gate": null,
+  "callers": [
+    "merc-research"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "candidate_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "summary": {
+        "type": "string"
+      },
+      "price_level": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "low",
+              "mid",
+              "premium"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "facts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "fact_type": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            },
+            "source_url": {
+              "type": "string"
+            },
+            "competitor_name": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "fact_type",
+            "value",
+            "source_url"
+          ]
+        }
+      },
+      "research_task_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "summary",
+      "facts"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "dossier_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "facts_saved": {
+        "type": "integer"
+      },
+      "facts_rejected": {
+        "type": "integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "dossier_id",
+      "facts_saved",
+      "facts_rejected"
+    ]
+  },
+  "reads": [
+    "competitor"
+  ],
+  "writes": [
+    "dossier",
+    "dossier_fact",
+    "candidate"
+  ],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Rejects facts without source_url, or whose source host is a maps service (REQ-PRS-005)."
+}

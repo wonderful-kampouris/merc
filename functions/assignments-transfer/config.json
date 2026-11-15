@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "assignments-transfer",
+  "description": "Merc fn:assignments-transfer: transfer accounts with open tasks and planned visits, audited (REQ-SET-003) (contracts/functions/assignments-transfer.json). Source: Merc monorepo shared/handlers/src/assignments-transfer.ts.",
+  "method": "POST",
+  "path_slug": "assignments-transfer",
+  "param_mapping": {}
+}

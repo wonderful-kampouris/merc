@@ -1,0 +1,81 @@
+{
+  "slug": "visit-brief-get",
+  "method": "GET",
+  "kind": "http",
+  "gate": "plan.read",
+  "callers": [
+    "app",
+    "buddy",
+    "internal"
+  ],
+  "timeout_ms": 40000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "visit_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "regenerate": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "$ref": "../_defs.json#/$defs/VisitBrief"
+  },
+  "reads": [
+    "visit",
+    "account",
+    "account_metrics",
+    "problem",
+    "task",
+    "sales_order",
+    "order_line",
+    "product",
+    "product_guidance",
+    "campaign",
+    "campaign_product",
+    "rep_feedback",
+    "visit_brief",
+    "contact"
+  ],
+  "writes": [
+    "visit_brief"
+  ],
+  "errors": [],
+  "llm": [
+    "visit_brief_bullets"
+  ],
+  "integrations": [],
+  "notes": "Exactly one of visit_id / account_id (account_id -> the rep's next planned visit there today). Returns the stored brief unless regenerate. Facts come from the visit card handler (shared, not re-implemented). Push/avoid are chosen in code per metrics.md#visit-brief-hints; the LLM only words at most 6 bullets and a spoken script of at most 45 s. Company values come from the Context Hub KB merc-company.",
+  "scope": "account"
+}

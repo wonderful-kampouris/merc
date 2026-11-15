@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "campaign-funnel",
+  "description": "Merc fn:campaign-funnel: campaign funnel shown, pitched, ordered per metrics.md#campaign-funnel (REQ-CMP-003) (contracts/functions/campaign-funnel.json). Source: Merc monorepo shared/handlers/src/campaign-funnel.ts.",
+  "method": "GET",
+  "path_slug": "campaign-funnel",
+  "param_mapping": {}
+}

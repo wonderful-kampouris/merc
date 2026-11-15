@@ -1,0 +1,79 @@
+{
+  "slug": "rep-detail",
+  "method": "GET",
+  "kind": "http",
+  "gate": "team.read",
+  "callers": [
+    "mgmt"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "rep_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "from": {
+        "type": "string",
+        "format": "date"
+      },
+      "to": {
+        "type": "string",
+        "format": "date"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "rep_id",
+      "from",
+      "to"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "rep": {
+        "$ref": "../_defs.json#/$defs/UserRef"
+      },
+      "kpis": {
+        "type": "object"
+      },
+      "recent_visits": {
+        "type": "array",
+        "items": {
+          "$ref": "../_defs.json#/$defs/VisitSummary"
+        }
+      },
+      "recent_debriefs": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "open_alerts": {
+        "type": "array",
+        "items": {
+          "$ref": "../_defs.json#/$defs/AlertCard"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "rep",
+      "kpis",
+      "recent_visits",
+      "recent_debriefs",
+      "open_alerts"
+    ]
+  },
+  "reads": [],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "Debrief transcripts visible only if OPEN-13 allows.",
+  "scope": "team"
+}

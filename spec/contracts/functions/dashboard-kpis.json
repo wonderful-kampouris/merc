@@ -1,0 +1,117 @@
+{
+  "slug": "dashboard-kpis",
+  "method": "GET",
+  "kind": "http",
+  "gate": "dashboard.read",
+  "callers": [
+    "mgmt",
+    "app"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P1",
+  "wave": 3,
+  "request": {
+    "type": "object",
+    "properties": {
+      "scope": {
+        "type": "string",
+        "enum": [
+          "me",
+          "team",
+          "org"
+        ]
+      },
+      "territory_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "rep_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "from": {
+        "type": "string",
+        "format": "date"
+      },
+      "to": {
+        "type": "string",
+        "format": "date"
+      },
+      "compare_baseline": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "scope",
+      "from",
+      "to"
+    ]
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "kpis": {
+        "$ref": "../_defs.json#/$defs/KpiSet"
+      },
+      "by_rep": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "rep": {
+              "$ref": "../_defs.json#/$defs/UserRef"
+            },
+            "kpis": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rep",
+            "kpis"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "kpis",
+      "by_rep"
+    ]
+  },
+  "reads": [
+    "kpi_daily",
+    "deal",
+    "account_metrics",
+    "sales_target",
+    "deal_stage"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "dashboard"
+}

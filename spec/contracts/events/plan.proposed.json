@@ -1,0 +1,26 @@
+{
+  "type": "plan.proposed",
+  "envelope": {
+    "type": "plan.proposed",
+    "at": "date-time",
+    "payload": "see schema"
+  },
+  "payload": {
+    "type": "object",
+    "properties": {
+      "plan_id": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "week_start": {
+        "type": "string",
+        "format": "date"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "plan_id",
+      "week_start"
+    ]
+  }
+}

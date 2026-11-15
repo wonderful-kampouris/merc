@@ -1,0 +1,18 @@
+{
+  "name": "end_of_day",
+  "display_name": "End Of Day",
+  "description": "Use when: evening / 'wrap up'.",
+  "prompts": {
+    "skill": "prompt.md"
+  },
+  "tools": {
+    "end_of_day": {
+      "type": "programmable",
+      "parameters": [],
+      "config": {
+        "timeout": 30000,
+        "is_interruptible": true
+      }
+    }
+  }
+}

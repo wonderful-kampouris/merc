@@ -1,0 +1,57 @@
+{
+  "create": {
+    "schema": "merc",
+    "name": "territory_rep",
+    "description": "Reps working in a territory (M:N)",
+    "columns": [
+      {
+        "name": "id",
+        "type": "auto_uuid",
+        "required": true,
+        "primary_key": true
+      },
+      {
+        "name": "territory_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.territory",
+          "on_delete": "cascade"
+        }
+      },
+      {
+        "name": "user_id",
+        "type": "auto_uuid",
+        "required": true,
+        "reference": {
+          "table": "merc.app_user",
+          "on_delete": "cascade"
+        }
+      }
+    ],
+    "indexes": [
+      {
+        "name": "territory_rep_territory_id_user_id_uq",
+        "columns": [
+          "territory_id",
+          "user_id"
+        ],
+        "type": "btree",
+        "unique": true
+      },
+      {
+        "name": "territory_rep_user_id_idx",
+        "columns": [
+          "user_id"
+        ],
+        "type": "btree"
+      }
+    ]
+  },
+  "x": {
+    "domain": "org",
+    "derived": false,
+    "enums": {},
+    "notes": {}
+  }
+}

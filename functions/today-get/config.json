@@ -1,0 +1,9 @@
+{
+  "kind": "http",
+  "name": "today-get",
+  "description": "Merc fn:today-get: the caller's stops for a day in route order (contracts/functions/today-get.json). Source: Merc monorepo shared/handlers/src/today-get.ts.",
+  "method": "GET",
+  "path_slug": "today-get",
+  "param_mapping": {},
+  "timeout_ms": 30000
+}

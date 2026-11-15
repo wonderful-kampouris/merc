@@ -1,0 +1,37 @@
+linked   account-convert (c46eb57e-a3d6-454b-a999-caed26dc8099)
+linked   account-get (4a60133a-ceeb-4b38-86e5-4479f172d44e)
+linked   account-resolve (9b7f54cb-c56b-43fe-9b06-1c74d66cf01f)
+attached account-upsert (d11f450c-38da-4485-9bd8-5a8851f0cbfe) gate=accounts.write
+linked   accounts-list (89be761a-6ea5-4ffd-a4b0-962f974bf31a)
+attached alerts-list (58809563-36da-476e-92f9-b589e5b7f78b) gate=alerts.read
+attached approval-status (2320c6a0-bc21-4aab-9400-a3dbc7b6f4e6) gate=approvals.read
+linked   briefing-get (604b692b-8ee4-433a-a89f-c2eff4723c0b)
+attached campaigns-list (62930ef6-a016-48aa-a6be-b79b6fc4fb85) gate=campaigns.read
+attached candidate-add (38b0af1a-2d1d-4fc2-aa9c-36698b5d2199) gate=prospects.search
+linked   contact-upsert (e2f64294-9cd0-4bbc-869e-09f06cd13697)
+linked   deal-upsert (882fa330-5e08-448f-b332-7475c50136af)
+linked   deals-list (1953178b-e8c5-4c51-a0b8-24831cb864b8)
+attached debrief-result-get (efb1d334-94a3-4941-ae48-8c75729aa0c6) gate=voicelog.read
+attached discount-check (3b1945bb-c43b-4501-bdea-c9a9ac31fe99) gate=discounts.request
+linked   eod-summary (3bed5141-f694-452d-bd6f-4c82d1176bac)
+linked   escalate (9c37fca2-d970-463b-aa7d-ff1f4d62cd27)
+linked   me (98076dfa-fd0d-4e08-9dc0-6d7ed484a643)
+linked   merc-chat-token (43c84bc3-801f-4544-8eab-c7c8929bf07f)
+linked   merc-live (7293adf4-732f-4dbd-8e26-655b05f33568)
+attached order-upsert (0203f493-29ca-40f9-ae10-d2465ba1a7ab) gate=orders.write
+attached orders-list (f2b0f608-3e6b-4051-853f-192373a55224) gate=orders.read
+linked   product-lookup (db9e541b-33ca-4bda-9f4d-8bd1f4c19190)
+attached prospect-search (3f13905e-1e8b-41e0-94cb-6680444fe78f) gate=prospects.search
+attached target-upsert (bbe4c5df-70b3-4c4e-850c-f61d9b3fdd56) gate=targets.manage
+attached targets-list (7f5ef776-6eb3-452e-8629-31aea4849d4d) gate=targets.read
+linked   task-create (d725899d-c97d-4187-8808-95829d71df70)
+linked   task-update (22dc7dba-24ff-4ccb-a6c2-9a20a9bf565e)
+linked   today-get (90a6728b-40b4-42a5-b39a-aa40dc7bc1ef)
+linked   visit-card-get (98cc4f09-d9ea-4eb8-912d-a5d0c6f2d833)
+linked   visit-plan-accept (e53553cc-d848-4668-a8a5-6b79ab585534)
+linked   visit-plan-get (b24e10ea-f7e5-41e5-a114-8b66eef4a697)
+linked   visit-update (a9f6ba2d-462e-4df1-ad3f-9811213b5293)
+linked   voice-log-upload (7b37c23b-054f-4a85-8896-4412eca015f2)
+
+app-callable in contracts: 69; newly attached: 12; not deployed on dev: 35
+not deployed: ai-action-undo, ai-actions-list, alert-act, approval-decide, approval-resolve, approvals-list, assignments-transfer, campaign-draft-from-text, campaign-funnel, campaign-upsert, candidate-act, candidates-list, competitor-signals-list, contact-erase, contact-export, dashboard-kpis, discount-request, import-confirm, import-get, import-start, kpi-drilldown, manager-approvals-list, my-performance, problem-update, rep-detail, settings-get, settings-update, task-assign, tasks-list, team-list, territories-list, territory-upsert, user-upsert, users-list, visit-assign

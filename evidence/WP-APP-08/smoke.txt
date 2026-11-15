@@ -1,0 +1,31 @@
+WP-APP-08 smoke on dev (app merc, active version main-ac33afb, mock off: ?mock=0), shared browser at 451x1002 CSS px
+(phone viewport; the preview reports declared 412x915, rendered 452x1002). Principals: platform user d2835589 mapped
+temporarily to seed rep Nikos Alexiou (rep screens) and seed manager Eleni Markou (mgmt screens); both restored
+(principal-mapping.log). me() returned the mapped user each time.
+
+screen              principal  result on dev                                            blocker
+rep/today           Nikos      error card validation_failed                             today-get folder on functions.git is the platform template (returns {})
+rep/customers       Nikos      error card: accounts-list response missing items/page    accounts-list template
+rep/record          Nikos      renders (record/type/buddy, empty queue)                 none for render; voice-log-upload, debrief-result-get are templates
+rep/approvals       Nikos      forbidden: approvals-list not permitted                  approvals-list not provisioned on dev
+rep/alerts          Nikos      error card: alerts-list response missing items/page      alerts-list template
+rep/new-shops       Nikos      form renders; candidates-list not permitted              candidates-list not provisioned
+rep/week            Nikos      error card: visit-plan-get missing week_start/days       visit-plan-get template
+rep/ai-log          Nikos      forbidden: ai-actions-list not permitted                 ai-actions-list not provisioned
+mgmt/dashboard      Eleni      LIVE targets panel (targets-list); KPI card error        dashboard-kpis template
+mgmt/team           Eleni      seed-roster fallback banner; rep-detail not permitted    team-list 403 (linked + in token allowlist, still 403); rep-detail not provisioned
+mgmt/approvals      Eleni      manager-approvals-list not permitted                     not provisioned
+mgmt/pipeline       Eleni      error card: deals-list missing items/page                deals-list template
+mgmt/territories    Eleni      error card: territories-list missing items               territories-list template
+mgmt/campaigns      Eleni      LIVE: "Espresso Nuovo to cafés" Active campaign          none
+mgmt/targets        Eleni      LIVE: 3 revenue + 1 visits target with progress          none
+mgmt/competition    Eleni      competitor-signals-list not permitted                    not provisioned
+mgmt/settings       Eleni      settings-get not permitted                               not provisioned
+mgmt/users          Eleni      users-list 403                                           users-list template + same 403 as team-list
+mgmt/import         Eleni      renders upload step                                      import-start not provisioned
+mgmt/settings/gdpr  Eleni      renders form                                             contact-export/erase not provisioned
+mgmt/ai-log         Eleni      ai-actions-list not permitted                            not provisioned
+
+Probe (from the app session, /app-functions/<token>/<slug>?__probe=1): only me, campaigns-list, targets-list
+answered with the Merc handler (validation_failed on the probe field); every other linked function answered 200 {}
+(template) or 403. See stub-check.txt: functions.git main has handler.gen.js for only 6 folders.

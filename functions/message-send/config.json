@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "message-send",
+  "description": "Merc fn:message-send: internal: send one approved customer message via the rep's per-user Gmail, idempotent (REQ-APR-002) (contracts/functions/message-send.json). Source: Merc monorepo shared/handlers/src/message-send.ts.",
+  "method": "POST",
+  "path_slug": "message-send",
+  "param_mapping": {}
+}

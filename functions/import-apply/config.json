@@ -1,0 +1,8 @@
+{
+  "kind": "http",
+  "name": "import-apply",
+  "description": "Merc fn:import-apply (contracts/functions/import-apply.json; callers: procedure; gate: null). Source: Merc monorepo shared/handlers/src/import-apply.ts.",
+  "method": "POST",
+  "path_slug": "import-apply",
+  "param_mapping": {}
+}

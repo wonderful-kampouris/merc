@@ -1,0 +1,85 @@
+{
+  "slug": "approvals-list",
+  "method": "GET",
+  "kind": "http",
+  "gate": "approvals.read",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "kind": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "customer_message",
+              "discount",
+              "terms",
+              "conversion"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "status": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "role": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "requester",
+              "approver"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "$ref": "../_defs.json#/$defs/ApprovalCard"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "items"
+    ]
+  },
+  "reads": [
+    "approval",
+    "message_approval",
+    "discount_request"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": "",
+  "scope": "requester_or_approver"
+}

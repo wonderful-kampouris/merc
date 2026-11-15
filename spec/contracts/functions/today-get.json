@@ -1,0 +1,75 @@
+{
+  "slug": "today-get",
+  "method": "GET",
+  "kind": "http",
+  "gate": "plan.read",
+  "callers": [
+    "app",
+    "buddy"
+  ],
+  "timeout_ms": 30000,
+  "priority": "P0",
+  "wave": 2,
+  "request": {
+    "type": "object",
+    "properties": {
+      "date": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "date": {
+        "type": "string",
+        "format": "date"
+      },
+      "visits": {
+        "type": "array",
+        "items": {
+          "$ref": "../_defs.json#/$defs/VisitSummary"
+        }
+      },
+      "briefing_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "pending_recordings_hint": {
+        "type": "integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "date",
+      "visits",
+      "pending_recordings_hint"
+    ]
+  },
+  "reads": [
+    "visit",
+    "account",
+    "briefing"
+  ],
+  "writes": [],
+  "errors": [],
+  "llm": [],
+  "integrations": [],
+  "notes": ""
+}
